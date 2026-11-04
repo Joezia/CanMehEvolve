@@ -1,7 +1,7 @@
 [ 12%] Creating directories for 'nlohmann-json'
 [ 12%] Creating directories for 'cli11'
-[ 25%] Performing download step (download and verify) for 'cli11'
 [ 25%] Performing download step (download, verify and extract) for 'nlohmann-json'
+[ 25%] Performing download step (download and verify) for 'cli11'
 -- verifying file...
        file='/home/z/zhouzia/.cmake-downloads/CanMehEvolve/CLI11.hpp'
 -- verifying file...
@@ -9,19 +9,19 @@
 -- File already exists and hash match (skip download):
   file='/home/z/zhouzia/.cmake-downloads/CanMehEvolve/CLI11.hpp'
   SHA256='3935283e4c9db7089ed304476dbab2805c9311c41b125a55e92da4659df0d660'
+[ 31%] No update step for 'cli11'
 -- File already exists and hash match (skip download):
   file='/home/z/zhouzia/.cmake-downloads/CanMehEvolve/v3.11.3.tar.gz'
   SHA256='0d8ef5af7f9794e3263480193c491549b2ba6cc74bb018906202ada498a79406'
-[ 31%] No update step for 'cli11'
 -- extracting...
      src='/home/z/zhouzia/.cmake-downloads/CanMehEvolve/v3.11.3.tar.gz'
-     dst='/home/z/zhouzia/.clean-build-check-1074201/build/nlohmann-json-prefix/src/nlohmann-json'
--- extracting... [tar xfz]
+     dst='/home/z/zhouzia/.submission-check-1074509/build/nlohmann-json-prefix/src/nlohmann-json'
 [ 37%] No patch step for 'cli11'
+-- extracting... [tar xfz]
 [ 43%] No configure step for 'cli11'
 [ 50%] No build step for 'cli11'
 [ 50%] Performing install step for 'cli11'
--- cli11 install command succeeded.  See also /home/z/zhouzia/.clean-build-check-1074201/build/cli11-prefix/src/cli11-stamp/cli11-install-*.log
+-- cli11 install command succeeded.  See also /home/z/zhouzia/.submission-check-1074509/build/cli11-prefix/src/cli11-stamp/cli11-install-*.log
 [ 56%] Completed 'cli11'
 [ 56%] Built target cli11
 -- extracting... [analysis]
@@ -33,7 +33,7 @@
 [ 75%] No configure step for 'nlohmann-json'
 [ 75%] No build step for 'nlohmann-json'
 [ 81%] Performing install step for 'nlohmann-json'
--- nlohmann-json install command succeeded.  See also /home/z/zhouzia/.clean-build-check-1074201/build/nlohmann-json-prefix/src/nlohmann-json-stamp/nlohmann-json-install-*.log
+-- nlohmann-json install command succeeded.  See also /home/z/zhouzia/.submission-check-1074509/build/nlohmann-json-prefix/src/nlohmann-json-stamp/nlohmann-json-install-*.log
 [ 87%] Completed 'nlohmann-json'
 [ 87%] Built target nlohmann-json
 [ 93%] Building CXX object CMakeFiles/CanMehHarness.dir/src/Harness.cpp.o
@@ -44,9 +44,9 @@
 [ 93%] Building CXX object CMakeFiles/CanMehCalibrate.dir/src/Calibrate.cpp.o
 [100%] Linking CXX executable CanMehCalibrate
 [100%] Built target CanMehCalibrate
-[ 27%] Creating directories for 'googlebenchmark'
-[ 63%] Built target nlohmann-json
+[ 13%] Creating directories for 'googlebenchmark'
 [ 68%] Built target cli11
+[ 68%] Built target nlohmann-json
 [ 72%] Performing download step (download, verify and extract) for 'googlebenchmark'
 -- verifying file...
        file='/home/z/zhouzia/.cmake-downloads/CanMehEvolve/v1.9.1.tar.gz'
@@ -55,7 +55,7 @@
   SHA256='32131c08ee31eeff2c8968d7e874f3cb648034377dfc32a4c377fa8796d84981'
 -- extracting...
      src='/home/z/zhouzia/.cmake-downloads/CanMehEvolve/v1.9.1.tar.gz'
-     dst='/home/z/zhouzia/.clean-build-check-1074201/build/googlebenchmark-prefix/src/googlebenchmark'
+     dst='/home/z/zhouzia/.submission-check-1074509/build/googlebenchmark-prefix/src/googlebenchmark'
 -- extracting... [tar xfz]
 -- extracting... [analysis]
 -- extracting... [rename]
@@ -124,20 +124,20 @@
 -- Found Threads: TRUE  
 -- Compiling and running to test HAVE_PTHREAD_AFFINITY
 -- Performing Test HAVE_PTHREAD_AFFINITY -- success
--- Configuring done (46.0s)
--- Generating done (0.2s)
+-- Configuring done (38.9s)
+-- Generating done (0.1s)
 CMake Warning:
   Manually-specified variables were not used by the project:
 
     CMAKE_C_COMPILER
 
 
--- Build files have been written to: /home/z/zhouzia/.clean-build-check-1074201/build/googlebenchmark-prefix/src/googlebenchmark-build
+-- Build files have been written to: /home/z/zhouzia/.submission-check-1074509/build/googlebenchmark-prefix/src/googlebenchmark-build
 [ 86%] Performing build step for 'googlebenchmark'
-[ 18%] Building CXX object src/CMakeFiles/benchmark.dir/benchmark_register.cc.o
 [ 18%] Building CXX object src/CMakeFiles/benchmark.dir/benchmark.cc.o
 [ 18%] Building CXX object src/CMakeFiles/benchmark.dir/benchmark_name.cc.o
 [ 18%] Building CXX object src/CMakeFiles/benchmark.dir/benchmark_api_internal.cc.o
+[ 18%] Building CXX object src/CMakeFiles/benchmark.dir/benchmark_register.cc.o
 [ 22%] Building CXX object src/CMakeFiles/benchmark.dir/benchmark_runner.cc.o
 [ 27%] Building CXX object src/CMakeFiles/benchmark.dir/check.cc.o
 [ 31%] Building CXX object src/CMakeFiles/benchmark.dir/colorprint.cc.o
@@ -149,8 +149,8 @@ CMake Warning:
 [ 59%] Building CXX object src/CMakeFiles/benchmark.dir/json_reporter.cc.o
 [ 63%] Building CXX object src/CMakeFiles/benchmark.dir/perf_counters.cc.o
 [ 68%] Building CXX object src/CMakeFiles/benchmark.dir/reporter.cc.o
-[ 72%] Building CXX object src/CMakeFiles/benchmark.dir/statistics.cc.o
 [ 77%] Building CXX object src/CMakeFiles/benchmark.dir/string_util.cc.o
+[ 77%] Building CXX object src/CMakeFiles/benchmark.dir/statistics.cc.o
 [ 81%] Building CXX object src/CMakeFiles/benchmark.dir/sysinfo.cc.o
 [ 86%] Building CXX object src/CMakeFiles/benchmark.dir/timers.cc.o
 [ 90%] Linking CXX static library libbenchmark.a
@@ -163,44 +163,44 @@ CMake Warning:
 [100%] Built target benchmark_main
 Install the project...
 -- Install configuration: "Release"
--- Installing: /home/z/zhouzia/.clean-build-check-1074201/build/deps/lib/libbenchmark.a
--- Installing: /home/z/zhouzia/.clean-build-check-1074201/build/deps/lib/libbenchmark_main.a
--- Installing: /home/z/zhouzia/.clean-build-check-1074201/build/deps/include/benchmark
--- Installing: /home/z/zhouzia/.clean-build-check-1074201/build/deps/include/benchmark/export.h
--- Installing: /home/z/zhouzia/.clean-build-check-1074201/build/deps/include/benchmark/benchmark.h
--- Installing: /home/z/zhouzia/.clean-build-check-1074201/build/deps/lib/cmake/benchmark/benchmarkConfig.cmake
--- Installing: /home/z/zhouzia/.clean-build-check-1074201/build/deps/lib/cmake/benchmark/benchmarkConfigVersion.cmake
--- Installing: /home/z/zhouzia/.clean-build-check-1074201/build/deps/lib/pkgconfig/benchmark.pc
--- Installing: /home/z/zhouzia/.clean-build-check-1074201/build/deps/lib/pkgconfig/benchmark_main.pc
--- Installing: /home/z/zhouzia/.clean-build-check-1074201/build/deps/lib/cmake/benchmark/benchmarkTargets.cmake
--- Installing: /home/z/zhouzia/.clean-build-check-1074201/build/deps/lib/cmake/benchmark/benchmarkTargets-release.cmake
--- Installing: /home/z/zhouzia/.clean-build-check-1074201/build/deps/share/doc/benchmark
--- Installing: /home/z/zhouzia/.clean-build-check-1074201/build/deps/share/doc/benchmark/tools.md
--- Installing: /home/z/zhouzia/.clean-build-check-1074201/build/deps/share/doc/benchmark/_config.yml
--- Installing: /home/z/zhouzia/.clean-build-check-1074201/build/deps/share/doc/benchmark/random_interleaving.md
--- Installing: /home/z/zhouzia/.clean-build-check-1074201/build/deps/share/doc/benchmark/user_guide.md
--- Installing: /home/z/zhouzia/.clean-build-check-1074201/build/deps/share/doc/benchmark/AssemblyTests.md
--- Installing: /home/z/zhouzia/.clean-build-check-1074201/build/deps/share/doc/benchmark/platform_specific_build_instructions.md
--- Installing: /home/z/zhouzia/.clean-build-check-1074201/build/deps/share/doc/benchmark/perf_counters.md
--- Installing: /home/z/zhouzia/.clean-build-check-1074201/build/deps/share/doc/benchmark/assets
--- Installing: /home/z/zhouzia/.clean-build-check-1074201/build/deps/share/doc/benchmark/assets/images
--- Installing: /home/z/zhouzia/.clean-build-check-1074201/build/deps/share/doc/benchmark/assets/images/icon_black.xcf
--- Installing: /home/z/zhouzia/.clean-build-check-1074201/build/deps/share/doc/benchmark/assets/images/icon.xcf
--- Installing: /home/z/zhouzia/.clean-build-check-1074201/build/deps/share/doc/benchmark/assets/images/icon.png
--- Installing: /home/z/zhouzia/.clean-build-check-1074201/build/deps/share/doc/benchmark/assets/images/icon_black.png
--- Installing: /home/z/zhouzia/.clean-build-check-1074201/build/deps/share/doc/benchmark/reducing_variance.md
--- Installing: /home/z/zhouzia/.clean-build-check-1074201/build/deps/share/doc/benchmark/python_bindings.md
--- Installing: /home/z/zhouzia/.clean-build-check-1074201/build/deps/share/doc/benchmark/releasing.md
--- Installing: /home/z/zhouzia/.clean-build-check-1074201/build/deps/share/doc/benchmark/index.md
--- Installing: /home/z/zhouzia/.clean-build-check-1074201/build/deps/share/doc/benchmark/dependencies.md
+-- Installing: /home/z/zhouzia/.submission-check-1074509/build/deps/lib/libbenchmark.a
+-- Installing: /home/z/zhouzia/.submission-check-1074509/build/deps/lib/libbenchmark_main.a
+-- Installing: /home/z/zhouzia/.submission-check-1074509/build/deps/include/benchmark
+-- Installing: /home/z/zhouzia/.submission-check-1074509/build/deps/include/benchmark/export.h
+-- Installing: /home/z/zhouzia/.submission-check-1074509/build/deps/include/benchmark/benchmark.h
+-- Installing: /home/z/zhouzia/.submission-check-1074509/build/deps/lib/cmake/benchmark/benchmarkConfig.cmake
+-- Installing: /home/z/zhouzia/.submission-check-1074509/build/deps/lib/cmake/benchmark/benchmarkConfigVersion.cmake
+-- Installing: /home/z/zhouzia/.submission-check-1074509/build/deps/lib/pkgconfig/benchmark.pc
+-- Installing: /home/z/zhouzia/.submission-check-1074509/build/deps/lib/pkgconfig/benchmark_main.pc
+-- Installing: /home/z/zhouzia/.submission-check-1074509/build/deps/lib/cmake/benchmark/benchmarkTargets.cmake
+-- Installing: /home/z/zhouzia/.submission-check-1074509/build/deps/lib/cmake/benchmark/benchmarkTargets-release.cmake
+-- Installing: /home/z/zhouzia/.submission-check-1074509/build/deps/share/doc/benchmark
+-- Installing: /home/z/zhouzia/.submission-check-1074509/build/deps/share/doc/benchmark/tools.md
+-- Installing: /home/z/zhouzia/.submission-check-1074509/build/deps/share/doc/benchmark/python_bindings.md
+-- Installing: /home/z/zhouzia/.submission-check-1074509/build/deps/share/doc/benchmark/user_guide.md
+-- Installing: /home/z/zhouzia/.submission-check-1074509/build/deps/share/doc/benchmark/dependencies.md
+-- Installing: /home/z/zhouzia/.submission-check-1074509/build/deps/share/doc/benchmark/_config.yml
+-- Installing: /home/z/zhouzia/.submission-check-1074509/build/deps/share/doc/benchmark/perf_counters.md
+-- Installing: /home/z/zhouzia/.submission-check-1074509/build/deps/share/doc/benchmark/random_interleaving.md
+-- Installing: /home/z/zhouzia/.submission-check-1074509/build/deps/share/doc/benchmark/AssemblyTests.md
+-- Installing: /home/z/zhouzia/.submission-check-1074509/build/deps/share/doc/benchmark/reducing_variance.md
+-- Installing: /home/z/zhouzia/.submission-check-1074509/build/deps/share/doc/benchmark/platform_specific_build_instructions.md
+-- Installing: /home/z/zhouzia/.submission-check-1074509/build/deps/share/doc/benchmark/index.md
+-- Installing: /home/z/zhouzia/.submission-check-1074509/build/deps/share/doc/benchmark/releasing.md
+-- Installing: /home/z/zhouzia/.submission-check-1074509/build/deps/share/doc/benchmark/assets
+-- Installing: /home/z/zhouzia/.submission-check-1074509/build/deps/share/doc/benchmark/assets/images
+-- Installing: /home/z/zhouzia/.submission-check-1074509/build/deps/share/doc/benchmark/assets/images/icon_black.png
+-- Installing: /home/z/zhouzia/.submission-check-1074509/build/deps/share/doc/benchmark/assets/images/icon_black.xcf
+-- Installing: /home/z/zhouzia/.submission-check-1074509/build/deps/share/doc/benchmark/assets/images/icon.xcf
+-- Installing: /home/z/zhouzia/.submission-check-1074509/build/deps/share/doc/benchmark/assets/images/icon.png
 [ 95%] Completed 'googlebenchmark'
 [ 95%] Built target googlebenchmark
 [ 95%] Building CXX object CMakeFiles/CanMehBench.dir/src/BenchmarkProcess.cpp.o
 [100%] Linking CXX executable CanMehBench
 [100%] Built target CanMehBench
-[ 86%] Built target googlebenchmark
-[ 95%] Built target cli11
 [ 95%] Built target nlohmann-json
+[ 95%] Built target googlebenchmark
+[ 95%] Built target cli11
 [100%] Building CXX object CMakeFiles/CanMehDecodeForSampler.dir/src/DecodeForSampler.cpp.o
 [100%] Linking CXX executable CanMehDecodeForSampler
 [100%] Built target CanMehDecodeForSampler
@@ -215,10 +215,10 @@ HEAD is now at 9b5a3d3 Garmin FIT SDK 21.201.0
 [ 17%] No install step for 'FITSDK'
 [ 20%] Completed 'FITSDK'
 [ 20%] Built target FITSDK
-[ 27%] Building CXX object CMakeFiles/CanMehDataGenerator.dir/FITSDK-prefix/src/FITSDK/src/fit.cpp.o
-[ 31%] Building CXX object CMakeFiles/CanMehDataGenerator.dir/FITSDK-prefix/src/FITSDK/src/fit_accumulated_field.cpp.o
+[ 31%] Building CXX object CMakeFiles/CanMehDataGenerator.dir/FITSDK-prefix/src/FITSDK/src/fit.cpp.o
 [ 31%] Building CXX object CMakeFiles/CanMehDataGenerator.dir/src/DataGenerator.cpp.o
 [ 31%] Building CXX object CMakeFiles/CanMehDataGenerator.dir/FITSDK-prefix/src/FITSDK/src/fit_accumulator.cpp.o
+[ 31%] Building CXX object CMakeFiles/CanMehDataGenerator.dir/FITSDK-prefix/src/FITSDK/src/fit_accumulated_field.cpp.o
 [ 34%] Building CXX object CMakeFiles/CanMehDataGenerator.dir/FITSDK-prefix/src/FITSDK/src/fit_buffer_encode.cpp.o
 [ 37%] Building CXX object CMakeFiles/CanMehDataGenerator.dir/FITSDK-prefix/src/FITSDK/src/fit_crc.cpp.o
 [ 41%] Building CXX object CMakeFiles/CanMehDataGenerator.dir/FITSDK-prefix/src/FITSDK/src/fit_buffered_mesg_broadcaster.cpp.o
