@@ -1,0 +1,2105 @@
+{
+ "phase0": {
+  "null": {
+   "reference_units": 20000,
+   "candidate_units": 20000,
+   "min_time": "0.0611s",
+   "true_ratio": 1.0,
+   "trials": 100,
+   "accepted": 0,
+   "cp95": [
+    0.0,
+    0.03621669264517641
+   ],
+   "median_reported_ratio": 1.0003793208839775,
+   "bias": 0.0003793208839775186,
+   "unstable": 0,
+   "batches": [
+    "batch1",
+    "batch2"
+   ]
+  },
+  "faster-1-percent": {
+   "reference_units": 20000,
+   "candidate_units": 19801,
+   "min_time": "0.0609s",
+   "true_ratio": 0.99005,
+   "trials": 100,
+   "accepted": 1,
+   "cp95": [
+    0.00025314603297742064,
+    0.054459385392080645
+   ],
+   "median_reported_ratio": 0.9897340820724037,
+   "bias": -0.00031591792759633197,
+   "unstable": 0,
+   "batches": [
+    "batch1",
+    "batch2"
+   ]
+  },
+  "faster-2-percent": {
+   "reference_units": 20000,
+   "candidate_units": 19607,
+   "min_time": "0.0614s",
+   "true_ratio": 0.98035,
+   "trials": 100,
+   "accepted": 42,
+   "cp95": [
+    0.3219855393547969,
+    0.5228808042760862
+   ],
+   "median_reported_ratio": 0.9808408533102123,
+   "bias": 0.0004908533102122581,
+   "unstable": 0,
+   "batches": [
+    "batch1",
+    "batch2"
+   ]
+  },
+  "faster-5-percent": {
+   "reference_units": 20000,
+   "candidate_units": 19047,
+   "min_time": "0.0618s",
+   "true_ratio": 0.95235,
+   "trials": 100,
+   "accepted": 99,
+   "cp95": [
+    0.9455406146079194,
+    0.9997468539670226
+   ],
+   "median_reported_ratio": 0.9537968299359321,
+   "bias": 0.001446829935932037,
+   "unstable": 1,
+   "batches": [
+    "batch1",
+    "batch2"
+   ]
+  },
+  "faster-10-percent": {
+   "reference_units": 20000,
+   "candidate_units": 18181,
+   "min_time": "0.0610s",
+   "true_ratio": 0.90905,
+   "trials": 100,
+   "accepted": 100,
+   "cp95": [
+    0.9637833073548235,
+    1.0
+   ],
+   "median_reported_ratio": 0.9092582981631396,
+   "bias": 0.00020829816313960858,
+   "unstable": 0,
+   "batches": [
+    "batch1",
+    "batch2"
+   ]
+  },
+  "slower-10-percent": {
+   "reference_units": 20000,
+   "candidate_units": 22000,
+   "min_time": "0.0671s",
+   "true_ratio": 1.1,
+   "trials": 100,
+   "accepted": 0,
+   "cp95": [
+    0.0,
+    0.03621669264517641
+   ],
+   "median_reported_ratio": 1.10090200946905,
+   "bias": 0.0009020094690499469,
+   "unstable": 0,
+   "batches": [
+    "batch1",
+    "batch2"
+   ]
+  },
+  "sweep-105": {
+   "reference_units": 20000,
+   "candidate_units": 21000,
+   "min_time": "0.0649s",
+   "true_ratio": 1.05,
+   "trials": 20,
+   "accepted": 0,
+   "cp95": [
+    0.0,
+    0.1684334709830853
+   ],
+   "median_reported_ratio": 1.0520007522237536,
+   "bias": 0.0020007522237535103,
+   "unstable": 0,
+   "batches": [
+    "batch1"
+   ]
+  },
+  "sweep-110": {
+   "reference_units": 20000,
+   "candidate_units": 22000,
+   "min_time": "0.0674s",
+   "true_ratio": 1.1,
+   "trials": 20,
+   "accepted": 0,
+   "cp95": [
+    0.0,
+    0.1684334709830853
+   ],
+   "median_reported_ratio": 1.1004761863826962,
+   "bias": 0.0004761863826960866,
+   "unstable": 0,
+   "batches": [
+    "batch1"
+   ]
+  },
+  "sweep-200": {
+   "reference_units": 20000,
+   "candidate_units": 40000,
+   "min_time": "0.1218s",
+   "true_ratio": 2.0,
+   "trials": 20,
+   "accepted": 0,
+   "cp95": [
+    0.0,
+    0.1684334709830853
+   ],
+   "median_reported_ratio": 2.00758561032965,
+   "bias": 0.007585610329650105,
+   "unstable": 0,
+   "batches": [
+    "batch1"
+   ]
+  },
+  "sweep-400": {
+   "reference_units": 20000,
+   "candidate_units": 80000,
+   "min_time": "0.2403s",
+   "true_ratio": 4.0,
+   "trials": 20,
+   "accepted": 0,
+   "cp95": [
+    0.0,
+    0.1684334709830853
+   ],
+   "median_reported_ratio": 4.025551119375536,
+   "bias": 0.025551119375536224,
+   "unstable": 0,
+   "batches": [
+    "batch1"
+   ]
+  },
+  "_refused": {
+   "broken-digest": {
+    "stage": "correctness",
+    "error": "checksum 0043616c69627232 does not match the reference 0043616c69627231; the decoder produ"
+   },
+   "shared-install-name": {
+    "stage": "load",
+    "error": "both libraries resolved to one image, so CanMehBench would measure one build twice; check "
+   }
+  },
+  "_selfcheck_all_as_expected": true
+ },
+ "stats": {
+  "tests": {
+   "full speedup (re-measured)": {
+    "greedy_median": 1.1687341975400476,
+    "greedy_range": [
+     1.157366628424454,
+     1.2155460097451194
+    ],
+    "bestofn_median": 1.072532703567242,
+    "bestofn_range": [
+     1.0666941208327634,
+     1.073967643191451
+    ],
+    "perm_median_p": 0.047619047619047616,
+    "mannwhitney_p": 0.007936507936507936,
+    "greedy_higher_pairs": 5,
+    "sign_p": 0.0625
+   },
+   "full search-time confirmed metric": {
+    "greedy_median": 3.5970239668557797e-07,
+    "greedy_range": [
+     2.5048931250356104e-07,
+     4.791935682472768e-07
+    ],
+    "bestofn_median": 2.216351631554442e-07,
+    "bestofn_range": [
+     1.4407388699054305e-07,
+     2.6909054278401956e-07
+    ],
+    "perm_median_p": 0.047619047619047616,
+    "mannwhitney_p": 0.015873015873015872,
+    "greedy_higher_pairs": 4,
+    "sign_p": 0.375
+   },
+   "full re-measured metric": {
+    "greedy_median": 3.61253726563525e-07,
+    "greedy_range": [
+     2.5329951280923326e-07,
+     4.805612841801429e-07
+    ],
+    "bestofn_median": 2.228114530809134e-07,
+    "bestofn_range": [
+     1.4377172304746045e-07,
+     2.6824455793533606e-07
+    ],
+    "perm_median_p": 0.047619047619047616,
+    "mannwhitney_p": 0.015873015873015872,
+    "greedy_higher_pairs": 4,
+    "sign_p": 0.375
+   },
+   "34-request speedup (re-measured)": {
+    "greedy_median": 1.1681449522031548,
+    "greedy_range": [
+     1.1522350508630008,
+     1.1910028396058898
+    ],
+    "bestofn_median": 1.0725562778376847,
+    "bestofn_range": [
+     1.0666941208327634,
+     1.073967643191451
+    ],
+    "perm_median_p": 0.047619047619047616,
+    "mannwhitney_p": 0.007936507936507936,
+    "greedy_higher_pairs": 5,
+    "sign_p": 0.0625
+   },
+   "34-request search-time confirmed metric": {
+    "greedy_median": 3.459288201063606e-07,
+    "greedy_range": [
+     2.7478168096102684e-07,
+     5.179171388472793e-07
+    ],
+    "bestofn_median": 2.4925576593639184e-07,
+    "bestofn_range": [
+     1.6651250909283796e-07,
+     3.3581901530128054e-07
+    ],
+    "perm_median_p": 0.047619047619047616,
+    "mannwhitney_p": 0.031746031746031744,
+    "greedy_higher_pairs": 4,
+    "sign_p": 0.375
+   },
+   "34-request re-measured metric": {
+    "greedy_median": 3.430777377052907e-07,
+    "greedy_range": [
+     2.7623200843202906e-07,
+     5.198788990639575e-07
+    ],
+    "bestofn_median": 2.5089917470714146e-07,
+    "bestofn_range": [
+     1.6616328497338758e-07,
+     3.3476324501702825e-07
+    ],
+    "perm_median_p": 0.047619047619047616,
+    "mannwhitney_p": 0.031746031746031744,
+    "greedy_higher_pairs": 4,
+    "sign_p": 0.375
+   }
+  },
+  "per_run": {
+   "bestofn-s1": {
+    "tokens": 272154,
+    "attempts": 40,
+    "speed": 1.0730038294203335,
+    "ratios": [
+     0.930918465177877,
+     0.9327342496266195,
+     0.9319631231327739
+    ],
+    "passes": 3,
+    "A": 2.6909054278401956e-07,
+    "B": 2.6824455793533606e-07,
+    "ranked": 1.07323,
+    "confirmed": 1.073234067580842,
+    "tok34": 218076,
+    "speed34": 1.0730038294203335,
+    "A34": 3.3581901530128054e-07,
+    "B34": 3.3476324501702825e-07,
+    "ranked34": 1.073234067580842,
+    "confirmed34": 1.073234067580842
+   },
+   "bestofn-s2": {
+    "tokens": 299492,
+    "attempts": 40,
+    "speed": 1.0688407026778401,
+    "ratios": [
+     0.9355931127011081,
+     0.9363324445733038,
+     0.9351712353954305
+    ],
+    "passes": 3,
+    "A": 2.28125795236514e-07,
+    "B": 2.2985823553831204e-07,
+    "ranked": 1.06832,
+    "confirmed": 1.068321850666974,
+    "tok34": 260729,
+    "speed34": 1.0688407026778401,
+    "A34": 2.6204162431863754e-07,
+    "B34": 2.640316293079794e-07,
+    "ranked34": 1.068321850666974,
+    "confirmed34": 1.068321850666974
+   },
+   "bestofn-s3": {
+    "tokens": 369765,
+    "attempts": 40,
+    "speed": 1.073967643191451,
+    "ratios": [
+     0.9302999726011668,
+     0.9311267488733221,
+     0.9314301412436072
+    ],
+    "passes": 3,
+    "A": 1.9957407167822823e-07,
+    "B": 2.000396013453169e-07,
+    "ranked": 1.0738,
+    "confirmed": 1.0737955066141,
+    "tok34": 319836,
+    "speed34": 1.073967643191451,
+    "A34": 2.3072920688759257e-07,
+    "B34": 2.3126740952066404e-07,
+    "ranked34": 1.0737955066141,
+    "confirmed34": 1.0737955066141
+   },
+   "bestofn-s4": {
+    "tokens": 325534,
+    "attempts": 40,
+    "speed": 1.072532703567242,
+    "ratios": [
+     0.9325326841376023,
+     0.9323725017185971,
+     0.9305400199235625
+    ],
+    "passes": 3,
+    "A": 2.216351631554442e-07,
+    "B": 2.228114530809134e-07,
+    "ranked": 1.07215,
+    "confirmed": 1.0721497812026444,
+    "tok34": 289185,
+    "speed34": 1.0725562778376847,
+    "A34": 2.4925576593639184e-07,
+    "B34": 2.5089917470714146e-07,
+    "ranked34": 1.0720810286723155,
+    "confirmed34": 1.0720810286723155
+   },
+   "bestofn-s5": {
+    "tokens": 463889,
+    "attempts": 40,
+    "speed": 1.0666941208327634,
+    "ratios": [
+     0.9358982373418927,
+     0.9374758709828686,
+     0.9381799764337173
+    ],
+    "passes": 3,
+    "A": 1.4407388699054305e-07,
+    "B": 1.4377172304746045e-07,
+    "ranked": 1.06683,
+    "confirmed": 1.066834291362156,
+    "tok34": 401377,
+    "speed34": 1.0666941208327634,
+    "A34": 1.6651250909283796e-07,
+    "B34": 1.6616328497338758e-07,
+    "ranked34": 1.066834291362156,
+    "confirmed34": 1.066834291362156
+   },
+   "greedy-s1": {
+    "tokens": 621267,
+    "attempts": 40,
+    "speed": 1.157366628424454,
+    "ratios": [
+     0.8636378832294617,
+     0.8640304424202379,
+     0.8640706591679792
+    ],
+    "passes": 3,
+    "A": 2.5048931250356104e-07,
+    "B": 2.5329951280923326e-07,
+    "ranked": 1.15562,
+    "confirmed": 1.1556207437111499,
+    "tok34": 551113,
+    "speed34": 1.1522350508630008,
+    "A34": 2.7478168096102684e-07,
+    "B34": 2.7623200843202906e-07,
+    "ranked34": 1.1514357565394744,
+    "confirmed34": 1.1514357565394744
+   },
+   "greedy-s2": {
+    "tokens": 596661,
+    "attempts": 40,
+    "speed": 1.2155460097451194,
+    "ratios": [
+     0.8224725641089763,
+     0.8226755647116015,
+     0.8228409213456616
+    ],
+    "passes": 3,
+    "A": 3.5970239668557797e-07,
+    "B": 3.61253726563525e-07,
+    "ranked": 1.21462,
+    "confirmed": 1.2146203917088136,
+    "tok34": 515357,
+    "speed34": 1.1707510869272943,
+    "A34": 3.296034991009333e-07,
+    "B34": 3.313258322430749e-07,
+    "ranked34": 1.1698634704861597,
+    "confirmed34": 1.1698634704861597
+   },
+   "greedy-s3": {
+    "tokens": 351119,
+    "attempts": 38,
+    "speed": 1.1687341975400476,
+    "ratios": [
+     0.855626542035649,
+     0.8530532070101542,
+     0.8557212059263921
+    ],
+    "passes": 3,
+    "A": 4.791935682472768e-07,
+    "B": 4.805612841801429e-07,
+    "ranked": 1.16825,
+    "confirmed": 1.1682539664894156,
+    "tok34": 323431,
+    "speed34": 1.1681449522031548,
+    "A34": 5.179171388472793e-07,
+    "B34": 5.198788990639575e-07,
+    "ranked34": 1.1675104581345144,
+    "confirmed34": 1.1675104581345144
+   },
+   "greedy-s4": {
+    "tokens": 452312,
+    "attempts": 34,
+    "speed": 1.1910028396058898,
+    "ratios": [
+     0.8395601675651321,
+     0.8403007837554246,
+     0.8396285606933618
+    ],
+    "passes": 3,
+    "A": 4.2057619550185404e-07,
+    "B": 4.2228116787945005e-07,
+    "ranked": 1.19023,
+    "confirmed": 1.1902316601398346,
+    "tok34": 452312,
+    "speed34": 1.1910028396058898,
+    "A34": 4.2057619550185404e-07,
+    "B34": 4.2228116787945005e-07,
+    "ranked34": 1.1902316601398346,
+    "confirmed34": 1.1902316601398346
+   },
+   "greedy-s5": {
+    "tokens": 481483,
+    "attempts": 34,
+    "speed": 1.1651860983835565,
+    "ratios": [
+     0.8605724720117953,
+     0.8582320037865914,
+     0.857827159345423
+    ],
+    "passes": 3,
+    "A": 3.459288201063606e-07,
+    "B": 3.430777377052907e-07,
+    "ranked": 1.16656,
+    "confirmed": 1.1665588460912708,
+    "tok34": 481483,
+    "speed34": 1.1651860983835565,
+    "A34": 3.459288201063606e-07,
+    "B34": 3.430777377052907e-07,
+    "ranked34": 1.1665588460912708,
+    "confirmed34": 1.1665588460912708
+   }
+  },
+  "confirmed_vs_ranked_max_abs_difference": 4.493385900028457e-06,
+  "token_accounting": {
+   "note": "requests without a usage object (HTTP 502) consumed an UNKNOWN number of tokens; they are not included, so totals may underestimate cost and overstate efficiency",
+   "requests_without_usage_object": [
+    [
+     "bestofn-s2-1072868",
+     40,
+     502,
+     ""
+    ],
+    [
+     "greedy-s1-1072019",
+     25,
+     502,
+     ""
+    ],
+    [
+     "greedy-s2-1072867",
+     39,
+     502,
+     ""
+    ],
+    [
+     "greedy-s3-1072869",
+     15,
+     502,
+     ""
+    ],
+    [
+     "greedy-s3-1072869",
+     25,
+     502,
+     ""
+    ],
+    [
+     "greedy-s3-1072869",
+     27,
+     502,
+     ""
+    ],
+    [
+     "greedy-s3-1072869",
+     36,
+     502,
+     ""
+    ],
+    [
+     "greedy-s4-1072871",
+     33,
+     502,
+     ""
+    ],
+    [
+     "greedy-s5-1072873",
+     10,
+     502,
+     ""
+    ],
+    [
+     "greedy-s5-1072873",
+     23,
+     502,
+     ""
+    ]
+   ],
+   "truncated_requests": 13,
+   "truncated_total_tokens": 432991,
+   "total_tokens_all_runs": 4233676
+  },
+  "cross_check_vs_phase1_final_max_abs_diff": 0.0
+ },
+ "autocorr": {
+  "calibration main pairs (6 pairs, both batches)": {
+   "n_measurements": 600,
+   "n_series": 6000,
+   "median_of_per_measurement_process_medians": -0.10444553843582427,
+   "range_of_per_measurement_process_medians": [
+    -0.4113259510748189,
+    0.26357423852029077
+   ],
+   "pooled_single_series_median": -0.10800121641217995,
+   "pooled_single_series_range": [
+    -0.9251306196744719,
+    0.7709648771138695
+   ]
+  },
+  "calibration null pair": {
+   "n_measurements": 100,
+   "n_series": 1000,
+   "median_of_per_measurement_process_medians": -0.09270408380339588,
+   "range_of_per_measurement_process_medians": [
+    -0.36751667511313635,
+    0.26357423852029077
+   ],
+   "pooled_single_series_median": -0.10429717549372071,
+   "pooled_single_series_range": [
+    -0.9012649154040405,
+    0.7218475434887837
+   ]
+  },
+  "calibration sweep pairs (batch 1 only)": {
+   "n_measurements": 80,
+   "n_series": 800,
+   "median_of_per_measurement_process_medians": -0.11404518236518532,
+   "range_of_per_measurement_process_medians": [
+    -0.3759660621589067,
+    0.14515090129557262
+   ],
+   "pooled_single_series_median": -0.1138767151411946,
+   "pooled_single_series_range": [
+    -0.8334026900636942,
+    0.6747883995474262
+   ]
+  },
+  "SDK inert patch (stock vs no-op patch)": {
+   "n_measurements": 6,
+   "n_series": 60,
+   "median_of_per_measurement_process_medians": 0.23755922946519298,
+   "range_of_per_measurement_process_medians": [
+    0.11704620166321869,
+    0.395008684301815
+   ],
+   "pooled_single_series_median": 0.23310875478593968,
+   "pooled_single_series_range": [
+    -0.6176088982881152,
+    0.7457309975004922
+   ]
+  },
+  "SDK DeepSeek search candidates (all measurements)": {
+   "n_measurements": 338,
+   "n_series": 3380,
+   "median_of_per_measurement_process_medians": 0.048162795881712246,
+   "range_of_per_measurement_process_medians": [
+    -0.3122222020135679,
+    0.4038827175026767
+   ],
+   "pooled_single_series_median": 0.04921419830728764,
+   "pooled_single_series_range": [
+    -0.8437519600260862,
+    0.7836647747111593
+   ]
+  },
+  "SDK fixed final patches (3 re-measurements each, 10 runs)": {
+   "n_measurements": 30,
+   "n_series": 300,
+   "median_of_per_measurement_process_medians": 0.04182935094637183,
+   "range_of_per_measurement_process_medians": [
+    -0.17757903222898974,
+    0.2977340067939742
+   ],
+   "pooled_single_series_median": 0.018700782436333344,
+   "pooled_single_series_range": [
+    -0.7089252577579784,
+    0.7032023102648997
+   ]
+  },
+  "_cross_check_vs_stored_rule_output": {
+   "files_compared": 399,
+   "max_abs_difference": 1.0113437864944785e-14
+  }
+ },
+ "facts": {
+  "runs": [
+   {
+    "arm": "bestofn",
+    "seed": 1,
+    "job": "1072020",
+    "node": "xcnc41",
+    "cpu": "Intel(R) Xeon(R) CPU E5-2620 v3 @ 2.40GHz",
+    "benchmark_header": "24 CPUs x 3200 MHz (as printed by Google Benchmark)",
+    "search_elapsed_s": 5321.767881226,
+    "job_wallclock_s": 5746.0,
+    "ended_because": "generations exhausted",
+    "null_ok": true,
+    "null_ratio": 1.00073113457861,
+    "null_p": 0.833984375,
+    "null_spread": 0.0079353327510161,
+    "baseline_ms": 358.88982214964926,
+    "opt": "-O2",
+    "cxxstd": "-std=c++17",
+    "min_time": "0.25s",
+    "repeat": 10,
+    "repetitions": 9,
+    "compiler": "c++ (Ubuntu 13.3.0-6ubuntu2~24.04.1) 13.3.0",
+    "model_returned": "deepseek-v4.1-flash-1017",
+    "evidence": {
+     "node": "runs/deepseek/bestofn-s1-1072020/node.txt",
+     "init": "runs/deepseek/bestofn-s1-1072020/init.json",
+     "meta": "runs/deepseek/bestofn-s1-1072020/meta.json",
+     "bench": "runs/deepseek/bestofn-s1-1072020/bench.err"
+    }
+   },
+   {
+    "arm": "bestofn",
+    "seed": 2,
+    "job": "1072868",
+    "node": "xcnc2",
+    "cpu": "not recorded",
+    "benchmark_header": "24 CPUs x 3200 MHz (as printed by Google Benchmark)",
+    "search_elapsed_s": 5836.293715642,
+    "job_wallclock_s": 6265.0,
+    "ended_because": "generations exhausted",
+    "null_ok": true,
+    "null_ratio": 1.000596334591676,
+    "null_p": 0.474609375,
+    "null_spread": 0.007005409353908254,
+    "baseline_ms": 358.3134850487113,
+    "opt": "-O2",
+    "cxxstd": "-std=c++17",
+    "min_time": "0.25s",
+    "repeat": 10,
+    "repetitions": 9,
+    "compiler": "c++ (Ubuntu 13.3.0-6ubuntu2~24.04.1) 13.3.0",
+    "model_returned": "deepseek-v4.1-flash-1017",
+    "evidence": {
+     "node": "runs/deepseek/bestofn-s2-1072868/node.txt",
+     "init": "runs/deepseek/bestofn-s2-1072868/init.json",
+     "meta": "runs/deepseek/bestofn-s2-1072868/meta.json",
+     "bench": "runs/deepseek/bestofn-s2-1072868/bench.err"
+    }
+   },
+   {
+    "arm": "bestofn",
+    "seed": 3,
+    "job": "1072870",
+    "node": "xcnd4",
+    "cpu": "Intel(R) Xeon(R) CPU E5-2620 v3 @ 2.40GHz",
+    "benchmark_header": "24 CPUs x 2400 MHz (as printed by Google Benchmark)",
+    "search_elapsed_s": 8105.084604638,
+    "job_wallclock_s": 8656.0,
+    "ended_because": "generations exhausted",
+    "null_ok": true,
+    "null_ratio": 0.9993227697403168,
+    "null_p": 0.125,
+    "null_spread": 0.005964991184968738,
+    "baseline_ms": 479.7850148752332,
+    "opt": "-O2",
+    "cxxstd": "-std=c++17",
+    "min_time": "0.25s",
+    "repeat": 10,
+    "repetitions": 9,
+    "compiler": "c++ (Ubuntu 13.3.0-6ubuntu2~24.04.1) 13.3.0",
+    "model_returned": "deepseek-v4.1-flash-1017",
+    "evidence": {
+     "node": "runs/deepseek/bestofn-s3-1072870/node.txt",
+     "init": "runs/deepseek/bestofn-s3-1072870/init.json",
+     "meta": "runs/deepseek/bestofn-s3-1072870/meta.json",
+     "bench": "runs/deepseek/bestofn-s3-1072870/bench.err"
+    }
+   },
+   {
+    "arm": "bestofn",
+    "seed": 4,
+    "job": "1072872",
+    "node": "xcnd5",
+    "cpu": "Intel(R) Xeon(R) CPU E5-2620 v3 @ 2.40GHz",
+    "benchmark_header": "24 CPUs x 2400 MHz (as printed by Google Benchmark)",
+    "search_elapsed_s": 7734.114638215,
+    "job_wallclock_s": 8287.0,
+    "ended_because": "generations exhausted",
+    "null_ok": true,
+    "null_ratio": 0.9992326298311428,
+    "null_p": 0.291015625,
+    "null_spread": 0.0392042678951412,
+    "baseline_ms": 481.9796369411051,
+    "opt": "-O2",
+    "cxxstd": "-std=c++17",
+    "min_time": "0.25s",
+    "repeat": 10,
+    "repetitions": 9,
+    "compiler": "c++ (Ubuntu 13.3.0-6ubuntu2~24.04.1) 13.3.0",
+    "model_returned": "deepseek-v4.1-flash-1017",
+    "evidence": {
+     "node": "runs/deepseek/bestofn-s4-1072872/node.txt",
+     "init": "runs/deepseek/bestofn-s4-1072872/init.json",
+     "meta": "runs/deepseek/bestofn-s4-1072872/meta.json",
+     "bench": "runs/deepseek/bestofn-s4-1072872/bench.err"
+    }
+   },
+   {
+    "arm": "bestofn",
+    "seed": 5,
+    "job": "1072874",
+    "node": "xcnd6",
+    "cpu": "Intel(R) Xeon(R) CPU E5-2620 v3 @ 2.40GHz",
+    "benchmark_header": "24 CPUs x 2400 MHz (as printed by Google Benchmark)",
+    "search_elapsed_s": 8534.94652912,
+    "job_wallclock_s": 9090.0,
+    "ended_because": "generations exhausted",
+    "null_ok": true,
+    "null_ratio": 1.001328492740551,
+    "null_p": 0.171875,
+    "null_spread": 0.004962712975996042,
+    "baseline_ms": 480.0834069028497,
+    "opt": "-O2",
+    "cxxstd": "-std=c++17",
+    "min_time": "0.25s",
+    "repeat": 10,
+    "repetitions": 9,
+    "compiler": "c++ (Ubuntu 13.3.0-6ubuntu2~24.04.1) 13.3.0",
+    "model_returned": "deepseek-v4.1-flash-1017",
+    "evidence": {
+     "node": "runs/deepseek/bestofn-s5-1072874/node.txt",
+     "init": "runs/deepseek/bestofn-s5-1072874/init.json",
+     "meta": "runs/deepseek/bestofn-s5-1072874/meta.json",
+     "bench": "runs/deepseek/bestofn-s5-1072874/bench.err"
+    }
+   },
+   {
+    "arm": "greedy",
+    "seed": 1,
+    "job": "1072019",
+    "node": "xcnc3",
+    "cpu": "Intel(R) Xeon(R) CPU E5-2620 v3 @ 2.40GHz",
+    "benchmark_header": "24 CPUs x 3200 MHz (as printed by Google Benchmark)",
+    "search_elapsed_s": 9655.877923269,
+    "job_wallclock_s": 10079.0,
+    "ended_because": "deadline",
+    "null_ok": true,
+    "null_ratio": 1.0015286687832103,
+    "null_p": 0.5,
+    "null_spread": 0.005967744438303613,
+    "baseline_ms": 358.4542409516871,
+    "opt": "-O2",
+    "cxxstd": "-std=c++17",
+    "min_time": "0.25s",
+    "repeat": 10,
+    "repetitions": 9,
+    "compiler": "c++ (Ubuntu 13.3.0-6ubuntu2~24.04.1) 13.3.0",
+    "model_returned": "deepseek-v4.1-flash-1017",
+    "evidence": {
+     "node": "runs/deepseek/greedy-s1-1072019/node.txt",
+     "init": "runs/deepseek/greedy-s1-1072019/init.json",
+     "meta": "runs/deepseek/greedy-s1-1072019/meta.json",
+     "bench": "runs/deepseek/greedy-s1-1072019/bench.err"
+    },
+    "resume": {
+     "job": "1072894",
+     "node": "xcnd7",
+     "cpu": "Intel(R) Xeon(R) CPU E5-2620 v3 @ 2.40GHz",
+     "null_ok": true,
+     "null_ratio": 1.0006293411037332,
+     "wallclock_s": 621.0
+    }
+   },
+   {
+    "arm": "greedy",
+    "seed": 2,
+    "job": "1072867",
+    "node": "xcnc41",
+    "cpu": "Intel(R) Xeon(R) CPU E5-2620 v3 @ 2.40GHz",
+    "benchmark_header": "24 CPUs x 3200 MHz (as printed by Google Benchmark)",
+    "search_elapsed_s": 9244.345611223,
+    "job_wallclock_s": 9667.0,
+    "ended_because": "generations exhausted",
+    "null_ok": true,
+    "null_ratio": 0.9997711637836828,
+    "null_p": 0.509765625,
+    "null_spread": 0.006894547797297923,
+    "baseline_ms": 359.5028619747609,
+    "opt": "-O2",
+    "cxxstd": "-std=c++17",
+    "min_time": "0.25s",
+    "repeat": 10,
+    "repetitions": 9,
+    "compiler": "c++ (Ubuntu 13.3.0-6ubuntu2~24.04.1) 13.3.0",
+    "model_returned": "deepseek-v4.1-flash-1017",
+    "evidence": {
+     "node": "runs/deepseek/greedy-s2-1072867/node.txt",
+     "init": "runs/deepseek/greedy-s2-1072867/init.json",
+     "meta": "runs/deepseek/greedy-s2-1072867/meta.json",
+     "bench": "runs/deepseek/greedy-s2-1072867/bench.err"
+    }
+   },
+   {
+    "arm": "greedy",
+    "seed": 3,
+    "job": "1072869",
+    "node": "xcnd1",
+    "cpu": "Intel(R) Xeon(R) CPU E5-2620 v3 @ 2.40GHz",
+    "benchmark_header": "24 CPUs x 2400 MHz (as printed by Google Benchmark)",
+    "search_elapsed_s": 9327.448453158,
+    "job_wallclock_s": 9934.0,
+    "ended_because": "deadline",
+    "null_ok": true,
+    "null_ratio": 1.0004090658955278,
+    "null_p": 0.962890625,
+    "null_spread": 0.005503625109153809,
+    "baseline_ms": 480.84214283153415,
+    "opt": "-O2",
+    "cxxstd": "-std=c++17",
+    "min_time": "0.25s",
+    "repeat": 10,
+    "repetitions": 9,
+    "compiler": "c++ (Ubuntu 13.3.0-6ubuntu2~24.04.1) 13.3.0",
+    "model_returned": "deepseek-v4.1-flash-1017",
+    "evidence": {
+     "node": "runs/deepseek/greedy-s3-1072869/node.txt",
+     "init": "runs/deepseek/greedy-s3-1072869/init.json",
+     "meta": "runs/deepseek/greedy-s3-1072869/meta.json",
+     "bench": "runs/deepseek/greedy-s3-1072869/bench.err"
+    }
+   },
+   {
+    "arm": "greedy",
+    "seed": 4,
+    "job": "1072871",
+    "node": "xcnd2",
+    "cpu": "Intel(R) Xeon(R) CPU E5-2620 v3 @ 2.40GHz",
+    "benchmark_header": "24 CPUs x 2400 MHz (as printed by Google Benchmark)",
+    "search_elapsed_s": 9591.219364194,
+    "job_wallclock_s": 10140.0,
+    "ended_because": "deadline",
+    "null_ok": true,
+    "null_ratio": 0.9991763151091277,
+    "null_p": 0.76953125,
+    "null_spread": 0.00775710738995572,
+    "baseline_ms": 480.034199077636,
+    "opt": "-O2",
+    "cxxstd": "-std=c++17",
+    "min_time": "0.25s",
+    "repeat": 10,
+    "repetitions": 9,
+    "compiler": "c++ (Ubuntu 13.3.0-6ubuntu2~24.04.1) 13.3.0",
+    "model_returned": "deepseek-v4.1-flash-1017",
+    "evidence": {
+     "node": "runs/deepseek/greedy-s4-1072871/node.txt",
+     "init": "runs/deepseek/greedy-s4-1072871/init.json",
+     "meta": "runs/deepseek/greedy-s4-1072871/meta.json",
+     "bench": "runs/deepseek/greedy-s4-1072871/bench.err"
+    }
+   },
+   {
+    "arm": "greedy",
+    "seed": 5,
+    "job": "1072873",
+    "node": "xcnd3",
+    "cpu": "Intel(R) Xeon(R) CPU E5-2620 v3 @ 2.40GHz",
+    "benchmark_header": "24 CPUs x 2400 MHz (as printed by Google Benchmark)",
+    "search_elapsed_s": 9348.314650058,
+    "job_wallclock_s": 9895.0,
+    "ended_because": "deadline",
+    "null_ok": true,
+    "null_ratio": 0.9998477679622972,
+    "null_p": 0.703125,
+    "null_spread": 0.007075811886201877,
+    "baseline_ms": 480.04591185599566,
+    "opt": "-O2",
+    "cxxstd": "-std=c++17",
+    "min_time": "0.25s",
+    "repeat": 10,
+    "repetitions": 9,
+    "compiler": "c++ (Ubuntu 13.3.0-6ubuntu2~24.04.1) 13.3.0",
+    "model_returned": "deepseek-v4.1-flash-1017",
+    "evidence": {
+     "node": "runs/deepseek/greedy-s5-1072873/node.txt",
+     "init": "runs/deepseek/greedy-s5-1072873/init.json",
+     "meta": "runs/deepseek/greedy-s5-1072873/meta.json",
+     "bench": "runs/deepseek/greedy-s5-1072873/bench.err"
+    }
+   }
+  ],
+  "data": {
+   "identifiers": {
+    "bytes": 907007,
+    "messages": 34251,
+    "fields": 428714,
+    "checksum": "92bebfd7f8978fc8"
+   }
+  },
+  "preflight": {
+   "mt8192": {
+    "calls": 7,
+    "truncated": 5,
+    "models": [
+     "deepseek-v4.1-flash-1017",
+     "glm-5.3-flash"
+    ],
+    "total_tokens": 61828.0
+   },
+   "mt16384": {
+    "calls": 7,
+    "truncated": 3,
+    "models": [
+     "deepseek-v4.1-flash-1017"
+    ],
+    "total_tokens": 97302.0
+   },
+   "mt32768": {
+    "calls": 7,
+    "truncated": 0,
+    "models": [
+     "deepseek-v4.1-flash-1017"
+    ],
+    "total_tokens": 90826.0
+   },
+   "total_tokens_all_levels": 249956.0
+  }
+ },
+ "controls": {
+  "C1 -O3 vs -O2 (batch 1068897)": {
+   "control": "C1 -O3 vs -O2 (batch 1068897)",
+   "kind": "compiler",
+   "n": 5,
+   "ratios": [
+    0.9186904700636535,
+    0.9182042197410014,
+    0.9151765568082597,
+    0.916515852596722,
+    0.9142996904613574
+   ],
+   "median_speedup": 1.091088601650202,
+   "range_speedup": [
+    1.0885059033329396,
+    1.093733280709521
+   ],
+   "passes_rule": 5,
+   "host": "xcnd24",
+   "job": "1068897",
+   "valid": true,
+   "note": "",
+   "evidence": "runs/controls-1068897/rule-O3-vs-O2.jsonl"
+  },
+  "C1 -O3 vs -O2 (batch 1071478)": {
+   "control": "C1 -O3 vs -O2 (batch 1071478)",
+   "kind": "compiler",
+   "n": 5,
+   "ratios": [
+    0.9157962617277021,
+    0.917880844019705,
+    0.9194336126077459,
+    0.9174131845767325,
+    0.917585510962999
+   ],
+   "median_speedup": 1.0898166852596742,
+   "range_speedup": [
+    1.0876261062109176,
+    1.0919459292326033
+   ],
+   "passes_rule": 5,
+   "host": "xcnd24",
+   "job": "1071478",
+   "valid": true,
+   "note": "",
+   "evidence": "runs/controls-native-1071478/rule-O3-vs-O2.jsonl"
+  },
+  "C1 -O3 -march=native vs -O2 (batch 1068897)": {
+   "control": "C1 -O3 -march=native vs -O2 (batch 1068897)",
+   "kind": "compiler",
+   "n": 5,
+   "ratios": [
+    1.0,
+    1.0,
+    1.0,
+    1.0,
+    1.0
+   ],
+   "median_speedup": 1.0,
+   "range_speedup": [
+    1.0,
+    1.0
+   ],
+   "passes_rule": 0,
+   "host": "xcnd24",
+   "job": "1068897",
+   "valid": false,
+   "note": "INVALID, superseded by batch 1071478: init-O3native.json in this batch reports ok=false (the -march=native init failed), so the ratios of exactly 1.0 are not a comparison",
+   "evidence": "runs/controls-1068897/rule-O3native-vs-O2.jsonl"
+  },
+  "C1 -O3 -march=native vs -O2 (rerun 1071478)": {
+   "control": "C1 -O3 -march=native vs -O2 (rerun 1071478)",
+   "kind": "compiler",
+   "n": 5,
+   "ratios": [
+    0.9022115523773453,
+    0.9034142280961498,
+    0.9038926883984698,
+    0.902217907710276,
+    0.9021990749986897
+   ],
+   "median_speedup": 1.1083796846128708,
+   "range_speedup": [
+    1.106326019487794,
+    1.1084028211860584
+   ],
+   "passes_rule": 5,
+   "host": "xcnd24",
+   "job": "1071478",
+   "valid": true,
+   "note": "",
+   "evidence": "runs/controls-native-1071478/rule-O3native-vs-O2.jsonl"
+  },
+  "C1 -O3 -march=native vs -O3 (rerun 1071478)": {
+   "control": "C1 -O3 -march=native vs -O3 (rerun 1071478)",
+   "kind": "compiler",
+   "n": 5,
+   "ratios": [
+    0.9861663210341707,
+    0.9862597354112639,
+    0.9849679786007266,
+    0.9864034882078868,
+    0.9845572491323227
+   ],
+   "median_speedup": 1.0140277341364916,
+   "range_speedup": [
+    1.0137839250921705,
+    1.0156849699509976
+   ],
+   "passes_rule": 0,
+   "host": "xcnd24",
+   "job": "1071478",
+   "valid": true,
+   "note": "native's increment over -O3; below the 2% gate",
+   "evidence": "runs/controls-native-1071478/rule-O3native-vs-O3.jsonl"
+  },
+  "inert patch (null check) vs -O2 (batch 1068897)": {
+   "control": "inert patch (null check) vs -O2 (batch 1068897)",
+   "kind": "patch",
+   "n": 5,
+   "ratios": [
+    0.9992428583652395,
+    0.9998187184675111,
+    1.0014386912769373,
+    1.0001550849591325,
+    0.9998807767568734
+   ],
+   "median_speedup": 1.000119237459003,
+   "range_speedup": [
+    0.998563375582081,
+    1.0007577153325862
+   ],
+   "passes_rule": 0,
+   "host": "xcnd24",
+   "job": "1068897",
+   "valid": true,
+   "note": "",
+   "evidence": "runs/controls-1068897/eval-inert/evaluate-inert/summary.json"
+  },
+  "C2 human patch attempt-1 vs -O2 (batch 1068897)": {
+   "control": "C2 human patch attempt-1 vs -O2 (batch 1068897)",
+   "kind": "patch",
+   "n": 5,
+   "ratios": [
+    0.9360355687810163,
+    0.9368492020829355,
+    0.9359305493723487,
+    0.9365752964018712,
+    0.9356975405019972
+   ],
+   "median_speedup": 1.0683354707367407,
+   "range_speedup": [
+    1.0674076444497778,
+    1.068721415537231
+   ],
+   "passes_rule": 5,
+   "host": "xcnd24",
+   "job": "1068897",
+   "valid": true,
+   "note": "",
+   "evidence": "runs/controls-1068897/eval-attempt-1/evaluate-attempt-1/summary.json"
+  },
+  "C2 human patch attempt-2 vs -O2 (batch 1068897)": {
+   "control": "C2 human patch attempt-2 vs -O2 (batch 1068897)",
+   "kind": "patch",
+   "n": 5,
+   "ratios": [
+    0.9239412081301123,
+    0.9245927851982949,
+    0.9239089866978324,
+    0.9241355258406223,
+    0.924603356297439
+   ],
+   "median_speedup": 1.082092368530437,
+   "range_speedup": [
+    1.081544851842725,
+    1.0823576936664796
+   ],
+   "passes_rule": 5,
+   "host": "xcnd24",
+   "job": "1068897",
+   "valid": true,
+   "note": "",
+   "evidence": "runs/controls-1068897/eval-attempt-2/evaluate-attempt-2/summary.json"
+  }
+ },
+ "runs": [
+  {
+   "experiment": "deepseek",
+   "arm": "bestofn",
+   "seed": 1,
+   "job": "1072020",
+   "host": "xcnc41",
+   "node_family": "xcnc",
+   "model_returned": "deepseek-v4.1-flash-1017",
+   "http_attempts": 40,
+   "generations_rows": 40,
+   "ended_because": "generations exhausted",
+   "prompt_tokens": 18461,
+   "completion_tokens": 253693,
+   "reasoning_tokens": 244839,
+   "total_tokens": 272154,
+   "truncated_replies": 0,
+   "search_elapsed_s": 5321.8,
+   "llm_seconds": 2009.3,
+   "job_start": "2026-11-04T12:01:03+08:00",
+   "job_end": "2026-11-04T13:36:49+08:00",
+   "failed_rows": 11,
+   "rank_updates": 3,
+   "update_generations": [
+    3,
+    6,
+    25
+   ],
+   "search_best_ranked_speedup": 1.073234067580842,
+   "final_patch": "runs/deepseek/bestofn-s1-1072020/best.patch",
+   "final_patch_sha256": "ecac84bf885f0ea6561e1474cc1063c46e2f8d5d238ddfbae4bac09b4d9ef76f",
+   "final_ratios": [
+    0.930918465177877,
+    0.9327342496266195,
+    0.9319631231327739
+   ],
+   "final_passes": 3,
+   "final_median_speedup": 1.0730038294203335,
+   "best_confirmed_speedup": 1.0730038294203335,
+   "course_metric": 2.6824455793533606e-07,
+   "logspeed_per_Mtok": 0.25890500427501945,
+   "resume": null,
+   "evidence": {
+    "summary": "runs/deepseek/bestofn-s1-1072020/summary.json",
+    "results": "runs/deepseek/bestofn-s1-1072020/results.jsonl",
+    "credits": "runs/deepseek/bestofn-s1-1072020/credits.csv",
+    "run": "runs/deepseek/bestofn-s1-1072020/run.json",
+    "node": "runs/deepseek/bestofn-s1-1072020/node.txt",
+    "init": "runs/deepseek/bestofn-s1-1072020/init.json",
+    "final_evaluation": "runs/deepseek/bestofn-s1-1072020/evaluate-best/summary.json",
+    "final_evaluation_log": "runs/deepseek/bestofn-s1-1072020/final-evaluation.log",
+    "profile": "runs/deepseek/bestofn-s1-1072020/profile.json",
+    "field_sources": {
+     "api_calls": "runs/deepseek/bestofn-s1-1072020/results.jsonl::sum(llm.http_attempts)",
+     "total_tokens": "runs/deepseek/bestofn-s1-1072020/summary.json::total_tokens",
+     "final_eval": "runs/deepseek/bestofn-s1-1072020/evaluate-best/summary.json"
+    }
+   }
+  },
+  {
+   "experiment": "deepseek",
+   "arm": "bestofn",
+   "seed": 2,
+   "job": "1072868",
+   "host": "xcnc2",
+   "node_family": "xcnc",
+   "model_returned": "deepseek-v4.1-flash-1017",
+   "http_attempts": 40,
+   "generations_rows": 40,
+   "ended_because": "generations exhausted",
+   "prompt_tokens": 19104,
+   "completion_tokens": 280388,
+   "reasoning_tokens": 271575,
+   "total_tokens": 299492,
+   "truncated_replies": 1,
+   "search_elapsed_s": 5836.3,
+   "llm_seconds": 2754.5,
+   "job_start": "2026-11-04T15:17:11+08:00",
+   "job_end": "2026-11-04T17:01:36+08:00",
+   "failed_rows": 11,
+   "rank_updates": 2,
+   "update_generations": [
+    3,
+    34
+   ],
+   "search_best_ranked_speedup": 1.068321850666974,
+   "final_patch": "runs/deepseek/bestofn-s2-1072868/best.patch",
+   "final_patch_sha256": "53f139e844bfde3db99a06bf36f7c1df4e343440d82791a2ae907aa0bff79061",
+   "final_ratios": [
+    0.9355931127011081,
+    0.9363324445733038,
+    0.9351712353954305
+   ],
+   "final_passes": 3,
+   "final_median_speedup": 1.0688407026778401,
+   "best_confirmed_speedup": 1.0688407026778401,
+   "course_metric": 2.2985823553831204e-07,
+   "logspeed_per_Mtok": 0.22229176629227215,
+   "resume": null,
+   "evidence": {
+    "summary": "runs/deepseek/bestofn-s2-1072868/summary.json",
+    "results": "runs/deepseek/bestofn-s2-1072868/results.jsonl",
+    "credits": "runs/deepseek/bestofn-s2-1072868/credits.csv",
+    "run": "runs/deepseek/bestofn-s2-1072868/run.json",
+    "node": "runs/deepseek/bestofn-s2-1072868/node.txt",
+    "init": "runs/deepseek/bestofn-s2-1072868/init.json",
+    "final_evaluation": "runs/deepseek/bestofn-s2-1072868/evaluate-best/summary.json",
+    "final_evaluation_log": "runs/deepseek/bestofn-s2-1072868/final-evaluation.log",
+    "profile": "runs/deepseek/bestofn-s2-1072868/profile.json",
+    "field_sources": {
+     "api_calls": "runs/deepseek/bestofn-s2-1072868/results.jsonl::sum(llm.http_attempts)",
+     "total_tokens": "runs/deepseek/bestofn-s2-1072868/summary.json::total_tokens",
+     "final_eval": "runs/deepseek/bestofn-s2-1072868/evaluate-best/summary.json"
+    }
+   }
+  },
+  {
+   "experiment": "deepseek",
+   "arm": "bestofn",
+   "seed": 3,
+   "job": "1072870",
+   "host": "xcnd4",
+   "node_family": "xcnd",
+   "model_returned": "deepseek-v4.1-flash-1017",
+   "http_attempts": 40,
+   "generations_rows": 40,
+   "ended_because": "generations exhausted",
+   "prompt_tokens": 22707,
+   "completion_tokens": 347058,
+   "reasoning_tokens": 335064,
+   "total_tokens": 369765,
+   "truncated_replies": 1,
+   "search_elapsed_s": 8105.1,
+   "llm_seconds": 3225.6,
+   "job_start": "2026-11-04T15:17:12+08:00",
+   "job_end": "2026-11-04T17:41:28+08:00",
+   "failed_rows": 10,
+   "rank_updates": 7,
+   "update_generations": [
+    2,
+    4,
+    13,
+    15,
+    17,
+    22,
+    32
+   ],
+   "search_best_ranked_speedup": 1.0737955066141,
+   "final_patch": "runs/deepseek/bestofn-s3-1072870/best.patch",
+   "final_patch_sha256": "676ed55f35c5da407d09a00f981592bce31894d310b3a4bca2ef7e218dce35b6",
+   "final_ratios": [
+    0.9302999726011668,
+    0.9311267488733221,
+    0.9314301412436072
+   ],
+   "final_passes": 3,
+   "final_median_speedup": 1.073967643191451,
+   "best_confirmed_speedup": 1.073967643191451,
+   "course_metric": 2.000396013453169e-07,
+   "logspeed_per_Mtok": 0.19298708166152206,
+   "resume": null,
+   "evidence": {
+    "summary": "runs/deepseek/bestofn-s3-1072870/summary.json",
+    "results": "runs/deepseek/bestofn-s3-1072870/results.jsonl",
+    "credits": "runs/deepseek/bestofn-s3-1072870/credits.csv",
+    "run": "runs/deepseek/bestofn-s3-1072870/run.json",
+    "node": "runs/deepseek/bestofn-s3-1072870/node.txt",
+    "init": "runs/deepseek/bestofn-s3-1072870/init.json",
+    "final_evaluation": "runs/deepseek/bestofn-s3-1072870/evaluate-best/summary.json",
+    "final_evaluation_log": "runs/deepseek/bestofn-s3-1072870/final-evaluation.log",
+    "profile": "runs/deepseek/bestofn-s3-1072870/profile.json",
+    "field_sources": {
+     "api_calls": "runs/deepseek/bestofn-s3-1072870/results.jsonl::sum(llm.http_attempts)",
+     "total_tokens": "runs/deepseek/bestofn-s3-1072870/summary.json::total_tokens",
+     "final_eval": "runs/deepseek/bestofn-s3-1072870/evaluate-best/summary.json"
+    }
+   }
+  },
+  {
+   "experiment": "deepseek",
+   "arm": "bestofn",
+   "seed": 4,
+   "job": "1072872",
+   "host": "xcnd5",
+   "node_family": "xcnd",
+   "model_returned": "deepseek-v4.1-flash-1017",
+   "http_attempts": 40,
+   "generations_rows": 40,
+   "ended_because": "generations exhausted",
+   "prompt_tokens": 18970,
+   "completion_tokens": 306564,
+   "reasoning_tokens": 296200,
+   "total_tokens": 325534,
+   "truncated_replies": 0,
+   "search_elapsed_s": 7734.1,
+   "llm_seconds": 2960.1,
+   "job_start": "2026-11-04T15:17:12+08:00",
+   "job_end": "2026-11-04T17:35:19+08:00",
+   "failed_rows": 8,
+   "rank_updates": 4,
+   "update_generations": [
+    2,
+    6,
+    7,
+    38
+   ],
+   "search_best_ranked_speedup": 1.0721497812026444,
+   "final_patch": "runs/deepseek/bestofn-s4-1072872/best.patch",
+   "final_patch_sha256": "a1550b3f307baee281eab22941650632e2bd0349accfd59dbfd9534251a25c03",
+   "final_ratios": [
+    0.9325326841376023,
+    0.9323725017185971,
+    0.9305400199235625
+   ],
+   "final_passes": 3,
+   "final_median_speedup": 1.072532703567242,
+   "best_confirmed_speedup": 1.072532703567242,
+   "course_metric": 2.228114530809134e-07,
+   "logspeed_per_Mtok": 0.2151015383699621,
+   "resume": null,
+   "evidence": {
+    "summary": "runs/deepseek/bestofn-s4-1072872/summary.json",
+    "results": "runs/deepseek/bestofn-s4-1072872/results.jsonl",
+    "credits": "runs/deepseek/bestofn-s4-1072872/credits.csv",
+    "run": "runs/deepseek/bestofn-s4-1072872/run.json",
+    "node": "runs/deepseek/bestofn-s4-1072872/node.txt",
+    "init": "runs/deepseek/bestofn-s4-1072872/init.json",
+    "final_evaluation": "runs/deepseek/bestofn-s4-1072872/evaluate-best/summary.json",
+    "final_evaluation_log": "runs/deepseek/bestofn-s4-1072872/final-evaluation.log",
+    "profile": "runs/deepseek/bestofn-s4-1072872/profile.json",
+    "field_sources": {
+     "api_calls": "runs/deepseek/bestofn-s4-1072872/results.jsonl::sum(llm.http_attempts)",
+     "total_tokens": "runs/deepseek/bestofn-s4-1072872/summary.json::total_tokens",
+     "final_eval": "runs/deepseek/bestofn-s4-1072872/evaluate-best/summary.json"
+    }
+   }
+  },
+  {
+   "experiment": "deepseek",
+   "arm": "bestofn",
+   "seed": 5,
+   "job": "1072874",
+   "host": "xcnd6",
+   "node_family": "xcnd",
+   "model_returned": "deepseek-v4.1-flash-1017",
+   "http_attempts": 40,
+   "generations_rows": 40,
+   "ended_because": "generations exhausted",
+   "prompt_tokens": 20904,
+   "completion_tokens": 442985,
+   "reasoning_tokens": 430495,
+   "total_tokens": 463889,
+   "truncated_replies": 0,
+   "search_elapsed_s": 8534.9,
+   "llm_seconds": 4190.3,
+   "job_start": "2026-11-04T15:17:11+08:00",
+   "job_end": "2026-11-04T17:48:41+08:00",
+   "failed_rows": 13,
+   "rank_updates": 5,
+   "update_generations": [
+    3,
+    4,
+    8,
+    16,
+    26
+   ],
+   "search_best_ranked_speedup": 1.066834291362156,
+   "final_patch": "runs/deepseek/bestofn-s5-1072874/best.patch",
+   "final_patch_sha256": "a9427cb7489ea1e70a7fcce8944a12b3d95dd27d4391585c7e47708a82a94993",
+   "final_ratios": [
+    0.9358982373418927,
+    0.9374758709828686,
+    0.9381799764337173
+   ],
+   "final_passes": 3,
+   "final_median_speedup": 1.0666941208327634,
+   "best_confirmed_speedup": 1.0666941208327634,
+   "course_metric": 1.4377172304746045e-07,
+   "logspeed_per_Mtok": 0.13918040541393087,
+   "resume": null,
+   "evidence": {
+    "summary": "runs/deepseek/bestofn-s5-1072874/summary.json",
+    "results": "runs/deepseek/bestofn-s5-1072874/results.jsonl",
+    "credits": "runs/deepseek/bestofn-s5-1072874/credits.csv",
+    "run": "runs/deepseek/bestofn-s5-1072874/run.json",
+    "node": "runs/deepseek/bestofn-s5-1072874/node.txt",
+    "init": "runs/deepseek/bestofn-s5-1072874/init.json",
+    "final_evaluation": "runs/deepseek/bestofn-s5-1072874/evaluate-best/summary.json",
+    "final_evaluation_log": "runs/deepseek/bestofn-s5-1072874/final-evaluation.log",
+    "profile": "runs/deepseek/bestofn-s5-1072874/profile.json",
+    "field_sources": {
+     "api_calls": "runs/deepseek/bestofn-s5-1072874/results.jsonl::sum(llm.http_attempts)",
+     "total_tokens": "runs/deepseek/bestofn-s5-1072874/summary.json::total_tokens",
+     "final_eval": "runs/deepseek/bestofn-s5-1072874/evaluate-best/summary.json"
+    }
+   }
+  },
+  {
+   "experiment": "deepseek",
+   "arm": "greedy",
+   "seed": 1,
+   "job": "1072019",
+   "host": "xcnc3",
+   "node_family": "xcnc",
+   "model_returned": "deepseek-v4.1-flash-1017",
+   "http_attempts": 40,
+   "generations_rows": 42,
+   "ended_because": "deadline -> completed to 40 HTTP attempts by resume job 1072894",
+   "prompt_tokens": 19254,
+   "completion_tokens": 602013,
+   "reasoning_tokens": 593825,
+   "total_tokens": 621267,
+   "truncated_replies": 5,
+   "search_elapsed_s": 9722.6,
+   "llm_seconds": 4779.7,
+   "job_start": "2026-11-04T12:01:03+08:00",
+   "job_end": "2026-11-04T14:49:02+08:00",
+   "failed_rows": 22,
+   "rank_updates": 9,
+   "update_generations": [
+    1,
+    6,
+    7,
+    21,
+    23,
+    24,
+    26,
+    35,
+    38
+   ],
+   "search_best_ranked_speedup": 1.1556207437111499,
+   "final_patch": "runs/deepseek/greedy-s1-1072019/best.patch",
+   "final_patch_sha256": "9290ba30cb15b35fa12920404e750911fe8647fdffbfbc91aff0fc75e03049a0",
+   "final_ratios": [
+    0.8636378832294617,
+    0.8640304424202379,
+    0.8640706591679792
+   ],
+   "final_passes": 3,
+   "final_median_speedup": 1.157366628424454,
+   "best_confirmed_speedup": 1.157366628424454,
+   "course_metric": 2.5329951280923326e-07,
+   "logspeed_per_Mtok": 0.23524068800710718,
+   "resume": {
+    "dir": "runs/deepseek/greedy-s1-1072019-resume-1072894",
+    "job": "1072894",
+    "host": "xcnd7",
+    "extra_http_attempts": 1,
+    "extra_total_tokens": 7406,
+    "second_eval_ratios": [
+     0.8660238604768368,
+     0.8634388864856206,
+     0.8640311369416092
+    ],
+    "second_eval_median_speedup": 1.1573656981155525,
+    "second_eval_all_pass": true,
+    "evidence": [
+     "runs/deepseek/greedy-s1-1072019-resume-1072894/summary.json",
+     "runs/deepseek/greedy-s1-1072019-resume-1072894/results.jsonl",
+     "runs/deepseek/greedy-s1-1072019-resume-1072894/evaluate-best/summary.json",
+     "runs/deepseek/greedy-s1-1072019-resume-1072894/resume.json"
+    ]
+   },
+   "evidence": {
+    "summary": "runs/deepseek/greedy-s1-1072019/summary.json",
+    "results": "runs/deepseek/greedy-s1-1072019/results.jsonl",
+    "credits": "runs/deepseek/greedy-s1-1072019/credits.csv",
+    "run": "runs/deepseek/greedy-s1-1072019/run.json",
+    "node": "runs/deepseek/greedy-s1-1072019/node.txt",
+    "init": "runs/deepseek/greedy-s1-1072019/init.json",
+    "final_evaluation": "runs/deepseek/greedy-s1-1072019/evaluate-best/summary.json",
+    "final_evaluation_log": "runs/deepseek/greedy-s1-1072019/final-evaluation.log",
+    "profile": "runs/deepseek/greedy-s1-1072019/profile.json",
+    "field_sources": {
+     "api_calls": "runs/deepseek/greedy-s1-1072019/results.jsonl::sum(llm.http_attempts) + runs/deepseek/greedy-s1-1072019-resume-1072894/results.jsonl",
+     "total_tokens": "runs/deepseek/greedy-s1-1072019/summary.json::total_tokens + runs/deepseek/greedy-s1-1072019-resume-1072894/summary.json::total_tokens",
+     "final_eval": "runs/deepseek/greedy-s1-1072019/evaluate-best/summary.json"
+    }
+   }
+  },
+  {
+   "experiment": "deepseek",
+   "arm": "greedy",
+   "seed": 2,
+   "job": "1072867",
+   "host": "xcnc41",
+   "node_family": "xcnc",
+   "model_returned": "deepseek-v4.1-flash-1017",
+   "http_attempts": 40,
+   "generations_rows": 40,
+   "ended_because": "generations exhausted",
+   "prompt_tokens": 20899,
+   "completion_tokens": 575762,
+   "reasoning_tokens": 564776,
+   "total_tokens": 596661,
+   "truncated_replies": 2,
+   "search_elapsed_s": 9244.3,
+   "llm_seconds": 5727.3,
+   "job_start": "2026-11-04T15:15:35+08:00",
+   "job_end": "2026-11-04T17:56:42+08:00",
+   "failed_rows": 19,
+   "rank_updates": 11,
+   "update_generations": [
+    2,
+    3,
+    7,
+    8,
+    21,
+    24,
+    26,
+    27,
+    33,
+    37,
+    40
+   ],
+   "search_best_ranked_speedup": 1.2146203917088136,
+   "final_patch": "runs/deepseek/greedy-s2-1072867/best.patch",
+   "final_patch_sha256": "4530da515a6d5dccdcbc4e41c20b724ad72cc91c92a264d140b3f650367736d6",
+   "final_ratios": [
+    0.8224725641089763,
+    0.8226755647116015,
+    0.8228409213456616
+   ],
+   "final_passes": 3,
+   "final_median_speedup": 1.2155460097451194,
+   "best_confirmed_speedup": 1.2155460097451194,
+   "course_metric": 3.61253726563525e-07,
+   "logspeed_per_Mtok": 0.3271428274739928,
+   "resume": null,
+   "evidence": {
+    "summary": "runs/deepseek/greedy-s2-1072867/summary.json",
+    "results": "runs/deepseek/greedy-s2-1072867/results.jsonl",
+    "credits": "runs/deepseek/greedy-s2-1072867/credits.csv",
+    "run": "runs/deepseek/greedy-s2-1072867/run.json",
+    "node": "runs/deepseek/greedy-s2-1072867/node.txt",
+    "init": "runs/deepseek/greedy-s2-1072867/init.json",
+    "final_evaluation": "runs/deepseek/greedy-s2-1072867/evaluate-best/summary.json",
+    "final_evaluation_log": "runs/deepseek/greedy-s2-1072867/final-evaluation.log",
+    "profile": "runs/deepseek/greedy-s2-1072867/profile.json",
+    "field_sources": {
+     "api_calls": "runs/deepseek/greedy-s2-1072867/results.jsonl::sum(llm.http_attempts)",
+     "total_tokens": "runs/deepseek/greedy-s2-1072867/summary.json::total_tokens",
+     "final_eval": "runs/deepseek/greedy-s2-1072867/evaluate-best/summary.json"
+    }
+   }
+  },
+  {
+   "experiment": "deepseek",
+   "arm": "greedy",
+   "seed": 3,
+   "job": "1072869",
+   "host": "xcnd1",
+   "node_family": "xcnd",
+   "model_returned": "deepseek-v4.1-flash-1017",
+   "http_attempts": 38,
+   "generations_rows": 38,
+   "ended_because": "deadline",
+   "prompt_tokens": 18202,
+   "completion_tokens": 332917,
+   "reasoning_tokens": 323734,
+   "total_tokens": 351119,
+   "truncated_replies": 0,
+   "search_elapsed_s": 9327.4,
+   "llm_seconds": 4490.1,
+   "job_start": "2026-11-04T15:15:36+08:00",
+   "job_end": "2026-11-04T18:01:10+08:00",
+   "failed_rows": 20,
+   "rank_updates": 12,
+   "update_generations": [
+    6,
+    11,
+    12,
+    13,
+    17,
+    18,
+    20,
+    21,
+    28,
+    31,
+    34,
+    37
+   ],
+   "search_best_ranked_speedup": 1.1682539664894156,
+   "final_patch": "runs/deepseek/greedy-s3-1072869/best.patch",
+   "final_patch_sha256": "e890e2230c8b23c84beac99347fb50998d4651a74048f52af576a29272ed5461",
+   "final_ratios": [
+    0.855626542035649,
+    0.8530532070101542,
+    0.8557212059263921
+   ],
+   "final_passes": 3,
+   "final_median_speedup": 1.1687341975400476,
+   "best_confirmed_speedup": 1.1687341975400476,
+   "course_metric": 4.805612841801429e-07,
+   "logspeed_per_Mtok": 0.4440696194395716,
+   "resume": null,
+   "evidence": {
+    "summary": "runs/deepseek/greedy-s3-1072869/summary.json",
+    "results": "runs/deepseek/greedy-s3-1072869/results.jsonl",
+    "credits": "runs/deepseek/greedy-s3-1072869/credits.csv",
+    "run": "runs/deepseek/greedy-s3-1072869/run.json",
+    "node": "runs/deepseek/greedy-s3-1072869/node.txt",
+    "init": "runs/deepseek/greedy-s3-1072869/init.json",
+    "final_evaluation": "runs/deepseek/greedy-s3-1072869/evaluate-best/summary.json",
+    "final_evaluation_log": "runs/deepseek/greedy-s3-1072869/final-evaluation.log",
+    "profile": "runs/deepseek/greedy-s3-1072869/profile.json",
+    "field_sources": {
+     "api_calls": "runs/deepseek/greedy-s3-1072869/results.jsonl::sum(llm.http_attempts)",
+     "total_tokens": "runs/deepseek/greedy-s3-1072869/summary.json::total_tokens",
+     "final_eval": "runs/deepseek/greedy-s3-1072869/evaluate-best/summary.json"
+    }
+   }
+  },
+  {
+   "experiment": "deepseek",
+   "arm": "greedy",
+   "seed": 4,
+   "job": "1072871",
+   "host": "xcnd2",
+   "node_family": "xcnd",
+   "model_returned": "deepseek-v4.1-flash-1017",
+   "http_attempts": 34,
+   "generations_rows": 34,
+   "ended_because": "deadline",
+   "prompt_tokens": 17407,
+   "completion_tokens": 434905,
+   "reasoning_tokens": 422966,
+   "total_tokens": 452312,
+   "truncated_replies": 2,
+   "search_elapsed_s": 9591.2,
+   "llm_seconds": 4345.3,
+   "job_start": "2026-11-04T15:15:36+08:00",
+   "job_end": "2026-11-04T18:04:36+08:00",
+   "failed_rows": 7,
+   "rank_updates": 11,
+   "update_generations": [
+    2,
+    3,
+    8,
+    9,
+    10,
+    11,
+    13,
+    14,
+    25,
+    31,
+    34
+   ],
+   "search_best_ranked_speedup": 1.1902316601398346,
+   "final_patch": "runs/deepseek/greedy-s4-1072871/best.patch",
+   "final_patch_sha256": "6e52bf6bf6d29d3da15f62e0c9b2aa26b324419118750d66128ad191cb258406",
+   "final_ratios": [
+    0.8395601675651321,
+    0.8403007837554246,
+    0.8396285606933618
+   ],
+   "final_passes": 3,
+   "final_median_speedup": 1.1910028396058898,
+   "best_confirmed_speedup": 1.1910028396058898,
+   "course_metric": 4.2228116787945005e-07,
+   "logspeed_per_Mtok": 0.3864493415832689,
+   "resume": null,
+   "evidence": {
+    "summary": "runs/deepseek/greedy-s4-1072871/summary.json",
+    "results": "runs/deepseek/greedy-s4-1072871/results.jsonl",
+    "credits": "runs/deepseek/greedy-s4-1072871/credits.csv",
+    "run": "runs/deepseek/greedy-s4-1072871/run.json",
+    "node": "runs/deepseek/greedy-s4-1072871/node.txt",
+    "init": "runs/deepseek/greedy-s4-1072871/init.json",
+    "final_evaluation": "runs/deepseek/greedy-s4-1072871/evaluate-best/summary.json",
+    "final_evaluation_log": "runs/deepseek/greedy-s4-1072871/final-evaluation.log",
+    "profile": "runs/deepseek/greedy-s4-1072871/profile.json",
+    "field_sources": {
+     "api_calls": "runs/deepseek/greedy-s4-1072871/results.jsonl::sum(llm.http_attempts)",
+     "total_tokens": "runs/deepseek/greedy-s4-1072871/summary.json::total_tokens",
+     "final_eval": "runs/deepseek/greedy-s4-1072871/evaluate-best/summary.json"
+    }
+   }
+  },
+  {
+   "experiment": "deepseek",
+   "arm": "greedy",
+   "seed": 5,
+   "job": "1072873",
+   "host": "xcnd3",
+   "node_family": "xcnd",
+   "model_returned": "deepseek-v4.1-flash-1017",
+   "http_attempts": 34,
+   "generations_rows": 34,
+   "ended_because": "deadline",
+   "prompt_tokens": 17264,
+   "completion_tokens": 464219,
+   "reasoning_tokens": 456072,
+   "total_tokens": 481483,
+   "truncated_replies": 2,
+   "search_elapsed_s": 9348.3,
+   "llm_seconds": 4920.1,
+   "job_start": "2026-11-04T15:15:36+08:00",
+   "job_end": "2026-11-04T18:00:31+08:00",
+   "failed_rows": 11,
+   "rank_updates": 7,
+   "update_generations": [
+    4,
+    6,
+    8,
+    13,
+    22,
+    25,
+    26
+   ],
+   "search_best_ranked_speedup": 1.1665588460912708,
+   "final_patch": "runs/deepseek/greedy-s5-1072873/best.patch",
+   "final_patch_sha256": "ed16819b10d897cebcdb5ee6d0689744896e199e87c4f2c2f44dfeb498cecbc5",
+   "final_ratios": [
+    0.8605724720117953,
+    0.8582320037865914,
+    0.857827159345423
+   ],
+   "final_passes": 3,
+   "final_median_speedup": 1.1651860983835565,
+   "best_confirmed_speedup": 1.1651860983835565,
+   "course_metric": 3.430777377052907e-07,
+   "logspeed_per_Mtok": 0.3175206920331099,
+   "resume": null,
+   "evidence": {
+    "summary": "runs/deepseek/greedy-s5-1072873/summary.json",
+    "results": "runs/deepseek/greedy-s5-1072873/results.jsonl",
+    "credits": "runs/deepseek/greedy-s5-1072873/credits.csv",
+    "run": "runs/deepseek/greedy-s5-1072873/run.json",
+    "node": "runs/deepseek/greedy-s5-1072873/node.txt",
+    "init": "runs/deepseek/greedy-s5-1072873/init.json",
+    "final_evaluation": "runs/deepseek/greedy-s5-1072873/evaluate-best/summary.json",
+    "final_evaluation_log": "runs/deepseek/greedy-s5-1072873/final-evaluation.log",
+    "profile": "runs/deepseek/greedy-s5-1072873/profile.json",
+    "field_sources": {
+     "api_calls": "runs/deepseek/greedy-s5-1072873/results.jsonl::sum(llm.http_attempts)",
+     "total_tokens": "runs/deepseek/greedy-s5-1072873/summary.json::total_tokens",
+     "final_eval": "runs/deepseek/greedy-s5-1072873/evaluate-best/summary.json"
+    }
+   }
+  }
+ ],
+ "common34": [
+  {
+   "arm": "bestofn",
+   "seed": 1,
+   "run": "runs/deepseek/bestofn-s1-1072020",
+   "attempts_counted": 34,
+   "last_generation_within_budget": 34,
+   "tokens_through_budget": 218076,
+   "credits_row_total_tokens_at_last_gen": 218076,
+   "patch_generation": 25,
+   "search_R": 0.9317631914667808,
+   "search_speedup": 1.073234067580842,
+   "patch": "runs/deepseek/bestofn-s1-1072020/patches/gen_25.patch",
+   "patch_sha256": "ecac84bf885f0ea6561e1474cc1063c46e2f8d5d238ddfbae4bac09b4d9ef76f",
+   "same_as_final_patch": true,
+   "status": "same patch as final; reused its independent re-measurement",
+   "remeasure_evidence": "runs/deepseek/bestofn-s1-1072020/evaluate-best/summary.json",
+   "ratios": [
+    0.930918465177877,
+    0.9327342496266195,
+    0.9319631231327739
+   ],
+   "passes": 3,
+   "best_confirmed_speedup": 1.0730038294203335,
+   "course_metric_budget": 3.3476324501702825e-07
+  },
+  {
+   "arm": "bestofn",
+   "seed": 2,
+   "run": "runs/deepseek/bestofn-s2-1072868",
+   "attempts_counted": 34,
+   "last_generation_within_budget": 34,
+   "tokens_through_budget": 260729,
+   "credits_row_total_tokens_at_last_gen": 260729,
+   "patch_generation": 34,
+   "search_R": 0.9360475023287043,
+   "search_speedup": 1.068321850666974,
+   "patch": "runs/deepseek/bestofn-s2-1072868/patches/gen_34.patch",
+   "patch_sha256": "53f139e844bfde3db99a06bf36f7c1df4e343440d82791a2ae907aa0bff79061",
+   "same_as_final_patch": true,
+   "status": "same patch as final; reused its independent re-measurement",
+   "remeasure_evidence": "runs/deepseek/bestofn-s2-1072868/evaluate-best/summary.json",
+   "ratios": [
+    0.9355931127011081,
+    0.9363324445733038,
+    0.9351712353954305
+   ],
+   "passes": 3,
+   "best_confirmed_speedup": 1.0688407026778401,
+   "course_metric_budget": 2.640316293079794e-07
+  },
+  {
+   "arm": "bestofn",
+   "seed": 3,
+   "run": "runs/deepseek/bestofn-s3-1072870",
+   "attempts_counted": 34,
+   "last_generation_within_budget": 34,
+   "tokens_through_budget": 319836,
+   "credits_row_total_tokens_at_last_gen": 319836,
+   "patch_generation": 32,
+   "search_R": 0.9312760146978146,
+   "search_speedup": 1.0737955066141,
+   "patch": "runs/deepseek/bestofn-s3-1072870/patches/gen_32.patch",
+   "patch_sha256": "676ed55f35c5da407d09a00f981592bce31894d310b3a4bca2ef7e218dce35b6",
+   "same_as_final_patch": true,
+   "status": "same patch as final; reused its independent re-measurement",
+   "remeasure_evidence": "runs/deepseek/bestofn-s3-1072870/evaluate-best/summary.json",
+   "ratios": [
+    0.9302999726011668,
+    0.9311267488733221,
+    0.9314301412436072
+   ],
+   "passes": 3,
+   "best_confirmed_speedup": 1.073967643191451,
+   "course_metric_budget": 2.3126740952066404e-07
+  },
+  {
+   "arm": "bestofn",
+   "seed": 4,
+   "run": "runs/deepseek/bestofn-s4-1072872",
+   "attempts_counted": 34,
+   "last_generation_within_budget": 34,
+   "tokens_through_budget": 289185,
+   "credits_row_total_tokens_at_last_gen": 289185,
+   "patch_generation": 7,
+   "search_R": 0.9327653164783805,
+   "search_speedup": 1.0720810286723155,
+   "patch": "runs/deepseek/bestofn-s4-1072872/patches/gen_7.patch",
+   "patch_sha256": "65b468c576eff158f1afbb2c2bf5e5e771312d92e804efdf60990731f0fa4786",
+   "same_as_final_patch": false,
+   "status": "different patch; 3 independent re-measurements run post hoc",
+   "remeasure_evidence": "runs/deepseek-common34/bestofn-s4-gen7-1074077/evaluate-gen_7/summary.json",
+   "ratios": [
+    0.9319691436308778,
+    0.932352008620041,
+    0.9325242615190975
+   ],
+   "passes": 3,
+   "best_confirmed_speedup": 1.0725562778376847,
+   "course_metric_budget": 2.5089917470714146e-07
+  },
+  {
+   "arm": "bestofn",
+   "seed": 5,
+   "run": "runs/deepseek/bestofn-s5-1072874",
+   "attempts_counted": 34,
+   "last_generation_within_budget": 34,
+   "tokens_through_budget": 401377,
+   "credits_row_total_tokens_at_last_gen": 401377,
+   "patch_generation": 26,
+   "search_R": 0.9373526967559127,
+   "search_speedup": 1.066834291362156,
+   "patch": "runs/deepseek/bestofn-s5-1072874/patches/gen_26.patch",
+   "patch_sha256": "a9427cb7489ea1e70a7fcce8944a12b3d95dd27d4391585c7e47708a82a94993",
+   "same_as_final_patch": true,
+   "status": "same patch as final; reused its independent re-measurement",
+   "remeasure_evidence": "runs/deepseek/bestofn-s5-1072874/evaluate-best/summary.json",
+   "ratios": [
+    0.9358982373418927,
+    0.9374758709828686,
+    0.9381799764337173
+   ],
+   "passes": 3,
+   "best_confirmed_speedup": 1.0666941208327634,
+   "course_metric_budget": 1.6616328497338758e-07
+  },
+  {
+   "arm": "greedy",
+   "seed": 1,
+   "run": "runs/deepseek/greedy-s1-1072019",
+   "attempts_counted": 34,
+   "last_generation_within_budget": 35,
+   "tokens_through_budget": 551113,
+   "credits_row_total_tokens_at_last_gen": 551113,
+   "patch_generation": 35,
+   "search_R": 0.8684809328879977,
+   "search_speedup": 1.1514357565394744,
+   "patch": "runs/deepseek/greedy-s1-1072019/patches/gen_35.patch",
+   "patch_sha256": "c68a4c281acca52ee8536c0afa79a8230a64284fd21ada0a35f5ed9cf6987102",
+   "same_as_final_patch": false,
+   "status": "different patch; 3 independent re-measurements run post hoc",
+   "remeasure_evidence": "runs/deepseek-common34/greedy-s1-gen35-1074078/evaluate-gen_35/summary.json",
+   "ratios": [
+    0.8676807172100649,
+    0.8701973641665015,
+    0.8678784760548814
+   ],
+   "passes": 3,
+   "best_confirmed_speedup": 1.1522350508630008,
+   "course_metric_budget": 2.7623200843202906e-07
+  },
+  {
+   "arm": "greedy",
+   "seed": 2,
+   "run": "runs/deepseek/greedy-s2-1072867",
+   "attempts_counted": 34,
+   "last_generation_within_budget": 34,
+   "tokens_through_budget": 515357,
+   "credits_row_total_tokens_at_last_gen": 515357,
+   "patch_generation": 33,
+   "search_R": 0.854800603000648,
+   "search_speedup": 1.1698634704861597,
+   "patch": "runs/deepseek/greedy-s2-1072867/patches/gen_33.patch",
+   "patch_sha256": "0119b4c80a78de0bbfca18d0b77edaea56a00509528680c0efcfd21f5bb8e30e",
+   "same_as_final_patch": false,
+   "status": "different patch; 3 independent re-measurements run post hoc",
+   "remeasure_evidence": "runs/deepseek-common34/greedy-s2-gen33-1074079/evaluate-gen_33/summary.json",
+   "ratios": [
+    0.8541525275236423,
+    0.8540247816492231,
+    0.8544972331306318
+   ],
+   "passes": 3,
+   "best_confirmed_speedup": 1.1707510869272943,
+   "course_metric_budget": 3.313258322430749e-07
+  },
+  {
+   "arm": "greedy",
+   "seed": 3,
+   "run": "runs/deepseek/greedy-s3-1072869",
+   "attempts_counted": 34,
+   "last_generation_within_budget": 34,
+   "tokens_through_budget": 323431,
+   "credits_row_total_tokens_at_last_gen": 323431,
+   "patch_generation": 34,
+   "search_R": 0.8565233767565834,
+   "search_speedup": 1.1675104581345144,
+   "patch": "runs/deepseek/greedy-s3-1072869/patches/gen_34.patch",
+   "patch_sha256": "f1cbd5a909aa5c8c999a8794c24e9e4b0741027c0c256935311aca11149ce12c",
+   "same_as_final_patch": false,
+   "status": "different patch; 3 independent re-measurements run post hoc",
+   "remeasure_evidence": "runs/deepseek-common34/greedy-s3-gen34-1074080/evaluate-gen_34/summary.json",
+   "ratios": [
+    0.8560581442516799,
+    0.8560781492828555,
+    0.8559118819061127
+   ],
+   "passes": 3,
+   "best_confirmed_speedup": 1.1681449522031548,
+   "course_metric_budget": 5.198788990639575e-07
+  },
+  {
+   "arm": "greedy",
+   "seed": 4,
+   "run": "runs/deepseek/greedy-s4-1072871",
+   "attempts_counted": 34,
+   "last_generation_within_budget": 34,
+   "tokens_through_budget": 452312,
+   "credits_row_total_tokens_at_last_gen": 452312,
+   "patch_generation": 34,
+   "search_R": 0.8401725760534002,
+   "search_speedup": 1.1902316601398346,
+   "patch": "runs/deepseek/greedy-s4-1072871/patches/gen_34.patch",
+   "patch_sha256": "6e52bf6bf6d29d3da15f62e0c9b2aa26b324419118750d66128ad191cb258406",
+   "same_as_final_patch": true,
+   "status": "same patch as final; reused its independent re-measurement",
+   "remeasure_evidence": "runs/deepseek/greedy-s4-1072871/evaluate-best/summary.json",
+   "ratios": [
+    0.8395601675651321,
+    0.8403007837554246,
+    0.8396285606933618
+   ],
+   "passes": 3,
+   "best_confirmed_speedup": 1.1910028396058898,
+   "course_metric_budget": 4.2228116787945005e-07
+  },
+  {
+   "arm": "greedy",
+   "seed": 5,
+   "run": "runs/deepseek/greedy-s5-1072873",
+   "attempts_counted": 34,
+   "last_generation_within_budget": 34,
+   "tokens_through_budget": 481483,
+   "credits_row_total_tokens_at_last_gen": 481483,
+   "patch_generation": 26,
+   "search_R": 0.857222079581025,
+   "search_speedup": 1.1665588460912708,
+   "patch": "runs/deepseek/greedy-s5-1072873/patches/gen_26.patch",
+   "patch_sha256": "ed16819b10d897cebcdb5ee6d0689744896e199e87c4f2c2f44dfeb498cecbc5",
+   "same_as_final_patch": true,
+   "status": "same patch as final; reused its independent re-measurement",
+   "remeasure_evidence": "runs/deepseek/greedy-s5-1072873/evaluate-best/summary.json",
+   "ratios": [
+    0.8605724720117953,
+    0.8582320037865914,
+    0.857827159345423
+   ],
+   "passes": 3,
+   "best_confirmed_speedup": 1.1651860983835565,
+   "course_metric_budget": 3.430777377052907e-07
+  }
+ ],
+ "c2": {
+  "first_file": [
+   "2026-11-02T10:20:23",
+   "node.txt"
+  ],
+  "last_file": [
+   "2026-11-02T11:11:50",
+   "attempt-2-callers.txt"
+  ],
+  "span_min": 51.454967315991716,
+  "attempt1_patch_time": "2026-11-02T10:30:10",
+  "attempt2_patch_time": "2026-11-02T10:51:00",
+  "earliest_search_results_file": "2026-11-03T22:44:01"
+ }
+}
