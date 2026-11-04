@@ -41,7 +41,7 @@ cmake -S . -B build
 cmake --build build -j4 --target CanMehHarness CanMehCalibrate CanMehBench CanMehDecodeForSampler CanMehData CanMehSearch
 ```
 
-`scripts/verify_clean_build.sbatch` builds from a clean copy and runs smoke checks (`--help` of four tools; the frozen rule replays three stored Phase 0 measurements; scan for an SDK directory and the API key).
+`scripts/verify_submission.sbatch` unpacks `git archive HEAD` (what "Download ZIP" delivers), checks the layout, tracked logs, absence of the SDK and key, builds with `-j4`, runs smoke checks (`--help` of four tools; the frozen rule replays three stored Phase 0 measurements) and replays `patches/` with `git am` on the freshly fetched SDK sources.
 The check on the committed tree (fresh clone, `git archive`) is recorded in `runs/phase1-final/clean_build_check/`.
 
 ## Run one search (needs `~/.config/canmeh/api-key`, mode 600, never committed)
