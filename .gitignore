@@ -2,7 +2,10 @@
 # configuring, which is how each person accepts its license terms.
 sdk/
 lab/
-runs/
+# runs/ holds the run logs and IS tracked (results.jsonl, credits.csv, summary.json, measurements, harness output, ...); only the heavy profiler
+# recordings are left out. The sampled line report (sampling/sample.txt) that the draws can be replayed from is kept.
+runs/**/*perf.data*
+runs/**/scratch/
 data/
 *.o
 *.so
@@ -21,3 +24,5 @@ CanMehDecodeForSampler
 # covers every build directory, present and future.
 build*/
 _deps/
+
+__pycache__/
