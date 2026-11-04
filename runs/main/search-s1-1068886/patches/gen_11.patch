@@ -1,0 +1,69 @@
+--- a/src/fit_accumulated_field.cpp
++++ b/src/fit_accumulated_field.cpp
+@@ -11,12 +11,14 @@
+ 
+ 
+ #include "fit_accumulated_field.hpp"
++#include <cstdint>
+ 
+ namespace fit
+ {
+ 
++
+     AccumulatedField::AccumulatedField()
+-        : lastValue(0), accumulatedValue(0)
++        : lastValue{0}, accumulatedValue{0}
+     {
+     }
+ 
+--- a/src/fit_hsa_body_battery_data_mesg.hpp
++++ b/src/fit_hsa_body_battery_data_mesg.hpp
+@@ -14,6 +14,7 @@
+ #define FIT_HSA_BODY_BATTERY_DATA_MESG_HPP
+ 
+ #include "fit_mesg.hpp"
++#include <type_traits>
+ 
+ namespace fit
+ {
+@@ -68,11 +69,13 @@
+     // Set timestamp field
+     // Units: s
+     ///////////////////////////////////////////////////////////////////////
++
+     void SetTimestamp(FIT_DATE_TIME timestamp)
+     {
+-        SetFieldUINT32Value(253, timestamp, 0, FIT_SUBFIELD_INDEX_MAIN_FIELD);
++        Mesg::SetFieldUINT32Value(253, static_cast<FIT_UINT32>(timestamp), 0, FIT_SUBFIELD_INDEX_MAIN_FIELD);
+     }
+ 
++
+     ///////////////////////////////////////////////////////////////////////
+     // Checks the validity of processing_interval field
+     // Returns FIT_TRUE if field is valid
+--- a/src/fit_sleep_assessment_mesg.hpp
++++ b/src/fit_sleep_assessment_mesg.hpp
+@@ -14,6 +14,7 @@
+ #define FIT_SLEEP_ASSESSMENT_MESG_HPP
+ 
+ #include "fit_mesg.hpp"
++#include <cstdint>
+ 
+ namespace fit
+ {
+@@ -440,10 +441,11 @@
+     // Set awakenings_count field
+     // Comment: The number of awakenings during sleep.
+     ///////////////////////////////////////////////////////////////////////
+-    void SetAwakeningsCount(FIT_UINT8 awakeningsCount)
+-    {
+-        SetFieldUINT8Value(11, awakeningsCount, 0, FIT_SUBFIELD_INDEX_MAIN_FIELD);
+-    }
++
++void SetAwakeningsCount(FIT_UINT8 awakeningsCount)
++{
++    fields[11].SetUInt8Value(awakeningsCount, 0);
++}
+ 
+     ///////////////////////////////////////////////////////////////////////
+     // Checks the validity of interruptions_score field

@@ -1,0 +1,16 @@
+--- a/src/fit_event_mesg.hpp
++++ b/src/fit_event_mesg.hpp
+@@ -1166,12 +1166,7 @@
+     FIT_BOOL IsOpponentScoreValid() const
+     {
+         const Field* field = GetField(8);
+-        if( FIT_NULL == field )
+-        {
+-            return FIT_FALSE;
+-        }
+-
+-        return field->IsValueValid();
++        return (FIT_NULL != field) ? field->IsValueValid() : FIT_FALSE;
+     }
+ 
+     ///////////////////////////////////////////////////////////////////////

@@ -1,0 +1,17 @@
+```cpp
+#include <cstring>
+
+template <typename TTo, typename TFrom>
+TTo FieldBase::ConvertBaseType(const FIT_UINT8 fieldArrayIndex, const FIT_UINT8 toBaseType) const
+{
+    const FIT_UINT8 baseType = GetType() & FIT_BASE_TYPE_NUM_MASK;
+    const FIT_UINT8 toBaseTypeMasked = toBaseType & FIT_BASE_TYPE_NUM_MASK;
+    TFrom value = GetValue<TFrom>(fieldArrayIndex);
+    
+    // Inline memcmp for single scalar comparison - avoid function call overhead
+    if (*reinterpret_cast<const TFrom*>(&baseTypeInvalids[baseType]) == value)
+        return *reinterpret_cast<const TTo*>(&baseTypeInvalids[toBaseTypeMasked]);
+    
+    return static_cast<TTo>(value);
+}
+```

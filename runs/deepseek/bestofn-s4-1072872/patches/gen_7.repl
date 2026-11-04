@@ -1,0 +1,21 @@
+I replaced the linear scan with a lazily built 65536-entry direct lookup table, preserving first-match semantics for duplicates and NULL for misses. This makes every lookup O(1), which is especially faster when the benchmark sweeps the whole input domain.
+
+```cpp
+const Profile::MESG* Profile::GetMesg(const FIT_UINT16 num)
+{
+    static const MESG* lookup[65536] = {};
+    static bool initialized = false;
+
+    if (!initialized)
+    {
+        for (int i = 0; i < MESGS; i++)
+        {
+            if (lookup[mesgs[i].num] == NULL)
+                lookup[mesgs[i].num] = &mesgs[i];
+        }
+        initialized = true;
+    }
+
+    return lookup[num];
+}
+```

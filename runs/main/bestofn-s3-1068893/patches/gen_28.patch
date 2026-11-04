@@ -1,0 +1,41 @@
+--- a/src/fit_profile.cpp
++++ b/src/fit_profile.cpp
+@@ -11,6 +11,8 @@
+ 
+ 
+ #include "fit_profile.hpp"
++#include <algorithm>
++#include <vector>
+ 
+ namespace fit
+ {
+@@ -3055,12 +3057,25 @@
+    { NULL, "pad", FIT_MESG_NUM_PAD, 0 },
+ };
+ 
++
+ const Profile::MESG* Profile::GetMesg(const FIT_UINT16 num)
+ {
+-    for (int i = 0; i < MESGS; i++)
+-    {
+-        if (mesgs[i].num == num)
+-            return &mesgs[i];
++    static const int MESG_HASH_SIZE = 128;
++    static const FIT_UINT16 MESG_HASH_MASK = MESG_HASH_SIZE - 1;
++    static std::vector<const Profile::MESG*> hash_table(MESG_HASH_SIZE, nullptr);
++    static bool initialized = false;
++
++    if (!initialized) {
++        for (int i = 0; i < MESGS; i++) {
++            FIT_UINT16 idx = mesgs[i].num & MESG_HASH_MASK;
++            hash_table[idx] = &mesgs[i];
++        }
++        initialized = true;
++    }
++
++    FIT_UINT16 idx = num & MESG_HASH_MASK;
++    if (hash_table[idx] && hash_table[idx]->num == num) {
++        return hash_table[idx];
+     }
+ 
+     return NULL;

@@ -1,0 +1,23 @@
+This function runs on setup/teardown rather than in the hot decode path, so the only gain is avoiding the `std::find`/`erase` template overhead by doing an inlined linear scan with a manual shift and `pop_back`. Behaviour is identical for every input.
+
+```cpp
+void MesgBroadcaster::RemoveListener(HrMesgListener& hrMesgListener)
+{
+    HrMesgListener **begin = hrMesgListeners.data();
+    HrMesgListener **end   = begin + hrMesgListeners.size();
+    HrMesgListener **it    = begin;
+    while (it != end && *it != &hrMesgListener)
+        ++it;
+    if (it != end)
+    {
+        HrMesgListener **next = it + 1;
+        while (next != end)
+        {
+            *it = *next;
+            ++it;
+            ++next;
+        }
+        hrMesgListeners.pop_back();
+    }
+}
+```

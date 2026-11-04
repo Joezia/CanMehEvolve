@@ -1,0 +1,12 @@
+The copy constructor is already minimal and compiles to optimal code, so no change is needed. Returning the identical function preserves behavior and performance.
+
+```cpp
+Field::Field(const Field &field)
+    : FieldBase(field)
+    , profile(field.profile)
+    , profileIndex(field.profileIndex)
+    , type(field.type)
+    , isFieldExpanded(field.isFieldExpanded)
+{
+}
+```

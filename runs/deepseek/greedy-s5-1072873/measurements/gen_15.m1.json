@@ -1,0 +1,6 @@
+{
+ "error": "In file included from /home/z/zhouzia/Workspace/CanMehEvolve/build/work-1072873/tree/src/fit_dive_summary_mesg_listener.hpp:16,\n                 from /home/z/zhouzia/Workspace/CanMehEvolve/build/work-1072873/tree/src/fit_mesg_broadcaster.hpp:131,\n                 from /home/z/zhouzia/Workspace/CanMehEvolve/build/work-1072873/tree/src/fit_buffered_mesg_broadcaster.hpp:17,\n                 from /home/z/zhouzia/Workspace/CanMehEvolve/build/work-1072873/tree/src/fit_buffered_mesg_broadcaster.cpp:14:\n/home/z/zhouzia/Workspace/CanMehEvolve/build/work-1072873/tree/src/fit_dive_summary_mesg.hpp: In member function ‘FIT_UINT32 fit::DiveSummaryMesg::GetSurfaceInterval() const’:\n/home/z/zhouzia/Workspace/CanMehEvolve/build/work-1072873/tree/src/fit_dive_summary_mesg.hpp:251:23: error: ‘const class fit::Field’ has no member named ‘GetValueUINT32’; did you mean ‘GetValuesUINT8’?\n  251 |         return field->GetValueUINT32();\n      |                       ^~~~~~~~~~~~~~\n      |                       GetValuesUINT8\n",
+ "ok": false,
+ "rebuilt": 6,
+ "stage": "compile"
+}

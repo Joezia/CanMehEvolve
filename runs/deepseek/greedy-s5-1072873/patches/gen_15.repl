@@ -1,0 +1,11 @@
+Inlined the field lookup and value extraction, bypassing the out-of-line generic `GetFieldUINT32Value` wrapper and its subfield-resolution path (which is a no-op for this field). This eliminates one function call and redundant subfield checks per invocation.
+
+```cpp
+    FIT_UINT32 GetSurfaceInterval(void) const
+    {
+        const Field* field = GetField(4);
+        if (field == NULL)
+            return 0;
+        return field->GetValueUINT32();
+    }
+```

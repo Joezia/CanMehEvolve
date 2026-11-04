@@ -1,0 +1,11 @@
+--- a/src/fit_field.cpp
++++ b/src/fit_field.cpp
+@@ -138,7 +138,7 @@
+ 
+ FIT_UINT16 Field::GetNumSubFields(void) const
+ {
+-    if ((profile == NULL) || (profileIndex >= profile->numFields))
++    if (profile == NULL || profileIndex >= profile->numFields)
+         return 0;
+     return profile->fields[profileIndex].numSubFields;
+ }

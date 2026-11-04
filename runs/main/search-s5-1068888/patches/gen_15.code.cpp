@@ -1,0 +1,5 @@
+
+    void SetEndTimezoneOffset(FIT_SINT16 endTimezoneOffset)
+    {
+        fields.at(3).SetSINT16(endTimezoneOffset);
+    }

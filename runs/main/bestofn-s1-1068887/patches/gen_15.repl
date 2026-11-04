@@ -1,0 +1,28 @@
+Looking at this function, the main optimization opportunity is to reduce the number of conditional branches and memory accesses. The current implementation checks `type` against `FIT_UINT8_INVALID`, then checks `profile` and `profileIndex`, and finally accesses `profile->fields[profileIndex].type`.
+
+Since this is performance-critical code that's called frequently during decoding, we can optimize by:
+1. Using early return patterns to minimize unnecessary checks
+2. Ensuring the most common case (type already set) returns quickly
+3. Potentially using faster pointer arithmetic for the profile access
+
+However, given the constraints that behavior must be identical, the main optimization is to restructure for better branch prediction and reduce redundant checks. The current code already has good structure, but we can make the profile access more efficient by caching the profile pointer.
+
+But actually, re-reading the problem: the best measured so far is 1.000, same as current. Since we need to be faster, and the function is very small, the optimization must be minimal but effective.
+
+The key insight is that we can reduce the number of conditionals by using the fact that `FIT_UINT8_INVALID` is likely 0xFF, and we can restructure to have fewer branches in the common case.
+
+However, the most likely optimization is to avoid the double check of `profile` being non-NULL and then accessing it, by combining the conditions more efficiently.
+
+```cpp
+```cpp
+FIT_UINT8 Field::GetType() const
+{
+    if (type != FIT_UINT8_INVALID)
+        return type;
+    
+    if (!profile || profileIndex >= profile->numFields)
+        return FIT_UINT8_INVALID;
+    
+    return profile->fields[profileIndex].type;
+}
+```

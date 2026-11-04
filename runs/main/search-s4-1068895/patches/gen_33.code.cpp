@@ -1,0 +1,7 @@
+
+FIT_UINT16 Field::GetNumComponents(void) const
+{
+    return (profile && profileIndex < profile->numFields)
+        ? profile->fields[profileIndex].numComponents
+        : 0;
+}

@@ -1,0 +1,33 @@
+--- a/src/fit_field_base.cpp
++++ b/src/fit_field_base.cpp
+@@ -16,6 +16,7 @@
+ #include "fit_field_base.hpp"
+ #include "fit_mesg.hpp"
+ #include "fit_unicode.hpp"
++#include <cstring>
+ 
+ namespace fit
+ {
+@@ -1128,6 +1129,7 @@
+     return (value > 0.0) ? floor(value + 0.5) : ceil(value - 0.5);
+ }
+ 
++
+ template <typename T>
+ T FieldBase::GetValue(const FIT_UINT8 fieldArrayIndex) const
+ {
+@@ -1138,12 +1140,8 @@
+     }
+ 
+     T rv = 0;
+-
+-    for (int i = 0; i < size; i++)
+-    {
+-        rv |= static_cast<T>(values[(fieldArrayIndex * size) + i]) << (i * 8);
+-    }
+-
++    const FIT_UINT8 offset = fieldArrayIndex * size;
++    std::memcpy(&rv, &values[offset], size);
+     return rv;
+ }
+ 

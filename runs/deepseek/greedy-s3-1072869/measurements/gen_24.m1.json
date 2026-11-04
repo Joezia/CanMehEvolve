@@ -1,0 +1,6 @@
+{
+ "error": "In file included from /home/z/zhouzia/Workspace/CanMehEvolve/build/work-1072869/tree/src/fit_hsa_spo2_data_mesg_listener.hpp:16,\n                 from /home/z/zhouzia/Workspace/CanMehEvolve/build/work-1072869/tree/src/fit_mesg_broadcaster.hpp:117,\n                 from /home/z/zhouzia/Workspace/CanMehEvolve/build/work-1072869/tree/src/fit_buffered_mesg_broadcaster.hpp:17,\n                 from /home/z/zhouzia/Workspace/CanMehEvolve/build/work-1072869/tree/src/fit_buffered_mesg_broadcaster.cpp:14:\n/home/z/zhouzia/Workspace/CanMehEvolve/build/work-1072869/tree/src/fit_hsa_spo2_data_mesg.hpp: In member function ‘FIT_UINT16 fit::HsaSpo2DataMesg::GetProcessingInterval() const’:\n/home/z/zhouzia/Workspace/CanMehEvolve/build/work-1072869/tree/src/fit_hsa_spo2_data_mesg.hpp:98:9: error: ‘GetFieldValue’ was not declared in this scope; did you mean ‘GetFieldNumValues’?\n   98 |         GetFieldValue(0, 0, FIT_SUBFIELD_INDEX_MAIN_FIELD, &processingInterval, static_cast<FIT_UINT8>(sizeof(processingInterval)));\n      |         ^~~~~~~~~~~~~\n      |         GetFieldNumValues\n",
+ "ok": false,
+ "rebuilt": 9,
+ "stage": "compile"
+}

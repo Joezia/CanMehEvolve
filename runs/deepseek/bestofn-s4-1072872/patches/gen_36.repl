@@ -1,0 +1,13 @@
+Replaced the `FieldBase` copy-constructor call with the cheaper `FieldDefinition` constructor and a direct vector assignment, avoiding an extra `SetValues` call. This preserves identical state while reducing per-copy function-call overhead.
+
+```cpp
+Field::Field(const Field &field)
+    : FieldBase(field.fieldDefinition)
+    , profile(field.profile)
+    , profileIndex(field.profileIndex)
+    , type(field.type)
+    , isFieldExpanded(field.isFieldExpanded)
+{
+    values = field.values;
+}
+```

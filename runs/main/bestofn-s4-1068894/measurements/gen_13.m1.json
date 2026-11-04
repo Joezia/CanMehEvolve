@@ -1,0 +1,6 @@
+{
+ "error": "/home/z/zhouzia/Workspace/CanMehEvolve/build/work-1068894/tree/src/fit_profile.cpp: In static member function ‘static const FIT_UINT16 fit::Profile::GetFieldIndex(FIT_UINT16, FIT_UINT8)’:\n/home/z/zhouzia/Workspace/CanMehEvolve/build/work-1068894/tree/src/fit_profile.cpp:3094:24: error: invalid conversion from ‘FIT_UINT8’ {aka ‘unsigned char’} to ‘const fit::Profile::FIELD_COMPONENT*’ [-fpermissive]\n 3094 |     const FIELD key = {fieldNum, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0}; // only .num set\n      |                        ^~~~~~~~\n      |                        |\n      |                        FIT_UINT8 {aka unsigned char}\n/home/z/zhouzia/Workspace/CanMehEvolve/build/work-1068894/tree/src/fit_profile.cpp:3094:64: error: cannot convert ‘int’ to ‘fit::Profile::Type’ in initialization\n 3094 |     const FIELD key = {fieldNum, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0}; // only .num set\n      |                                                                ^\n      |                                                                |\n      |                                                                int\n",
+ "ok": false,
+ "rebuilt": 2,
+ "stage": "compile"
+}

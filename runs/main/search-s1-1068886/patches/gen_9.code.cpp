@@ -1,0 +1,7 @@
+
+```cpp
+    FIT_FLOAT32 GetAvgRightPedalSmoothness(void) const
+    {
+        // Direct field access without subfield lookup overhead
+        return GetFieldFLOAT32Value(62);
+    }

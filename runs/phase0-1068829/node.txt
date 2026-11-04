@@ -1,0 +1,13 @@
+host=xcnc2
+job=1068829
+nodelist=xcnc2
+start=2026-11-03T21:26:38+08:00
+cxx=c++ (Ubuntu 13.3.0-6ubuntu2~24.04.1) 13.3.0
+commit=0bce2476eee226fd5dc28cf093a57c8ae0d94c1b
+trials_per_pair=100
+TimeLimit=03:00:00
+StartTime=2026-11-03T21:26:38
+Partition=normal
+NodeList=xcnc2
+Features=xcnc|xcnd
+calibrate_exit=0

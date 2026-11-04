@@ -1,0 +1,21 @@
+
+const Profile::MESG* Profile::GetMesg(const FIT_UINT16 num)
+{
+    static std::vector<std::pair<FIT_UINT16, const Profile::MESG*>> cache;
+    static bool initialized = false;
+
+    if (!initialized) {
+        cache.reserve(MESGS);
+        for (int i = 0; i < MESGS; i++) {
+            cache.emplace_back(mesgs[i].num, &mesgs[i]);
+        }
+        std::sort(cache.begin(), cache.end());
+        initialized = true;
+    }
+
+    auto it = std::lower_bound(cache.begin(), cache.end(), std::make_pair(num, static_cast<const Profile::MESG*>(nullptr)));
+    if (it != cache.end() && it->first == num) {
+        return it->second;
+    }
+    return NULL;
+}

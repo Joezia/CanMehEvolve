@@ -1,0 +1,19 @@
+Hoisted the repeated `field.GetDefinition()` call out of the scan and used a range-based loop to avoid repeated indexing/size checks. This keeps identical replacement/push-back behavior while reducing per-iteration overhead.
+
+```cpp
+void Mesg::AddDeveloperField(const DeveloperField& field)
+{
+    const auto definition = field.GetDefinition();
+
+    for (auto& devField : devFields)
+    {
+        if (devField.GetDefinition() == definition)
+        {
+            devField = field;
+            return;
+        }
+    }
+
+    devFields.push_back(field);
+}
+```

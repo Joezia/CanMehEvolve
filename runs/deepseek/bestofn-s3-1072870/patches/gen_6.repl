@@ -1,0 +1,14 @@
+This function isn't on the decode hot path, so gains are tiny; I replaced the iterator-based `std::find` with a raw pointer scan that stops at the first match and erases directly, avoiding iterator wrapper overhead.
+
+```cpp
+void MesgBroadcaster::RemoveListener(HrvValueMesgListener& hrvValueMesgListener)
+{
+    HrvValueMesgListener **begin = hrvValueMesgListeners.data();
+    HrvValueMesgListener **end = begin + hrvValueMesgListeners.size();
+    HrvValueMesgListener **it = begin;
+    while (it != end && *it != &hrvValueMesgListener)
+        ++it;
+    if (it != end)
+        hrvValueMesgListeners.erase(hrvValueMesgListeners.begin() + (it - begin));
+}
+```

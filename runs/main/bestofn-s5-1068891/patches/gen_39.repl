@@ -1,0 +1,17 @@
+```cpp
+#include <algorithm>
+#include <cstddef>
+
+const Profile::MESG* Profile::GetMesg(const FIT_UINT16 num)
+{
+    static_assert(std::is_trivially_copyable<MESG>::value, "MESG must be trivially copyable");
+    // Use memchr-style linear search with early exit on mismatch, but unroll the loop
+    const MESG* end = mesgs + MESGS;
+    const MESG* cur = mesgs;
+    while (cur < end) {
+        if (cur->num == num) return cur;
+        ++cur;
+    }
+    return NULL;
+}
+```

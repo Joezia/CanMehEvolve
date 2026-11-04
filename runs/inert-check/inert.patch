@@ -1,0 +1,14 @@
+--- a/src/fit.cpp
++++ b/src/fit.cpp
+@@ -114,9 +114,11 @@
+ 
+ DetailedProtocolVersion::DetailedProtocolVersion(FIT_UINT8 major, FIT_UINT8 minor)
+ {
++	// Inert patch, comment, just for a try
+     version = ( major << FIT_PROTOCOL_VERSION_MAJOR_SHIFT ) | minor;
+ }
+ 
++
+ FIT_UINT8 DetailedProtocolVersion::GetMajorVersion() const
+ {
+     return ( version & FIT_PROTOCOL_VERSION_MAJOR_MASK ) >> FIT_PROTOCOL_VERSION_MAJOR_SHIFT;

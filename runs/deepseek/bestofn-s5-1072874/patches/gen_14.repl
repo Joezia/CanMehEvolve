@@ -1,0 +1,13 @@
+I removed the redundant second field lookup by calling `CanSupportSubField` directly on the `Field` already found. This keeps identical behavior while avoiding an extra search through the message fields.
+
+```cpp
+FIT_UINT8 Mesg::GetFieldUINT8Value(const FIT_UINT8 fieldNum, const FIT_UINT8 fieldArrayIndex, const FIT_UINT16 subFieldIndex) const
+{
+    const Field *field = GetField(fieldNum);
+
+    if ((field == FIT_NULL) || (!field->CanSupportSubField(subFieldIndex)))
+        return FIT_UINT8_INVALID;
+
+    return field->GetUINT8Value(fieldArrayIndex);
+}
+```

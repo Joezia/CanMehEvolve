@@ -1,0 +1,15 @@
+I combined the fallback validity checks into a single guarded branch and cached the profile pointer, reducing the number of branches/loads on the rare non-cached type path while keeping the fast cached-type path first. I also added a likely hint for the common valid-type case.
+
+```cpp
+FIT_UINT8 Field::GetType() const
+{
+    if (__builtin_expect(type != FIT_UINT8_INVALID, 1))
+        return type;
+
+    const auto* p = profile;
+    if (__builtin_expect(p != NULL && profileIndex < p->numFields, 1))
+        return p->fields[profileIndex].type;
+
+    return FIT_UINT8_INVALID;
+}
+```

@@ -1,0 +1,14 @@
+Replaced the generic `std::find` call with a direct pointer scan over the vector's storage, which avoids the algorithm/iterator abstraction and lets the compiler emit a tighter loop; the erase is unchanged so behavior (including listener ordering) is identical.
+
+```cpp
+void MesgBroadcaster::RemoveListener(HrMesgListener& hrMesgListener)
+{
+    HrMesgListener ** const first = hrMesgListeners.data();
+    HrMesgListener ** const last  = first + hrMesgListeners.size();
+    HrMesgListener ** it = first;
+    while (it != last && *it != &hrMesgListener)
+        ++it;
+    if (it != last)
+        hrMesgListeners.erase(hrMesgListeners.begin() + (it - first));
+}
+```

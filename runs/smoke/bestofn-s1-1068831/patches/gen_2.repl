@@ -1,0 +1,6 @@
+```cpp
+#include <utility>
+
+```cpp
+    ZonesTargetMesg(const Mesg &mesg) : Mesg(mesg) {}
+```

@@ -1,0 +1,14 @@
+--- a/src/fit_field_base.cpp
++++ b/src/fit_field_base.cpp
+@@ -179,9 +179,10 @@
+     return GetValue<FIT_SINT8>(fieldArrayIndex);
+ }
+ 
++
+ FIT_UINT8 FieldBase::GetUINT8Value(const FIT_UINT8 fieldArrayIndex) const
+ {
+-    return GetValue<FIT_UINT8>(fieldArrayIndex);
++    return (fieldArrayIndex < GetNumElements()) ? *reinterpret_cast<const FIT_UINT8*>(GetFieldData() + fieldArrayIndex * sizeof(FIT_UINT8)) : 0;
+ }
+ 
+ FIT_UINT8Z FieldBase::GetUINT8ZValue(const FIT_UINT8 fieldArrayIndex) const

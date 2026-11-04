@@ -1,0 +1,19 @@
+Replaced the linear scan with a lazily built 65536-entry direct lookup table, filled in reverse so duplicate message numbers still return the first matching entry. This makes each lookup O(1) instead of O(MESGS).
+
+```include
+#include <array>
+```
+
+```cpp
+const Profile::MESG* Profile::GetMesg(const FIT_UINT16 num)
+{
+    static const auto table = []() {
+        std::array<const Profile::MESG*, 65536> t{};
+        for (int i = MESGS - 1; i >= 0; --i)
+            t[mesgs[i].num] = &mesgs[i];
+        return t;
+    }();
+
+    return table[num];
+}
+```

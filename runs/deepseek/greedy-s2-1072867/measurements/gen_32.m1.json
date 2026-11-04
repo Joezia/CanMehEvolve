@@ -1,0 +1,6 @@
+{
+ "error": "/home/z/zhouzia/Workspace/CanMehEvolve/build/work-1072867/tree/src/fit_field_base.cpp: In member function ‘FIT_FLOAT64 fit::FieldBase::GetScale(FIT_UINT16) const’:\n/home/z/zhouzia/Workspace/CanMehEvolve/build/work-1072867/tree/src/fit_field_base.cpp:66:11: error: ‘FIT_SUBFIELD_INFO’ does not name a type; did you mean ‘FIT_FIELD_DEF’?\n   66 |     const FIT_SUBFIELD_INFO *subfield = GetSubField(subFieldIndex);\n      |           ^~~~~~~~~~~~~~~~~\n      |           FIT_FIELD_DEF\n/home/z/zhouzia/Workspace/CanMehEvolve/build/work-1072867/tree/src/fit_field_base.cpp:67:21: error: ‘subfield’ was not declared in this scope\n   67 |     return (NULL != subfield) ? subfield->scale : GetScale();\n      |                     ^~~~~~~~\n",
+ "ok": false,
+ "rebuilt": 4,
+ "stage": "compile"
+}

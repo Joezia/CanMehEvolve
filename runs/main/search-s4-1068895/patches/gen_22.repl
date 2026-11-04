@@ -1,0 +1,18 @@
+Looking at this function, the bottleneck is likely the repeated null checks and array indexing. Since the function is called frequently during decoding and the profile structure is fixed after initialization, we can optimize by caching the field information or reducing the number of pointer dereferences.
+
+However, given the constraints that we must behave identically and can't change the class structure, the best optimization is to reduce the number of memory accesses by loading `profile` once and using a local reference, and potentially reordering the check for better branch prediction (since `profile` being non-null is more likely than `profileIndex` being out of bounds in valid data).
+
+But actually, the most impactful optimization here is to avoid the redundant null check on `profile` in the common case where it's valid, and use a more efficient branch structure. Since the benchmark shows the library is already at 0.984 relative to stock, and we need to improve, let's optimize the memory access pattern.
+
+The key insight: if `profile` is non-null, we can avoid re-accessing it twice. Also, using a reference instead of repeated pointer dereferences can help the compiler optimize better.
+
+```cpp
+#include <cstddef>
+
+FIT_UINT16 Field::GetNumSubFields(void) const
+{
+    if (!profile) return 0;
+    if (profileIndex >= profile->numFields) return 0;
+    return profile->fields[profileIndex].numSubFields;
+}
+```

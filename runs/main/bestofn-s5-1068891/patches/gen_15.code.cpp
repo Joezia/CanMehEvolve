@@ -1,0 +1,4 @@
+    FIT_UINT32 GetSurfaceInterval(void) const
+    {
+        return GetFieldUINT32Value(4, 0, FIT_SUBFIELD_INDEX_MAIN_FIELD);
+    }

@@ -1,0 +1,9 @@
+The copy-assignment path default-constructs both vectors and then reallocates to copy; using the member-initializer list copy-constructs each vector directly, so each gets exactly one allocation and a `memcpy`, with no empty-vector setup or self-assignment checks.
+
+```cpp
+FieldBase::FieldBase(const FieldBase &field)
+    : values(field.values),
+      stringIndexes(field.stringIndexes)
+{
+}
+```

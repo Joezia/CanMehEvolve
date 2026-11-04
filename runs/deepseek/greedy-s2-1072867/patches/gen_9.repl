@@ -1,0 +1,111 @@
+I cached the field type, replaced the templated ConvertBaseType calls with direct invalid-value checks, and skip scale/offset computation for integer fields when no subfield applies. This removes redundant memory comparisons and function calls from the hot path.
+
+```cpp
+FIT_FLOAT64 FieldBase::GetFLOAT64Value(const FIT_UINT8 fieldArrayIndex, const FIT_UINT16 subFieldIndex) const
+{
+    if (!IsValid())
+        return FIT_FLOAT64_INVALID;
+
+    const FIT_UINT8 type = GetType();
+    FIT_FLOAT64 float64Value;
+
+    switch (type) {
+        case FIT_BASE_TYPE_BYTE:
+        case FIT_BASE_TYPE_ENUM:
+        case FIT_BASE_TYPE_UINT8:
+        {
+            FIT_UINT8 raw = GetValue<FIT_UINT8>(fieldArrayIndex);
+            if (raw == 0xFF)
+                return FIT_FLOAT64_INVALID;
+            float64Value = static_cast<FIT_FLOAT64>(raw);
+            break;
+        }
+        case FIT_BASE_TYPE_UINT8Z:
+        {
+            FIT_UINT8 raw = GetValue<FIT_UINT8>(fieldArrayIndex);
+            if (raw == 0x00)
+                return FIT_FLOAT64_INVALID;
+            float64Value = static_cast<FIT_FLOAT64>(raw);
+            break;
+        }
+        case FIT_BASE_TYPE_SINT8:
+        {
+            FIT_SINT8 raw = GetValue<FIT_SINT8>(fieldArrayIndex);
+            if (raw == 0x7F)
+                return FIT_FLOAT64_INVALID;
+            float64Value = static_cast<FIT_FLOAT64>(raw);
+            break;
+        }
+        case FIT_BASE_TYPE_SINT16:
+        {
+            FIT_SINT16 raw = GetValue<FIT_SINT16>(fieldArrayIndex);
+            if (raw == 0x7FFF)
+                return FIT_FLOAT64_INVALID;
+            float64Value = static_cast<FIT_FLOAT64>(raw);
+            break;
+        }
+        case FIT_BASE_TYPE_UINT16:
+        {
+            FIT_UINT16 raw = GetValue<FIT_UINT16>(fieldArrayIndex);
+            if (raw == 0xFFFF)
+                return FIT_FLOAT64_INVALID;
+            float64Value = static_cast<FIT_FLOAT64>(raw);
+            break;
+        }
+        case FIT_BASE_TYPE_UINT16Z:
+        {
+            FIT_UINT16 raw = GetValue<FIT_UINT16>(fieldArrayIndex);
+            if (raw == 0x0000)
+                return FIT_FLOAT64_INVALID;
+            float64Value = static_cast<FIT_FLOAT64>(raw);
+            break;
+        }
+        case FIT_BASE_TYPE_SINT32:
+        {
+            FIT_SINT32 raw = GetValue<FIT_SINT32>(fieldArrayIndex);
+            if (raw == 0x7FFFFFFF)
+                return FIT_FLOAT64_INVALID;
+            float64Value = static_cast<FIT_FLOAT64>(raw);
+            break;
+        }
+        case FIT_BASE_TYPE_UINT32:
+        {
+            FIT_UINT32 raw = GetValue<FIT_UINT32>(fieldArrayIndex);
+            if (raw == 0xFFFFFFFF)
+                return FIT_FLOAT64_INVALID;
+            float64Value = static_cast<FIT_FLOAT64>(raw);
+            break;
+        }
+        case FIT_BASE_TYPE_UINT32Z:
+        {
+            FIT_UINT32 raw = GetValue<FIT_UINT32>(fieldArrayIndex);
+            if (raw == 0x00000000)
+                return FIT_FLOAT64_INVALID;
+            float64Value = static_cast<FIT_FLOAT64>(raw);
+            break;
+        }
+        case FIT_BASE_TYPE_FLOAT32:
+        {
+            FIT_FLOAT32 val = GetFLOAT32Value(fieldArrayIndex, subFieldIndex);
+            if (FIT_FLOAT32_INVALID == val)
+                return FIT_FLOAT64_INVALID;
+            return static_cast<FIT_FLOAT64>(val);
+        }
+        case FIT_BASE_TYPE_FLOAT64:
+        {
+            FIT_UINT64 uint64Value = GetValue<FIT_UINT64>(fieldArrayIndex);
+            memcpy(&float64Value, &uint64Value, sizeof(FIT_FLOAT64));
+            if (uint64Value == 0xFFFFFFFFFFFFFFFFULL)
+                return FIT_FLOAT64_INVALID;
+            return float64Value / GetScale(subFieldIndex) - GetOffset(subFieldIndex);
+        }
+        default:
+            return FIT_FLOAT64_INVALID;
+    }
+
+    if (subFieldIndex >= GetNumSubFields())
+        return float64Value;
+
+    return float64Value / GetScale(subFieldIndex) - GetOffset(subFieldIndex);
+}
+```

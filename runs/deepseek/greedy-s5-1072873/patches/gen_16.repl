@@ -1,0 +1,29 @@
+Replaced the 65536-entry pointer table with a two-level 256×256 table that only allocates sub-tables for used high bytes, making lookups fit in L1 instead of a 512 KB array. Initialization still preserves first-occurrence semantics and returns NULL for unknown message numbers.
+
+```cpp
+const Profile::MESG* Profile::GetMesg(const FIT_UINT16 num)
+{
+    static const Profile::MESG** high[256] = {};
+    static bool initialized = false;
+
+    if (!initialized)
+    {
+        for (int i = 0; i < MESGS; i++)
+        {
+            FIT_UINT16 n = mesgs[i].num;
+            FIT_UINT16 h = n >> 8;
+            FIT_UINT16 l = n & 0xFF;
+
+            if (high[h] == NULL)
+                high[h] = new const Profile::MESG*[256]();
+
+            if (high[h][l] == NULL)
+                high[h][l] = &mesgs[i];
+        }
+        initialized = true;
+    }
+
+    const Profile::MESG** low = high[num >> 8];
+    return low ? low[num & 0xFF] : NULL;
+}
+```

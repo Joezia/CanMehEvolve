@@ -1,0 +1,18 @@
+Replaced the base-class copy (which copied the entire fixed-size value array) with default base construction plus a copy of only the valid `size` bytes, avoiding redundant copying of unused array bytes.
+```include
+#include <cstring>
+```
+```cpp
+Field::Field(const Field &field)
+    : FieldBase()
+    , profile(field.profile)
+    , profileIndex(field.profileIndex)
+    , type(field.type)
+    , isFieldExpanded(field.isFieldExpanded)
+{
+    fieldId = field.fieldId;
+    size = field.size;
+    numValues = field.numValues;
+    std::memcpy(values, field.values, field.size);
+}
+```

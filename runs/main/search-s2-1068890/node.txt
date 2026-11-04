@@ -1,0 +1,14 @@
+host=xcnc26
+job=1068890
+nodelist=xcnc26
+start=2026-11-03T22:52:27+08:00
+cxx=c++ (Ubuntu 13.3.0-6ubuntu2~24.04.1) 13.3.0
+commit=0bce2476eee226fd5dc28cf093a57c8ae0d94c1b
+mode=search seed=2 gens=40 deadline=8400
+TimeLimit=03:00:00
+StartTime=2026-11-03T22:52:27
+Partition=normal
+NodeList=xcnc26
+Features=xcnc|xcnd
+search_exit=0
+end=2026-11-04T00:01:25+08:00

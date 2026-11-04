@@ -1,0 +1,8 @@
+The function is already a bare forwarder, so the only safe win is to keep it byte-identical; any inlining of the callee's storage would require assumptions about members not visible here.
+
+```cpp
+void FieldBase::SetUINT64ZValue(const FIT_UINT64Z value, const FIT_UINT8 fieldArrayIndex)
+{
+    SetUINT64Value(value, fieldArrayIndex);
+}
+```

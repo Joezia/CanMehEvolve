@@ -1,0 +1,26 @@
+--- a/src/fit_field.cpp
++++ b/src/fit_field.cpp
+@@ -15,6 +15,7 @@
+ #include "fit_field.hpp"
+ #include "fit_mesg.hpp"
+ #include "fit_unicode.hpp"
++#include <type_traits>
+ 
+ namespace fit
+ {
+@@ -27,6 +28,7 @@
+ {
+ }
+ 
++
+ Field::Field(const Field &field)
+     : FieldBase(field)
+     , profile(field.profile)
+@@ -34,6 +36,7 @@
+     , type(field.type)
+     , isFieldExpanded(field.isFieldExpanded)
+ {
++    static_assert(std::is_trivially_copyable<Field>::value, "Field should be trivially copyable for optimal performance");
+ }
+ 
+ Field::Field(const Profile::MESG_INDEX mesgIndex, const FIT_UINT16 fieldIndex)

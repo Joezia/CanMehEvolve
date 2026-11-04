@@ -1,0 +1,145 @@
+--- a/src/fit_field_base.cpp
++++ b/src/fit_field_base.cpp
+@@ -16,6 +16,7 @@
+ #include "fit_field_base.hpp"
+ #include "fit_mesg.hpp"
+ #include "fit_unicode.hpp"
++#include <cstring>
+ 
+ namespace fit
+ {
+@@ -342,102 +343,61 @@
+     return static_cast<FIT_FLOAT32>(static_cast<FIT_FLOAT64>(float32Value) / GetScale(subFieldIndex) - GetOffset(subFieldIndex));
+ }
+ 
++
+ FIT_FLOAT64 FieldBase::GetFLOAT64Value(const FIT_UINT8 fieldArrayIndex, const FIT_UINT16 subFieldIndex) const
+ {
+-    FIT_FLOAT64 float64Value;
+-
+     if (!IsValid())
+         return FIT_FLOAT64_INVALID;
+ 
+-    switch (GetType()) { // Note: This checks the type of the MAIN field since data is aligned according to that type
+-        case FIT_BASE_TYPE_BYTE:
+-        {
+-            float64Value =
+-                ConvertBaseType<FIT_FLOAT64, FIT_BYTE>(fieldArrayIndex, FIT_BASE_TYPE_FLOAT64);
+-            break;
+-        }
++    const FIT_BASE_TYPE type = GetType();
++    FIT_FLOAT64 result;
+ 
+-        case FIT_BASE_TYPE_ENUM:
+-        {
+-            float64Value =
+-                ConvertBaseType<FIT_FLOAT64, FIT_ENUM>(fieldArrayIndex, FIT_BASE_TYPE_FLOAT64);
++    switch (type) {
++        case FIT_BASE_TYPE_FLOAT64: {
++            FIT_UINT64 uint64Value = GetValue<FIT_UINT64>(fieldArrayIndex);
++            memcpy(&result, &uint64Value, sizeof(FIT_FLOAT64));
+             break;
+         }
+-
+-        case FIT_BASE_TYPE_SINT8:
+-        {
+-            float64Value =
+-                ConvertBaseType<FIT_FLOAT64, FIT_SINT8>(fieldArrayIndex, FIT_BASE_TYPE_FLOAT64);
+-            break;
++        case FIT_BASE_TYPE_FLOAT32: {
++            FIT_FLOAT32 val = GetFLOAT32Value(fieldArrayIndex, subFieldIndex);
++            if (val == FIT_FLOAT32_INVALID)
++                return FIT_FLOAT64_INVALID;
++            return static_cast<FIT_FLOAT64>(val);
+         }
+-
++        case FIT_BASE_TYPE_BYTE:
++        case FIT_BASE_TYPE_ENUM:
++        case FIT_BASE_TYPE_SINT8:
+         case FIT_BASE_TYPE_UINT8:
+         case FIT_BASE_TYPE_UINT8Z:
+-        {
+-            float64Value =
+-                ConvertBaseType<FIT_FLOAT64, FIT_UINT8>(fieldArrayIndex, FIT_BASE_TYPE_FLOAT64);
+-            break;
+-        }
+-
+         case FIT_BASE_TYPE_SINT16:
+-        {
+-            float64Value =
+-                ConvertBaseType<FIT_FLOAT64, FIT_SINT16>(fieldArrayIndex, FIT_BASE_TYPE_FLOAT64);
+-            break;
+-        }
+-
+-        case FIT_BASE_TYPE_UINT16Z:
+         case FIT_BASE_TYPE_UINT16:
+-        {
+-            float64Value =
+-                ConvertBaseType<FIT_FLOAT64, FIT_UINT16>(fieldArrayIndex, FIT_BASE_TYPE_FLOAT64);
+-            break;
+-        }
+-
++        case FIT_BASE_TYPE_UINT16Z:
+         case FIT_BASE_TYPE_SINT32:
+-        {
+-            float64Value =
+-                ConvertBaseType<FIT_FLOAT64, FIT_SINT32>(fieldArrayIndex, FIT_BASE_TYPE_FLOAT64);
+-            break;
+-        }
+-
+         case FIT_BASE_TYPE_UINT32:
+-        case FIT_BASE_TYPE_UINT32Z:
+-        {
+-            float64Value =
+-                ConvertBaseType<FIT_FLOAT64, FIT_UINT32>(fieldArrayIndex, FIT_BASE_TYPE_FLOAT64);
+-            break;
+-        }
+-
+-        case FIT_BASE_TYPE_FLOAT32:
+-        {
+-            FIT_FLOAT32 val = GetFLOAT32Value(fieldArrayIndex, subFieldIndex);
+-
+-            if (FIT_FLOAT32_INVALID == val)
+-            {
+-                return FIT_FLOAT64_INVALID;
+-            }
+-
+-            return static_cast<FIT_FLOAT64>(val);
+-        }
+-
+-        case FIT_BASE_TYPE_FLOAT64:
+-        {
+-            FIT_UINT64 uint64Value = GetValue<FIT_UINT64>(fieldArrayIndex);
+-            memcpy(&float64Value, &uint64Value, sizeof(FIT_FLOAT64));
++        case FIT_BASE_TYPE_UINT32Z: {
++            result = ConvertBaseType<FIT_FLOAT64, int>(fieldArrayIndex, type);
+             break;
+         }
+-
+         default:
+             return FIT_FLOAT64_INVALID;
+     }
+ 
+-    if (memcmp(&float64Value, baseTypeInvalids[FIT_BASE_TYPE_FLOAT64 & FIT_BASE_TYPE_NUM_MASK], sizeof(FIT_FLOAT64)) == 0)
+-    {
+-        return float64Value;
++    // Check for invalid value using direct bit comparison (faster than memcmp)
++    const FIT_UINT64* invalidBits = reinterpret_cast<const FIT_UINT64*>(baseTypeInvalids[type & FIT_BASE_TYPE_NUM_MASK]);
++    FIT_UINT64 resultBits;
++    memcpy(&resultBits, &result, sizeof(FIT_FLOAT64));
++
++    if (resultBits == *invalidBits) {
++        return result;
+     }
+ 
+-    return float64Value / GetScale(subFieldIndex) - GetOffset(subFieldIndex);
++    // Apply scale/offset only when needed (avoid division when scale=1 and offset=0)
++    const FIT_FLOAT64 scale = GetScale(subFieldIndex);
++    const FIT_FLOAT64 offset = GetOffset(subFieldIndex);
++    if (scale == 1.0 && offset == 0.0) {
++        return result;
++    }
++    return result / scale - offset;
+ }
+ 
+ FIT_WSTRING FieldBase::GetSTRINGValue(const FIT_UINT8 fieldArrayIndex, const FIT_UINT16 subFieldIndex) const

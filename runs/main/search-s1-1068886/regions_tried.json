@@ -1,0 +1,121 @@
+{
+  "113": {
+    "accepted": 0,
+    "attempts": 2,
+    "best_gain": 0.0,
+    "file": "src/fit_field.cpp",
+    "label": "Field::Field"
+  },
+  "122": {
+    "accepted": 0,
+    "attempts": 2,
+    "best_gain": 0.0,
+    "file": "src/fit_field.cpp",
+    "label": "Field::GetNum"
+  },
+  "134": {
+    "accepted": 0,
+    "attempts": 2,
+    "best_gain": 0.0,
+    "file": "src/fit_field_base.cpp",
+    "label": "FieldBase::FieldBase"
+  },
+  "143": {
+    "accepted": 1,
+    "attempts": 1,
+    "best_gain": 0.004436722259080539,
+    "file": "src/fit_field_base.cpp",
+    "label": "FieldBase::GetNumValues"
+  },
+  "184": {
+    "accepted": 0,
+    "attempts": 2,
+    "best_gain": 0.0,
+    "file": "src/fit_field_base.cpp",
+    "label": "FieldBase::SetUINT32Value"
+  },
+  "192": {
+    "accepted": 0,
+    "attempts": 2,
+    "best_gain": 0.0,
+    "file": "src/fit_field_base.cpp",
+    "label": "FieldBase::Read"
+  },
+  "196": {
+    "accepted": 0,
+    "attempts": 2,
+    "best_gain": 0.0,
+    "file": "src/fit_field_base.cpp",
+    "label": "FieldBase::GetValue"
+  },
+  "213": {
+    "accepted": 0,
+    "attempts": 1,
+    "best_gain": 0.0,
+    "file": "src/fit_mesg.cpp",
+    "label": "Mesg::Mesg"
+  },
+  "2186": {
+    "accepted": 0,
+    "attempts": 2,
+    "best_gain": 0.0,
+    "file": "src/fit_hsa_body_battery_data_mesg.hpp",
+    "label": "SetTimestamp"
+  },
+  "226": {
+    "accepted": 0,
+    "attempts": 1,
+    "best_gain": 0.0,
+    "file": "src/fit_mesg.cpp",
+    "label": "Mesg::AddField"
+  },
+  "2480": {
+    "accepted": 0,
+    "attempts": 2,
+    "best_gain": 0.0,
+    "file": "src/fit_lap_mesg.hpp",
+    "label": "SetSubSport"
+  },
+  "3234": {
+    "accepted": 0,
+    "attempts": 1,
+    "best_gain": 0.0,
+    "file": "src/fit_record_mesg.hpp",
+    "label": "SetTimestamp"
+  },
+  "3743": {
+    "accepted": 0,
+    "attempts": 1,
+    "best_gain": 0.0,
+    "file": "src/fit_segment_lap_mesg.hpp",
+    "label": "IsAvgNegGradeValid"
+  },
+  "3817": {
+    "accepted": 0,
+    "attempts": 2,
+    "best_gain": 0.0,
+    "file": "src/fit_segment_lap_mesg.hpp",
+    "label": "GetAvgRightPedalSmoothness"
+  },
+  "4574": {
+    "accepted": 0,
+    "attempts": 2,
+    "best_gain": 0.0,
+    "file": "src/fit_sleep_assessment_mesg.hpp",
+    "label": "SetAwakeningsCount"
+  },
+  "5": {
+    "accepted": 0,
+    "attempts": 1,
+    "best_gain": 0.0,
+    "file": "src/fit_accumulated_field.cpp",
+    "label": "AccumulatedField::AccumulatedField"
+  },
+  "574": {
+    "accepted": 1,
+    "attempts": 14,
+    "best_gain": 0.050366951531605864,
+    "file": "src/fit_profile.cpp",
+    "label": "Profile::GetMesg"
+  }
+}

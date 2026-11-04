@@ -1,0 +1,16 @@
+--- a/src/fit_bike_profile_mesg.hpp
++++ b/src/fit_bike_profile_mesg.hpp
+@@ -549,12 +549,7 @@
+     FIT_BOOL IsIdValid() const
+     {
+         const Field* field = GetField(14);
+-        if( FIT_NULL == field )
+-        {
+-            return FIT_FALSE;
+-        }
+-
+-        return field->IsValueValid();
++        return (FIT_NULL != field) && field->IsValueValid();
+     }
+ 
+     ///////////////////////////////////////////////////////////////////////

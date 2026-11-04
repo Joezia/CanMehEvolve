@@ -1,0 +1,8 @@
+The getter is already a single constant-argument call into `Mesg::GetFieldUINT16Value`; there is no redundant work to remove in this header, so the only safe change is to keep the direct call (no behavioural or performance regression).
+
+```cpp
+    FIT_UINT16 GetProcessingInterval(void) const
+    {
+        return GetFieldUINT16Value(0, 0, FIT_SUBFIELD_INDEX_MAIN_FIELD);
+    }
+```

@@ -1,0 +1,12 @@
+I conditionally copy `stringIndexes` only when it is non-empty, avoiding the vector copy-constructor overhead for the common case of numeric fields that have no string indexes.
+
+```cpp
+FieldBase::FieldBase(const FieldBase &field)
+    : values(field.values)
+{
+    if (!field.stringIndexes.empty())
+    {
+        stringIndexes = field.stringIndexes;
+    }
+}
+```

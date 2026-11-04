@@ -1,0 +1,8 @@
+The copy is already the minimal deep copy, so I kept the direct member-initializer form (no default-construct-then-assign) and matched the member declaration order so the compiler emits the tightest code and inlines the standard vector copy constructors.
+
+```cpp
+FieldBase::FieldBase(const FieldBase &field)
+    : values(field.values), stringIndexes(field.stringIndexes)
+{
+}
+```

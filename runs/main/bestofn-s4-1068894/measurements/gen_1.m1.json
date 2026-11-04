@@ -1,0 +1,6 @@
+{
+ "error": "checksum bd3f3c71c37880c9 does not match the reference 92bebfd7f8978fc8; the decoder produced different values",
+ "ok": false,
+ "rebuilt": 1,
+ "stage": "correctness"
+}

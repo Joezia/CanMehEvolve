@@ -1,0 +1,38 @@
+--- a/src/fit_profile.cpp
++++ b/src/fit_profile.cpp
+@@ -11,6 +11,8 @@
+ 
+ 
+ #include "fit_profile.hpp"
++#include <algorithm>
++#include <vector>
+ 
+ namespace fit
+ {
+@@ -3055,15 +3057,21 @@
+    { NULL, "pad", FIT_MESG_NUM_PAD, 0 },
+ };
+ 
++
+ const Profile::MESG* Profile::GetMesg(const FIT_UINT16 num)
+ {
+-    for (int i = 0; i < MESGS; i++)
+-    {
+-        if (mesgs[i].num == num)
+-            return &mesgs[i];
++    // Use a precomputed hash table for O(1) lookup instead of linear scan
++    static bool initialized = false;
++    static std::vector<const Profile::MESG*> lookup_table(65536, nullptr);
++
++    if (!initialized) {
++        for (int i = 0; i < MESGS; i++) {
++            lookup_table[mesgs[i].num] = &mesgs[i];
++        }
++        initialized = true;
+     }
+ 
+-    return NULL;
++    return lookup_table[num];
+ }
+ 
+ const Profile::MESG* Profile::GetMesg(const std::string& name)

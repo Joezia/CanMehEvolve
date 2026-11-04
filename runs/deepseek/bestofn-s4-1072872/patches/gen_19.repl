@@ -1,0 +1,76 @@
+Cached the profile field lookup and the last reference field's rounded value, avoiding repeated `Profile::GetField` and `GetFLOAT64Value` calls for the same inputs.
+
+```cpp
+FIT_UINT16 Mesg::GetActiveSubFieldIndex(const FIT_UINT8 fieldNum) const
+{
+    static FIT_UINT32 cachedKey[1024];
+    static const Profile::FIELD* cachedProfileField[1024];
+    static bool cacheValid[1024];
+
+    const FIT_MESG_NUM mesgNum = GetNum();
+    const FIT_UINT32 key = (static_cast<FIT_UINT32>(mesgNum) << 8) | fieldNum;
+    const unsigned cacheIdx = (key * 31u) & 1023u;
+
+    const Profile::FIELD* field;
+    if (cacheValid[cacheIdx] && cachedKey[cacheIdx] == key)
+    {
+        field = cachedProfileField[cacheIdx];
+    }
+    else
+    {
+        field = Profile::GetField(mesgNum, fieldNum);
+        cacheValid[cacheIdx] = true;
+        cachedKey[cacheIdx] = key;
+        cachedProfileField[cacheIdx] = field;
+    }
+
+    if (field == FIT_NULL)
+        return FIT_SUBFIELD_INDEX_MAIN_FIELD;
+
+    FIT_UINT8 lastRefNum = 0;
+    FIT_SINT32 lastRefRounded = 0;
+    bool lastRefValid = false;
+    bool lastRefIsNull = false;
+
+    for (int i = 0; i < (int) field->numSubFields; i++)
+    {
+        const Profile::SUBFIELD& subField = field->subFields[i];
+
+        for (int j = 0; j < (int) subField.numMaps; j++)
+        {
+            const FIT_UINT8 refNum = subField.maps[j].refFieldNum;
+            FIT_SINT32 refRounded = 0;
+
+            if (lastRefValid && lastRefNum == refNum)
+            {
+                if (lastRefIsNull)
+                    continue;
+                refRounded = lastRefRounded;
+            }
+            else
+            {
+                const Field* refField = GetField(refNum);
+                lastRefNum = refNum;
+                lastRefValid = true;
+
+                if (refField == FIT_NULL)
+                {
+                    lastRefIsNull = true;
+                    continue;
+                }
+
+                lastRefIsNull = false;
+                FIT_FLOAT64 refValue = refField->GetFLOAT64Value(0, FIT_SUBFIELD_INDEX_MAIN_FIELD);
+                refValue += ((refValue >= 0.0) ? (0.5) : (-0.5));
+                refRounded = (FIT_SINT32)refValue;
+                lastRefRounded = refRounded;
+            }
+
+            if (refRounded == subField.maps[j].refFieldValue)
+                return ((FIT_UINT16) i);
+        }
+    }
+
+    return FIT_SUBFIELD_INDEX_MAIN_FIELD;
+}
+```

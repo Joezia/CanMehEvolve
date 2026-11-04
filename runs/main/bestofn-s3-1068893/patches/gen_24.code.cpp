@@ -1,0 +1,5 @@
+
+    FIT_UINT16 GetProcessingInterval(void) const
+    {
+        return GetFieldUINT16Value(0, 0, FIT_SUBFIELD_INDEX_MAIN_FIELD);
+    }

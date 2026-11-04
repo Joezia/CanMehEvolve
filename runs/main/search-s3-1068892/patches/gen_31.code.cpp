@@ -1,0 +1,63 @@
+
+```cpp
+FIT_BOOL FieldBase::Read(const void *data, const FIT_UINT8 size)
+{
+    FIT_UINT8 type = GetType() & FIT_BASE_TYPE_NUM_MASK;
+    FIT_UINT8 typeSize = baseTypeSizes[type];
+    const FIT_BYTE *byteData = static_cast<const FIT_BYTE*>(data);
+    FIT_UINT8 bytesLeft = size;
+
+    values.clear();
+
+    if (GetType() == FIT_BASE_TYPE_STRING)
+    {
+        // Find first non-zero byte
+        FIT_UINT8 idx = 0;
+        while (idx < bytesLeft && byteData[idx] == 0) idx++;
+
+        if (idx == bytesLeft) return FIT_TRUE; // all zeros, empty string
+
+        // Reserve space for performance
+        values.reserve(bytesLeft + 1);
+
+        // Copy all bytes, track string indexes
+        FIT_UINT8 stringPos = 0;
+        stringIndexes.clear();
+        stringIndexes.push_back(stringPos);
+
+        const FIT_BYTE* end = byteData + bytesLeft;
+        for (const FIT_BYTE* p = byteData + idx; p < end; ++p)
+        {
+            FIT_BYTE byte = *p;
+            values.push_back(byte);
+            stringPos++;
+
+            if (byte == 0 && p + 1 < end)
+                stringIndexes.push_back(stringPos);
+        }
+
+        // Ensure null termination
+        if (values.empty() || values.back() != 0)
+            values.push_back(0);
+    }
+    else
+    {
+        // For non-string types: skip leading invalid values
+        const FIT_BYTE* p = byteData;
+        const FIT_BYTE* end = byteData + bytesLeft;
+        const FIT_BYTE* invalid = baseTypeInvalids[type];
+
+        while (p + typeSize <= end)
+        {
+            if (memcmp(p, invalid, typeSize) != 0)
+                break;
+            p += typeSize;
+        }
+
+        // Copy remaining valid data
+        if (p < end)
+            values.insert(values.end(), p, end);
+    }
+
+    return FIT_TRUE;
+}

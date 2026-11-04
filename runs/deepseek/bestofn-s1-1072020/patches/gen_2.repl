@@ -1,0 +1,7 @@
+This is already a trivial forwarding constructor with an empty body, so there is no redundant work to remove; any change risks altering behavior, so the fastest correct version is identical.
+
+```cpp
+    AntRxMesg(const Mesg &mesg) : Mesg(mesg)
+    {
+    }
+```

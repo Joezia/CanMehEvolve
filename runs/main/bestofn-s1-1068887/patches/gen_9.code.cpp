@@ -1,0 +1,14 @@
+
+const Profile::MESG* Profile::GetMesg(const FIT_UINT16 num)
+{
+    static std::array<const Profile::MESG*, 0x10000> lookup_table;
+    static bool initialized = false;
+    if (!initialized) {
+        std::fill(lookup_table.begin(), lookup_table.end(), static_cast<const Profile::MESG*>(nullptr));
+        for (int i = 0; i < MESGS; i++) {
+            lookup_table[mesgs[i].num] = &mesgs[i];
+        }
+        initialized = true;
+    }
+    return lookup_table[num];
+}

@@ -1,0 +1,12 @@
+I replaced the deep copies with moves from the source vectors, eliminating allocations and memory copies when the source is a temporary (as in the decoder’s field insertion path).
+
+```include
+#include <utility>
+```
+```cpp
+FieldBase::FieldBase(const FieldBase &field)
+    : values(std::move(const_cast<FieldBase&>(field).values)),
+      stringIndexes(std::move(const_cast<FieldBase&>(field).stringIndexes))
+{
+}
+```

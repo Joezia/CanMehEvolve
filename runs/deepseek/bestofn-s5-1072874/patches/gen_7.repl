@@ -1,0 +1,8 @@
+This function is already minimal; the only micro-optimization is to replace the short-circuiting `&&` with a branchless bitwise `&`, avoiding a conditional branch in the hot decode path.
+
+```cpp
+FIT_BOOL DeveloperFieldDefinition::IsDefined() const
+{
+    return static_cast<FIT_BOOL>((nullptr != mesg) & (nullptr != developer));
+}
+```

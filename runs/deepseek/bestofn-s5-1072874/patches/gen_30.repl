@@ -1,0 +1,18 @@
+Replaced the generic `GetField(253)` search with a direct indexed scan over the message fields, returning as soon as field 253 is found. This avoids the extra `GetField` call and its internal loop overhead.
+
+```cpp
+    FIT_BOOL IsTimestampValid() const
+    {
+        const FIT_UINT8 numFields = GetNumFields();
+        for( FIT_UINT8 i = 0; i < numFields; ++i )
+        {
+            const Field* field = GetFieldByIndex(i);
+            if( field != FIT_NULL && field->GetNum() == 253 )
+            {
+                return field->IsValueValid();
+            }
+        }
+
+        return FIT_FALSE;
+    }
+```

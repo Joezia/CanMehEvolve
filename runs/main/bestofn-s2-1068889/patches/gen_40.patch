@@ -1,0 +1,29 @@
+--- a/src/fit_field_base.cpp
++++ b/src/fit_field_base.cpp
+@@ -16,6 +16,7 @@
+ #include "fit_field_base.hpp"
+ #include "fit_mesg.hpp"
+ #include "fit_unicode.hpp"
++#include <cstdint>
+ 
+ namespace fit
+ {
+@@ -100,13 +101,16 @@
+     return (FIT_UINT8)values.size();
+ }
+ 
++
++```cpp
+ FIT_UINT8 FieldBase::GetNumValues(void) const
+ {
+     if (!IsValid())
+         return 0;
+ 
+-    if (GetType() != FIT_BASE_TYPE_STRING)
+-        return (FIT_UINT8)(values.size() / baseTypeSizes[GetType() & FIT_BASE_TYPE_NUM_MASK]);
++    const FIT_BASE_TYPE type = GetType();
++    if (type != FIT_BASE_TYPE_STRING)
++        return (FIT_UINT8)(values.size() / baseTypeSizes[type & FIT_BASE_TYPE_NUM_MASK]);
+ 
+     return (FIT_UINT8)stringIndexes.size();
+ }

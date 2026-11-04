@@ -1,0 +1,6 @@
+{
+ "error": "/home/z/zhouzia/Workspace/CanMehEvolve/build/work-1072869/tree/src/fit_field_base.cpp: In member function ‘FIT_BYTE fit::FieldBase::GetValuesBYTE(FIT_UINT8) const’:\n/home/z/zhouzia/Workspace/CanMehEvolve/build/work-1072869/tree/src/fit_field_base.cpp:136:21: error: ‘size’ was not declared in this scope; did you mean ‘std::size’?\n  136 |     return (index < size) ? values[index] : FIT_BYTE_INVALID;\n      |                     ^~~~\n      |                     std::size\nIn file included from /usr/include/c++/13/string:53,\n                 from /usr/include/c++/13/bits/locale_classes.h:40,\n                 from /usr/include/c++/13/bits/ios_base.h:41,\n                 from /usr/include/c++/13/ios:44,\n                 from /usr/include/c++/13/istream:40,\n                 from /usr/include/c++/13/sstream:40,\n                 from /home/z/zhouzia/Workspace/CanMehEvolve/build/work-1072869/tree/src/fit_field_base.cpp:14:\n/usr/include/c++/13/bits/range_access.h:274:5: note: ‘std::size’ declared here\n  274 |     size(const _Tp (&)[_Nm]) noexcept\n      |     ^~~~\n",
+ "ok": false,
+ "rebuilt": 8,
+ "stage": "compile"
+}

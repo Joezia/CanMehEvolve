@@ -1,0 +1,4 @@
+bestofn-s4-1072872 gen7 job 1074077
+greedy-s1-1072019 gen35 job 1074078
+greedy-s2-1072867 gen33 job 1074079
+greedy-s3-1072869 gen34 job 1074080

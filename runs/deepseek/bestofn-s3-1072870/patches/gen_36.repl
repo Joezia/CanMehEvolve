@@ -1,0 +1,9 @@
+The explicit null-check branch is replaced with a short-circuit boolean expression, letting the compiler fold the null test and validity test into tighter branchless code without the extra return path.
+
+```cpp
+    FIT_BOOL IsAvgCombinedPedalSmoothnessValid() const
+    {
+        const Field* field = GetField(63);
+        return (FIT_NULL != field) && field->IsValueValid();
+    }
+```

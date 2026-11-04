@@ -1,0 +1,15 @@
+```cpp
+#include <cstddef>
+
+```cpp
+FIT_UINT8 FieldBase::GetNumValues(void) const
+{
+    if (!IsValid())
+        return 0;
+
+    if (GetType() != FIT_BASE_TYPE_STRING)
+        return static_cast<FIT_UINT8>(values.size() / baseTypeSizes[GetType() & FIT_BASE_TYPE_NUM_MASK]);
+
+    return static_cast<FIT_UINT8>(stringIndexes.size());
+}
+```

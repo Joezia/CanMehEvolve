@@ -1,0 +1,16 @@
+File: src/fit_profile.cpp
+Function: Profile::GetMesg (10 lines)
+One full decode of the four files takes about 359.2 ms in the stock build.
+Time of the current version of the whole library relative to stock: 0.961 (below 1.0 is faster). Best measured so far: 0.961.
+
+Current text of the function:
+```cpp
+const Profile::MESG* Profile::GetMesg(const FIT_UINT16 num)
+{
+    const auto* end = mesgs + MESGS;
+    const auto* it = std::find_if(mesgs, end, [num](const Profile::MESG& m) { return m.num == num; });
+    return (it != end) ? it : NULL;
+}
+
+```
+Return the faster replacement now.

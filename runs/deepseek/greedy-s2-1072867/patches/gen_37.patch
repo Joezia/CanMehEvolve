@@ -1,0 +1,319 @@
+--- a/src/fit_decode.cpp
++++ b/src/fit_decode.cpp
+@@ -238,42 +238,48 @@
+             bytesRead = (FIT_UINT32)file->gcount();
+         }
+ 
+-        for (; currentByteIndex < bytesRead; currentByteIndex++)
++        FIT_UINT32 i = currentByteIndex;
++        const FIT_UINT32 br = bytesRead;
++        for (; i < br; ++i)
+         {
+-            if (pause)
+-                return FIT_FALSE;
++            decodeReturn = ReadByte((FIT_UINT8)buffer[i]);
+ 
+-            decodeReturn = ReadByte((FIT_UINT8)buffer[currentByteIndex]);
++            if (__builtin_expect(decodeReturn == RETURN_CONTINUE, 1))
++            {
++                ++currentByteOffset;
++                continue;
++            }
+ 
+-            switch (decodeReturn) {
+-                case RETURN_CONTINUE:
+-                    break;
++            currentByteIndex = i;
+ 
++            switch (decodeReturn) {
+                 case RETURN_MESG:
+-                    if (mesg.GetNum() == FIT_MESG_NUM_DEVELOPER_DATA_ID)
++                {
++                    const FIT_MESG_NUM mesgNum = mesg.GetNum();
++                    if (mesgNum == FIT_MESG_NUM_DEVELOPER_DATA_ID)
+                     {
+                         DeveloperDataIdMesg devIdMesg(mesg);
+ 
+                         if (!devIdMesg.IsDeveloperDataIndexValid()) {
+-							throw fit::RuntimeException("Invalid developer data index in DeveloperDataIdMesg");
+-						}
++                            throw fit::RuntimeException("Invalid developer data index in DeveloperDataIdMesg");
++                        }
+ 
+                         FIT_UINT8 index = devIdMesg.GetDeveloperDataIndex();
+                         developers[index] = devIdMesg;
+                         descriptions[index] = std::unordered_map<FIT_UINT8, FieldDescriptionMesg>();
+                     }
+-                    else if (mesg.GetNum() == FIT_MESG_NUM_FIELD_DESCRIPTION)
++                    else if (mesgNum == FIT_MESG_NUM_FIELD_DESCRIPTION)
+                     {
+                         FieldDescriptionMesg descMesg(mesg);
+ 
+                         if (!descMesg.IsDeveloperDataIndexValid()) {
+-							throw fit::RuntimeException("Invalid developer data index in FieldDescriptionMesg");
+-						}
++                            throw fit::RuntimeException("Invalid developer data index in FieldDescriptionMesg");
++                        }
+ 
+-						if (!descMesg.IsFieldDefinitionNumberValid())
+-						{
+-							throw fit::RuntimeException("Invalid developer field definition number in FieldDescriptionMesg");
+-						}
++                        if (!descMesg.IsFieldDefinitionNumberValid())
++                        {
++                            throw fit::RuntimeException("Invalid developer field definition number in FieldDescriptionMesg");
++                        }
+ 
+                         FIT_UINT8 index = descMesg.GetDeveloperDataIndex();
+                         FIT_UINT8 fldNum = descMesg.GetFieldDefinitionNumber();
+@@ -299,6 +305,7 @@
+                     if (mesgListener)
+                         mesgListener->OnMesg(mesg);
+                     break;
++                }
+ 
+                 case RETURN_MESG_DEF:
+                    
+@@ -310,15 +317,20 @@
+ 
+                 case RETURN_END_OF_FILE:
+                      // Increment so we do not read the same byte twice in the case of a chained file
+-                    currentByteIndex++;
+-                    currentByteOffset++;
++                    currentByteIndex = i + 1;
++                    ++currentByteOffset;
+                     return FIT_TRUE;
+ 
+                 default:
+-                    currentByteOffset++;
++                    ++currentByteOffset;
+                     return FIT_TRUE;
+             }
+-            currentByteOffset++;
++            ++currentByteOffset;
++            if (__builtin_expect(pause, 0))
++            {
++                currentByteIndex = i + 1;
++                return FIT_FALSE;
++            }
+         }
+         currentByteIndex = 0;
+     } while ( file->good() );
+--- a/src/fit_field.cpp
++++ b/src/fit_field.cpp
+@@ -92,9 +92,10 @@
+ 
+ FIT_UINT8 Field::GetNum(void) const
+ {
+-    if ((profile == NULL) || (profileIndex >= profile->numFields))
++    const auto p = profile;
++    if (__builtin_expect(p == NULL, 0))
+         return FIT_FIELD_NUM_INVALID;
+-    return profile->fields[profileIndex].num;
++    return p->fields[profileIndex].num;
+ }
+ 
+ FIT_UINT8 Field::GetType() const
+--- a/src/fit_field_base.cpp
++++ b/src/fit_field_base.cpp
+@@ -16,6 +16,7 @@
+ #include "fit_field_base.hpp"
+ #include "fit_mesg.hpp"
+ #include "fit_unicode.hpp"
++#include <cstring>
+ 
+ namespace fit
+ {
+@@ -25,9 +26,8 @@
+ }
+ 
+ FieldBase::FieldBase(const FieldBase &field)
++    : values(field.values), stringIndexes(field.stringIndexes)
+ {
+-    values = field.values;
+-    stringIndexes = field.stringIndexes;
+ }
+ 
+ FieldBase::~FieldBase()
+@@ -1131,20 +1131,53 @@
+ template <typename T>
+ T FieldBase::GetValue(const FIT_UINT8 fieldArrayIndex) const
+ {
+-    FIT_UINT8 size = baseTypeSizes[GetType() & FIT_BASE_TYPE_NUM_MASK];
+-    if (fieldArrayIndex >= (FIT_UINT8)values.size())
++    const FIT_UINT8 type = GetType() & FIT_BASE_TYPE_NUM_MASK;
++
++    if (fieldArrayIndex >= static_cast<FIT_UINT8>(values.size()))
++    {
++        return *reinterpret_cast<const T*>(baseTypeInvalids[type]);
++    }
++
++    const FIT_UINT8 size = baseTypeSizes[type];
++    const FIT_UINT8* const p = values.data() + (fieldArrayIndex * size);
++
++    if (size == 1)
++    {
++        return static_cast<T>(p[0]);
++    }
++
++    if constexpr (std::is_integral<T>::value)
+     {
+-        return *reinterpret_cast<const T*>(baseTypeInvalids[GetType() & FIT_BASE_TYPE_NUM_MASK]);
++        if (size == sizeof(T))
++        {
++            FIT_UINT64 rv = 0;
++            std::memcpy(&rv, p, sizeof(T));
++            return static_cast<T>(rv);
++        }
+     }
+ 
+-    T rv = 0;
++    FIT_UINT64 rv = 0;
+ 
+-    for (int i = 0; i < size; i++)
++    switch (size)
+     {
+-        rv |= static_cast<T>(values[(fieldArrayIndex * size) + i]) << (i * 8);
++    case 2:
++        std::memcpy(&rv, p, 2);
++        break;
++    case 4:
++        std::memcpy(&rv, p, 4);
++        break;
++    case 8:
++        std::memcpy(&rv, p, 8);
++        break;
++    default:
++        for (int i = 0; i < size; ++i)
++        {
++            rv |= static_cast<FIT_UINT64>(p[i]) << (i * 8);
++        }
++        break;
+     }
+ 
+-    return rv;
++    return static_cast<T>(rv);
+ }
+ 
+ 
+--- a/src/fit_mesg.cpp
++++ b/src/fit_mesg.cpp
+@@ -174,10 +174,15 @@
+ 
+ void Mesg::AddField(const Field& field)
+ {
+-    Field *existingField = GetField(field.GetNum());
+-
+-    if (existingField == FIT_NULL)
+-        fields.push_back(field);
++    const auto num = field.GetNum();
++    for (const Field& f : fields)
++    {
++        if (f.GetNum() == num)
++            return;
++    }
++    if (fields.empty())
++        fields.reserve(16);
++    fields.push_back(field);
+ }
+ 
+ Field* Mesg::AddField(const FIT_UINT8 fieldNum)
+--- a/src/fit_profile.cpp
++++ b/src/fit_profile.cpp
+@@ -11,6 +11,7 @@
+ 
+ 
+ #include "fit_profile.hpp"
++#include <new>
+ 
+ namespace fit
+ {
+@@ -3057,13 +3058,27 @@
+ 
+ const Profile::MESG* Profile::GetMesg(const FIT_UINT16 num)
+ {
+-    for (int i = 0; i < MESGS; i++)
++    static const Profile::MESG* lookup[65536] = {};
++    static FIT_UINT16 max_num = 0;
++    static bool initialized = false;
++
++    if (!initialized)
+     {
+-        if (mesgs[i].num == num)
+-            return &mesgs[i];
++        for (int i = 0; i < MESGS; i++)
++        {
++            const FIT_UINT16 n = mesgs[i].num;
++            if (lookup[n] == NULL)
++                lookup[n] = &mesgs[i];
++            if (n > max_num)
++                max_num = n;
++        }
++        initialized = true;
+     }
+ 
+-    return NULL;
++    if (num > max_num)
++        return NULL;
++
++    return lookup[num];
+ }
+ 
+ const Profile::MESG* Profile::GetMesg(const std::string& name)
+@@ -3079,18 +3094,49 @@
+ 
+ const FIT_UINT16 Profile::GetFieldIndex(const FIT_UINT16 mesgNum, const FIT_UINT8 fieldNum)
+ {
+-    const MESG *mesg = GetMesg(mesgNum);
++    static FIT_UINT16 *fieldIndex[65536] = {};
++    FIT_UINT16 *table = fieldIndex[mesgNum];
+ 
+-    if (mesg == NULL)
+-        return FIT_UINT16_INVALID;
++    if (table == NULL)
++    {
++        const MESG *mesg = GetMesg(mesgNum);
++
++        if (mesg == NULL)
++        {
++            fieldIndex[mesgNum] = reinterpret_cast<FIT_UINT16 *>(1);
++            return FIT_UINT16_INVALID;
++        }
++
++        table = new (std::nothrow) FIT_UINT16[256];
++
++        if (table == NULL)
++        {
++            for (FIT_UINT16 i = 0; i < mesg->numFields; i++)
++            {
++                if (mesg->fields[i].num == fieldNum)
++                    return i;
++            }
++            return FIT_UINT16_INVALID;
++        }
++
++        for (FIT_UINT16 i = 0; i < 256; i++)
++            table[i] = FIT_UINT16_INVALID;
++
++        for (FIT_UINT16 i = 0; i < mesg->numFields; i++)
++        {
++            const FIT_UINT8 num = mesg->fields[i].num;
++            if (table[num] == FIT_UINT16_INVALID)
++                table[num] = i;
++        }
+ 
+-    for (FIT_UINT16 i = 0; i < mesg->numFields; i++)
++        fieldIndex[mesgNum] = table;
++    }
++    else if (table == reinterpret_cast<FIT_UINT16 *>(1))
+     {
+-        if (mesg->fields[i].num == fieldNum)
+-            return i;
++        return FIT_UINT16_INVALID;
+     }
+ 
+-    return FIT_UINT16_INVALID;
++    return table[fieldNum];
+ }
+ 
+ const FIT_UINT16 Profile::GetFieldIndex(const std::string& mesgName, const std::string& fieldName)

@@ -1,0 +1,53 @@
+I added a small direct-mapped cache for `(mesgNum, fieldNum)` lookups plus a last-message pointer cache to avoid repeated `GetMesg` scans. This removes the linear message search and field scan on the hot repeated lookups during decoding.
+
+```cpp
+const FIT_UINT16 Profile::GetFieldIndex(const FIT_UINT16 mesgNum, const FIT_UINT8 fieldNum)
+{
+    struct CacheEntry
+    {
+        FIT_UINT32 keyPlusOne;
+        FIT_UINT16 index;
+    };
+    static CacheEntry cache[1024] = {};
+    static FIT_UINT16 lastMesgNum = 0;
+    static const MESG *lastMesg = NULL;
+    static bool lastMesgValid = false;
+
+    const FIT_UINT32 key = (static_cast<FIT_UINT32>(mesgNum) << 8) | fieldNum;
+    const FIT_UINT32 keyPlusOne = key + 1;
+    const FIT_UINT32 slot = (key * 2654435761u) >> 22;
+    CacheEntry &entry = cache[slot];
+    if (entry.keyPlusOne == keyPlusOne)
+        return entry.index;
+
+    const MESG *mesg;
+    if (lastMesgValid && mesgNum == lastMesgNum)
+    {
+        mesg = lastMesg;
+    }
+    else
+    {
+        mesg = GetMesg(mesgNum);
+        lastMesgNum = mesgNum;
+        lastMesg = mesg;
+        lastMesgValid = true;
+    }
+
+    FIT_UINT16 index = FIT_UINT16_INVALID;
+    if (mesg != NULL)
+    {
+        for (FIT_UINT16 i = 0; i < mesg->numFields; i++)
+        {
+            if (mesg->fields[i].num == fieldNum)
+            {
+                index = i;
+                break;
+            }
+        }
+    }
+
+    entry.keyPlusOne = keyPlusOne;
+    entry.index = index;
+    return index;
+}
+```

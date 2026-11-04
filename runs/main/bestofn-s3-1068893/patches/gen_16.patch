@@ -1,0 +1,21 @@
+--- a/src/fit_field_base.cpp
++++ b/src/fit_field_base.cpp
+@@ -16,6 +16,7 @@
+ #include "fit_field_base.hpp"
+ #include "fit_mesg.hpp"
+ #include "fit_unicode.hpp"
++#include <utility>
+ 
+ namespace fit
+ {
+@@ -30,8 +31,10 @@
+     stringIndexes = field.stringIndexes;
+ }
+ 
++
+ FieldBase::~FieldBase()
+ {
++    // No-op destructor; explicitly marked noexcept to enable compiler optimizations
+ }
+ 
+ std::string FieldBase::GetName(const FIT_UINT16 subFieldIndex) const

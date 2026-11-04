@@ -1,0 +1,142 @@
+{
+  "1038": {
+    "accepted": 0,
+    "attempts": 1,
+    "best_gain": 0.0,
+    "file": "src/fit_chrono_shot_session_mesg.hpp",
+    "label": "IsStandardDeviationValid"
+  },
+  "113": {
+    "accepted": 1,
+    "attempts": 5,
+    "best_gain": 0.0009024634811176657,
+    "file": "src/fit_field.cpp",
+    "label": "Field::Field"
+  },
+  "115": {
+    "accepted": 0,
+    "attempts": 1,
+    "best_gain": 0.0,
+    "file": "src/fit_field.cpp",
+    "label": "Field::Field"
+  },
+  "122": {
+    "accepted": 1,
+    "attempts": 3,
+    "best_gain": 0.0002944649918253939,
+    "file": "src/fit_field.cpp",
+    "label": "Field::GetNum"
+  },
+  "123": {
+    "accepted": 1,
+    "attempts": 2,
+    "best_gain": 0.0005409718985549539,
+    "file": "src/fit_field.cpp",
+    "label": "Field::GetType"
+  },
+  "125": {
+    "accepted": 1,
+    "attempts": 1,
+    "best_gain": 0.0002556242642209883,
+    "file": "src/fit_field.cpp",
+    "label": "Field::GetScale"
+  },
+  "134": {
+    "accepted": 1,
+    "attempts": 1,
+    "best_gain": 0.001880499100387234,
+    "file": "src/fit_field_base.cpp",
+    "label": "FieldBase::FieldBase"
+  },
+  "139": {
+    "accepted": 1,
+    "attempts": 1,
+    "best_gain": 0.00083111976271244,
+    "file": "src/fit_field_base.cpp",
+    "label": "FieldBase::GetScale"
+  },
+  "143": {
+    "accepted": 1,
+    "attempts": 1,
+    "best_gain": 0.0041910792890715864,
+    "file": "src/fit_field_base.cpp",
+    "label": "FieldBase::GetNumValues"
+  },
+  "1569": {
+    "accepted": 0,
+    "attempts": 2,
+    "best_gain": 0.0,
+    "file": "src/fit_dive_summary_mesg.hpp",
+    "label": "GetSurfaceInterval"
+  },
+  "166": {
+    "accepted": 0,
+    "attempts": 2,
+    "best_gain": 0.0,
+    "file": "src/fit_field_base.cpp",
+    "label": "FieldBase::GetFLOAT64Value"
+  },
+  "174": {
+    "accepted": 0,
+    "attempts": 1,
+    "best_gain": 0.0,
+    "file": "src/fit_field_base.cpp",
+    "label": "FieldBase::AddRawValue"
+  },
+  "192": {
+    "accepted": 0,
+    "attempts": 1,
+    "best_gain": 0.0,
+    "file": "src/fit_field_base.cpp",
+    "label": "FieldBase::Read"
+  },
+  "199": {
+    "accepted": 0,
+    "attempts": 1,
+    "best_gain": 0.0,
+    "file": "src/fit_field_base.cpp",
+    "label": "FieldBase::GetBitsValueT"
+  },
+  "205": {
+    "accepted": 0,
+    "attempts": 1,
+    "best_gain": 0.0,
+    "file": "src/fit_field_definition.cpp",
+    "label": "FieldDefinition::GetType"
+  },
+  "225": {
+    "accepted": 0,
+    "attempts": 1,
+    "best_gain": 0.0,
+    "file": "src/fit_mesg.cpp",
+    "label": "Mesg::HasField"
+  },
+  "234": {
+    "accepted": 1,
+    "attempts": 1,
+    "best_gain": 0.0010735353049737828,
+    "file": "src/fit_mesg.cpp",
+    "label": "Mesg::GetField"
+  },
+  "3105": {
+    "accepted": 0,
+    "attempts": 2,
+    "best_gain": 0.0,
+    "file": "src/fit_nap_event_mesg.hpp",
+    "label": "SetEndTimezoneOffset"
+  },
+  "55": {
+    "accepted": 0,
+    "attempts": 1,
+    "best_gain": 0.0,
+    "file": "src/fit_decode.cpp",
+    "label": "Decode::UpdateEndianness"
+  },
+  "574": {
+    "accepted": 3,
+    "attempts": 11,
+    "best_gain": 0.0684493138219946,
+    "file": "src/fit_profile.cpp",
+    "label": "Profile::GetMesg"
+  }
+}

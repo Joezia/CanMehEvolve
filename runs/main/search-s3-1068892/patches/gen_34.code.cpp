@@ -1,0 +1,12 @@
+
+const Profile::MESG* Profile::GetMesg(const FIT_UINT16 num)
+{
+    // Binary search on sorted mesgs array for O(log n) lookup instead of O(n)
+    auto it = std::lower_bound(mesgs, mesgs + MESGS, num,
+        [](const Profile::MESG& mesg, FIT_UINT16 value) {
+            return mesg.num < value;
+        });
+    if (it != mesgs + MESGS && it->num == num)
+        return it;
+    return NULL;
+}

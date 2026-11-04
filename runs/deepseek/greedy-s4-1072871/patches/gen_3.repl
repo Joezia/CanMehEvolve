@@ -1,0 +1,14 @@
+Replaced the indexed loop with a range-based loop so the vector bounds are loaded once and the search advances by pointer instead of recomputing `size()` and indexing each iteration.
+
+```cpp
+Field* Mesg::GetField(const FIT_UINT8 fieldNum)
+{
+    for (Field& field : fields)
+    {
+        if (field.GetNum() == fieldNum)
+            return &field;
+    }
+
+    return FIT_NULL;
+}
+```

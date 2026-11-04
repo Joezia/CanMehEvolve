@@ -1,0 +1,102 @@
+{
+  "api_calls": 1,
+  "best_confirmed_generation": 0,
+  "best_confirmed_speedup": 1.0,
+  "best_ranked_generation": 38,
+  "best_ranked_speedup": 1.1556207437111499,
+  "best_retained_speedup": 1.0,
+  "completion_tokens": 6951,
+  "confirmed_candidates": 0,
+  "elapsed_s": 66.672292458,
+  "ended_because": "generations exhausted",
+  "finished": "2026-11-04T15:23:37+0800",
+  "improved_on_parent_candidates": 0,
+  "llm_seconds": 63.365235046,
+  "max_tokens": 32768,
+  "mode": "greedy",
+  "outcomes": {
+    "compile": 1,
+    "show": 1
+  },
+  "prior_api_calls": 39,
+  "prompt_tokens": 455,
+  "rank_updates": [
+    {
+      "R": 0.9850613833931566,
+      "generation": 1,
+      "label": "Mesg::GetActiveSubFieldIndexByFieldIndex",
+      "previous_R": 1.0,
+      "region": 242,
+      "speedup": 1.0151651631651477
+    },
+    {
+      "R": 0.9335275233785115,
+      "generation": 6,
+      "label": "Profile::GetMesg",
+      "previous_R": 0.9850613833931566,
+      "region": 574,
+      "speedup": 1.0712056955545555
+    },
+    {
+      "R": 0.8873165875875504,
+      "generation": 7,
+      "label": "FieldBase::FieldBase",
+      "previous_R": 0.9335275233785115,
+      "region": 134,
+      "speedup": 1.1269934699618487
+    },
+    {
+      "R": 0.8855931205757176,
+      "generation": 21,
+      "label": "FieldBase::FieldBase",
+      "previous_R": 0.8873165875875504,
+      "region": 134,
+      "speedup": 1.1291867300752148
+    },
+    {
+      "R": 0.8825911571195899,
+      "generation": 23,
+      "label": "Mesg::GetField",
+      "previous_R": 0.8855931205757176,
+      "region": 234,
+      "speedup": 1.1330274407728984
+    },
+    {
+      "R": 0.8754066300279418,
+      "generation": 24,
+      "label": "Field::Field",
+      "previous_R": 0.8825911571195899,
+      "region": 115,
+      "speedup": 1.1423262809513806
+    },
+    {
+      "R": 0.8732577403245796,
+      "generation": 26,
+      "label": "FieldBase::SetUINT64ZValue",
+      "previous_R": 0.8754066300279418,
+      "region": 188,
+      "speedup": 1.1451372874499937
+    },
+    {
+      "R": 0.8684809328879977,
+      "generation": 35,
+      "label": "Field::GetNum",
+      "previous_R": 0.8732577403245796,
+      "region": 122,
+      "speedup": 1.1514357565394744
+    },
+    {
+      "R": 0.8653357993459075,
+      "generation": 38,
+      "label": "FieldBase::GetValue",
+      "previous_R": 0.8684809328879977,
+      "region": 196,
+      "speedup": 1.1556207437111499
+    }
+  ],
+  "reasoning_tokens": 6702,
+  "resumed_from": "/home/z/zhouzia/Workspace/CanMehEvolve/runs/deepseek/greedy-s1-1072019",
+  "seed": 1,
+  "total_tokens": 7406,
+  "truncated_replies": 0
+}

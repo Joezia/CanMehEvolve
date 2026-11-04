@@ -1,0 +1,5 @@
+experiments/patches/greedy-s5-unexplained: 7 patches applied in order with git am; tree vs final cumulative patch: IDENTICAL; messages with What:/Why explanation: 0/7
+experiments/patches/greedy-s1-unexplained: 9 patches applied in order with git am; tree vs final cumulative patch: IDENTICAL; messages with What:/Why explanation: 0/9
+patches: 12 patches applied in order with git am; tree vs final cumulative patch: IDENTICAL; messages with What:/Why explanation: 12/12
+experiments/patches/greedy-s2-unexplained: 11 patches applied in order with git am; tree vs final cumulative patch: IDENTICAL; messages with What:/Why explanation: 0/11
+experiments/patches/greedy-s4-unexplained: 11 patches applied in order with git am; tree vs final cumulative patch: IDENTICAL; messages with What:/Why explanation: 0/11

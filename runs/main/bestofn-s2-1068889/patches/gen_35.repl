@@ -1,0 +1,16 @@
+Looking at this function, the main optimization opportunity is to reduce the number of pointer dereferences and bounds checks. The function performs two null checks and then accesses nested array elements. We can optimize this by caching the profile pointer and using a local reference to avoid repeated dereferences.
+
+However, since the function is very small (6 lines) and already quite efficient, the main improvement comes from reducing memory accesses. We can also note that `profileIndex` is likely an unsigned type, so comparing against `numFields` is safe.
+
+The key insight is to avoid dereferencing `profile` multiple times and to make the bounds check more efficient.
+
+```cpp
+```cpp
+FIT_UINT16 Field::GetNumSubFields(void) const
+{
+    const Profile* p = profile;
+    if (p == NULL || profileIndex >= p->numFields)
+        return 0;
+    return p->fields[profileIndex].numSubFields;
+}
+```

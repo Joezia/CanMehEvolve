@@ -1,0 +1,90 @@
+{
+  "calibration main pairs (6 pairs, both batches)": {
+    "n_measurements": 600,
+    "n_series": 6000,
+    "median_of_per_measurement_process_medians": -0.10444553843582427,
+    "range_of_per_measurement_process_medians": [
+      -0.4113259510748189,
+      0.26357423852029077
+    ],
+    "pooled_single_series_median": -0.10800121641217995,
+    "pooled_single_series_range": [
+      -0.9251306196744719,
+      0.7709648771138695
+    ]
+  },
+  "calibration null pair": {
+    "n_measurements": 100,
+    "n_series": 1000,
+    "median_of_per_measurement_process_medians": -0.09270408380339588,
+    "range_of_per_measurement_process_medians": [
+      -0.36751667511313635,
+      0.26357423852029077
+    ],
+    "pooled_single_series_median": -0.10429717549372071,
+    "pooled_single_series_range": [
+      -0.9012649154040405,
+      0.7218475434887837
+    ]
+  },
+  "calibration sweep pairs (batch 1 only)": {
+    "n_measurements": 80,
+    "n_series": 800,
+    "median_of_per_measurement_process_medians": -0.11404518236518532,
+    "range_of_per_measurement_process_medians": [
+      -0.3759660621589067,
+      0.14515090129557262
+    ],
+    "pooled_single_series_median": -0.1138767151411946,
+    "pooled_single_series_range": [
+      -0.8334026900636942,
+      0.6747883995474262
+    ]
+  },
+  "SDK inert patch (stock vs no-op patch)": {
+    "n_measurements": 6,
+    "n_series": 60,
+    "median_of_per_measurement_process_medians": 0.23755922946519298,
+    "range_of_per_measurement_process_medians": [
+      0.11704620166321869,
+      0.395008684301815
+    ],
+    "pooled_single_series_median": 0.23310875478593968,
+    "pooled_single_series_range": [
+      -0.6176088982881152,
+      0.7457309975004922
+    ]
+  },
+  "SDK DeepSeek search candidates (all measurements)": {
+    "n_measurements": 338,
+    "n_series": 3380,
+    "median_of_per_measurement_process_medians": 0.048162795881712246,
+    "range_of_per_measurement_process_medians": [
+      -0.3122222020135679,
+      0.4038827175026767
+    ],
+    "pooled_single_series_median": 0.04921419830728764,
+    "pooled_single_series_range": [
+      -0.8437519600260862,
+      0.7836647747111593
+    ]
+  },
+  "SDK fixed final patches (3 re-measurements each, 10 runs)": {
+    "n_measurements": 30,
+    "n_series": 300,
+    "median_of_per_measurement_process_medians": 0.04182935094637183,
+    "range_of_per_measurement_process_medians": [
+      -0.17757903222898974,
+      0.2977340067939742
+    ],
+    "pooled_single_series_median": 0.018700782436333344,
+    "pooled_single_series_range": [
+      -0.7089252577579784,
+      0.7032023102648997
+    ]
+  },
+  "_cross_check_vs_stored_rule_output": {
+    "files_compared": 399,
+    "max_abs_difference": 1.0113437864944785e-14
+  }
+}

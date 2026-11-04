@@ -1,0 +1,12 @@
+I replaced the field-index lookup that internally re-resolves the message with the `MESG*` overload, reusing the already-fetched `profile`. This eliminates a redundant `GetMesg` scan on every field construction while producing identical results.
+
+```cpp
+Field::Field(const FIT_UINT16 mesgNum, const FIT_UINT8 fieldNum)
+    : FieldBase()
+    , profile(Profile::GetMesg(mesgNum))
+    , profileIndex(Profile::GetFieldIndex(profile, fieldNum))
+    , type(FIT_UINT8_INVALID)
+    , isFieldExpanded(FIT_FALSE)
+{
+}
+```

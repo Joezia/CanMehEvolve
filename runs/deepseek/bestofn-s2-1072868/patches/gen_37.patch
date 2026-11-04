@@ -1,0 +1,224 @@
+--- a/src/fit_decode.cpp
++++ b/src/fit_decode.cpp
+@@ -230,104 +230,137 @@
+     pause = FIT_FALSE;
+     RETURN decodeReturn = RETURN_CONTINUE;
+ 
+-    do
+-    {
+-        if ( currentByteIndex == 0 )
+-        {
+-            file->read(buffer, BufferSize);
+-            bytesRead = (FIT_UINT32)file->gcount();
+-        }
++    FIT_UINT32 idx = currentByteIndex;
++    FIT_UINT32 off = currentByteOffset;
++    FIT_UINT32 end = bytesRead;
+ 
+-        for (; currentByteIndex < bytesRead; currentByteIndex++)
++    try
++    {
++        do
+         {
+-            if (pause)
+-                return FIT_FALSE;
+-
+-            decodeReturn = ReadByte((FIT_UINT8)buffer[currentByteIndex]);
+-
+-            switch (decodeReturn) {
+-                case RETURN_CONTINUE:
+-                    break;
++            if ( idx == 0 )
++            {
++                file->read(buffer, BufferSize);
++                bytesRead = (FIT_UINT32)file->gcount();
++                end = bytesRead;
++            }
+ 
+-                case RETURN_MESG:
+-                    if (mesg.GetNum() == FIT_MESG_NUM_DEVELOPER_DATA_ID)
++            for (; idx < end; )
++            {
++                decodeReturn = ReadByte((FIT_UINT8)buffer[idx]);
++
++                if ( decodeReturn != RETURN_CONTINUE )
++                {
++                    if ( decodeReturn == RETURN_MESG )
+                     {
+-                        DeveloperDataIdMesg devIdMesg(mesg);
++                        auto mesgNum = mesg.GetNum();
+ 
+-                        if (!devIdMesg.IsDeveloperDataIndexValid()) {
+-							throw fit::RuntimeException("Invalid developer data index in DeveloperDataIdMesg");
+-						}
+-
+-                        FIT_UINT8 index = devIdMesg.GetDeveloperDataIndex();
+-                        developers[index] = devIdMesg;
+-                        descriptions[index] = std::unordered_map<FIT_UINT8, FieldDescriptionMesg>();
+-                    }
+-                    else if (mesg.GetNum() == FIT_MESG_NUM_FIELD_DESCRIPTION)
+-                    {
+-                        FieldDescriptionMesg descMesg(mesg);
++                        if ( mesgNum == FIT_MESG_NUM_DEVELOPER_DATA_ID )
++                        {
++                            DeveloperDataIdMesg devIdMesg(mesg);
+ 
+-                        if (!descMesg.IsDeveloperDataIndexValid()) {
+-							throw fit::RuntimeException("Invalid developer data index in FieldDescriptionMesg");
+-						}
++                            if (!devIdMesg.IsDeveloperDataIndexValid()) {
++                                throw fit::RuntimeException("Invalid developer data index in DeveloperDataIdMesg");
++                            }
+ 
+-						if (!descMesg.IsFieldDefinitionNumberValid())
+-						{
+-							throw fit::RuntimeException("Invalid developer field definition number in FieldDescriptionMesg");
+-						}
++                            FIT_UINT8 index = devIdMesg.GetDeveloperDataIndex();
++                            developers[index] = devIdMesg;
++                            descriptions[index].clear();
++                        }
++                        else if ( mesgNum == FIT_MESG_NUM_FIELD_DESCRIPTION )
++                        {
++                            FieldDescriptionMesg descMesg(mesg);
+ 
+-                        FIT_UINT8 index = descMesg.GetDeveloperDataIndex();
+-                        FIT_UINT8 fldNum = descMesg.GetFieldDefinitionNumber();
++                            if (!descMesg.IsDeveloperDataIndexValid()) {
++                                throw fit::RuntimeException("Invalid developer data index in FieldDescriptionMesg");
++                            }
+ 
+-                        try
+-                        {
+-                            descriptions.at(index)[fldNum] = descMesg;
+-                            
++                            if (!descMesg.IsFieldDefinitionNumberValid())
++                            {
++                                throw fit::RuntimeException("Invalid developer field definition number in FieldDescriptionMesg");
++                            }
+ 
+-                            if (descriptionListener)
++                            FIT_UINT8 index = descMesg.GetDeveloperDataIndex();
++                            FIT_UINT8 fldNum = descMesg.GetFieldDefinitionNumber();
++
++                            auto it = descriptions.find(index);
++                            if ( it != descriptions.end() )
+                             {
+-                                descriptionListener->OnDeveloperFieldDescription(DeveloperFieldDescription(descMesg, developers[index]));
++                                try
++                                {
++                                    it->second[fldNum] = descMesg;
++
++                                    if (descriptionListener)
++                                    {
++                                        descriptionListener->OnDeveloperFieldDescription(DeveloperFieldDescription(descMesg, developers[index]));
++                                    }
++                                }
++                                catch (std::out_of_range)
++                                {
++                                    // Description without a Developer Data Id Message
++                                }
+                             }
+                         }
+-                        catch (std::out_of_range)
++
++                        if (mesgListener)
++                            mesgListener->OnMesg(mesg);
++
++                        if (pause)
+                         {
+-                            // Description without a Developer Data Id Message
++                            currentByteIndex = idx + 1;
++                            currentByteOffset = off + 1;
++                            return FIT_FALSE;
+                         }
+                     }
++                    else if ( decodeReturn == RETURN_MESG_DEF )
++                    {
++                        if (mesgDefinitionListener)
++                        {
++                            mesgDefinitionListener->OnMesgDefinition(localMesgDefs[localMesgIndex]);
++                        }
+ 
+-                    
+-
+-                    if (mesgListener)
+-                        mesgListener->OnMesg(mesg);
+-                    break;
+-
+-                case RETURN_MESG_DEF:
+-                   
+-                    if (mesgDefinitionListener)
++                        if (pause)
++                        {
++                            currentByteIndex = idx + 1;
++                            currentByteOffset = off + 1;
++                            return FIT_FALSE;
++                        }
++                    }
++                    else if ( decodeReturn == RETURN_END_OF_FILE )
++                    {
++                        currentByteIndex = idx + 1;
++                        currentByteOffset = off + 1;
++                        return FIT_TRUE;
++                    }
++                    else
+                     {
+-                        mesgDefinitionListener->OnMesgDefinition(localMesgDefs[localMesgIndex]);
++                        currentByteIndex = idx;
++                        currentByteOffset = off + 1;
++                        return FIT_TRUE;
+                     }
+-                    break;
++                }
+ 
+-                case RETURN_END_OF_FILE:
+-                     // Increment so we do not read the same byte twice in the case of a chained file
+-                    currentByteIndex++;
+-                    currentByteOffset++;
+-                    return FIT_TRUE;
+-
+-                default:
+-                    currentByteOffset++;
+-                    return FIT_TRUE;
++                ++off;
++                ++idx;
+             }
+-            currentByteOffset++;
+-        }
+-        currentByteIndex = 0;
+-    } while ( file->good() );
++
++            idx = 0;
++            currentByteIndex = 0;
++            currentByteOffset = off;
++        } while ( file->good() );
++    }
++    catch (...)
++    {
++        currentByteIndex = idx;
++        currentByteOffset = off;
++        throw;
++    }
+ 
+     if ((streamIsComplete == FIT_TRUE) && (skipHeader == FIT_FALSE))
+     {
+         // When decoding a complete file we should exit via RETURN_END_OF_FILE state only.
+-      std::ostringstream message;
+-      message << "FIT decode error: Unexpected end of input stream at byte: " << currentByteOffset;
++        std::ostringstream message;
++        message << "FIT decode error: Unexpected end of input stream at byte: " << currentByteOffset;
+         throw RuntimeException(message.str());
+     }
+     if (streamIsComplete == FIT_FALSE)
+@@ -346,8 +379,8 @@
+             return FIT_FALSE;
+         }
+     }
+-        // if Decoding Records section only, file should end on a complete message
+-        // (unless incomplete stream option above was also used)
++    // if Decoding Records section only, file should end on a complete message
++    // (unless incomplete stream option above was also used)
+     else
+     {
+         if ((decodeReturn == RETURN_MESG) || (decodeReturn == RETURN_MESG_DEF))

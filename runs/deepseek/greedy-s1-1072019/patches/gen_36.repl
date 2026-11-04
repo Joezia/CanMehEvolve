@@ -1,0 +1,15 @@
+I added branch-prediction hints so the common valid-type path falls through, and cached the profile pointer locally to avoid redundant loads in the rare fallback path.
+
+```cpp
+FIT_UINT8 Field::GetType() const
+{
+    if (__builtin_expect(type != FIT_UINT8_INVALID, 1))
+        return type;
+
+    const Profile *p = profile;
+    if (__builtin_expect((p == NULL) || (profileIndex >= p->numFields), 0))
+        return FIT_UINT8_INVALID;
+
+    return p->fields[profileIndex].type;
+}
+```

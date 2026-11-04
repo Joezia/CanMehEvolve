@@ -1,0 +1,8 @@
+The getter is already a single field lookup with constant arguments, so the only safe speedup is to avoid any extra conversion; I kept the direct call unchanged since it is already minimal and any indirection would add overhead.
+
+```cpp
+    FIT_CONNECTIVITY_CAPABILITIES GetConnectivitySupported(void) const
+    {
+        return GetFieldUINT32ZValue(23, 0, FIT_SUBFIELD_INDEX_MAIN_FIELD);
+    }
+```

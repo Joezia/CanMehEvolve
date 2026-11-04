@@ -1,0 +1,24 @@
+Looking at this CRC-16 implementation, I can see it's using a lookup table approach but with an inefficient nibble-by-nibble computation. The current implementation performs two separate table lookups and XOR operations per byte, with multiple bit manipulation steps.
+
+I can optimize this by using a more efficient algorithm that processes the entire byte in fewer steps. The key insight is that we can compute the CRC by processing the byte in a single pass using a precomputed table for all possible byte values (256 entries instead of 16), but since the code must remain unchanged in structure and only this function can be modified, I'll optimize the existing nibble-based approach by reducing redundant operations and using more efficient bit manipulations.
+
+However, the most effective optimization while keeping the same algorithmic approach is to eliminate the temporary variable `tmp` and reduce the number of operations by combining the two nibble computations more efficiently.
+
+```cpp
+FIT_UINT16 CRC::Get16(FIT_UINT16 crc, FIT_UINT8 byte)
+{
+   static const FIT_UINT16 crc_table[16] =
+   {
+      0x0000, 0xCC01, 0xD801, 0x1400, 0xF001, 0x3C00, 0x2800, 0xE401,
+      0xA001, 0x6C00, 0x7800, 0xB401, 0x5000, 0x9C01, 0x8801, 0x4400
+   };
+
+   // Process lower nibble
+   crc = (crc >> 4) ^ crc_table[(crc ^ byte) & 0xF];
+   
+   // Process upper nibble
+   crc = (crc >> 4) ^ crc_table[(crc ^ (byte >> 4)) & 0xF];
+   
+   return crc;
+}
+```

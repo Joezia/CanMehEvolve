@@ -1,0 +1,13 @@
+freeze_time=2026-11-04T19:31:27+08:00
+git_head=0bce2476eee226fd5dc28cf093a57c8ae0d94c1b
+git_dirty_files:
+ M src/Search.cpp
+?? archive/
+?? review-package/
+?? scripts/
+compiler=c++ (Ubuntu 13.3.0-6ubuntu2~24.04.1) 13.3.0
+cmake=cmake version 3.28.3
+kernel=Linux 6.8.0-139-generic
+python=Python 3.12.3
+model_new=deepseek-v4.1-flash (returned deepseek-v4.1-flash-1017); model_old=qwen3-coder-next
+fit_sdk=21.201.0

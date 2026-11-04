@@ -1,0 +1,16 @@
+{
+  "3971": {
+    "accepted": 0,
+    "attempts": 1,
+    "best_gain": 0.0,
+    "file": "src/fit_session_mesg.hpp",
+    "label": "SetTimestamp"
+  },
+  "5508": {
+    "accepted": 0,
+    "attempts": 2,
+    "best_gain": 0.0,
+    "file": "src/fit_zones_target_mesg.hpp",
+    "label": "IsHrCalcTypeValid"
+  }
+}

@@ -1,0 +1,8 @@
+I replaced the `GetSize()` call with direct access to the `size` member and used a single conditional return to reduce call/branch overhead. No extra headers are needed.
+
+```cpp
+FIT_BYTE FieldBase::GetValuesBYTE(FIT_UINT8 index) const
+{
+    return (index < size) ? values[index] : FIT_BYTE_INVALID;
+}
+```

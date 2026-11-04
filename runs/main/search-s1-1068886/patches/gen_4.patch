@@ -1,0 +1,51 @@
+--- a/src/fit_accumulated_field.cpp
++++ b/src/fit_accumulated_field.cpp
+@@ -11,12 +11,14 @@
+ 
+ 
+ #include "fit_accumulated_field.hpp"
++#include <cstdint>
+ 
+ namespace fit
+ {
+ 
++
+     AccumulatedField::AccumulatedField()
+-        : lastValue(0), accumulatedValue(0)
++        : lastValue{0}, accumulatedValue{0}
+     {
+     }
+ 
+--- a/src/fit_field_base.cpp
++++ b/src/fit_field_base.cpp
+@@ -16,6 +16,7 @@
+ #include "fit_field_base.hpp"
+ #include "fit_mesg.hpp"
+ #include "fit_unicode.hpp"
++#include <cstring>
+ 
+ namespace fit
+ {
+@@ -847,17 +848,15 @@
+     SetUINT32Value(value, fieldArrayIndex);
+ }
+ 
++
+ void FieldBase::SetUINT32Value(const FIT_UINT32 value, const FIT_UINT8 fieldArrayIndex)
+ {
+-    if ((FIT_UINT8)values.size() < ((fieldArrayIndex + 1) * sizeof(FIT_UINT32)))
+-    {
+-        values.resize((fieldArrayIndex + 1) * sizeof(FIT_UINT32));
+-    }
+-
+-    for (size_t i = 0; i < sizeof(FIT_UINT32); i++)
++    const size_t offset = fieldArrayIndex * sizeof(FIT_UINT32);
++    if (values.size() < offset + sizeof(FIT_UINT32))
+     {
+-        values[(fieldArrayIndex * sizeof(FIT_UINT32)) + i] = ((FIT_BYTE)(value >> (8 * i)));
++        values.resize(offset + sizeof(FIT_UINT32));
+     }
++    std::memcpy(&values[offset], &value, sizeof(FIT_UINT32));
+ }
+ 
+ void FieldBase::SetUINT32ZValue(const FIT_UINT32Z value, const FIT_UINT8 fieldArrayIndex)

@@ -1,0 +1,42 @@
+[run] mode=bestofn host=xcnd8 model_probe={"http_status":200,"model":"qwen3-coder-next","ok":true,"requested_model":"qwen3-coder-next","usage":{"completion_tokens":2,"prompt_tokens":14,"prompt_tokens_details":null,"total_tokens":16}}
+[gen 1/40] region 3904 SetTotalFractionalAscent parent=0 stage=llm best_confirmed_speedup=1 tokens=416 t=203s
+[gen 2/40] region 113 Field::Field parent=0 stage=unchanged best_confirmed_speedup=1 tokens=910 t=204s
+[gen 3/40] region 574 Profile::GetMesg parent=0 stage=compile best_confirmed_speedup=1 tokens=1513 t=206s
+[gen 4/40] region 26 CRC::Get16 parent=0 ratio=0.986636 best_confirmed_speedup=1 tokens=2473 t=337s
+[gen 5/40] region 1142 IsFavoriteValid parent=0 stage=compile best_confirmed_speedup=1 tokens=2928 t=340s
+[gen 6/40] region 515 MesgBroadcaster::RemoveListener parent=0 ratio=1.001112 best_confirmed_speedup=1 tokens=3478 t=481s
+[gen 7/40] region 50 Decode::Resume parent=0 ratio=0.993870 best_confirmed_speedup=1 tokens=5566 t=622s
+[gen 8/40] region 135 FieldBase::~FieldBase parent=0 stage=llm best_confirmed_speedup=1 tokens=5948 t=623s
+[gen 9/40] region 123 Field::GetType parent=0 ratio=0.999557 best_confirmed_speedup=1 tokens=6904 t=749s
+[gen 10/40] region 143 FieldBase::GetNumValues parent=0 stage=compile best_confirmed_speedup=1 tokens=7418 t=752s
+[gen 11/40] region 50 Decode::Resume parent=0 stage=compile best_confirmed_speedup=1 tokens=9451 t=758s
+[gen 12/40] region 576 Profile::GetFieldIndex parent=0 ratio=0.993299 best_confirmed_speedup=1 tokens=10476 t=895s
+[gen 13/40] region 134 FieldBase::FieldBase parent=0 ratio=0.945705 CONFIRMED best_confirmed_speedup=1.05741 tokens=10889 t=1142s
+[gen 14/40] region 123 Field::GetType parent=0 ratio=0.999612 best_confirmed_speedup=1.05741 tokens=11368 t=1264s
+[gen 15/40] region 134 FieldBase::FieldBase parent=0 ratio=0.999839 best_confirmed_speedup=1.05741 tokens=11790 t=1386s
+[gen 16/40] region 135 FieldBase::~FieldBase parent=0 ratio=1.000664 best_confirmed_speedup=1.05741 tokens=12182 t=1507s
+[gen 17/40] region 574 Profile::GetMesg parent=0 ratio=0.922509 CONFIRMED best_confirmed_speedup=1.084 tokens=12732 t=1758s
+[gen 18/40] region 123 Field::GetType parent=0 ratio=1.000293 best_confirmed_speedup=1.084 tokens=13210 t=1890s
+[gen 19/40] region 134 FieldBase::FieldBase parent=0 ratio=1.000144 best_confirmed_speedup=1.084 tokens=13632 t=2012s
+[gen 20/40] region 50 Decode::Resume parent=0 stage=compile best_confirmed_speedup=1.084 tokens=15703 t=2019s
+[gen 21/40] region 234 Mesg::GetField parent=0 ratio=1.003209 best_confirmed_speedup=1.084 tokens=16201 t=2146s
+[gen 22/40] region 574 Profile::GetMesg parent=0 stage=compile best_confirmed_speedup=1.084 tokens=16883 t=2150s
+[gen 23/40] region 128 Field::GetNumSubFields parent=0 ratio=0.999267 best_confirmed_speedup=1.084 tokens=17344 t=2281s
+[gen 24/40] region 2281 GetProcessingInterval parent=0 stage=unchanged best_confirmed_speedup=1.084 tokens=17784 t=2282s
+[gen 25/40] region 192 FieldBase::Read parent=0 stage=compile best_confirmed_speedup=1.084 tokens=18872 t=2290s
+[gen 26/40] region 50 Decode::Resume parent=0 stage=compile best_confirmed_speedup=1.084 tokens=20979 t=2296s
+[gen 27/40] region 134 FieldBase::FieldBase parent=0 ratio=0.999614 best_confirmed_speedup=1.084 tokens=21401 t=2420s
+[gen 28/40] region 574 Profile::GetMesg parent=0 stage=correctness best_confirmed_speedup=1.084 tokens=22015 t=2435s
+[gen 29/40] region 123 Field::GetType parent=0 ratio=1.000847 best_confirmed_speedup=1.084 tokens=22748 t=2567s
+[gen 30/40] region 226 Mesg::AddField parent=0 ratio=1.004258 best_confirmed_speedup=1.084 tokens=23214 t=2690s
+[gen 31/40] region 196 FieldBase::GetValue parent=0 ratio=0.992909 best_confirmed_speedup=1.084 tokens=23974 t=2814s
+[gen 32/40] region 574 Profile::GetMesg parent=0 stage=correctness best_confirmed_speedup=1.084 tokens=24484 t=2829s
+[gen 33/40] region 135 FieldBase::~FieldBase parent=0 stage=unchanged best_confirmed_speedup=1.084 tokens=24886 t=2830s
+[gen 34/40] region 574 Profile::GetMesg parent=0 ratio=0.943965 CONFIRMED best_confirmed_speedup=1.084 tokens=25418 t=3082s
+[gen 35/40] region 2834 IsTimestampValid parent=0 stage=compile best_confirmed_speedup=1.084 tokens=25883 t=3085s
+[gen 36/40] region 3819 IsAvgCombinedPedalSmoothnessValid parent=0 stage=compile best_confirmed_speedup=1.084 tokens=26352 t=3088s
+[gen 37/40] region 128 Field::GetNumSubFields parent=0 ratio=1.000189 best_confirmed_speedup=1.084 tokens=26813 t=3238s
+[gen 38/40] region 166 FieldBase::GetFLOAT64Value parent=0 stage=compile best_confirmed_speedup=1.084 tokens=28371 t=3243s
+[gen 39/40] region 234 Mesg::GetField parent=0 ratio=1.002517 best_confirmed_speedup=1.084 tokens=28868 t=3366s
+[gen 40/40] region 123 Field::GetType parent=0 ratio=1.000940 best_confirmed_speedup=1.084 tokens=29344 t=3487s
+[done] {"api_calls":40,"best_confirmed_generation":17,"best_confirmed_speedup":1.084000351507927,"best_retained_speedup":1.084000351507927,"completion_tokens":8297,"confirmed_candidates":3,"elapsed_s":3487.883882475,"ended_because":"generations exhausted","finished":"2026-11-04T00:26:12+0800","improved_on_parent_candidates":3,"mode":"bestofn","outcomes":{"compile":11,"correctness":2,"llm":2,"measured":22,"unchanged":3},"prompt_tokens":21047,"seed":3,"total_tokens":29344}

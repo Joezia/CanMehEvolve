@@ -1,0 +1,9 @@
+The accessor is already a single member load, so the only remaining win is to let the compiler fold it into callers within this translation unit; marking it `always_inline` does that without changing its out-of-line symbol or behaviour.
+
+```cpp
+__attribute__((always_inline))
+std::vector<FieldDefinition>& MesgDefinition::GetFields()
+{
+    return fields;
+}
+```

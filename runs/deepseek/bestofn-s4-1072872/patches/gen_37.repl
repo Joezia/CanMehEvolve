@@ -1,0 +1,9 @@
+The function looks up field 253 via `GetField` every call, which walks the mesg definition/field list; caching the field pointer after the first lookup (or short-circuiting the null check into the return) avoids repeated work. Since `GetField` is a linear search over a usually small list, the main win is returning the validity directly without the extra field-pointer dance.
+
+```cpp
+    FIT_BOOL IsTimestampValid() const
+    {
+        const Field* field = GetField(253);
+        return (FIT_NULL == field) ? FIT_FALSE : field->IsValueValid();
+    }
+```

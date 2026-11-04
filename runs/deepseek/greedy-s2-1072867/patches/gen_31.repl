@@ -1,0 +1,8 @@
+The two-vector deep copy is already minimal, so I kept the initializer-list form (constructing each vector directly at its final size) rather than a default-construct-then-assign body, which would add extra work; no manual reserve/push_back loop can beat the vector copy constructor here.
+
+```cpp
+FieldBase::FieldBase(const FieldBase &field)
+    : values(field.values), stringIndexes(field.stringIndexes)
+{
+}
+```

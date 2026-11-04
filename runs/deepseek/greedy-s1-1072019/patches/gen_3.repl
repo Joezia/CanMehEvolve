@@ -1,0 +1,8 @@
+The comparison is already a single instruction; I only made the sentinel a literal `0xFFFFu` so the compiler never needs to reload the macro value and can fold the compare directly against the immediate.
+
+```cpp
+FIT_BOOL Field::IsValid(void) const
+{
+    return profileIndex != 0xFFFFu;
+}
+```

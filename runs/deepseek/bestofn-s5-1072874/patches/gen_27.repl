@@ -1,0 +1,8 @@
+The wrapper is already a single inlined setter call with constant arguments, so any rewrite would add overhead or risk behavioral change. I kept it identical to preserve the best measured performance (1.000).
+
+```cpp
+    void SetHeliumContent(FIT_UINT8 heliumContent)
+    {
+        SetFieldUINT8Value(0, heliumContent, 0, FIT_SUBFIELD_INDEX_MAIN_FIELD);
+    }
+```

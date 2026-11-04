@@ -1,0 +1,72 @@
+--- a/src/fit_profile.cpp
++++ b/src/fit_profile.cpp
+@@ -3057,13 +3057,23 @@
+ 
+ const Profile::MESG* Profile::GetMesg(const FIT_UINT16 num)
+ {
+-    for (int i = 0; i < MESGS; i++)
++    struct LookupTable
+     {
+-        if (mesgs[i].num == num)
+-            return &mesgs[i];
+-    }
++        const MESG* byNumber[65536] = {};
+ 
+-    return NULL;
++        LookupTable()
++        {
++            for (int i = 0; i < MESGS; ++i)
++            {
++                const FIT_UINT16 messageNumber = mesgs[i].num;
++                if (byNumber[messageNumber] == NULL)
++                    byNumber[messageNumber] = &mesgs[i];
++            }
++        }
++    };
++
++    static const LookupTable table;
++    return table.byNumber[num];
+ }
+ 
+ const Profile::MESG* Profile::GetMesg(const std::string& name)
+@@ -3079,18 +3089,33 @@
+ 
+ const FIT_UINT16 Profile::GetFieldIndex(const FIT_UINT16 mesgNum, const FIT_UINT8 fieldNum)
+ {
+-    const MESG *mesg = GetMesg(mesgNum);
+-
++    const MESG* mesg = GetMesg(mesgNum);
+     if (mesg == NULL)
+         return FIT_UINT16_INVALID;
+ 
+-    for (FIT_UINT16 i = 0; i < mesg->numFields; i++)
++    struct FieldIndexTable
+     {
+-        if (mesg->fields[i].num == fieldNum)
+-            return i;
+-    }
++        FIT_UINT16 index[MESGS][256];
++
++        FieldIndexTable()
++        {
++            for (int m = 0; m < MESGS; ++m)
++            {
++                for (int f = 0; f < 256; ++f)
++                    index[m][f] = FIT_UINT16_INVALID;
++
++                for (FIT_UINT16 i = 0; i < mesgs[m].numFields; ++i)
++                {
++                    const FIT_UINT8 number = mesgs[m].fields[i].num;
++                    if (index[m][number] == FIT_UINT16_INVALID)
++                        index[m][number] = i;
++                }
++            }
++        }
++    };
+ 
+-    return FIT_UINT16_INVALID;
++    static const FieldIndexTable table;
++    return table.index[mesg - mesgs][fieldNum];
+ }
+ 
+ const FIT_UINT16 Profile::GetFieldIndex(const std::string& mesgName, const std::string& fieldName)

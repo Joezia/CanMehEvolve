@@ -1,0 +1,7 @@
+The destructor is already empty, so there is no work to remove; the only safe change is to keep it identical (any attribute like `noexcept` is already implicit for destructors and yields identical codegen), preserving exact behavior.
+
+```cpp
+FieldBase::~FieldBase()
+{
+}
+```

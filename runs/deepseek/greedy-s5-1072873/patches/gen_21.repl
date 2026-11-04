@@ -1,0 +1,10 @@
+The check is combined into one predictable branch hinted as unlikely, with the profile pointer loaded once, reducing redundant loads and improving code layout for the hot in-range path.
+```cpp
+FIT_UINT8 Field::GetNum(void) const
+{
+    const FIT_PROFILE_MESG* p = profile;
+    if (__builtin_expect((p == NULL) || (profileIndex >= p->numFields), 0))
+        return FIT_FIELD_NUM_INVALID;
+    return p->fields[profileIndex].num;
+}
+```

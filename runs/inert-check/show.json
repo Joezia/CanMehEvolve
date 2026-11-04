@@ -1,0 +1,1 @@
+{"end":118,"file":"src/fit.cpp","label":"DetailedProtocolVersion::DetailedProtocolVersion","ok":true,"start":115,"text":"DetailedProtocolVersion::DetailedProtocolVersion(FIT_UINT8 major, FIT_UINT8 minor)\n{\n    version = ( major << FIT_PROTOCOL_VERSION_MAJOR_SHIFT ) | minor;\n}\n"}

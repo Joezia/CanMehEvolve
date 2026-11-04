@@ -1,0 +1,55 @@
+Cached the base type and replaced the byte-by-byte shift/OR loop with a size switch using constant-size `memcpy` loads, which compiles to single unaligned loads and avoids repeated `GetType()` calls.
+
+```include
+#include <cstring>
+```
+```cpp
+template <typename T>
+T FieldBase::GetValue(const FIT_UINT8 fieldArrayIndex) const
+{
+    const FIT_UINT8 type = GetType();
+    const FIT_UINT8 baseType = type & FIT_BASE_TYPE_NUM_MASK;
+    const FIT_UINT8 size = baseTypeSizes[baseType];
+
+    if (fieldArrayIndex >= (FIT_UINT8)values.size())
+    {
+        return *reinterpret_cast<const T*>(baseTypeInvalids[baseType]);
+    }
+
+    const FIT_UINT8* p = values.data() + (fieldArrayIndex * size);
+    FIT_UINT64 rv;
+
+    switch (size)
+    {
+        case 1:
+            rv = p[0];
+            break;
+        case 2:
+        {
+            FIT_UINT16 v;
+            std::memcpy(&v, p, sizeof(v));
+            rv = v;
+            break;
+        }
+        case 4:
+        {
+            FIT_UINT32 v;
+            std::memcpy(&v, p, sizeof(v));
+            rv = v;
+            break;
+        }
+        case 8:
+        {
+            FIT_UINT64 v;
+            std::memcpy(&v, p, sizeof(v));
+            rv = v;
+            break;
+        }
+        default:
+            rv = 0;
+            break;
+    }
+
+    return static_cast<T>(rv);
+}
+```

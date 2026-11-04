@@ -1,0 +1,17 @@
+--- a/src/fit_mesg.cpp
++++ b/src/fit_mesg.cpp
+@@ -172,11 +172,11 @@
+     return FIT_FALSE;
+ }
+ 
++
+ void Mesg::AddField(const Field& field)
+ {
+-    Field *existingField = GetField(field.GetNum());
+-
+-    if (existingField == FIT_NULL)
++    auto it = std::find_if(fields.begin(), fields.end(), [&](const Field& f) { return f.GetNum() == field.GetNum(); });
++    if (it == fields.end())
+         fields.push_back(field);
+ }
+ 

@@ -1,0 +1,15 @@
+I combined the early-return checks into a single conditional assignment, so the common profile-field path falls through without a taken branch while preserving all edge-case behavior.
+
+```cpp
+FIT_UINT8 Field::GetType() const
+{
+    FIT_UINT8 result = type;
+    if (result == FIT_UINT8_INVALID &&
+        profile != NULL &&
+        profileIndex < profile->numFields)
+    {
+        result = profile->fields[profileIndex].type;
+    }
+    return result;
+}
+```

@@ -1,0 +1,12 @@
+Removing the redundant null checks: `delete nullptr` is a well-defined no-op, so the branches can be dropped and the two deletions issued unconditionally.
+
+```cpp
+DeveloperFieldDefinition::~DeveloperFieldDefinition()
+{
+    delete mesg;
+    mesg = nullptr;
+
+    delete developer;
+    developer = nullptr;
+}
+```

@@ -1,0 +1,15 @@
+I used `__builtin_expect` to mark the rare `type`-valid and invalid-profile paths as cold, so the common profile-lookup path falls through and the cold returns are moved out of line, reducing taken branches and improving code layout.
+
+```cpp
+FIT_UINT8 Field::GetType() const
+{
+    if (__builtin_expect(type != FIT_UINT8_INVALID, 0))
+        return type;
+
+    const auto* p = profile;
+    if (__builtin_expect((p == NULL) || (profileIndex >= p->numFields), 0))
+        return FIT_UINT8_INVALID;
+
+    return p->fields[profileIndex].type;
+}
+```

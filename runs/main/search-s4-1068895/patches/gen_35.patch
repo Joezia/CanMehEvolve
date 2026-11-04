@@ -1,0 +1,130 @@
+--- a/src/fit_field.cpp
++++ b/src/fit_field.cpp
+@@ -15,6 +15,7 @@
+ #include "fit_field.hpp"
+ #include "fit_mesg.hpp"
+ #include "fit_unicode.hpp"
++#include <cstdint>
+ 
+ namespace fit
+ {
+@@ -97,12 +98,13 @@
+     return profile->fields[profileIndex].num;
+ }
+ 
++
+ FIT_UINT8 Field::GetType() const
+ {
+-    if ( type != FIT_UINT8_INVALID )
++    if (type != FIT_UINT8_INVALID)
+         return type;
+ 
+-    if ((profile == NULL) || (profileIndex >= profile->numFields))
++    if (!profile || profileIndex >= profile->numFields)
+         return FIT_UINT8_INVALID;
+ 
+     return profile->fields[profileIndex].type;
+--- a/src/fit_field_base.cpp
++++ b/src/fit_field_base.cpp
+@@ -16,6 +16,9 @@
+ #include "fit_field_base.hpp"
+ #include "fit_mesg.hpp"
+ #include "fit_unicode.hpp"
++#include <cstring>
++#include <cstdint>
++#include <utility>
+ 
+ namespace fit
+ {
+@@ -24,6 +27,7 @@
+ {
+ }
+ 
++
+ FieldBase::FieldBase(const FieldBase &field)
+ {
+     values = field.values;
+@@ -1128,22 +1132,43 @@
+     return (value > 0.0) ? floor(value + 0.5) : ceil(value - 0.5);
+ }
+ 
++
++
+ template <typename T>
+ T FieldBase::GetValue(const FIT_UINT8 fieldArrayIndex) const
+ {
+-    FIT_UINT8 size = baseTypeSizes[GetType() & FIT_BASE_TYPE_NUM_MASK];
++    FIT_UINT8 type = GetType() & FIT_BASE_TYPE_NUM_MASK;
++    FIT_UINT8 size = baseTypeSizes[type];
++    
+     if (fieldArrayIndex >= (FIT_UINT8)values.size())
+     {
+-        return *reinterpret_cast<const T*>(baseTypeInvalids[GetType() & FIT_BASE_TYPE_NUM_MASK]);
++        return *reinterpret_cast<const T*>(baseTypeInvalids[type]);
+     }
+ 
+-    T rv = 0;
+-
+-    for (int i = 0; i < size; i++)
+-    {
+-        rv |= static_cast<T>(values[(fieldArrayIndex * size) + i]) << (i * 8);
++    const FIT_UINT8* data = &values[(fieldArrayIndex * size)];
++    
++    // Optimize for common small types by avoiding memcpy overhead
++    if constexpr (std::is_trivially_copyable_v<T> && sizeof(T) <= 8) {
++        if (sizeof(T) == 1) return *reinterpret_cast<const T*>(data);
++        if (sizeof(T) == 2) {
++            uint16_t val;
++            std::memcpy(&val, data, 2);
++            return *reinterpret_cast<T*>(&val);
++        }
++        if (sizeof(T) == 4) {
++            uint32_t val;
++            std::memcpy(&val, data, 4);
++            return *reinterpret_cast<T*>(&val);
++        }
++        if (sizeof(T) == 8) {
++            uint64_t val;
++            std::memcpy(&val, data, 8);
++            return *reinterpret_cast<T*>(&val);
++        }
+     }
+-
++    
++    T rv = 0;
++    std::memcpy(&rv, data, size);
+     return rv;
+ }
+ 
+--- a/src/fit_profile.cpp
++++ b/src/fit_profile.cpp
+@@ -11,6 +11,9 @@
+ 
+ 
+ #include "fit_profile.hpp"
++#include <algorithm>
++#include <iterator>
++#include <cstddef>
+ 
+ namespace fit
+ {
+@@ -3055,14 +3058,14 @@
+    { NULL, "pad", FIT_MESG_NUM_PAD, 0 },
+ };
+ 
++
++
+ const Profile::MESG* Profile::GetMesg(const FIT_UINT16 num)
+ {
+-    for (int i = 0; i < MESGS; i++)
+-    {
+-        if (mesgs[i].num == num)
+-            return &mesgs[i];
++    // Linear search is fast for small arrays; unroll and avoid lambda overhead
++    for (const Profile::MESG* p = mesgs, *end = mesgs + MESGS; p < end; ++p) {
++        if (p->num == num) return p;
+     }
+-
+     return NULL;
+ }
+ 

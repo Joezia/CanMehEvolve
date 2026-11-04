@@ -1,0 +1,1 @@
+{"end":3067,"file":"src/fit_profile.cpp","label":"Profile::GetMesg","ok":true,"start":3058,"text":"const Profile::MESG* Profile::GetMesg(const FIT_UINT16 num)\n{\n    for (int i = 0; i < MESGS; i++)\n    {\n        if (mesgs[i].num == num)\n            return &mesgs[i];\n    }\n\n    return NULL;\n}\n"}

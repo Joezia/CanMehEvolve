@@ -1,0 +1,26 @@
+--- a/src/fit_three_d_sensor_calibration_mesg.hpp
++++ b/src/fit_three_d_sensor_calibration_mesg.hpp
+@@ -14,6 +14,7 @@
+ #define FIT_THREE_D_SENSOR_CALIBRATION_MESG_HPP
+ 
+ #include "fit_mesg.hpp"
++#include <cstdint>
+ 
+ namespace fit
+ {
+@@ -105,10 +106,11 @@
+     // Set sensor_type field
+     // Comment: Indicates which sensor the calibration is for
+     ///////////////////////////////////////////////////////////////////////
+-    void SetSensorType(FIT_SENSOR_TYPE sensorType)
+-    {
+-        SetFieldENUMValue(0, sensorType, 0, FIT_SUBFIELD_INDEX_MAIN_FIELD);
+-    }
++
++void SetSensorType(FIT_SENSOR_TYPE sensorType)
++{
++    fields[0].SetEnumValue(sensorType, 0, FIT_SUBFIELD_INDEX_MAIN_FIELD);
++}
+ 
+     ///////////////////////////////////////////////////////////////////////
+     // Checks the validity of calibration_factor field

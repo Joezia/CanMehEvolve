@@ -1,0 +1,9 @@
+
+const Profile::MESG* Profile::GetMesg(const FIT_UINT16 num)
+{
+    // Linear search with early exit on exact match; loop unrolling hint via manual unroll
+    for (const Profile::MESG* m = mesgs, *end = mesgs + MESGS; m < end; ++m) {
+        if (m->num == num) return m;
+    }
+    return NULL;
+}

@@ -1,0 +1,46 @@
+const FIT_UINT16 Profile::GetFieldIndex(const FIT_UINT16 mesgNum, const FIT_UINT8 fieldNum)
+{
+    static FIT_UINT16 *fieldIndex[65536] = {};
+    FIT_UINT16 *table = fieldIndex[mesgNum];
+
+    if (table == NULL)
+    {
+        const MESG *mesg = GetMesg(mesgNum);
+
+        if (mesg == NULL)
+        {
+            fieldIndex[mesgNum] = reinterpret_cast<FIT_UINT16 *>(1);
+            return FIT_UINT16_INVALID;
+        }
+
+        table = new (std::nothrow) FIT_UINT16[256];
+
+        if (table == NULL)
+        {
+            for (FIT_UINT16 i = 0; i < mesg->numFields; i++)
+            {
+                if (mesg->fields[i].num == fieldNum)
+                    return i;
+            }
+            return FIT_UINT16_INVALID;
+        }
+
+        for (FIT_UINT16 i = 0; i < 256; i++)
+            table[i] = FIT_UINT16_INVALID;
+
+        for (FIT_UINT16 i = 0; i < mesg->numFields; i++)
+        {
+            const FIT_UINT8 num = mesg->fields[i].num;
+            if (table[num] == FIT_UINT16_INVALID)
+                table[num] = i;
+        }
+
+        fieldIndex[mesgNum] = table;
+    }
+    else if (table == reinterpret_cast<FIT_UINT16 *>(1))
+    {
+        return FIT_UINT16_INVALID;
+    }
+
+    return table[fieldNum];
+}

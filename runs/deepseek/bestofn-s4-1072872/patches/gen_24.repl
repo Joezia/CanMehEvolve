@@ -1,0 +1,12 @@
+Cached the member pointer/index in locals and marked the invalid path as unlikely, so the hot valid path stays straight-line and avoids redundant member reloads. This preserves identical behavior while giving the compiler better branch layout.
+
+```cpp
+FIT_UINT8 Field::GetNum(void) const
+{
+    const auto* p = profile;
+    const auto idx = profileIndex;
+    if (__builtin_expect((p == NULL) || (idx >= p->numFields), 0))
+        return FIT_FIELD_NUM_INVALID;
+    return p->fields[idx].num;
+}
+```

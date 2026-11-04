@@ -1,0 +1,42 @@
+File: src/fit_nap_event_mesg.hpp
+Function: SetEndTimezoneOffset (4 lines)
+One full decode of the four files takes about 358.7 ms in the stock build.
+Time of the current version of the whole library relative to stock: 0.936 (below 1.0 is faster). Best measured so far: 0.932.
+
+Your previous attempt failed:
+Stage 'compile' rejected it: In file included from /home/z/zhouzia/Workspace/CanMehEvolve/build/work-1068888/tree/src/fit_nap_event_mesg_listener.hpp:16,
+                 from /home/z/zhouzia/Workspace/CanMehEvolve/build/work-1068888/tree/src/fit_mesg_broadcaster.hpp:146,
+                 from /home/z/zhouzia/Workspace/CanMehEvolve/build/work-1068888/tree/src/fit_buffered_mesg_broadcaster.hpp:17,
+                 from /home/z/zhouzia/Workspace/CanMehEvolve/build/work-1068888/tree/src/fit_buffered_mesg_broadcaster.cpp:14:
+/home/z/zhouzia/Workspace/CanMehEvolve/build/work-1068888/tree/src/fit_nap_event_mesg.hpp: In member function ‘void fit::NapEventMesg::SetEndTimezoneOffset(FIT_SINT16)’:
+/home/z/zhouzia/Workspace/CanMehEvolve/build/work-1068888/tree/src/fit_nap_event_mesg.hpp:243:9: error: ‘std::vector<fit::Field> fit::Mesg::fields’ is private within this context
+  243 |         fields[3].value.i16 = endTimezoneOffset;
+      |         ^~~~~~
+In file included from /home/z/zhouzia/Workspace/CanMehEvolve/build/work-1068888/tree/src/fit_mesg_broadcaster.hpp:18:
+/home/z/zhouzia/Workspace/CanMehEvolve/build/work-1068888/tree/src/fit_mesg.hpp:108:24: note: declared private here
+  108 |     std::vector<Field> fields;
+      |                        ^~~~~~
+/home/z/zhouzia/Workspace/CanMehEvolve/build/work-1068888/tree/src/fit_nap_event_mesg.hpp:243:19: error: ‘__gnu_cxx::__alloc_traits<std::allocator<fit::Field>, fit::Field>::value_type’ {aka ‘class fit::Field’} has no member named ‘value’; did
+... [truncated]
+The rejected replacement was:
+```cpp
+
+    void SetEndTimezoneOffset(FIT_SINT16 endTimezoneOffset)
+    {
+        // Inline the call to avoid function call overhead for a simple field assignment
+        // assuming FIT_SINT16 is a signed 16-bit type and field index 3 is static
+        fields[3].value.i16 = endTimezoneOffset;
+        fields[3].isValid = 1;
+    }
+
+```
+
+Current text of the function:
+```cpp
+    void SetEndTimezoneOffset(FIT_SINT16 endTimezoneOffset)
+    {
+        SetFieldSINT16Value(3, endTimezoneOffset, 0, FIT_SUBFIELD_INDEX_MAIN_FIELD);
+    }
+
+```
+Return the faster replacement now.

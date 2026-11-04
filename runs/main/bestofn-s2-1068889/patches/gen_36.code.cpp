@@ -1,0 +1,5 @@
+
+FIT_UINT8 FieldBase::GetUINT8Value(const FIT_UINT8 fieldArrayIndex) const
+{
+    return (fieldArrayIndex < GetNumElements()) ? *reinterpret_cast<const FIT_UINT8*>(GetFieldData() + fieldArrayIndex * sizeof(FIT_UINT8)) : 0;
+}

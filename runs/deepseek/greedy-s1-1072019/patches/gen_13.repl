@@ -1,0 +1,16 @@
+Hoisted `profile` and `profileIndex` into locals and marked the invalid cases as unlikely, keeping the common valid lookup on a straight-line path with a single index load. This reduces repeated member loads and improves branch layout without changing behavior.
+
+```cpp
+FIT_UINT8 Field::GetNum(void) const
+{
+    const auto* p = profile;
+    if (__builtin_expect(p == NULL, 0))
+        return FIT_FIELD_NUM_INVALID;
+
+    const FIT_UINT8 index = profileIndex;
+    if (__builtin_expect(index >= p->numFields, 0))
+        return FIT_FIELD_NUM_INVALID;
+
+    return p->fields[index].num;
+}
+```

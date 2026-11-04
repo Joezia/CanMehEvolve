@@ -1,0 +1,47 @@
+
+FIT_FLOAT64 FieldBase::GetFLOAT64Value(const FIT_UINT8 fieldArrayIndex, const FIT_UINT16 subFieldIndex) const
+{
+    if (!IsValid()) return FIT_FLOAT64_INVALID;
+
+    const FIT_BASE_TYPE type = GetType();
+    
+    // Fast path for FLOAT64: avoid division/memset if invalid, and use memcpy directly
+    if (type == FIT_BASE_TYPE_FLOAT64) {
+        FIT_UINT64 uint64Value = GetValue<FIT_UINT64>(fieldArrayIndex);
+        FIT_FLOAT64 float64Value;
+        std::memcpy(&float64Value, &uint64Value, sizeof(FIT_FLOAT64));
+        if (std::memcmp(&float64Value, baseTypeInvalids[FIT_BASE_TYPE_FLOAT64 & FIT_BASE_TYPE_NUM_MASK], sizeof(FIT_FLOAT64)) == 0)
+            return float64Value;
+        return float64Value / GetScale(subFieldIndex) - GetOffset(subFieldIndex);
+    }
+
+    // Special handling for FLOAT32 to avoid unnecessary conversion
+    if (type == FIT_BASE_TYPE_FLOAT32) {
+        FIT_FLOAT32 val = GetFLOAT32Value(fieldArrayIndex, subFieldIndex);
+        if (val == FIT_FLOAT32_INVALID) return FIT_FLOAT64_INVALID;
+        return static_cast<FIT_FLOAT64>(val);
+    }
+
+    // For all other numeric types, use direct ConvertBaseType
+    // Unroll the switch to reduce branching and improve predictability
+    FIT_FLOAT64 float64Value;
+    switch (type) {
+        case FIT_BASE_TYPE_BYTE:      float64Value = ConvertBaseType<FIT_FLOAT64, FIT_BYTE>(fieldArrayIndex, FIT_BASE_TYPE_FLOAT64); break;
+        case FIT_BASE_TYPE_ENUM:      float64Value = ConvertBaseType<FIT_FLOAT64, FIT_ENUM>(fieldArrayIndex, FIT_BASE_TYPE_FLOAT64); break;
+        case FIT_BASE_TYPE_SINT8:     float64Value = ConvertBaseType<FIT_FLOAT64, FIT_SINT8>(fieldArrayIndex, FIT_BASE_TYPE_FLOAT64); break;
+        case FIT_BASE_TYPE_UINT8:
+        case FIT_BASE_TYPE_UINT8Z:    float64Value = ConvertBaseType<FIT_FLOAT64, FIT_UINT8>(fieldArrayIndex, FIT_BASE_TYPE_FLOAT64); break;
+        case FIT_BASE_TYPE_SINT16:    float64Value = ConvertBaseType<FIT_FLOAT64, FIT_SINT16>(fieldArrayIndex, FIT_BASE_TYPE_FLOAT64); break;
+        case FIT_BASE_TYPE_UINT16Z:
+        case FIT_BASE_TYPE_UINT16:    float64Value = ConvertBaseType<FIT_FLOAT64, FIT_UINT16>(fieldArrayIndex, FIT_BASE_TYPE_FLOAT64); break;
+        case FIT_BASE_TYPE_SINT32:    float64Value = ConvertBaseType<FIT_FLOAT64, FIT_SINT32>(fieldArrayIndex, FIT_BASE_TYPE_FLOAT64); break;
+        case FIT_BASE_TYPE_UINT32:
+        case FIT_BASE_TYPE_UINT32Z:   float64Value = ConvertBaseType<FIT_FLOAT64, FIT_UINT32>(fieldArrayIndex, FIT_BASE_TYPE_FLOAT64); break;
+        default: return FIT_FLOAT64_INVALID;
+    }
+
+    if (std::memcmp(&float64Value, baseTypeInvalids[type & FIT_BASE_TYPE_NUM_MASK], sizeof(FIT_FLOAT64)) == 0)
+        return float64Value;
+
+    return float64Value / GetScale(subFieldIndex) - GetOffset(subFieldIndex);
+}

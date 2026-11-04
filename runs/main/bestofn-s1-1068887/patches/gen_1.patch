@@ -1,0 +1,50 @@
+--- a/src/fit_mesg.cpp
++++ b/src/fit_mesg.cpp
+@@ -14,6 +14,7 @@
+ #include <algorithm>
+ #include "fit_mesg.hpp"
+ #include "fit_mesg_definition.hpp"
++#include <cmath>
+ 
+ namespace fit
+ {
+@@ -372,27 +373,32 @@
+     return FIT_FALSE;
+ }
+ 
++
+ FIT_UINT16 Mesg::GetActiveSubFieldIndexByFieldIndex(const FIT_UINT16 fieldIndex) const
+ {
+-    if ((int) fieldIndex >= GetNumFields())
++    if (fieldIndex >= GetNumFields())
+         return FIT_SUBFIELD_INDEX_MAIN_FIELD;
+ 
+-    for (FIT_UINT16 i = 0; i < fields[fieldIndex].GetNumSubFields(); i++)
++    const Field& field = fields[fieldIndex];
++    const FIT_UINT16 numSubFields = field.GetNumSubFields();
++    
++    for (FIT_UINT16 i = 0; i < numSubFields; i++)
+     {
+-        const Profile::SUBFIELD* subField = fields[fieldIndex].GetSubField(i);
++        const Profile::SUBFIELD* subField = field.GetSubField(i);
+ 
+         if (subField != FIT_NULL)
+         {
+-            for (int j = 0; j < (int) subField->numMaps; j++)
++            for (FIT_UINT16 j = 0; j < subField->numMaps; j++)
+             {
+                 const Field* refField = GetField(subField->maps[j].refFieldNum);
+ 
+                 if (refField != FIT_NULL)
+                 {
+                     FIT_FLOAT64 refValue = refField->GetFLOAT64Value(0, FIT_SUBFIELD_INDEX_MAIN_FIELD);
+-                    refValue += ((refValue >= 0.0) ? (0.5) : (-0.5));
+-                    if ((FIT_SINT32)refValue == subField->maps[j].refFieldValue)
+-                        return ((FIT_UINT16) i);
++                    // Round to nearest integer using standard rounding
++                    FIT_SINT32 rounded = static_cast<FIT_SINT32>(std::round(refValue));
++                    if (rounded == subField->maps[j].refFieldValue)
++                        return i;
+                 }
+             }
+         }

@@ -1,0 +1,21 @@
+Added likely/unlikely hints and hoisted the profile fields pointer and field count so the common valid-type path stays branch-light while the rare profile fallback is laid out cold. This reduces branch misprediction and load latency on the hot decode path.
+
+```cpp
+FIT_UINT8 Field::GetType() const
+{
+    if (__builtin_expect(type != FIT_UINT8_INVALID, 1))
+        return type;
+
+    const Profile* const p = profile;
+    if (__builtin_expect(p == NULL, 0))
+        return FIT_UINT8_INVALID;
+
+    const auto idx = profileIndex;
+    const auto num = p->numFields;
+    const auto fields = p->fields;
+    if (__builtin_expect(idx >= num, 0))
+        return FIT_UINT8_INVALID;
+
+    return fields[idx].type;
+}
+```

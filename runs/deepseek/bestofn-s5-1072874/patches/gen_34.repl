@@ -1,0 +1,11 @@
+The function is already minimal, so the only wins are loading `profile` once and letting the compiler emit a branchless conditional move for the bounds check instead of a predictable-but-still-branching test.
+
+```cpp
+FIT_UINT8 Field::GetNum(void) const
+{
+    const Profile* p = profile;
+    if (p == NULL)
+        return FIT_FIELD_NUM_INVALID;
+    return (profileIndex < p->numFields) ? p->fields[profileIndex].num : FIT_FIELD_NUM_INVALID;
+}
+```

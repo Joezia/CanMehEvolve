@@ -1,0 +1,12 @@
+Replaced the two scalar pointer copies with one fixed-size `memmove` over the adjacent members, letting the compiler emit a single vector load/store.
+
+```include
+#include <cstring>
+```
+
+```cpp
+FieldBase::FieldBase(const FieldBase &field)
+{
+    std::memmove(&values, &field.values, sizeof(values) + sizeof(stringIndexes));
+}
+```

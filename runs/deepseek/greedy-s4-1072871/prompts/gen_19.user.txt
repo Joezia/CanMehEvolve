@@ -1,0 +1,19 @@
+File: src/fit_mesg.cpp
+Function: Mesg::GetFieldUINT8Value (9 lines)
+One full decode of the four files takes about 480.0 ms in the stock build.
+Time of the current version of the whole library relative to stock: 0.849 (below 1.0 is faster). Best measured so far: 0.849.
+
+Current text of the function:
+```cpp
+FIT_UINT8 Mesg::GetFieldUINT8Value(const FIT_UINT8 fieldNum, const FIT_UINT8 fieldArrayIndex, const FIT_UINT16 subFieldIndex) const
+{
+    const Field *field = GetField(fieldNum);
+
+    if ((field == FIT_NULL) || (!CanSupportSubField(fieldNum, subFieldIndex)))
+        return FIT_UINT8_INVALID;
+
+    return field->GetUINT8Value(fieldArrayIndex);
+}
+
+```
+Return the faster replacement now.

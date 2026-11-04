@@ -1,0 +1,43 @@
+# DeepSeek greedy vs best-of-N: all runs (nothing filtered)
+
+Model deepseek-v4.1-flash (returned id deepseek-v4.1-flash-1017), max_tokens 32768, budget 40 HTTP attempts per run,
+no hidden retries. Seed 1 used a 9600 s search deadline; seeds 2-5 use 9300 s. Speedups are old/new (>1 is faster).
+'fixed' = the arm's fixed best patch, median of its 3 independent re-measurements (alpha 0.01, >=2% rule).
+
+| seed | arm | state | attempts | ended | fixed speedup (3 re-meas.) | rule pass | search R-speedup | updates | valid | trunc | reasoning tok | total tok | elapsed s | logspeed/Mtok |
+|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|
+| 1 | bestofn | finished | 40 | generations exhausted | 1.073 | 3/3 | 1.0732 | 3 | 29 | 0 | 244839 | 272154 | 5321.8 | 0.2589 |
+| 1 | greedy | finished | 40 | deadline | 1.1574 | 3/3 | 1.1556 | 9 | 20 | 5 | 593825 | 621267 | 9722.6 | 0.2352 |
+| 2 | bestofn | finished | 40 | generations exhausted | 1.0688 | 3/3 | 1.0683 | 2 | 29 | 1 | 271575 | 299492 | 5836.3 | 0.2223 |
+| 2 | greedy | running | 39 | - | - | -/- | - |  | 20 |  |  |  |  | - |
+| 3 | bestofn | finished | 40 | generations exhausted | 1.074 | 3/3 | 1.0738 | 7 | 30 | 1 | 335064 | 369765 | 8105.1 | 0.193 |
+| 3 | greedy | running | 36 | - | - | -/- | - |  | 17 |  |  |  |  | - |
+| 4 | bestofn | finished | 40 | generations exhausted | 1.0725 | 3/3 | 1.0721 | 4 | 32 | 0 | 296200 | 325534 | 7734.1 | 0.2151 |
+| 4 | greedy | running | 32 | - | - | -/- | - |  | 26 |  |  |  |  | - |
+| 5 | bestofn | finished | 40 | generations exhausted | 1.0667 | 3/3 | 1.0668 | 5 | 27 | 0 | 430495 | 463889 | 8534.9 | 0.1392 |
+| 5 | greedy | running | 32 | - | - | -/- | - |  | 21 |  |  |  |  | - |
+
+## Per arm (finished runs with a final evaluation only; every seed above is listed regardless)
+
+**greedy** (1 runs): fixed speedup median 1.1574, range [1.1574, 1.1574], n=1
+  - attempts: median 40.0000, range [40.0000, 40.0000], n=1
+  - total tokens: median 621267.0000, range [621267.0000, 621267.0000], n=1
+  - reasoning tokens: median 593825.0000, range [593825.0000, 593825.0000], n=1
+  - elapsed s: median 9722.6000, range [9722.6000, 9722.6000], n=1
+  - truncated: median 5.0000, range [5.0000, 5.0000], n=1
+  - log-speedup per Mtok: median 0.2352, range [0.2352, 0.2352], n=1
+**bestofn** (5 runs): fixed speedup median 1.0725, range [1.0667, 1.0740], n=5
+  - attempts: median 40.0000, range [40.0000, 40.0000], n=5
+  - total tokens: median 325534.0000, range [272154.0000, 463889.0000], n=5
+  - reasoning tokens: median 296200.0000, range [244839.0000, 430495.0000], n=5
+  - elapsed s: median 7734.1000, range [5321.8000, 8534.9000], n=5
+  - truncated: median 0.0000, range [0.0000, 1.0000], n=5
+  - log-speedup per Mtok: median 0.2151, range [0.1392, 0.2589], n=5
+
+## Paired by seed (seeds with both arms evaluated)
+
+| seed | greedy | bestofn | greedy/bestofn |
+|---|---|---|---|
+| 1 | 1.1574 | 1.0730 | 1.0787 |
+
+greedy higher in 1 of 1 paired seeds. This is descriptive: with at most five seeds no significance is claimed, and model and strategy both differ from the Qwen experiment (whose data is kept separately).

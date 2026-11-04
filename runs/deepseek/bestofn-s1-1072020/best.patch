@@ -1,0 +1,27 @@
+--- a/src/fit_profile.cpp
++++ b/src/fit_profile.cpp
+@@ -3057,13 +3057,20 @@
+ 
+ const Profile::MESG* Profile::GetMesg(const FIT_UINT16 num)
+ {
+-    for (int i = 0; i < MESGS; i++)
++    static const Profile::MESG* lut[65536] = {};
++    static bool built = false;
++
++    if (!built)
+     {
+-        if (mesgs[i].num == num)
+-            return &mesgs[i];
++        for (int i = 0; i < MESGS; i++)
++        {
++            if (lut[mesgs[i].num] == NULL)
++                lut[mesgs[i].num] = &mesgs[i];
++        }
++        built = true;
+     }
+ 
+-    return NULL;
++    return lut[num];
+ }
+ 
+ const Profile::MESG* Profile::GetMesg(const std::string& name)

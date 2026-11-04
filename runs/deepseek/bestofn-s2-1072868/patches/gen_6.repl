@@ -1,0 +1,14 @@
+Directly use the already-visible `numSubFields`, `subFields`, and `offset` members to avoid the redundant `GetNumSubFields()`/`GetSubField()` calls and their duplicate bounds check. This preserves the original fallback and null-subfield behavior exactly.
+
+```cpp
+FIT_FLOAT64 FieldBase::GetOffset(const FIT_UINT16 subFieldIndex) const
+{
+    if (subFieldIndex < numSubFields)
+    {
+        const SubFieldBase* subfield = subFields[subFieldIndex];
+        return NULL != subfield ? subfield->offset : 0.0;
+    }
+
+    return offset;
+}
+```

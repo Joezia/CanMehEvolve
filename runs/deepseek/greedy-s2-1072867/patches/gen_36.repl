@@ -1,0 +1,100 @@
+I replaced the repeated templated `ConvertBaseType` calls with a single raw-value read plus an inlined type-specific conversion, and handled FLOAT32/FLOAT64 directly to avoid re-checking validity and type. This removes redundant lookups and invalid comparisons while preserving identical results.
+
+```cpp
+FIT_FLOAT64 FieldBase::GetFLOAT64Value(const FIT_UINT8 fieldArrayIndex, const FIT_UINT16 subFieldIndex) const
+{
+    if (!IsValid())
+        return FIT_FLOAT64_INVALID;
+
+    const auto type = GetType();
+    const FIT_UINT8 typeMask = static_cast<FIT_UINT8>(type) & FIT_BASE_TYPE_NUM_MASK;
+    const FIT_UINT8* raw = GetRawValue(fieldArrayIndex);
+    if (raw == NULL)
+        return FIT_FLOAT64_INVALID;
+
+    bool invalid = false;
+    auto convert = [&](auto tag) -> FIT_FLOAT64
+    {
+        using T = decltype(tag);
+        T value;
+        memcpy(&value, raw, sizeof(T));
+        if (memcmp(&value, baseTypeInvalids[typeMask], sizeof(T)) == 0)
+        {
+            invalid = true;
+            return FIT_FLOAT64_INVALID;
+        }
+        return static_cast<FIT_FLOAT64>(value);
+    };
+
+    FIT_FLOAT64 float64Value;
+
+    switch (type)
+    {
+        case FIT_BASE_TYPE_FLOAT32:
+        {
+            FIT_FLOAT32 val;
+            memcpy(&val, raw, sizeof(FIT_FLOAT32));
+            if (memcmp(&val, baseTypeInvalids[typeMask], sizeof(FIT_FLOAT32)) != 0)
+            {
+                val = val / GetScale(subFieldIndex) - GetOffset(subFieldIndex);
+            }
+            if (FIT_FLOAT32_INVALID == val)
+                return FIT_FLOAT64_INVALID;
+            return static_cast<FIT_FLOAT64>(val);
+        }
+
+        case FIT_BASE_TYPE_FLOAT64:
+        {
+            FIT_UINT64 uint64Value;
+            memcpy(&uint64Value, raw, sizeof(FIT_UINT64));
+            memcpy(&float64Value, &uint64Value, sizeof(FIT_FLOAT64));
+            if (memcmp(&float64Value, baseTypeInvalids[typeMask], sizeof(FIT_FLOAT64)) == 0)
+                return float64Value;
+            return float64Value / GetScale(subFieldIndex) - GetOffset(subFieldIndex);
+        }
+
+        case FIT_BASE_TYPE_BYTE:
+            float64Value = convert(FIT_BYTE{});
+            break;
+
+        case FIT_BASE_TYPE_ENUM:
+            float64Value = convert(FIT_ENUM{});
+            break;
+
+        case FIT_BASE_TYPE_SINT8:
+            float64Value = convert(FIT_SINT8{});
+            break;
+
+        case FIT_BASE_TYPE_UINT8:
+        case FIT_BASE_TYPE_UINT8Z:
+            float64Value = convert(FIT_UINT8{});
+            break;
+
+        case FIT_BASE_TYPE_SINT16:
+            float64Value = convert(FIT_SINT16{});
+            break;
+
+        case FIT_BASE_TYPE_UINT16:
+        case FIT_BASE_TYPE_UINT16Z:
+            float64Value = convert(FIT_UINT16{});
+            break;
+
+        case FIT_BASE_TYPE_SINT32:
+            float64Value = convert(FIT_SINT32{});
+            break;
+
+        case FIT_BASE_TYPE_UINT32:
+        case FIT_BASE_TYPE_UINT32Z:
+            float64Value = convert(FIT_UINT32{});
+            break;
+
+        default:
+            return FIT_FLOAT64_INVALID;
+    }
+
+    if (invalid)
+        return FIT_FLOAT64_INVALID;
+
+    return float64Value / GetScale(subFieldIndex) - GetOffset(subFieldIndex);
+}
+```

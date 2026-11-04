@@ -1,0 +1,56 @@
+--- a/src/fit_decode.cpp
++++ b/src/fit_decode.cpp
+@@ -18,6 +18,8 @@
+ #include "fit_mesg_listener.hpp"
+ #include "fit_developer_data_id_mesg.hpp"
+ #include "fit_developer_field.hpp"
++#include <unordered_map>
++#include <stdexcept>
+ 
+ 
+ namespace fit
+@@ -225,6 +227,7 @@
+     pause = FIT_TRUE;
+ }
+ 
++
+ FIT_BOOL Decode::Resume(void)
+ {
+     pause = FIT_FALSE;
+@@ -278,24 +281,18 @@
+                         FIT_UINT8 index = descMesg.GetDeveloperDataIndex();
+                         FIT_UINT8 fldNum = descMesg.GetFieldDefinitionNumber();
+ 
+-                        try
++                        auto devIt = descriptions.find(index);
++                        if (devIt != descriptions.end())
+                         {
+-                            descriptions.at(index)[fldNum] = descMesg;
+-                            
++                            devIt->second[fldNum] = descMesg;
+ 
+                             if (descriptionListener)
+                             {
+                                 descriptionListener->OnDeveloperFieldDescription(DeveloperFieldDescription(descMesg, developers[index]));
+                             }
+                         }
+-                        catch (std::out_of_range)
+-                        {
+-                            // Description without a Developer Data Id Message
+-                        }
+                     }
+ 
+-                    
+-
+                     if (mesgListener)
+                         mesgListener->OnMesg(mesg);
+                     break;
+@@ -346,8 +343,6 @@
+             return FIT_FALSE;
+         }
+     }
+-        // if Decoding Records section only, file should end on a complete message
+-        // (unless incomplete stream option above was also used)
+     else
+     {
+         if ((decodeReturn == RETURN_MESG) || (decodeReturn == RETURN_MESG_DEF))

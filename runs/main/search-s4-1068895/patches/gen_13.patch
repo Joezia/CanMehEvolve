@@ -1,0 +1,199 @@
+--- a/src/fit_field_base.cpp
++++ b/src/fit_field_base.cpp
+@@ -16,6 +16,8 @@
+ #include "fit_field_base.hpp"
+ #include "fit_mesg.hpp"
+ #include "fit_unicode.hpp"
++#include <cstring>
++#include <cstdint>
+ 
+ namespace fit
+ {
+@@ -342,98 +344,64 @@
+     return static_cast<FIT_FLOAT32>(static_cast<FIT_FLOAT64>(float32Value) / GetScale(subFieldIndex) - GetOffset(subFieldIndex));
+ }
+ 
++
+ FIT_FLOAT64 FieldBase::GetFLOAT64Value(const FIT_UINT8 fieldArrayIndex, const FIT_UINT16 subFieldIndex) const
+ {
+-    FIT_FLOAT64 float64Value;
+-
+     if (!IsValid())
+         return FIT_FLOAT64_INVALID;
+ 
+-    switch (GetType()) { // Note: This checks the type of the MAIN field since data is aligned according to that type
+-        case FIT_BASE_TYPE_BYTE:
+-        {
+-            float64Value =
+-                ConvertBaseType<FIT_FLOAT64, FIT_BYTE>(fieldArrayIndex, FIT_BASE_TYPE_FLOAT64);
+-            break;
+-        }
++    const auto type = GetType();
++    FIT_FLOAT64 float64Value;
+ 
+-        case FIT_BASE_TYPE_ENUM:
+-        {
+-            float64Value =
+-                ConvertBaseType<FIT_FLOAT64, FIT_ENUM>(fieldArrayIndex, FIT_BASE_TYPE_FLOAT64);
+-            break;
+-        }
++    // Fast path: FLOAT64 base type - direct memcpy
++    if (type == FIT_BASE_TYPE_FLOAT64) {
++        FIT_UINT64 uint64Value = GetValue<FIT_UINT64>(fieldArrayIndex);
++        std::memcpy(&float64Value, &uint64Value, sizeof(FIT_FLOAT64));
++        // Check for invalid value inline (avoid function call)
++        if (std::memcmp(&float64Value, baseTypeInvalids[FIT_BASE_TYPE_FLOAT64 & FIT_BASE_TYPE_NUM_MASK], sizeof(FIT_FLOAT64)) == 0) {
++            return float64Value;
++        }
++        return float64Value / GetScale(subFieldIndex) - GetOffset(subFieldIndex);
++    }
+ 
+-        case FIT_BASE_TYPE_SINT8:
+-        {
+-            float64Value =
+-                ConvertBaseType<FIT_FLOAT64, FIT_SINT8>(fieldArrayIndex, FIT_BASE_TYPE_FLOAT64);
+-            break;
++    // Special handling for FLOAT32 to avoid conversion overhead
++    if (type == FIT_BASE_TYPE_FLOAT32) {
++        FIT_FLOAT32 val = GetFLOAT32Value(fieldArrayIndex, subFieldIndex);
++        if (val == FIT_FLOAT32_INVALID) {
++            return FIT_FLOAT64_INVALID;
+         }
++        float64Value = static_cast<FIT_FLOAT64>(val);
++        if (std::memcmp(&float64Value, baseTypeInvalids[FIT_BASE_TYPE_FLOAT64 & FIT_BASE_TYPE_NUM_MASK], sizeof(FIT_FLOAT64)) == 0) {
++            return float64Value;
++        }
++        return float64Value / GetScale(subFieldIndex) - GetOffset(subFieldIndex);
++    }
+ 
++    // Handle other numeric types via ConvertBaseType (unrolled for performance)
++    switch (type) {
++        case FIT_BASE_TYPE_BYTE:
++        case FIT_BASE_TYPE_ENUM:
++        case FIT_BASE_TYPE_SINT8:
+         case FIT_BASE_TYPE_UINT8:
+         case FIT_BASE_TYPE_UINT8Z:
+-        {
+-            float64Value =
+-                ConvertBaseType<FIT_FLOAT64, FIT_UINT8>(fieldArrayIndex, FIT_BASE_TYPE_FLOAT64);
++            float64Value = ConvertBaseType<FIT_FLOAT64, FIT_BYTE>(fieldArrayIndex, FIT_BASE_TYPE_FLOAT64);
+             break;
+-        }
+-
+         case FIT_BASE_TYPE_SINT16:
+-        {
+-            float64Value =
+-                ConvertBaseType<FIT_FLOAT64, FIT_SINT16>(fieldArrayIndex, FIT_BASE_TYPE_FLOAT64);
+-            break;
+-        }
+-
+-        case FIT_BASE_TYPE_UINT16Z:
+         case FIT_BASE_TYPE_UINT16:
+-        {
+-            float64Value =
+-                ConvertBaseType<FIT_FLOAT64, FIT_UINT16>(fieldArrayIndex, FIT_BASE_TYPE_FLOAT64);
++        case FIT_BASE_TYPE_UINT16Z:
++            float64Value = ConvertBaseType<FIT_FLOAT64, FIT_UINT16>(fieldArrayIndex, FIT_BASE_TYPE_FLOAT64);
+             break;
+-        }
+-
+         case FIT_BASE_TYPE_SINT32:
+-        {
+-            float64Value =
+-                ConvertBaseType<FIT_FLOAT64, FIT_SINT32>(fieldArrayIndex, FIT_BASE_TYPE_FLOAT64);
+-            break;
+-        }
+-
+         case FIT_BASE_TYPE_UINT32:
+         case FIT_BASE_TYPE_UINT32Z:
+-        {
+-            float64Value =
+-                ConvertBaseType<FIT_FLOAT64, FIT_UINT32>(fieldArrayIndex, FIT_BASE_TYPE_FLOAT64);
++            float64Value = ConvertBaseType<FIT_FLOAT64, FIT_UINT32>(fieldArrayIndex, FIT_BASE_TYPE_FLOAT64);
+             break;
+-        }
+-
+-        case FIT_BASE_TYPE_FLOAT32:
+-        {
+-            FIT_FLOAT32 val = GetFLOAT32Value(fieldArrayIndex, subFieldIndex);
+-
+-            if (FIT_FLOAT32_INVALID == val)
+-            {
+-                return FIT_FLOAT64_INVALID;
+-            }
+-
+-            return static_cast<FIT_FLOAT64>(val);
+-        }
+-
+-        case FIT_BASE_TYPE_FLOAT64:
+-        {
+-            FIT_UINT64 uint64Value = GetValue<FIT_UINT64>(fieldArrayIndex);
+-            memcpy(&float64Value, &uint64Value, sizeof(FIT_FLOAT64));
+-            break;
+-        }
+-
+         default:
+             return FIT_FLOAT64_INVALID;
+     }
+ 
+-    if (memcmp(&float64Value, baseTypeInvalids[FIT_BASE_TYPE_FLOAT64 & FIT_BASE_TYPE_NUM_MASK], sizeof(FIT_FLOAT64)) == 0)
+-    {
++    // Inline invalid check to avoid function call overhead
++    if (std::memcmp(&float64Value, baseTypeInvalids[FIT_BASE_TYPE_FLOAT64 & FIT_BASE_TYPE_NUM_MASK], sizeof(FIT_FLOAT64)) == 0) {
+         return float64Value;
+     }
+ 
+@@ -1128,22 +1096,21 @@
+     return (value > 0.0) ? floor(value + 0.5) : ceil(value - 0.5);
+ }
+ 
++
+ template <typename T>
+ T FieldBase::GetValue(const FIT_UINT8 fieldArrayIndex) const
+ {
+-    FIT_UINT8 size = baseTypeSizes[GetType() & FIT_BASE_TYPE_NUM_MASK];
++    FIT_UINT8 type = GetType() & FIT_BASE_TYPE_NUM_MASK;
++    FIT_UINT8 size = baseTypeSizes[type];
++    
+     if (fieldArrayIndex >= (FIT_UINT8)values.size())
+     {
+-        return *reinterpret_cast<const T*>(baseTypeInvalids[GetType() & FIT_BASE_TYPE_NUM_MASK]);
++        return *reinterpret_cast<const T*>(baseTypeInvalids[type]);
+     }
+ 
++    const FIT_UINT8* data = &values[(fieldArrayIndex * size)];
+     T rv = 0;
+-
+-    for (int i = 0; i < size; i++)
+-    {
+-        rv |= static_cast<T>(values[(fieldArrayIndex * size) + i]) << (i * 8);
+-    }
+-
++    std::memcpy(&rv, data, size);
+     return rv;
+ }
+ 
+--- a/src/fit_sdm_profile_mesg.hpp
++++ b/src/fit_sdm_profile_mesg.hpp
+@@ -270,16 +270,11 @@
+     // Checks the validity of odometer_rollover field
+     // Returns FIT_TRUE if field is valid
+     ///////////////////////////////////////////////////////////////////////
+-    FIT_BOOL IsOdometerRolloverValid() const
+-    {
+-        const Field* field = GetField(7);
+-        if( FIT_NULL == field )
+-        {
+-            return FIT_FALSE;
+-        }
+-
+-        return field->IsValueValid();
+-    }
++FIT_BOOL IsOdometerRolloverValid() const
++{
++    const Field* field = GetField(7);
++    return (field != FIT_NULL) ? field->IsValueValid() : FIT_FALSE;
++}
+ 
+     ///////////////////////////////////////////////////////////////////////
+     // Returns odometer_rollover field

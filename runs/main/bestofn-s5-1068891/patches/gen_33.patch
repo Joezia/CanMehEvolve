@@ -1,0 +1,135 @@
+--- a/src/fit_field_base.cpp
++++ b/src/fit_field_base.cpp
+@@ -16,6 +16,8 @@
+ #include "fit_field_base.hpp"
+ #include "fit_mesg.hpp"
+ #include "fit_unicode.hpp"
++#include <cstring>
++#include <algorithm>
+ 
+ namespace fit
+ {
+@@ -1005,75 +1007,72 @@
+     values[idx + i] = 0; // null terminate
+ }
+ 
++
+ FIT_BOOL FieldBase::Read(const void *data, const FIT_UINT8 size)
+ {
+-    FIT_UINT8 bytesLeft = size;
+-    FIT_UINT8 typeSize = baseTypeSizes[GetType() & FIT_BASE_TYPE_NUM_MASK];
+-    FIT_BYTE *byteData = (FIT_BYTE *) data;
++    FIT_UINT8 type = GetType() & FIT_BASE_TYPE_NUM_MASK;
++    FIT_UINT8 typeSize = baseTypeSizes[type];
++    const FIT_BYTE* byteData = static_cast<const FIT_BYTE*>(data);
++    const FIT_BYTE* end = byteData + size;
+ 
+     values.clear();
+ 
+-    switch (GetType())
++    if (type == FIT_BASE_TYPE_STRING)
+     {
+-        case FIT_BASE_TYPE_STRING:
+-        {
+-            FIT_BOOL hasData = FIT_FALSE;
+-            FIT_UINT8 stringPos = 0;
+-            FIT_UINT8 index = 0;
+-
+-            // Check if the string is empty
+-            while (index < bytesLeft)
+-            {
+-                if (byteData[index] != 0)
+-                {
+-                    hasData = FIT_TRUE;
+-                    break;
+-                }
+-                index++;
+-            }
++        // Fast path: find first non-zero byte to determine if string is empty
++        const FIT_BYTE* firstNonZero = byteData;
++        while (firstNonZero < end && *firstNonZero == 0) ++firstNonZero;
+ 
+-            if (!hasData)
+-                break;
++        if (firstNonZero == end) {
++            // All zeros - empty string
++            return FIT_TRUE;
++        }
+ 
+-            stringIndexes.push_back(stringPos);
++        // Reserve space for performance
++        values.reserve(size + 1);
++        
++        // Copy bytes and track string positions
++        FIT_UINT8 stringPos = 0;
++        stringIndexes.clear();
++        stringIndexes.push_back(stringPos);
+ 
+-            while (bytesLeft-- > 0)
++        for (const FIT_BYTE* p = byteData; p < end; ++p, ++stringPos)
++        {
++            values.push_back(*p);
++            if (*p == 0 && stringPos + 1 < size)
+             {
+-                FIT_BYTE byte = *byteData++;
+-                values.push_back(byte);
+-                stringPos++;
+-
+-                if ( ( byte == 0 ) && ( stringPos + 1 < size ) )
+-                {
+-                    stringIndexes.push_back(stringPos);
+-                }
++                stringIndexes.push_back(stringPos + 1);
+             }
++        }
+ 
+-            // Null terminate if not already null terminated
+-            if ( values.back() != 0 )
++        // Null terminate if not already
++        if (values.back() != 0)
++        {
++            values.push_back(0);
++        }
++    }
++    else
++    {
++        // For non-string types, copy non-invalid data
++        const FIT_BYTE* invalidPattern = baseTypeInvalids[type];
++        FIT_BYTE* dest = std::back_inserter(values);
++        
++        // Check if entire buffer is invalid
++        bool allInvalid = true;
++        for (const FIT_BYTE* p = byteData; p + typeSize <= end; p += typeSize)
++        {
++            if (memcmp(p, invalidPattern, typeSize) != 0)
+             {
+-                values.push_back(0);
++                allInvalid = false;
++                break;
+             }
+         }
+-            break;
+ 
+-        default:
++        if (!allInvalid)
+         {
+-            int bytes = bytesLeft;
+-            FIT_BYTE *point = byteData;
+-
+-            while (bytes > 0)
+-            {
+-                if (memcmp(point, baseTypeInvalids[GetType() & FIT_BASE_TYPE_NUM_MASK], typeSize) != 0)
+-                {
+-                    values.insert(values.end(), byteData, byteData + bytesLeft);
+-                    break;
+-                }
+-                point += typeSize;
+-                bytes -= typeSize;
+-            }
++            // Copy all data - invalid checks are done elsewhere
++            values.insert(values.end(), byteData, end);
+         }
+-            break;
+     }
+ 
+     return FIT_TRUE;

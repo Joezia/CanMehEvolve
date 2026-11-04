@@ -1,0 +1,14 @@
+I kept the same logic but added `__builtin_expect` hints so the common decode path (unresolved `type`, valid profile/index) falls through without taken branches.
+
+```cpp
+FIT_UINT8 Field::GetType() const
+{
+    if (__builtin_expect(type != FIT_UINT8_INVALID, 0))
+        return type;
+
+    if (__builtin_expect((profile == NULL) || (profileIndex >= profile->numFields), 0))
+        return FIT_UINT8_INVALID;
+
+    return profile->fields[profileIndex].type;
+}
+```

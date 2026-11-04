@@ -1,0 +1,11 @@
+The function is already tiny; the only wins are making the valid path a predictable fall-through and loading the profile pointer once, so I used `__builtin_expect` to tell the compiler the bounds/null failure is the unlikely branch.
+
+```cpp
+FIT_UINT8 Field::GetNum(void) const
+{
+    const Profile* const p = profile;
+    if (__builtin_expect((p == NULL) || (profileIndex >= p->numFields), 0))
+        return FIT_FIELD_NUM_INVALID;
+    return p->fields[profileIndex].num;
+}
+```

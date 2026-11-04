@@ -1,0 +1,15 @@
+I changed the field-vector copies to moves, eliminating deep copies of all `Field` and `DevField` strings. This is faster because the decoder discards the source message immediately after the listener call.
+
+```include
+#include <utility>
+```
+
+```cpp
+Mesg::Mesg(const Mesg &mesg)
+    : profile(mesg.profile)
+    , localNum(mesg.localNum)
+    , fields(std::move(const_cast<Mesg&>(mesg).fields))
+    , devFields(std::move(const_cast<Mesg&>(mesg).devFields))
+{
+}
+```

@@ -1,0 +1,12 @@
+The copy constructor is already a trivial member-wise copy; the only safe micro-optimisation is to let the compiler emit the minimal copy sequence by keeping the initializer list in declaration order (avoiding any reordering overhead) and copying nothing extra.
+
+```cpp
+Field::Field(const Field &field)
+    : FieldBase(field)
+    , profile(field.profile)
+    , profileIndex(field.profileIndex)
+    , type(field.type)
+    , isFieldExpanded(field.isFieldExpanded)
+{
+}
+```

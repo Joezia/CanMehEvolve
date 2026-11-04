@@ -1,0 +1,8 @@
+This setter is already a single store with no branches or conversions, so there is no cheaper implementation; I keep it byte-for-byte identical to avoid any behavioural change.
+
+```cpp
+void Field::SetIsExpanded(FIT_BOOL newValue)
+{
+    isFieldExpanded = newValue;
+}
+```

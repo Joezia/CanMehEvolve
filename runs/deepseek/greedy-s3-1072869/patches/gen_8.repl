@@ -1,0 +1,7 @@
+The destructor is already an empty out-of-line definition, so there is no work to remove; the only safe micro-optimization is to keep it a trivial empty body (identical codegen) rather than introduce any call overhead.
+
+```cpp
+FieldBase::~FieldBase()
+{
+}
+```

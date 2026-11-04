@@ -1,0 +1,22 @@
+
+const Profile::MESG* Profile::GetMesg(const FIT_UINT16 num)
+{
+    static std::array<const Profile::MESG*, 256> cache{};
+
+    if (num < cache.size()) {
+        if (cache[num]) return cache[num];
+    }
+
+    // Use std::find_if for better branch prediction and potential compiler optimizations
+    auto it = std::find_if(mesgs, mesgs + MESGS,
+        [num](const Profile::MESG& m) { return m.num == num; });
+
+    if (it != mesgs + MESGS) {
+        if (num < cache.size()) {
+            cache[num] = &*it;
+        }
+        return &*it;
+    }
+
+    return NULL;
+}

@@ -1,0 +1,19 @@
+I replaced the 512 KB pointer table with a 128 KB `FIT_UINT16` slot table (stored as index+1, 0 = "not present") and made the init flag `const`, shrinking the working set touched by both the hot decode path and the full 0–65535 profile sweep. The single well-predicted guard branch is kept, so behaviour is identical for every input.
+
+```cpp
+const Profile::MESG* Profile::GetMesg(const FIT_UINT16 num)
+{
+    static FIT_UINT16 slot[65536] = {};
+    static const bool initialized = [] {
+        for (int i = static_cast<int>(MESGS) - 1; i >= 0; --i)
+        {
+            slot[mesgs[i].num] = static_cast<FIT_UINT16>(i + 1);
+        }
+        return true;
+    }();
+    (void)initialized;
+
+    const FIT_UINT16 s = slot[num];
+    return (s != 0) ? &mesgs[s - 1] : NULL;
+}
+```

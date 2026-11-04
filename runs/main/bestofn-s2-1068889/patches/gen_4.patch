@@ -1,0 +1,22 @@
+--- a/src/fit_field.cpp
++++ b/src/fit_field.cpp
+@@ -15,6 +15,7 @@
+ #include "fit_field.hpp"
+ #include "fit_mesg.hpp"
+ #include "fit_unicode.hpp"
++#include <cstdint>
+ 
+ namespace fit
+ {
+@@ -68,9 +69,10 @@
+     this->type = type;
+ }
+ 
++
+ FIT_BOOL Field::IsValid(void) const
+ {
+-    return profileIndex != FIT_UINT16_INVALID;
++    return profileIndex != 0xFFFF;
+ }
+ 
+ FIT_BOOL Field::GetIsAccumulated() const

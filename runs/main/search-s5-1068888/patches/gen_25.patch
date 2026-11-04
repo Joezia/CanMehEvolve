@@ -1,0 +1,180 @@
+--- a/src/fit_field.cpp
++++ b/src/fit_field.cpp
+@@ -15,6 +15,9 @@
+ #include "fit_field.hpp"
+ #include "fit_mesg.hpp"
+ #include "fit_unicode.hpp"
++#include <utility>
++#include <cstddef>
++#include <cstdint>
+ 
+ namespace fit
+ {
+@@ -27,9 +30,10 @@
+ {
+ }
+ 
++
+ Field::Field(const Field &field)
+     : FieldBase(field)
+-    , profile(field.profile)
++    , profile(std::move(field.profile))
+     , profileIndex(field.profileIndex)
+     , type(field.type)
+     , isFieldExpanded(field.isFieldExpanded)
+@@ -90,19 +94,19 @@
+     return profile->fields[profileIndex].name;
+ }
+ 
++
+ FIT_UINT8 Field::GetNum(void) const
+ {
+-    if ((profile == NULL) || (profileIndex >= profile->numFields))
+-        return FIT_FIELD_NUM_INVALID;
+-    return profile->fields[profileIndex].num;
++    return (profile && profileIndex < profile->numFields) ? profile->fields[profileIndex].num : FIT_FIELD_NUM_INVALID;
+ }
+ 
++
+ FIT_UINT8 Field::GetType() const
+ {
+-    if ( type != FIT_UINT8_INVALID )
++    if (type != FIT_UINT8_INVALID)
+         return type;
+ 
+-    if ((profile == NULL) || (profileIndex >= profile->numFields))
++    if (profile == nullptr || profileIndex >= profile->numFields)
+         return FIT_UINT8_INVALID;
+ 
+     return profile->fields[profileIndex].type;
+--- a/src/fit_field_base.cpp
++++ b/src/fit_field_base.cpp
+@@ -16,6 +16,8 @@
+ #include "fit_field_base.hpp"
+ #include "fit_mesg.hpp"
+ #include "fit_unicode.hpp"
++#include <cstring>
++#include <algorithm>
+ 
+ namespace fit
+ {
+@@ -726,61 +728,59 @@
+ 
+ // rawValue is already the correct quantity (scale/offsets applied) but possibly not the
+ // correct underlying type
++
+ void FieldBase::AddRawValue(const FIT_FLOAT64 rawValue, const FIT_UINT8 fieldArrayIndex)
+ {
+     FIT_FLOAT64 roundedValue = FieldBase::Round(rawValue);
+-    switch ( GetType() )
++    switch (GetType())
+     {
+         case FIT_BASE_TYPE_BYTE:
+         case FIT_BASE_TYPE_ENUM:
+         case FIT_BASE_TYPE_SINT8:
+         case FIT_BASE_TYPE_UINT8:
+         case FIT_BASE_TYPE_UINT8Z:
+-            SetUINT8Value((FIT_UINT8)roundedValue, fieldArrayIndex);
++            SetUINT8Value(static_cast<FIT_UINT8>(roundedValue), fieldArrayIndex);
+             break;
+ 
+         case FIT_BASE_TYPE_SINT16:
+         case FIT_BASE_TYPE_UINT16:
+         case FIT_BASE_TYPE_UINT16Z:
+-            SetUINT16Value((FIT_UINT16)roundedValue, fieldArrayIndex);
++            SetUINT16Value(static_cast<FIT_UINT16>(roundedValue), fieldArrayIndex);
+             break;
+ 
+         case FIT_BASE_TYPE_SINT32:
+         case FIT_BASE_TYPE_UINT32:
+         case FIT_BASE_TYPE_UINT32Z:
+-            SetUINT32Value((FIT_UINT32)roundedValue, fieldArrayIndex);
++            SetUINT32Value(static_cast<FIT_UINT32>(roundedValue), fieldArrayIndex);
+             break;
+ 
+         case FIT_BASE_TYPE_FLOAT32:
+         {
+-            FIT_FLOAT32 float32Value = (FIT_FLOAT32)roundedValue;
++            FIT_FLOAT32 float32Value = static_cast<FIT_FLOAT32>(roundedValue);
+             FIT_UINT32 uint32Value;
+-            memcpy(&uint32Value, &float32Value, sizeof(FIT_FLOAT32));
++            std::memcpy(&uint32Value, &float32Value, sizeof(FIT_FLOAT32));
+             SetUINT32Value(uint32Value, fieldArrayIndex);
+             break;
+         }
+ 
+         case FIT_BASE_TYPE_FLOAT64:
+         {
+-            if ((FIT_UINT8)values.size() < ((fieldArrayIndex + 1) * sizeof(FIT_FLOAT64)))
+-            {
+-                values.resize((fieldArrayIndex + 1) * 8);
+-            }
+-
+-            for (size_t i = 0; i < sizeof(FIT_FLOAT64); i++)
++            const size_t neededSize = (fieldArrayIndex + 1) * sizeof(FIT_FLOAT64);
++            if (values.size() < neededSize)
+             {
+-                values[(fieldArrayIndex * sizeof(FIT_FLOAT64) + i)] = (*(((FIT_BYTE *)&rawValue) + i));
++                values.resize(neededSize);
+             }
++            std::memcpy(&values[fieldArrayIndex * sizeof(FIT_FLOAT64)], &rawValue, sizeof(FIT_FLOAT64));
+             break;
+         }
+ 
+         case FIT_BASE_TYPE_SINT64:
+-            SetSINT64Value((FIT_SINT64)rawValue, fieldArrayIndex);
++            SetSINT64Value(static_cast<FIT_SINT64>(rawValue), fieldArrayIndex);
+             break;
+ 
+         case FIT_BASE_TYPE_UINT64:
+         case FIT_BASE_TYPE_UINT64Z:
+-            SetUINT64Value((FIT_UINT64)rawValue, fieldArrayIndex);
++            SetUINT64Value(static_cast<FIT_UINT64>(rawValue), fieldArrayIndex);
+             break;
+ 
+         default:
+--- a/src/fit_profile.cpp
++++ b/src/fit_profile.cpp
+@@ -11,6 +11,9 @@
+ 
+ 
+ #include "fit_profile.hpp"
++#include <algorithm>
++#include <array>
++#include <cstddef>
+ 
+ namespace fit
+ {
+@@ -3055,15 +3058,28 @@
+    { NULL, "pad", FIT_MESG_NUM_PAD, 0 },
+ };
+ 
++
++
+ const Profile::MESG* Profile::GetMesg(const FIT_UINT16 num)
+ {
+-    for (int i = 0; i < MESGS; i++)
+-    {
+-        if (mesgs[i].num == num)
++    static std::array<const Profile::MESG*, 256> cache{};
++
++    if (num < cache.size()) {
++        if (const Profile::MESG* cached = cache[num]) {
++            return cached;
++        }
++    }
++
++    for (int i = 0; i < MESGS; i++) {
++        if (mesgs[i].num == num) {
++            if (num < cache.size()) {
++                cache[num] = &mesgs[i];
++            }
+             return &mesgs[i];
++        }
+     }
+ 
+-    return NULL;
++    return nullptr;
+ }
+ 
+ const Profile::MESG* Profile::GetMesg(const std::string& name)

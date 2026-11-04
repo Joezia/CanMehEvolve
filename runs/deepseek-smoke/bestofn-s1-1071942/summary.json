@@ -1,0 +1,36 @@
+{
+  "api_calls": 3,
+  "best_confirmed_generation": 0,
+  "best_confirmed_speedup": 1.0,
+  "best_ranked_generation": 1,
+  "best_ranked_speedup": 1.002118828455579,
+  "best_retained_speedup": 1.0033256945506561,
+  "completion_tokens": 16622,
+  "confirmed_candidates": 0,
+  "elapsed_s": 573.713017534,
+  "ended_because": "generations exhausted",
+  "finished": "2026-11-04T11:53:31+0800",
+  "improved_on_parent_candidates": 1,
+  "llm_seconds": 120.007535551,
+  "max_tokens": 32768,
+  "mode": "bestofn",
+  "outcomes": {
+    "measured": 2,
+    "unchanged": 1
+  },
+  "prompt_tokens": 1218,
+  "rank_updates": [
+    {
+      "R": 0.9978856514862169,
+      "generation": 1,
+      "label": "Mesg::GetField",
+      "previous_R": 1.0,
+      "region": 234,
+      "speedup": 1.002118828455579
+    }
+  ],
+  "reasoning_tokens": 16222,
+  "seed": 1,
+  "total_tokens": 17840,
+  "truncated_replies": 0
+}

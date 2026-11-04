@@ -1,0 +1,8 @@
+The getter already compiles to a single byte load and return; the only real win would be inlining it at call sites, which requires editing the header declaration (not allowed here), so I kept the body minimal and unchanged to preserve the current 0.896 result.
+
+```cpp
+FIT_UINT8 DeveloperFieldDefinition::GetSize() const
+{
+    return size;
+}
+```

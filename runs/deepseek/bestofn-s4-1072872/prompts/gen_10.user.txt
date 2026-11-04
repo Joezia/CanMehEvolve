@@ -1,0 +1,16 @@
+File: src/fit_field.cpp
+Function: Field::GetComponent (6 lines)
+One full decode of the four files takes about 482.0 ms in the stock build.
+Time of the current version of the whole library relative to stock: 1.000 (below 1.0 is faster). Best measured so far: 1.000.
+
+Current text of the function:
+```cpp
+const Profile::FIELD_COMPONENT* Field::GetComponent(const FIT_UINT16 component) const
+{
+    if (component >= GetNumComponents())
+        return NULL;
+    return &profile->fields[profileIndex].components[component];
+}
+
+```
+Return the faster replacement now.

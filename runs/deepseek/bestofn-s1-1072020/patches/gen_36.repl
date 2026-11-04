@@ -1,0 +1,14 @@
+I added `__builtin_expect` hints so the common profile-field path (invalid cached type, valid profile/index) stays fall-through and the error/developer paths are placed out of line.
+
+```cpp
+FIT_UINT8 Field::GetType() const
+{
+    if (__builtin_expect(type != FIT_UINT8_INVALID, 0))
+        return type;
+
+    if (__builtin_expect((profile != NULL) && (profileIndex < profile->numFields), 1))
+        return profile->fields[profileIndex].type;
+
+    return FIT_UINT8_INVALID;
+}
+```

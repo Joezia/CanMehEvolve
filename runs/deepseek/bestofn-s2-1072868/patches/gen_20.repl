@@ -1,0 +1,11 @@
+I hoisted the `profile` member into a local pointer so it is loaded once, and marked the invalid-input branch with `__builtin_expect` so the hot in-range path stays fall-through and the rare error path is laid out cold.
+
+```cpp
+FIT_UINT8 Field::GetNum(void) const
+{
+    auto* p = profile;
+    if (__builtin_expect((p == NULL) || (profileIndex >= p->numFields), 0))
+        return FIT_FIELD_NUM_INVALID;
+    return p->fields[profileIndex].num;
+}
+```

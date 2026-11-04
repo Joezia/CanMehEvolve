@@ -1,0 +1,7 @@
+The destructor is already an empty out-of-line definition, so its body cannot be made cheaper; any added statement only slows the hot `delete` path, and the virtual call overhead lives in the callers, not here. I kept it as the minimal empty definition, which is the fastest possible drop-in.
+
+```cpp
+FieldBase::~FieldBase()
+{
+}
+```

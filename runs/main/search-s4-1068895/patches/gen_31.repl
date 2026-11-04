@@ -1,0 +1,16 @@
+```cpp
+#include <cstddef>
+
+FIT_UINT8 Field::GetType() const
+{
+    if (type != FIT_UINT8_INVALID)
+        return type;
+
+    if (!profile || profileIndex >= profile->numFields)
+        return FIT_UINT8_INVALID;
+
+    // Hoist profile->fields[profileIndex].type load with early bound address
+    const FIT_FIELD_DEF& field = profile->fields[profileIndex];
+    return field.type;
+}
+```

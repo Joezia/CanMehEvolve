@@ -1,0 +1,10 @@
+I added a `__builtin_expect` branch hint so the compiler lays out the common valid-field path as fall-through, avoiding the cold `return 1` branch in the hot loop.
+
+```cpp
+FIT_FLOAT64 Field::GetScale() const
+{
+    if (__builtin_expect((profile == NULL) || (profileIndex >= profile->numFields), 0))
+        return 1;
+    return profile->fields[profileIndex].scale;
+}
+```

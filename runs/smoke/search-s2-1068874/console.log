@@ -1,0 +1,4 @@
+[run] mode=search host=xcnc18 model_probe={"http_status":200,"model":"qwen3-coder-next","ok":true,"requested_model":"qwen3-coder-next","usage":{"completion_tokens":2,"prompt_tokens":14,"prompt_tokens_details":null,"total_tokens":16}}
+[gen 1/2] region 192 FieldBase::Read parent=0 stage=correctness best_confirmed_speedup=1 tokens=1162 t=184s
+[gen 2/2] region 192 FieldBase::Read parent=0 stage=correctness best_confirmed_speedup=1 tokens=2792 t=189s
+[done] {"api_calls":2,"best_confirmed_generation":0,"best_confirmed_speedup":1.0,"best_retained_speedup":1.0,"completion_tokens":846,"confirmed_candidates":0,"elapsed_s":189.687495055,"ended_because":"generations exhausted","finished":"2026-11-03T21:41:35+0800","improved_on_parent_candidates":0,"mode":"search","outcomes":{"correctness":2},"prompt_tokens":1946,"seed":2,"total_tokens":2792}

@@ -1,0 +1,72 @@
+const FIT_UINT16 Profile::GetFieldIndex(const FIT_UINT16 mesgNum, const FIT_UINT8 fieldNum)
+{
+    static const MESG *cacheMesg[16] = {};
+    static FIT_UINT16 cacheMesgNum[16] = {};
+    static FIT_UINT32 cacheGen[16] = {};
+    static FIT_UINT32 cacheFieldGen[16][256] = {};
+    static FIT_UINT16 cacheFieldIndex[16][256];
+    static FIT_UINT16 cacheConsecutive[16] = {};
+
+    const unsigned slot = mesgNum & 15u;
+    const MESG *mesg;
+    FIT_UINT32 gen;
+    FIT_UINT16 consecutive;
+
+    if (cacheMesg[slot] != NULL && cacheMesgNum[slot] == mesgNum)
+    {
+        mesg = cacheMesg[slot];
+        consecutive = cacheConsecutive[slot];
+        if (consecutive != 0xFFFF)
+            consecutive = ++cacheConsecutive[slot];
+        gen = cacheGen[slot];
+    }
+    else
+    {
+        mesg = GetMesg(mesgNum);
+        if (mesg == NULL)
+            return FIT_UINT16_INVALID;
+
+        cacheMesg[slot] = mesg;
+        cacheMesgNum[slot] = mesgNum;
+        cacheConsecutive[slot] = 1;
+        consecutive = 1;
+        gen = ++cacheGen[slot];
+        if (gen == 0)
+        {
+            for (int i = 0; i < 256; ++i)
+                cacheFieldGen[slot][i] = 0;
+            gen = ++cacheGen[slot];
+        }
+    }
+
+    if (consecutive >= 2 && mesg->numFields >= 8)
+    {
+        if (cacheFieldGen[slot][fieldNum] == gen)
+            return cacheFieldIndex[slot][fieldNum];
+
+        const auto *fields = mesg->fields;
+        const auto *end = fields + mesg->numFields;
+        for (const auto *f = fields; f != end; ++f)
+        {
+            if (f->num == fieldNum)
+            {
+                const FIT_UINT16 index = static_cast<FIT_UINT16>(f - fields);
+                cacheFieldGen[slot][fieldNum] = gen;
+                cacheFieldIndex[slot][fieldNum] = index;
+                return index;
+            }
+        }
+
+        cacheFieldGen[slot][fieldNum] = gen;
+        cacheFieldIndex[slot][fieldNum] = FIT_UINT16_INVALID;
+        return FIT_UINT16_INVALID;
+    }
+
+    for (FIT_UINT16 i = 0; i < mesg->numFields; i++)
+    {
+        if (mesg->fields[i].num == fieldNum)
+            return i;
+    }
+
+    return FIT_UINT16_INVALID;
+}

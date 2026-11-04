@@ -1,0 +1,46 @@
+Replaced the 64K-entry lookup table with a 4K direct table that fits in L1, using 1-based indices to avoid a fill pass and a fallback for any message number ≥ 4096. This removes the large table streaming and keeps the hot lookup path to a single small-array load.
+
+```cpp
+const Profile::MESG* Profile::GetMesg(const FIT_UINT16 num)
+{
+    static FIT_UINT16 table[4096]; // zero-initialized
+    static bool initialized = false;
+    static bool hasHigh = false;
+
+    if (!initialized)
+    {
+        for (int i = 0; i < MESGS; ++i)
+        {
+            const FIT_UINT16 n = mesgs[i].num;
+            if (n < 4096)
+            {
+                if (table[n] == 0)
+                    table[n] = static_cast<FIT_UINT16>(i + 1);
+            }
+            else
+            {
+                hasHigh = true;
+            }
+        }
+        initialized = true;
+    }
+
+    if (num < 4096)
+    {
+        const FIT_UINT16 idx = table[num];
+        if (idx == 0)
+            return NULL;
+        return &mesgs[idx - 1];
+    }
+
+    if (!hasHigh)
+        return NULL;
+
+    for (int i = 0; i < MESGS; ++i)
+    {
+        if (mesgs[i].num == num)
+            return &mesgs[i];
+    }
+    return NULL;
+}
+```

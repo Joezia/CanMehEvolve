@@ -1,0 +1,43 @@
+File: src/fit_field.cpp
+Function: Field::GetNumSubFields (6 lines)
+One full decode of the four files takes about 359.2 ms in the stock build.
+Time of the current version of the whole library relative to stock: 0.984 (below 1.0 is faster). Best measured so far: 0.983.
+
+Your previous attempt failed:
+Stage 'compile' rejected it: /home/z/zhouzia/Workspace/CanMehEvolve/build/work-1068895/tree/src/fit_field.cpp:143:1: error: stray ‘`’ in program
+  143 | ```cpp
+      | ^
+/home/z/zhouzia/Workspace/CanMehEvolve/build/work-1068895/tree/src/fit_field.cpp:143:2: error: stray ‘`’ in program
+  143 | ```cpp
+      |  ^
+/home/z/zhouzia/Workspace/CanMehEvolve/build/work-1068895/tree/src/fit_field.cpp:143:3: error: stray ‘`’ in program
+  143 | ```cpp
+      |   ^
+/home/z/zhouzia/Workspace/CanMehEvolve/build/work-1068895/tree/src/fit_field.cpp:143:4: error: ‘cpp’ does not name a type
+  143 | ```cpp
+      |    ^~~
+
+The rejected replacement was:
+```cpp
+
+```cpp
+FIT_UINT16 Field::GetNumSubFields(void) const
+{
+    return (profile && profileIndex < profile->numFields)
+        ? profile->fields[profileIndex].numSubFields
+        : 0;
+}
+
+```
+
+Current text of the function:
+```cpp
+FIT_UINT16 Field::GetNumSubFields(void) const
+{
+    if ((profile == NULL) || (profileIndex >= profile->numFields))
+        return 0;
+    return profile->fields[profileIndex].numSubFields;
+}
+
+```
+Return the faster replacement now.

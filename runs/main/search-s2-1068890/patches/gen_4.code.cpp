@@ -1,0 +1,6 @@
+FIT_UINT8 Field::GetType() const
+{
+    return (type != FIT_UINT8_INVALID) ? type : 
+           (profile && profileIndex < profile->numFields) ? profile->fields[profileIndex].type : 
+           FIT_UINT8_INVALID;
+}

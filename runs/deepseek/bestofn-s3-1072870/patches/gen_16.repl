@@ -1,0 +1,7 @@
+The destructor body is already empty, so there is no runtime work to remove; any gain would have to come from the class layout or call sites, which are outside this function, so the fastest drop-in is the identical empty definition.
+
+```cpp
+FieldBase::~FieldBase()
+{
+}
+```

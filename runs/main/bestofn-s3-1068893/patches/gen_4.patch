@@ -1,0 +1,46 @@
+--- a/src/fit_crc.cpp
++++ b/src/fit_crc.cpp
+@@ -15,6 +15,7 @@
+ namespace fit
+ {
+ 
++
+ FIT_UINT16 CRC::Get16(FIT_UINT16 crc, FIT_UINT8 byte)
+ {
+    static const FIT_UINT16 crc_table[16] =
+@@ -22,19 +23,18 @@
+       0x0000, 0xCC01, 0xD801, 0x1400, 0xF001, 0x3C00, 0x2800, 0xE401,
+       0xA001, 0x6C00, 0x7800, 0xB401, 0x5000, 0x9C01, 0x8801, 0x4400
+    };
+-   FIT_UINT16 tmp;
+ 
+-   // compute checksum of lower four bits of byte
+-   tmp = crc_table[crc & 0xF];
+-   crc  = (crc >> 4) & 0x0FFF;
+-   crc  = crc ^ tmp ^ crc_table[byte & 0xF];
+-
+-   // now compute checksum of upper four bits of byte
+-   tmp = crc_table[crc & 0xF];
+-   crc  = (crc >> 4) & 0x0FFF;
+-   crc  = crc ^ tmp ^ crc_table[(byte >> 4) & 0xF];
++   // Process both nibbles in a single pass using bit manipulation
++   FIT_UINT16 low_nib = byte & 0x0F;
++   FIT_UINT16 high_nib = (byte >> 4) & 0x0F;
++
++   // First nibble: update CRC with low nibble
++   crc = (crc >> 4) ^ crc_table[(crc ^ low_nib) & 0x0F];
++   
++   // Second nibble: update CRC with high nibble
++   crc = (crc >> 4) ^ crc_table[(crc ^ high_nib) & 0x0F];
+ 
+-   return crc;
++   return crc & 0xFFFF;
+ }
+ 
+ FIT_UINT16 CRC::Calc16(const volatile void *data, FIT_UINT32 size)
+@@ -57,4 +57,5 @@
+ #if defined(FIT_CPP_INCLUDE_C)
+     // Include C Implementation
+     #include "fit_crc.c"
++#include <cstdint>
+ #endif

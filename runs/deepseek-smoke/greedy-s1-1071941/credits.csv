@@ -1,0 +1,4 @@
+generation,calls,prompt_tokens,completion_tokens,reasoning_tokens,total_tokens,best_ranked_speedup,truncated_replies,llm_seconds,elapsed_s
+1,1,433,4647,4509,5080,1.01816,0,39.1,398.2
+2,2,827,5534,5327,6361,1.01816,0,48.0,512.4
+3,3,1218,7553,7271,8771,1.01816,0,63.2,725.3

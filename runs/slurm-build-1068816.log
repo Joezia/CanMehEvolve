@@ -1,0 +1,91 @@
+[  6%] Performing update step for 'FITSDK'
+[ 20%] Built target nlohmann-json
+[ 20%] Built target cli11
+[ 21%] Built target googlebenchmark
+[ 25%] No patch step for 'FITSDK'
+[ 27%] Built target CanMehHarness
+[ 28%] Built target CanMehSearch
+[ 28%] Built target CanMehCalibrate
+[ 29%] No configure step for 'FITSDK'
+[ 31%] Built target CanMehDecodeForSampler
+[ 31%] Built target CanMehBench
+[ 31%] No build step for 'FITSDK'
+[ 33%] Building CXX object CMakeFiles/calibration_null_reference.dir/src/workloads/CalibrationLoop.cpp.o
+[ 33%] Building CXX object CMakeFiles/calibration_faster-1-percent_reference.dir/src/workloads/CalibrationLoop.cpp.o
+[ 33%] Building CXX object CMakeFiles/calibration_null_candidate.dir/src/workloads/CalibrationLoop.cpp.o
+[ 34%] No install step for 'FITSDK'
+[ 35%] Completed 'FITSDK'
+[ 37%] Built target FITSDK
+[ 38%] Building CXX object CMakeFiles/calibration_faster-1-percent_candidate.dir/src/workloads/CalibrationLoop.cpp.o
+[ 39%] Linking CXX shared library calibration/null/libfit_cand.so
+[ 40%] Linking CXX shared library calibration/null/libfit_ref.so
+[ 41%] Linking CXX shared library calibration/faster-1-percent/libfit_ref.so
+[ 41%] Built target calibration_null_candidate
+[ 41%] Built target calibration_null_reference
+[ 42%] Building CXX object CMakeFiles/calibration_faster-2-percent_reference.dir/src/workloads/CalibrationLoop.cpp.o
+[ 43%] Building CXX object CMakeFiles/calibration_faster-2-percent_candidate.dir/src/workloads/CalibrationLoop.cpp.o
+[ 43%] Built target calibration_faster-1-percent_reference
+[ 44%] Building CXX object CMakeFiles/calibration_faster-5-percent_reference.dir/src/workloads/CalibrationLoop.cpp.o
+[ 45%] Linking CXX shared library calibration/faster-1-percent/libfit_cand.so
+[ 45%] Built target calibration_faster-1-percent_candidate
+[ 46%] Building CXX object CMakeFiles/calibration_faster-5-percent_candidate.dir/src/workloads/CalibrationLoop.cpp.o
+[ 47%] Linking CXX shared library calibration/faster-2-percent/libfit_ref.so
+[ 47%] Linking CXX shared library calibration/faster-2-percent/libfit_cand.so
+[ 47%] Built target calibration_faster-2-percent_reference
+[ 48%] Building CXX object CMakeFiles/calibration_faster-10-percent_reference.dir/src/workloads/CalibrationLoop.cpp.o
+[ 48%] Linking CXX shared library calibration/faster-5-percent/libfit_ref.so
+[ 48%] Built target calibration_faster-2-percent_candidate
+[ 49%] Building CXX object CMakeFiles/calibration_faster-10-percent_candidate.dir/src/workloads/CalibrationLoop.cpp.o
+[ 49%] Built target calibration_faster-5-percent_reference
+[ 50%] Building CXX object CMakeFiles/calibration_slower-10-percent_reference.dir/src/workloads/CalibrationLoop.cpp.o
+[ 51%] Linking CXX shared library calibration/faster-5-percent/libfit_cand.so
+[ 51%] Built target calibration_faster-5-percent_candidate
+[ 52%] Building CXX object CMakeFiles/calibration_slower-10-percent_candidate.dir/src/workloads/CalibrationLoop.cpp.o
+[ 53%] Linking CXX shared library calibration/faster-10-percent/libfit_ref.so
+[ 54%] Linking CXX shared library calibration/faster-10-percent/libfit_cand.so
+[ 54%] Built target calibration_faster-10-percent_reference
+[ 55%] Building CXX object CMakeFiles/calibration_broken-digest_reference.dir/src/workloads/CalibrationLoop.cpp.o
+[ 56%] Linking CXX shared library calibration/slower-10-percent/libfit_ref.so
+[ 56%] Built target calibration_faster-10-percent_candidate
+[ 57%] Building CXX object CMakeFiles/calibration_broken-digest_candidate.dir/src/workloads/CalibrationLoop.cpp.o
+[ 57%] Built target calibration_slower-10-percent_reference
+[ 57%] Building CXX object CMakeFiles/calibration_shared-install-name_reference.dir/src/workloads/CalibrationLoop.cpp.o
+[ 58%] Linking CXX shared library calibration/slower-10-percent/libfit_cand.so
+[ 58%] Built target calibration_slower-10-percent_candidate
+[ 59%] Building CXX object CMakeFiles/calibration_shared-install-name_candidate.dir/src/workloads/CalibrationLoop.cpp.o
+[ 60%] Linking CXX shared library calibration/broken-digest/libfit_ref.so
+[ 61%] Linking CXX shared library calibration/broken-digest/libfit_cand.so
+[ 61%] Built target calibration_broken-digest_reference
+[ 62%] Linking CXX shared library calibration/shared-install-name/libfit_ref.so
+[ 63%] Building CXX object CMakeFiles/calibration_sweep-105_reference.dir/src/workloads/CalibrationLoop.cpp.o
+[ 63%] Built target calibration_broken-digest_candidate
+[ 63%] Built target calibration_shared-install-name_reference
+[ 63%] Building CXX object CMakeFiles/calibration_sweep-105_candidate.dir/src/workloads/CalibrationLoop.cpp.o
+[ 64%] Building CXX object CMakeFiles/calibration_sweep-110_reference.dir/src/workloads/CalibrationLoop.cpp.o
+[ 65%] Linking CXX shared library calibration/shared-install-name/libfit_cand.so
+[ 65%] Built target calibration_shared-install-name_candidate
+[ 66%] Building CXX object CMakeFiles/calibration_sweep-110_candidate.dir/src/workloads/CalibrationLoop.cpp.o
+[ 67%] Linking CXX shared library calibration/sweep-105/libfit_ref.so
+[ 67%] Built target calibration_sweep-105_reference
+[ 68%] Building CXX object CMakeFiles/calibration_sweep-200_reference.dir/src/workloads/CalibrationLoop.cpp.o
+[ 69%] Linking CXX shared library calibration/sweep-105/libfit_cand.so
+[ 69%] Linking CXX shared library calibration/sweep-110/libfit_ref.so
+[ 69%] Built target calibration_sweep-110_reference
+[ 69%] Built target calibration_sweep-105_candidate
+[ 71%] Building CXX object CMakeFiles/calibration_sweep-200_candidate.dir/src/workloads/CalibrationLoop.cpp.o
+[ 71%] Building CXX object CMakeFiles/calibration_sweep-400_reference.dir/src/workloads/CalibrationLoop.cpp.o
+[ 72%] Linking CXX shared library calibration/sweep-110/libfit_cand.so
+[ 72%] Built target calibration_sweep-110_candidate
+[ 73%] Building CXX object CMakeFiles/calibration_sweep-400_candidate.dir/src/workloads/CalibrationLoop.cpp.o
+[ 74%] Linking CXX shared library calibration/sweep-200/libfit_ref.so
+[ 74%] Built target calibration_sweep-200_reference
+[ 75%] Linking CXX shared library calibration/sweep-400/libfit_ref.so
+[ 76%] Linking CXX shared library calibration/sweep-200/libfit_cand.so
+[ 76%] Built target calibration_sweep-400_reference
+[ 76%] Built target calibration_sweep-200_candidate
+[ 76%] Linking CXX shared library calibration/sweep-400/libfit_cand.so
+[ 77%] Building CXX object CMakeFiles/CanMehWorkload.dir/src/workloads/SdkDecode.cpp.o
+[ 99%] Built target CanMehDataGenerator
+[ 99%] Built target calibration_sweep-400_candidate
+[100%] Built target CanMehData
+[100%] Built target CanMehWorkload

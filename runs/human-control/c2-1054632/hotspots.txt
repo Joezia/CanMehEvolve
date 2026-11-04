@@ -1,0 +1,53 @@
+# To display the perf.data header info, please use --header/--header-only options.
+#
+#
+# Total Lost Samples: 0
+#
+# Samples: 1K of event 'cycles:u'
+# Event count (approx.): 4572735541
+#
+# Overhead  Shared Object         Symbol                                                                                                                                                        IPC   [IPC Coverage]
+# ........  ....................  ............................................................................................................................................................  ....................
+#
+    12.07%  libc.so.6             [.] _int_free                                                                                                                                                 -      -            
+     9.61%  libc.so.6             [.] malloc                                                                                                                                                    -      -            
+     7.52%  libfit_sampling.so    [.] std::vector<unsigned char, std::allocator<unsigned char> >::operator=(std::vector<unsigned char, std::allocator<unsigned char> > const&) [clone .isra.0]  -      -            
+     6.47%  libfit_sampling.so    [.] fit::Profile::GetFieldIndex(unsigned short, unsigned char)                                                                                                -      -            
+     5.18%  libfit_sampling.so    [.] workloads::(anonymous namespace)::DecodedValueDigest::foldField(fit::FieldBase const&)                                                                    -      -            
+     4.60%  libfit_sampling.so    [.] fit::Decode::ReadByte(unsigned char)                                                                                                                      -      -            
+     3.89%  libc.so.6             [.] _int_malloc                                                                                                                                               -      -            
+     3.89%  libc.so.6             [.] cfree@GLIBC_2.2.5                                                                                                                                         -      -            
+     3.67%  libstdc++.so.6.0.33   [.] operator new(unsigned long)                                                                                                                               -      -            
+     3.56%  libfit_sampling.so    [.] fit::FieldBase::FieldBase(fit::FieldBase const&)                                                                                                          -      -            
+     3.08%  libfit_sampling.so    [.] fit::Field::GetType() const                                                                                                                               -      -            
+     2.64%  libfit_sampling.so    [.] fit::FieldBase::GetNumValues() const                                                                                                                      -      -            
+     2.05%  libfit_sampling.so    [.] fit::FieldBase::~FieldBase()                                                                                                                              -      -            
+     2.04%  libfit_sampling.so    [.] fit::Profile::GetMesg(unsigned short)                                                                                                                     -      -            
+     1.74%  libfit_sampling.so    [.] fit::Field::GetNum() const                                                                                                                                -      -            
+     1.66%  libfit_sampling.so    [.] fit::FieldBase::Read(void const*, unsigned char)                                                                                                          -      -            
+     1.54%  libfit_sampling.so    [.] fit::MesgDefinition::MesgDefinition(fit::MesgDefinition const&)                                                                                           -      -            
+     1.50%  libfit_sampling.so    [.] fit::Field::Field(fit::Field const&)                                                                                                                      -      -            
+     1.50%  libfit_sampling.so    [.] fit::FieldBase::GetFLOAT64Value(unsigned char, unsigned short) const [clone .part.0]                                                                      -      -            
+     1.45%  libfit_sampling.so    [.] fit::Mesg::Mesg(fit::Mesg const&)                                                                                                                         -      -            
+     1.41%  libfit_sampling.so    [.] fit::DeveloperFieldDefinition::~DeveloperFieldDefinition()                                                                                                -      -            
+     1.17%  libfit_sampling.so    [.] fit::Field::~Field()                                                                                                                                      -      -            
+     1.13%  libfit_sampling.so    [.] fit::Mesg::GetField(unsigned char)                                                                                                                        -      -            
+     1.03%  libfit_sampling.so    [.] fit::CRC::Get16(unsigned short, unsigned char)                                                                                                            -      -            
+     0.87%  libfit_sampling.so    [.] unsigned char fit::FieldBase::GetValue<unsigned char>(unsigned char) const                                                                                -      -            
+     0.75%  libfit_sampling.so    [.] fit::Decode::Resume()                                                                                                                                     -      -            
+     0.75%  libstdc++.so.6.0.33   [.] operator delete(void*)                                                                                                                                    -      -            
+     0.73%  libfit_sampling.so    [.] fit::Field::Field(unsigned short, unsigned char)                                                                                                          -      -            
+     0.70%  libc.so.6             [.] __memcmp_avx2_movbe                                                                                                                                       -      -            
+     0.66%  libfit_sampling.so    [.] fit::Field::IsValid() const                                                                                                                               -      -            
+     0.63%  libc.so.6             [.] __memmove_avx_unaligned_erms                                                                                                                              -      -            
+     0.61%  libstdc++.so.6.0.33   [.] free@plt                                                                                                                                                  -      -            
+     0.56%  libstdc++.so.6.0.33   [.] malloc@plt                                                                                                                                                -      -            
+     0.56%  libfit_sampling.so    [.] fit::Field::GetNumSubFields() const                                                                                                                       -      -            
+     0.56%  libfit_sampling.so    [.] fit::Mesg::GetFieldByIndex(unsigned short)                                                                                                                -      -            
+     0.52%  libfit_sampling.so    [.] fit::Field::GetNumComponents() const                                                                                                                      -      -            
+     0.52%  libfit_sampling.so    [.] fit::DeveloperFieldDefinition::DeveloperFieldDefinition(fit::DeveloperFieldDefinition const&)                                                             -      -            
+
+
+#
+# (Cannot load tips.txt file, please install perf!)
+#

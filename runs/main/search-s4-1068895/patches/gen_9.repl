@@ -1,0 +1,6 @@
+```cpp
+    FIT_FLOAT32 GetEnhancedAvgAltitude(void) const
+    {
+        return GetFieldFLOAT32Value(126, 0, FIT_SUBFIELD_INDEX_MAIN_FIELD);
+    }
+```

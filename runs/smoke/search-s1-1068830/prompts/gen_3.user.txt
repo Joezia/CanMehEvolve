@@ -1,0 +1,50 @@
+File: src/fit_zones_target_mesg.hpp
+Function: IsHrCalcTypeValid (10 lines)
+One full decode of the four files takes about 358.9 ms in the stock build.
+Time of the current version of the whole library relative to stock: 1.000 (below 1.0 is faster). Best measured so far: 1.000.
+
+Your previous attempt failed:
+Stage 'compile' rejected it: In file included from /home/z/zhouzia/Workspace/CanMehEvolve/build/work-1068830/tree/src/fit_zones_target_mesg_listener.hpp:16,
+                 from /home/z/zhouzia/Workspace/CanMehEvolve/build/work-1068830/tree/src/fit_mesg_broadcaster.hpp:43,
+                 from /home/z/zhouzia/Workspace/CanMehEvolve/build/work-1068830/tree/src/fit_buffered_mesg_broadcaster.hpp:17,
+                 from /home/z/zhouzia/Workspace/CanMehEvolve/build/work-1068830/tree/src/fit_buffered_mesg_broadcaster.cpp:14:
+/home/z/zhouzia/Workspace/CanMehEvolve/build/work-1068830/tree/src/fit_zones_target_mesg.hpp:142:1: error: stray ‘`’ in program
+  142 | ```cpp
+      | ^
+/home/z/zhouzia/Workspace/CanMehEvolve/build/work-1068830/tree/src/fit_zones_target_mesg.hpp:142:2: error: stray ‘`’ in program
+  142 | ```cpp
+      |  ^
+/home/z/zhouzia/Workspace/CanMehEvolve/build/work-1068830/tree/src/fit_zones_target_mesg.hpp:142:3: error: stray ‘`’ in program
+  142 | ```cpp
+      |   ^
+/home/z/zhouzia/Workspace/CanMehEvolve/build/work-1068830/tree/src/fit_zones_target_mesg.hpp:142:4: error: ‘cpp’ does not name a type
+  142 | ```cpp
+      |    ^~~
+
+The rejected replacement was:
+```cpp
+
+```cpp
+    FIT_BOOL IsHrCalcTypeValid() const
+    {
+        const Field* field = GetField(5);
+        return (field != FIT_NULL) && field->IsValueValid();
+    }
+
+```
+
+Current text of the function:
+```cpp
+    FIT_BOOL IsHrCalcTypeValid() const
+    {
+        const Field* field = GetField(5);
+        if( FIT_NULL == field )
+        {
+            return FIT_FALSE;
+        }
+
+        return field->IsValueValid();
+    }
+
+```
+Return the faster replacement now.

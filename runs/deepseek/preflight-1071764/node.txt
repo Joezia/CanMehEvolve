@@ -1,0 +1,13 @@
+host=xcnc3
+job=1071764
+start=2026-11-04T11:06:46+08:00
+model_requested=deepseek-v4.1-flash
+levels=8192 16384 32768 timeout=600
+commit=0bce2476eee226fd5dc28cf093a57c8ae0d94c1b
+search_cpp_sha256=afca2fcb33b9c7abb2433c2a6016aa184aef06bc0435ab52ffdd32fbaf6cce85
+binary_sha256=8cba65e694af8c2f5fb3e28813659b5f610b20c86626c812dce40e563d4352b3
+level=8192 exit=0
+level=16384 exit=0
+level=32768 exit=0
+all_usable_at=32768
+end=2026-11-04T11:39:28+08:00

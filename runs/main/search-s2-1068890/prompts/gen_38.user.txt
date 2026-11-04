@@ -1,0 +1,22 @@
+File: src/fit_field_base.cpp
+Function: FieldBase::IsSignedInteger (12 lines)
+One full decode of the four files takes about 359.8 ms in the stock build.
+Time of the current version of the whole library relative to stock: 0.938 (below 1.0 is faster). Best measured so far: 0.930.
+
+Current text of the function:
+```cpp
+FIT_BOOL FieldBase::IsSignedInteger(const FIT_UINT16 subFieldIndex) const
+{
+    switch (GetType(subFieldIndex)) {
+        case FIT_BASE_TYPE_SINT8:
+        case FIT_BASE_TYPE_SINT16:
+        case FIT_BASE_TYPE_SINT32:
+            return FIT_TRUE;
+
+        default:
+            return FIT_FALSE;
+    }
+}
+
+```
+Return the faster replacement now.

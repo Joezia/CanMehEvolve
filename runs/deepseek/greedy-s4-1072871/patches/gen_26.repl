@@ -1,0 +1,15 @@
+I made the fallback return the already-loaded `type` value and collapsed the invalid-profile paths into one branch, avoiding a redundant invalid constant load and extra return path. I also biased the branch for the common decode case where `type` is invalid and the profile lookup is needed.
+
+```cpp
+FIT_UINT8 Field::GetType() const
+{
+    if (__builtin_expect(type == FIT_UINT8_INVALID, 1))
+    {
+        const auto p = profile;
+        if ((p != NULL) && (profileIndex < p->numFields))
+            return p->fields[profileIndex].type;
+    }
+
+    return type;
+}
+```

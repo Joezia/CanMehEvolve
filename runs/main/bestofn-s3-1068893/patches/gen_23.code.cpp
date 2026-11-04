@@ -1,0 +1,7 @@
+
+FIT_UINT16 Field::GetNumSubFields(void) const
+{
+    if (!profile || profileIndex >= profile->numFields)
+        return 0;
+    return profile->fields[profileIndex].numSubFields;
+}

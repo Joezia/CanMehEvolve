@@ -1,0 +1,5 @@
+
+void SetActiveTime(FIT_UINT32 activeTime)
+{
+    SetFieldUINT32Value(6, activeTime, 0, FIT_SUBFIELD_INDEX_MAIN_FIELD);
+}

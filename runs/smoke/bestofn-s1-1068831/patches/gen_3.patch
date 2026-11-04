@@ -1,0 +1,26 @@
+--- a/src/fit_session_mesg.hpp
++++ b/src/fit_session_mesg.hpp
+@@ -15,6 +15,7 @@
+ 
+ #include "fit_mesg.hpp"
+ #include "fit_mesg_with_event.hpp"
++#include <cstdint>
+ 
+ namespace fit
+ {
+@@ -254,10 +255,11 @@
+     // Set timestamp field
+     // Units: s
+     ///////////////////////////////////////////////////////////////////////
+-    void SetTimestamp(FIT_DATE_TIME timestamp)
+-    {
+-        SetFieldUINT32Value(253, timestamp, 0, FIT_SUBFIELD_INDEX_MAIN_FIELD);
+-    }
++
++void SetTimestamp(FIT_DATE_TIME timestamp)
++{
++    fields[253].SetUINT32Value(timestamp, 0, FIT_SUBFIELD_INDEX_MAIN_FIELD);
++}
+ 
+     ///////////////////////////////////////////////////////////////////////
+     // Checks the validity of event field

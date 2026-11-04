@@ -1,0 +1,46 @@
+const FIT_UINT16 Profile::GetFieldIndex(const FIT_UINT16 mesgNum, const FIT_UINT8 fieldNum)
+{
+    static FIT_UINT16 cache[65536][256];
+    static FIT_UINT8 state[65536] = { 0 };
+    static FIT_UINT16 lastMesgNum = 0;
+    static FIT_UINT16 *lastRow = NULL;
+
+    if (lastRow != NULL && mesgNum == lastMesgNum)
+        return lastRow[fieldNum];
+
+    const FIT_UINT8 s = state[mesgNum];
+    if (s == 0)
+    {
+        const MESG *mesg = GetMesg(mesgNum);
+
+        if (mesg == NULL)
+        {
+            state[mesgNum] = 2;
+            return FIT_UINT16_INVALID;
+        }
+
+        FIT_UINT16 *row = cache[mesgNum];
+        for (FIT_UINT16 i = 0; i < 256; i++)
+            row[i] = FIT_UINT16_INVALID;
+
+        for (FIT_UINT16 i = 0; i < mesg->numFields; i++)
+        {
+            const FIT_UINT16 num = mesg->fields[i].num;
+            if (num < 256 && row[num] == FIT_UINT16_INVALID)
+                row[num] = i;
+        }
+
+        state[mesgNum] = 1;
+        lastMesgNum = mesgNum;
+        lastRow = row;
+        return row[fieldNum];
+    }
+    else if (s == 2)
+    {
+        return FIT_UINT16_INVALID;
+    }
+
+    lastMesgNum = mesgNum;
+    lastRow = cache[mesgNum];
+    return lastRow[fieldNum];
+}

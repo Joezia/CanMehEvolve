@@ -1,0 +1,22 @@
+--- a/src/fit_capabilities_mesg.hpp
++++ b/src/fit_capabilities_mesg.hpp
+@@ -14,6 +14,7 @@
+ #define FIT_CAPABILITIES_MESG_HPP
+ 
+ #include "fit_mesg.hpp"
++#include <cstdint>
+ 
+ namespace fit
+ {
+@@ -170,9 +171,10 @@
+     ///////////////////////////////////////////////////////////////////////
+     // Returns connectivity_supported field
+     ///////////////////////////////////////////////////////////////////////
++
+     FIT_CONNECTIVITY_CAPABILITIES GetConnectivitySupported(void) const
+     {
+-        return GetFieldUINT32ZValue(23, 0, FIT_SUBFIELD_INDEX_MAIN_FIELD);
++        return static_cast<FIT_CONNECTIVITY_CAPABILITIES>(GetFieldUINT32ZValue(23, 0, FIT_SUBFIELD_INDEX_MAIN_FIELD));
+     }
+ 
+     ///////////////////////////////////////////////////////////////////////

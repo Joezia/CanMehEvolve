@@ -1,0 +1,8 @@
+I kept the single typed base-class setter call, which is already the minimal path; any direct field manipulation would require the same index lookup and risk behavior changes.
+
+```cpp
+    void SetTimestamp(FIT_DATE_TIME timestamp)
+    {
+        SetFieldUINT32Value(253, timestamp, 0, FIT_SUBFIELD_INDEX_MAIN_FIELD);
+    }
+```

@@ -1,0 +1,21 @@
+I replaced the linear scan with a lazily built 65536-entry direct lookup table (first occurrence wins, preserving duplicate semantics), turning each lookup into a single array index; the table is built once and its sequential layout also makes the full-domain sweep cache-friendly.
+
+```cpp
+const Profile::MESG* Profile::GetMesg(const FIT_UINT16 num)
+{
+    static const Profile::MESG* lut[65536] = {};
+    static bool built = false;
+
+    if (!built)
+    {
+        for (int i = 0; i < MESGS; i++)
+        {
+            if (lut[mesgs[i].num] == NULL)
+                lut[mesgs[i].num] = &mesgs[i];
+        }
+        built = true;
+    }
+
+    return lut[num];
+}
+```

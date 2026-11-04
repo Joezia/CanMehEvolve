@@ -1,0 +1,17 @@
+
+template <typename T>
+T FieldBase::GetValue(const FIT_UINT8 fieldArrayIndex) const
+{
+    const FIT_UINT8 type = GetType() & FIT_BASE_TYPE_NUM_MASK;
+    const FIT_UINT8 size = baseTypeSizes[type];
+    
+    if (fieldArrayIndex >= (FIT_UINT8)values.size())
+    {
+        return *reinterpret_cast<const T*>(baseTypeInvalids[type]);
+    }
+
+    const FIT_UINT8 offset = fieldArrayIndex * size;
+    T rv = 0;
+    std::memcpy(&rv, &values[offset], size);
+    return rv;
+}

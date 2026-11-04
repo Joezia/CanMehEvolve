@@ -1,0 +1,42 @@
+[run] mode=greedy host=xcnc41 model_probe={"http_status":200,"model":"deepseek-v4.1-flash-1017","ok":true,"requested_model":"deepseek-v4.1-flash","usage":{"completion_tokens":20,"completion_tokens_details":{"reasoning_tokens":17},"prompt_tokens":36,"prompt_tokens_details":{"cached_tokens":0,"created_cache_tokens":0,"multimodal_tokens":null},"total_tokens":56}}
+[gen 1/40] region 50 Decode::Resume parent=0 stage=compile best_ranked_speedup=1 tokens=28090 t=416s
+[gen 2/40] region 574 Profile::GetMesg parent=0 ratio=0.930713 CONFIRMED best_ranked_speedup=1.07445 tokens=34199 t=665s
+[gen 3/40] region 134 FieldBase::FieldBase parent=2 ratio=0.885892 CONFIRMED best_ranked_speedup=1.12881 tokens=41683 t=924s
+[gen 4/40] region 122 Field::GetNum parent=3 stage=compile best_ranked_speedup=1.12881 tokens=44745 t=954s
+[gen 5/40] region 196 FieldBase::GetValue parent=3 stage=compile best_ranked_speedup=1.12881 tokens=70483 t=1152s
+[gen 6/40] region 143 FieldBase::GetNumValues parent=3 stage=crash best_ranked_speedup=1.12881 tokens=81947 t=1264s
+[gen 7/40] region 196 FieldBase::GetValue parent=3 ratio=0.875334 CONFIRMED best_ranked_speedup=1.14242 tokens=98182 t=1591s
+[gen 8/40] region 226 Mesg::AddField parent=7 ratio=0.874399 CONFIRMED best_ranked_speedup=1.14364 tokens=115216 t=1957s
+[gen 9/40] region 166 FieldBase::GetFLOAT64Value parent=8 stage=correctness best_ranked_speedup=1.14364 tokens=137317 t=2147s
+[gen 10/40] region 234 Mesg::GetField parent=8 ratio=0.875673 best_ranked_speedup=1.14364 tokens=138739 t=2253s
+[gen 11/40] region 574 Profile::GetMesg parent=8 ratio=0.879802 best_ranked_speedup=1.14364 tokens=152546 t=2505s
+[gen 12/40] region 134 FieldBase::FieldBase parent=8 stage=truncated best_ranked_speedup=1.14364 tokens=185710 t=2785s
+[gen 13/40] region 113 Field::Field parent=8 stage=llm_nocode best_ranked_speedup=1.14364 tokens=200865 t=2912s
+[gen 14/40] region 123 Field::GetType parent=8 stage=compile best_ranked_speedup=1.14364 tokens=211967 t=3017s
+[gen 15/40] region 134 FieldBase::FieldBase parent=8 stage=truncated best_ranked_speedup=1.14364 tokens=245131 t=3311s
+[gen 16/40] region 1002 GetConnectivitySupported parent=8 stage=compile best_ranked_speedup=1.14364 tokens=276111 t=3571s
+[gen 17/40] region 196 FieldBase::GetValue parent=8 ratio=0.886829 best_ranked_speedup=1.14364 tokens=305174 t=3920s
+[gen 18/40] region 123 Field::GetType parent=8 ratio=0.879830 best_ranked_speedup=1.14364 tokens=313429 t=4091s
+[gen 19/40] region 123 Field::GetType parent=8 ratio=0.877531 best_ranked_speedup=1.14364 tokens=330760 t=4333s
+[gen 20/40] region 122 Field::GetNum parent=8 stage=compile best_ranked_speedup=1.14364 tokens=332420 t=4347s
+[gen 21/40] region 122 Field::GetNum parent=8 ratio=0.872245 CONFIRMED best_ranked_speedup=1.14647 tokens=347645 t=4671s
+[gen 22/40] region 205 FieldDefinition::GetType parent=21 stage=unchanged best_ranked_speedup=1.14647 tokens=348464 t=4676s
+[gen 23/40] region 143 FieldBase::GetNumValues parent=21 stage=compile best_ranked_speedup=1.14647 tokens=362177 t=4787s
+[gen 24/40] region 196 FieldBase::GetValue parent=21 ratio=0.871611 CONFIRMED best_ranked_speedup=1.1473 tokens=389131 t=5186s
+[gen 25/40] region 196 FieldBase::GetValue parent=24 ratio=0.874288 best_ranked_speedup=1.1473 tokens=413322 t=5529s
+[gen 26/40] region 122 Field::GetNum parent=24 ratio=0.871323 CONFIRMED best_ranked_speedup=1.14768 tokens=428379 t=5879s
+[gen 27/40] region 576 Profile::GetFieldIndex parent=26 ratio=0.855155 CONFIRMED best_ranked_speedup=1.16938 tokens=438709 t=6154s
+[gen 28/40] region 122 Field::GetNum parent=27 ratio=0.855560 best_ranked_speedup=1.16938 tokens=445298 t=6308s
+[gen 29/40] region 127 Field::GetNumComponents parent=27 ratio=0.855612 CONFIRMED best_ranked_speedup=1.16938 tokens=450402 t=6558s
+[gen 30/40] region 123 Field::GetType parent=27 stage=compile best_ranked_speedup=1.16938 tokens=468529 t=6767s
+[gen 31/40] region 134 FieldBase::FieldBase parent=27 stage=unchanged best_ranked_speedup=1.16938 tokens=478154 t=6919s
+[gen 32/40] region 139 FieldBase::GetScale parent=27 stage=compile best_ranked_speedup=1.16938 tokens=480971 t=6967s
+[gen 33/40] region 574 Profile::GetMesg parent=27 ratio=0.854801 CONFIRMED best_ranked_speedup=1.16986 tokens=489991 t=7268s
+[gen 34/40] region 574 Profile::GetMesg parent=33 ratio=0.855171 CONFIRMED best_ranked_speedup=1.16986 tokens=515357 t=7725s
+[gen 35/40] region 128 Field::GetNumSubFields parent=33 ratio=0.859354 best_ranked_speedup=1.16986 tokens=521216 t=7876s
+[gen 36/40] region 166 FieldBase::GetFLOAT64Value parent=33 stage=compile best_ranked_speedup=1.16986 tokens=547070 t=8095s
+[gen 37/40] region 50 Decode::Resume parent=33 ratio=0.847178 CONFIRMED best_ranked_speedup=1.18039 tokens=563909 t=8428s
+[gen 38/40] region 134 FieldBase::FieldBase parent=37 stage=correctness best_ranked_speedup=1.18039 tokens=590234 t=8697s
+[gen 39/40] region 576 Profile::GetFieldIndex parent=37 stage=llm_http best_ranked_speedup=1.18039 tokens=590234 t=8998s
+[gen 40/40] region 143 FieldBase::GetNumValues parent=37 ratio=0.823302 CONFIRMED best_ranked_speedup=1.21462 tokens=596661 t=9244s
+[done] {"api_calls":40,"best_confirmed_generation":0,"best_confirmed_speedup":1.0,"best_ranked_generation":40,"best_ranked_speedup":1.2146203917088136,"best_retained_speedup":1.2146203917088136,"completion_tokens":575762,"confirmed_candidates":13,"elapsed_s":9244.345611223,"ended_because":"generations exhausted","finished":"2026-11-04T17:51:56+0800","improved_on_parent_candidates":11,"llm_seconds":5727.289650750001,"max_tokens":32768,"mode":"greedy","outcomes":{"compile":10,"correctness":2,"crash":1,"llm_http":1,"llm_nocode":1,"measured":21,"truncated":2,"unchanged":2},"prompt_tokens":20899,"rank_updates":[{"R":0.9307129804205011,"generation":2,"label":"Profile::GetMesg","previous_R":1.0,"region":574,"speedup":1.0744450985825884},{"R":0.8858916377166567,"generation":3,"label":"FieldBase::FieldBase","previous_R":0.9307129804205011,"region":134,"speedup":1.1288062302715174},{"R":0.8753339713864976,"generation":7,"label":"FieldBase::GetValue","previous_R":0.8858916377166567,"region":196,"speedup":1.1424211017607782},{"R":0.8743993066294098,"generation":8,"label":"Mesg::AddField","previous_R":0.8753339713864976,"region":226,"speedup":1.143642260942257},{"R":0.8722446038289691,"generation":21,"label":"Field::GetNum","previous_R":0.8743993066294098,"region":122,"speedup":1.1464673964278045},{"R":0.8716105171827393,"generation":24,"label":"FieldBase::GetValue","previous_R":0.8722446038289691,"region":196,"speedup":1.1473014382986648},{"R":0.871322927374328,"generation":26,"label":"Field::GetNum","previous_R":0.8716105171827393,"region":122,"speedup":1.1476801178794085},{"R":0.8551547424115309,"generation":27,"label":"Profile::GetFieldIndex","previous_R":0.871322927374328,"region":576,"speedup":1.1693790028925133},{"R":0.854800603000648,"generation":33,"label":"Profile::GetMesg","previous_R":0.8551547424115309,"region":574,"speedup":1.1698634704861597},{"R":0.847178286201314,"generation":37,"label":"Decode::Resume","previous_R":0.854800603000648,"region":50,"speedup":1.1803890825435666},{"R":0.823302495846566,"generation":40,"label":"FieldBase::GetNumValues","previous_R":0.847178286201314,"region":143,"speedup":1.2146203917088136}],"reasoning_tokens":564776,"seed":2,"total_tokens":596661,"truncated_replies":2}

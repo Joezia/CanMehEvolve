@@ -1,0 +1,8 @@
+Using the member-initializer list copy-constructs the two containers directly instead of default-constructing and then copy-assigning them, avoiding redundant work in the constructor body.
+
+```cpp
+FieldBase::FieldBase(const FieldBase &field)
+    : values(field.values), stringIndexes(field.stringIndexes)
+{
+}
+```

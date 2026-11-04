@@ -1,0 +1,10 @@
+The function is already minimal, so I only added a branch-prediction hint marking the invalid-profile/index path as cold, keeping the common valid lookup as fall-through and out of the hot path.
+
+```cpp
+FIT_UINT8 Field::GetNum(void) const
+{
+    if (__builtin_expect((profile == NULL) || (profileIndex >= profile->numFields), 0))
+        return FIT_FIELD_NUM_INVALID;
+    return profile->fields[profileIndex].num;
+}
+```

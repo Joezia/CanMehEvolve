@@ -1,0 +1,7 @@
+host=xcnc1
+job=1074077
+start=2026-11-04T19:32:15+08:00
+patch=/home/z/zhouzia/Workspace/CanMehEvolve/runs/deepseek/bestofn-s4-1072872/patches/gen_7.patch
+patch_sha256=65b468c576eff158f1afbb2c2bf5e5e771312d92e804efdf60990731f0fa4786
+binary_sha256=5fa92919f823c4eff33d422d18a9eb37fc12854ecc2da787c6e1071b83f8bfb2
+end=2026-11-04T19:39:22+08:00

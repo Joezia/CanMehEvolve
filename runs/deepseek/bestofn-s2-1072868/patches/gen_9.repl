@@ -1,0 +1,18 @@
+Cached the field type to avoid a second lookup and replaced the variable integer division with a shift derived from the power-of-two base type size, which is much cheaper.
+
+```cpp
+FIT_UINT8 FieldBase::GetNumValues(void) const
+{
+    if (!IsValid())
+        return 0;
+
+    const FIT_UINT8 type = GetType();
+    if (type != FIT_BASE_TYPE_STRING)
+    {
+        const FIT_UINT8 size = baseTypeSizes[type & FIT_BASE_TYPE_NUM_MASK];
+        return (FIT_UINT8)(values.size() >> __builtin_ctz(size));
+    }
+
+    return (FIT_UINT8)stringIndexes.size();
+}
+```

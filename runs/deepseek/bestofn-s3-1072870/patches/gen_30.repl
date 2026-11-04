@@ -1,0 +1,10 @@
+I kept the member-wise copy but used the defaulted copy constructor form so the compiler emits the optimal member-wise copy sequence. This is already the fastest safe implementation since the vectors must be deep-copied.
+```cpp
+Mesg::Mesg(const Mesg &mesg)
+    : profile(mesg.profile)
+    , localNum(mesg.localNum)
+    , fields(mesg.fields)
+    , devFields(mesg.devFields)
+{
+}
+```

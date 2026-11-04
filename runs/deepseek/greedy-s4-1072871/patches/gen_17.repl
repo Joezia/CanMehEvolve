@@ -1,0 +1,7 @@
+The two null checks are folded into a single branchless bitwise expression, removing the short-circuit branch that the compiler keeps in the inlined call site while producing the identical 0/1 result.
+```cpp
+FIT_BOOL DeveloperFieldDefinition::IsDefined() const
+{
+    return static_cast<FIT_BOOL>((mesg != nullptr) & (developer != nullptr));
+}
+```

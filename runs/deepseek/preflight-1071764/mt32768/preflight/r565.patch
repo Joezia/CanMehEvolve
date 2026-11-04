@@ -1,0 +1,66 @@
+--- a/src/fit_mesg_definition.cpp
++++ b/src/fit_mesg_definition.cpp
+@@ -196,28 +196,51 @@
+     if (localNum != mesgDef.localNum)
+         return FIT_FALSE;
+ 
+-    for (int i=0; i<(int)mesgDef.fields.size(); i++)
+-    {
+-        const FieldDefinition* supportedFieldDef = GetField(mesgDef.fields[i].GetNum());
++    const size_t fieldCount = mesgDef.fields.size();
++    const size_t supportedFieldCount = fields.size();
++    unsigned long long seen[4] = {0, 0, 0, 0};
+ 
+-        if (supportedFieldDef == FIT_NULL)  // Could not find field with matching number.
+-            return FIT_FALSE;
++    for (size_t i = 0; i < fieldCount; ++i)
++    {
++        const FieldDefinition& mesgField = mesgDef.fields[i];
++        const FIT_UINT8 mesgFieldNum = mesgField.GetNum();
++        const FieldDefinition* supportedFieldDef = FIT_NULL;
++
++        if (i < supportedFieldCount)
++        {
++            const FieldDefinition& supportedField = fields[i];
++            const FIT_UINT8 supportedNum = supportedField.GetNum();
++
++            if (supportedNum == mesgFieldNum &&
++                (seen[supportedNum >> 6] & (1ULL << (supportedNum & 63))) == 0)
++            {
++                supportedFieldDef = &supportedField;
++            }
++
++            seen[supportedNum >> 6] |= (1ULL << (supportedNum & 63));
++        }
++
++        if (supportedFieldDef == FIT_NULL)
++        {
++            supportedFieldDef = GetField(mesgFieldNum);
++            if (supportedFieldDef == FIT_NULL)
++                return FIT_FALSE;
++        }
+ 
+-        if (mesgDef.fields[i].GetSize() > supportedFieldDef->GetSize())   // Other field definition is larger than this field definition.
++        if (mesgField.GetSize() > supportedFieldDef->GetSize())
+             return FIT_FALSE;
+     }
+ 
+-    // Check to make sure that all field developer fields are defined
+-    for (int i=0; i<(int)mesgDef.devFields.size(); i++)
++    const size_t devFieldCount = mesgDef.devFields.size();
++    for (size_t i = 0; i < devFieldCount; ++i)
+     {
+-        const DeveloperFieldDefinition fieldDef = mesgDef.devFields[i];
+-        const DeveloperFieldDefinition* supportedDef = GetDevField(fieldDef.GetDeveloperDataIndex(), fieldDef.GetNum());
++        const DeveloperFieldDefinition& fieldDef = mesgDef.devFields[i];
++        const DeveloperFieldDefinition* supportedDef =
++            GetDevField(fieldDef.GetDeveloperDataIndex(), fieldDef.GetNum());
+ 
+-        // There is a Field Definition that we don't have a description for
+         if (supportedDef == FIT_NULL)
+             return FIT_FALSE;
+ 
+-        // The definition is a larger size that we dont support
+         if (fieldDef.GetSize() > supportedDef->GetSize())
+             return FIT_FALSE;
+     }

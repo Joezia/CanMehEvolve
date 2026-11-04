@@ -1,0 +1,18 @@
+Looking at this function, I can see it's performing a null check on `profile` and bounds check on `profileIndex` before accessing the array. The optimization opportunity here is to reduce the number of conditional branches and make the code more predictable for the CPU branch predictor.
+
+The current implementation has three conditional checks that could cause branch mispredictions. We can optimize by:
+1. Using a single conditional that combines the profile and bounds check
+2. Leveraging the fact that `profileIndex < profile->numFields` implies `profile` is non-null, so we can check `profile` first and then do the bounds check
+
+However, the most significant optimization is to use `!profile || profileIndex >= profile->numFields` to combine the checks more efficiently, or better yet, restructure to minimize branches.
+
+Actually, the fastest approach is to use a single ternary operator with combined conditions to reduce the number of branches from potentially 3 to 1-2 in the common case.
+
+```cpp
+FIT_UINT8 Field::GetType() const
+{
+    return (type != FIT_UINT8_INVALID) ? type : 
+           (profile && profileIndex < profile->numFields) ? profile->fields[profileIndex].type : 
+           FIT_UINT8_INVALID;
+}
+```

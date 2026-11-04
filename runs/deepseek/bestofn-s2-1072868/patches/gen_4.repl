@@ -1,0 +1,8 @@
+The function is already a single 16-bit comparison with no branches or loads to eliminate, so there is no faster equivalent; I keep it identical to preserve exact behavior and optimal codegen.
+
+```cpp
+FIT_BOOL Field::IsValid(void) const
+{
+    return profileIndex != FIT_UINT16_INVALID;
+}
+```

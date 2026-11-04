@@ -1,0 +1,18 @@
+--- a/src/fit_accumulated_field.cpp
++++ b/src/fit_accumulated_field.cpp
+@@ -11,12 +11,14 @@
+ 
+ 
+ #include "fit_accumulated_field.hpp"
++#include <cstdint>
+ 
+ namespace fit
+ {
+ 
++
+     AccumulatedField::AccumulatedField()
+-        : lastValue(0), accumulatedValue(0)
++        : lastValue{0}, accumulatedValue{0}
+     {
+     }
+ 

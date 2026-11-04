@@ -1,0 +1,22 @@
+I made the common profile-field path the fall-through by hinting that `type` is usually invalid and that the profile lookup is valid, avoiding taken branches on the hot path.
+
+```cpp
+FIT_UINT8 Field::GetType() const
+{
+    const FIT_UINT8 fieldType = type;
+
+    if (__builtin_expect(fieldType != FIT_UINT8_INVALID, 0))
+    {
+        return fieldType;
+    }
+
+    const auto fieldProfile = profile;
+    if (__builtin_expect(fieldProfile == nullptr, 0) ||
+        __builtin_expect(profileIndex >= fieldProfile->numFields, 0))
+    {
+        return fieldType;
+    }
+
+    return fieldProfile->fields[profileIndex].type;
+}
+```

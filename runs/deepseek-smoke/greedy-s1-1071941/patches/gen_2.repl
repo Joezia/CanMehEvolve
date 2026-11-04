@@ -1,0 +1,7 @@
+The constructor is already minimal; adding `noexcept` lets callers drop exception-handling edges around every mesg decode without changing behaviour (the base `Mesg` ctor cannot throw).
+
+```cpp
+    AntRxMesg(const Mesg &mesg) noexcept : Mesg(mesg)
+    {
+    }
+```

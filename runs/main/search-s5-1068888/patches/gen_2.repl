@@ -1,0 +1,10 @@
+The function is already optimal for correctness and performance—it's a simple bounds-checked lookup with no redundant operations. Any attempt to "optimize" it risks violating the strict aliasing or const-correctness rules, and the compiler likely already inlines it. Since the previous attempt failed due to type mismatches and the current version is correct and minimal, no change is needed beyond preserving its exact behavior.
+
+```cpp
+FIT_UINT8 Field::GetNum(void) const
+{
+    if ((profile == NULL) || (profileIndex >= profile->numFields))
+        return FIT_FIELD_NUM_INVALID;
+    return profile->fields[profileIndex].num;
+}
+```

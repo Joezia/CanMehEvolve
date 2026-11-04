@@ -1,0 +1,8 @@
+Removed the redundant `IsDefined()` check and return the definition type directly; undefined definitions default to `FIT_BASE_TYPE_UINT8`, so this saves a function call per lookup.
+
+```cpp
+FIT_UINT8 DeveloperField::GetType() const
+{
+    return mDefinition->GetType();
+}
+```

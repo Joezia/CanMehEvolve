@@ -1,0 +1,47 @@
+File: src/fit_field.cpp
+Function: Field::GetType (10 lines)
+One full decode of the four files takes about 359.2 ms in the stock build.
+Time of the current version of the whole library relative to stock: 0.980 (below 1.0 is faster). Best measured so far: 0.963.
+
+Your previous attempt failed:
+Stage 'compile' rejected it: /home/z/zhouzia/Workspace/CanMehEvolve/build/work-1068895/tree/src/fit_field.cpp: In member function ‘virtual FIT_UINT8 fit::Field::GetType() const’:
+/home/z/zhouzia/Workspace/CanMehEvolve/build/work-1068895/tree/src/fit_field.cpp:113:62: error: invalid initialization of reference of type ‘const FIT_FIELD_DEF&’ from expression of type ‘const fit::Profile::FIELD’
+  113 |     const FIT_FIELD_DEF& field = profile->fields[profileIndex];
+      |                                  ~~~~~~~~~~~~~~~~~~~~~~~~~~~~^
+/home/z/zhouzia/Workspace/CanMehEvolve/build/work-1068895/tree/src/fit_field.cpp:114:18: error: ‘const struct FIT_FIELD_DEF’ has no member named ‘type’
+  114 |     return field.type;
+      |                  ^~~~
+
+The rejected replacement was:
+```cpp
+
+FIT_UINT8 Field::GetType() const
+{
+    if (type != FIT_UINT8_INVALID)
+        return type;
+
+    if (!profile || profileIndex >= profile->numFields)
+        return FIT_UINT8_INVALID;
+
+    // Hoist profile->fields[profileIndex].type load with early bound address
+    const FIT_FIELD_DEF& field = profile->fields[profileIndex];
+    return field.type;
+}
+
+```
+
+Current text of the function:
+```cpp
+FIT_UINT8 Field::GetType() const
+{
+    if (type != FIT_UINT8_INVALID)
+        return type;
+
+    if (!profile || profileIndex >= profile->numFields)
+        return FIT_UINT8_INVALID;
+
+    return profile->fields[profileIndex].type;
+}
+
+```
+Return the faster replacement now.

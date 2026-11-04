@@ -1,0 +1,115 @@
+--- a/src/fit_field_base.cpp
++++ b/src/fit_field_base.cpp
+@@ -728,7 +728,6 @@
+ // correct underlying type
+ void FieldBase::AddRawValue(const FIT_FLOAT64 rawValue, const FIT_UINT8 fieldArrayIndex)
+ {
+-    FIT_FLOAT64 roundedValue = FieldBase::Round(rawValue);
+     switch ( GetType() )
+     {
+         case FIT_BASE_TYPE_BYTE:
+@@ -736,27 +735,54 @@
+         case FIT_BASE_TYPE_SINT8:
+         case FIT_BASE_TYPE_UINT8:
+         case FIT_BASE_TYPE_UINT8Z:
+-            SetUINT8Value((FIT_UINT8)roundedValue, fieldArrayIndex);
++        {
++            FIT_FLOAT64 roundedValue = FieldBase::Round(rawValue);
++            FIT_UINT8 value = (FIT_UINT8)roundedValue;
++            if ((FIT_UINT8)values.size() < ((fieldArrayIndex + 1) * sizeof(FIT_UINT8)))
++            {
++                values.resize((fieldArrayIndex + 1) * sizeof(FIT_UINT8));
++            }
++            values[fieldArrayIndex * sizeof(FIT_UINT8)] = value;
+             break;
++        }
+ 
+         case FIT_BASE_TYPE_SINT16:
+         case FIT_BASE_TYPE_UINT16:
+         case FIT_BASE_TYPE_UINT16Z:
+-            SetUINT16Value((FIT_UINT16)roundedValue, fieldArrayIndex);
++        {
++            FIT_FLOAT64 roundedValue = FieldBase::Round(rawValue);
++            FIT_UINT16 value = (FIT_UINT16)roundedValue;
++            if ((FIT_UINT8)values.size() < ((fieldArrayIndex + 1) * sizeof(FIT_UINT16)))
++            {
++                values.resize((fieldArrayIndex + 1) * sizeof(FIT_UINT16));
++            }
++            memcpy(&values[fieldArrayIndex * sizeof(FIT_UINT16)], &value, sizeof(FIT_UINT16));
+             break;
++        }
+ 
+         case FIT_BASE_TYPE_SINT32:
+         case FIT_BASE_TYPE_UINT32:
+         case FIT_BASE_TYPE_UINT32Z:
+-            SetUINT32Value((FIT_UINT32)roundedValue, fieldArrayIndex);
++        {
++            FIT_FLOAT64 roundedValue = FieldBase::Round(rawValue);
++            FIT_UINT32 value = (FIT_UINT32)roundedValue;
++            if ((FIT_UINT8)values.size() < ((fieldArrayIndex + 1) * sizeof(FIT_UINT32)))
++            {
++                values.resize((fieldArrayIndex + 1) * sizeof(FIT_UINT32));
++            }
++            memcpy(&values[fieldArrayIndex * sizeof(FIT_UINT32)], &value, sizeof(FIT_UINT32));
+             break;
++        }
+ 
+         case FIT_BASE_TYPE_FLOAT32:
+         {
+-            FIT_FLOAT32 float32Value = (FIT_FLOAT32)roundedValue;
+-            FIT_UINT32 uint32Value;
+-            memcpy(&uint32Value, &float32Value, sizeof(FIT_FLOAT32));
+-            SetUINT32Value(uint32Value, fieldArrayIndex);
++            FIT_FLOAT64 roundedValue = FieldBase::Round(rawValue);
++            FIT_FLOAT32 value = (FIT_FLOAT32)roundedValue;
++            if ((FIT_UINT8)values.size() < ((fieldArrayIndex + 1) * sizeof(FIT_FLOAT32)))
++            {
++                values.resize((fieldArrayIndex + 1) * sizeof(FIT_FLOAT32));
++            }
++            memcpy(&values[fieldArrayIndex * sizeof(FIT_FLOAT32)], &value, sizeof(FIT_FLOAT32));
+             break;
+         }
+ 
+@@ -764,24 +790,34 @@
+         {
+             if ((FIT_UINT8)values.size() < ((fieldArrayIndex + 1) * sizeof(FIT_FLOAT64)))
+             {
+-                values.resize((fieldArrayIndex + 1) * 8);
+-            }
+-
+-            for (size_t i = 0; i < sizeof(FIT_FLOAT64); i++)
+-            {
+-                values[(fieldArrayIndex * sizeof(FIT_FLOAT64) + i)] = (*(((FIT_BYTE *)&rawValue) + i));
++                values.resize((fieldArrayIndex + 1) * sizeof(FIT_FLOAT64));
+             }
++            memcpy(&values[fieldArrayIndex * sizeof(FIT_FLOAT64)], &rawValue, sizeof(FIT_FLOAT64));
+             break;
+         }
+ 
+         case FIT_BASE_TYPE_SINT64:
+-            SetSINT64Value((FIT_SINT64)rawValue, fieldArrayIndex);
++        {
++            FIT_SINT64 value = (FIT_SINT64)rawValue;
++            if ((FIT_UINT8)values.size() < ((fieldArrayIndex + 1) * sizeof(FIT_SINT64)))
++            {
++                values.resize((fieldArrayIndex + 1) * sizeof(FIT_SINT64));
++            }
++            memcpy(&values[fieldArrayIndex * sizeof(FIT_SINT64)], &value, sizeof(FIT_SINT64));
+             break;
++        }
+ 
+         case FIT_BASE_TYPE_UINT64:
+         case FIT_BASE_TYPE_UINT64Z:
+-            SetUINT64Value((FIT_UINT64)rawValue, fieldArrayIndex);
++        {
++            FIT_UINT64 value = (FIT_UINT64)rawValue;
++            if ((FIT_UINT8)values.size() < ((fieldArrayIndex + 1) * sizeof(FIT_UINT64)))
++            {
++                values.resize((fieldArrayIndex + 1) * sizeof(FIT_UINT64));
++            }
++            memcpy(&values[fieldArrayIndex * sizeof(FIT_UINT64)], &value, sizeof(FIT_UINT64));
+             break;
++        }
+ 
+         default:
+             break;

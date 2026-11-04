@@ -1,0 +1,18 @@
+I replaced the two vector copy-constructions with direct pointer-range `assign` calls guarded by an emptiness check, which avoids the generic iterator-based vector copy path and skips any work for the commonly empty `stringIndexes`/small `values` buffers.
+
+```cpp
+FieldBase::FieldBase(const FieldBase &field)
+{
+    const auto valueCount = field.values.size();
+    if (valueCount != 0)
+    {
+        values.assign(field.values.data(), field.values.data() + valueCount);
+    }
+
+    const auto indexCount = field.stringIndexes.size();
+    if (indexCount != 0)
+    {
+        stringIndexes.assign(field.stringIndexes.data(), field.stringIndexes.data() + indexCount);
+    }
+}
+```

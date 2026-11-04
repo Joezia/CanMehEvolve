@@ -1,0 +1,13 @@
+FIT_UINT8 Field::GetType() const
+{
+    if (__builtin_expect(type != FIT_UINT8_INVALID, 0))
+        return type;
+
+    if (__builtin_expect(profile == NULL, 0))
+        return type;
+
+    if (__builtin_expect(profileIndex >= profile->numFields, 0))
+        return type;
+
+    return profile->fields[profileIndex].type;
+}

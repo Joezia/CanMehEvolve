@@ -1,0 +1,67 @@
+--- a/src/fit_field.cpp
++++ b/src/fit_field.cpp
+@@ -48,10 +48,21 @@
+ Field::Field(const FIT_UINT16 mesgNum, const FIT_UINT8 fieldNum)
+     : FieldBase()
+     , profile(Profile::GetMesg(mesgNum))
+-    , profileIndex(Profile::GetFieldIndex(mesgNum, fieldNum))
++    , profileIndex(FIT_UINT8_INVALID)
+     , type(FIT_UINT8_INVALID)
+     , isFieldExpanded(FIT_FALSE)
+ {
++    if (profile)
++    {
++        for (FIT_UINT8 i = 0; i < profile->numFields; ++i)
++        {
++            if (profile->fields[i].num == fieldNum)
++            {
++                profileIndex = i;
++                break;
++            }
++        }
++    }
+ }
+ 
+ Field::Field(const std::string& mesgName, const std::string& fieldName)
+--- a/src/fit_mesg.cpp
++++ b/src/fit_mesg.cpp
+@@ -250,10 +250,10 @@
+ 
+ Field* Mesg::GetField(const FIT_UINT8 fieldNum)
+ {
+-    for (int i = 0; i < (int)fields.size(); i++)
++    for (Field& field : fields)
+     {
+-        if (fields[i].GetNum() == fieldNum)
+-            return &fields[i];
++        if (field.GetNum() == fieldNum)
++            return &field;
+     }
+ 
+     return FIT_NULL;
+--- a/src/fit_profile.cpp
++++ b/src/fit_profile.cpp
+@@ -3057,13 +3057,19 @@
+ 
+ const Profile::MESG* Profile::GetMesg(const FIT_UINT16 num)
+ {
+-    for (int i = 0; i < MESGS; i++)
++    static const Profile::MESG* table[65536] = {};
++    static bool initialized = false;
++
++    if (!initialized)
+     {
+-        if (mesgs[i].num == num)
+-            return &mesgs[i];
++        for (int i = static_cast<int>(MESGS) - 1; i >= 0; --i)
++        {
++            table[mesgs[i].num] = &mesgs[i];
++        }
++        initialized = true;
+     }
+ 
+-    return NULL;
++    return table[num];
+ }
+ 
+ const Profile::MESG* Profile::GetMesg(const std::string& name)

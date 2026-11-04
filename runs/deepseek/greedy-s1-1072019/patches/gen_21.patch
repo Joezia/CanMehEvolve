@@ -1,0 +1,119 @@
+--- a/src/fit_field_base.cpp
++++ b/src/fit_field_base.cpp
+@@ -24,10 +24,10 @@
+ {
+ }
+ 
++__attribute__((optimize("O3")))
+ FieldBase::FieldBase(const FieldBase &field)
++    : values(field.values), stringIndexes(field.stringIndexes)
+ {
+-    values = field.values;
+-    stringIndexes = field.stringIndexes;
+ }
+ 
+ FieldBase::~FieldBase()
+--- a/src/fit_mesg.cpp
++++ b/src/fit_mesg.cpp
+@@ -377,23 +377,66 @@
+     if ((int) fieldIndex >= GetNumFields())
+         return FIT_SUBFIELD_INDEX_MAIN_FIELD;
+ 
+-    for (FIT_UINT16 i = 0; i < fields[fieldIndex].GetNumSubFields(); i++)
++    const Field& field = fields[fieldIndex];
++    const FIT_UINT16 numSubFields = field.GetNumSubFields();
++
++    if (numSubFields == 0)
++        return FIT_SUBFIELD_INDEX_MAIN_FIELD;
++
++    // Cache a few referenced-field values to avoid repeating GetField and
++    // GetFLOAT64Value for subfields that share the same reference field.
++    const Field* cachedFields[8];
++    FIT_UINT16 cachedNums[8];
++    FIT_SINT32 cachedVals[8];
++    FIT_UINT16 cacheCount = 0;
++
++    for (FIT_UINT16 i = 0; i < numSubFields; i++)
+     {
+-        const Profile::SUBFIELD* subField = fields[fieldIndex].GetSubField(i);
++        const Profile::SUBFIELD* subField = field.GetSubField(i);
+ 
+         if (subField != FIT_NULL)
+         {
+             for (int j = 0; j < (int) subField->numMaps; j++)
+             {
+-                const Field* refField = GetField(subField->maps[j].refFieldNum);
++                const FIT_UINT16 refFieldNum = subField->maps[j].refFieldNum;
++
++                const Field* refField = FIT_NULL;
++                FIT_SINT32 refValueInt = 0;
++                bool cached = false;
+ 
+-                if (refField != FIT_NULL)
++                for (FIT_UINT16 k = cacheCount; k > 0; --k)
+                 {
+-                    FIT_FLOAT64 refValue = refField->GetFLOAT64Value(0, FIT_SUBFIELD_INDEX_MAIN_FIELD);
+-                    refValue += ((refValue >= 0.0) ? (0.5) : (-0.5));
+-                    if ((FIT_SINT32)refValue == subField->maps[j].refFieldValue)
+-                        return ((FIT_UINT16) i);
++                    const FIT_UINT16 idx = (FIT_UINT16)(k - 1);
++                    if (cachedNums[idx] == refFieldNum)
++                    {
++                        refField = cachedFields[idx];
++                        refValueInt = cachedVals[idx];
++                        cached = true;
++                        break;
++                    }
+                 }
++
++                if (!cached)
++                {
++                    refField = GetField(refFieldNum);
++                    if (refField != FIT_NULL)
++                    {
++                        FIT_FLOAT64 refValue = refField->GetFLOAT64Value(0, FIT_SUBFIELD_INDEX_MAIN_FIELD);
++                        refValue += ((refValue >= 0.0) ? (0.5) : (-0.5));
++                        refValueInt = (FIT_SINT32)refValue;
++                    }
++
++                    if (cacheCount < 8)
++                    {
++                        cachedNums[cacheCount] = refFieldNum;
++                        cachedFields[cacheCount] = refField;
++                        cachedVals[cacheCount] = refValueInt;
++                        cacheCount++;
++                    }
++                }
++
++                if (refField != FIT_NULL && refValueInt == subField->maps[j].refFieldValue)
++                    return ((FIT_UINT16) i);
+             }
+         }
+     }
+--- a/src/fit_profile.cpp
++++ b/src/fit_profile.cpp
+@@ -3057,13 +3057,20 @@
+ 
+ const Profile::MESG* Profile::GetMesg(const FIT_UINT16 num)
+ {
+-    for (int i = 0; i < MESGS; i++)
++    static const Profile::MESG* table[65536] = {};
++    static bool initialized = false;
++
++    if (!initialized)
+     {
+-        if (mesgs[i].num == num)
+-            return &mesgs[i];
++        for (int i = 0; i < MESGS; ++i)
++        {
++            if (table[mesgs[i].num] == nullptr)
++                table[mesgs[i].num] = &mesgs[i];
++        }
++        initialized = true;
+     }
+ 
+-    return NULL;
++    return table[num];
+ }
+ 
+ const Profile::MESG* Profile::GetMesg(const std::string& name)

@@ -1,0 +1,9 @@
+I collapsed the null-check and validity-check into a single conditional expression, eliminating the early-return branch and keeping the field pointer in one expression so the compiler emits a tighter sequence. The returned value is bit-identical to the original in every case.
+
+```cpp
+    FIT_BOOL IsTimestampValid() const
+    {
+        const Field* field = GetField(253);
+        return (FIT_NULL != field) ? field->IsValueValid() : FIT_FALSE;
+    }
+```

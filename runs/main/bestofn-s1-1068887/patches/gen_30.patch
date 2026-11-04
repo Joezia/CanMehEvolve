@@ -1,0 +1,35 @@
+--- a/src/fit_developer_field_definition.cpp
++++ b/src/fit_developer_field_definition.cpp
+@@ -13,6 +13,7 @@
+ #include <ostream>
+ #include "fit_developer_field_definition.hpp"
+ #include "fit_developer_field.hpp"
++#include <utility>
+ 
+ namespace fit
+ {
+@@ -68,19 +69,13 @@
+     size = field.GetSize();
+ }
+ 
++
+ DeveloperFieldDefinition::~DeveloperFieldDefinition()
+ {
+-    if ( nullptr != mesg )
+-    {
+-        delete mesg;
+-        mesg = nullptr;
+-    }
+-
+-    if ( nullptr != developer )
+-    {
+-        delete developer;
+-        developer = nullptr;
+-    }
++    delete mesg;
++    delete developer;
++    mesg = nullptr;
++    developer = nullptr;
+ }
+ 
+ FIT_BOOL DeveloperFieldDefinition::IsDefined() const

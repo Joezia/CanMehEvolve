@@ -1,0 +1,9 @@
+I changed the copy constructor to use a member-initializer list, constructing each member directly from the source instead of default-constructing then copy-assigning. This avoids unnecessary vector assignment overhead while preserving identical behavior.
+
+```cpp
+FieldBase::FieldBase(const FieldBase &field)
+    : values(field.values),
+      stringIndexes(field.stringIndexes)
+{
+}
+```

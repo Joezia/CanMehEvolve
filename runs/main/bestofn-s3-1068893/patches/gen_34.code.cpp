@@ -1,0 +1,14 @@
+
+const Profile::MESG* Profile::GetMesg(const FIT_UINT16 num)
+{
+    static std::vector<const Profile::MESG*> lookup;
+    static bool initialized = false;
+    if (!initialized) {
+        lookup.resize(65536, nullptr);
+        for (int i = 0; i < MESGS; i++) {
+            lookup[mesgs[i].num] = &mesgs[i];
+        }
+        initialized = true;
+    }
+    return lookup[num];
+}

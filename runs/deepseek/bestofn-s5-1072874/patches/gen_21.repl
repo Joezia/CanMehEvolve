@@ -1,0 +1,16 @@
+I kept the two guards but marked both failure paths as unlikely and hoisted the member loads into locals, so the hot inlined path is a straight-line load with the cold returns out of line.
+
+```cpp
+FIT_UINT8 Field::GetNum(void) const
+{
+    const auto* p = profile;
+    if (__builtin_expect(p == nullptr, 0))
+        return FIT_FIELD_NUM_INVALID;
+
+    const FIT_UINT8 idx = profileIndex;
+    if (__builtin_expect(idx >= p->numFields, 0))
+        return FIT_FIELD_NUM_INVALID;
+
+    return p->fields[idx].num;
+}
+```

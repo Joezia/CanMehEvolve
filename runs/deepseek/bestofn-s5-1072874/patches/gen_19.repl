@@ -1,0 +1,63 @@
+I added a small static per-message cache mapping field numbers to their indices, making repeated lookups O(1) instead of scanning the field array. The cache is built lazily and also remembers invalid message numbers to avoid repeated `GetMesg` calls.
+
+```cpp
+const FIT_UINT16 Profile::GetFieldIndex(const FIT_UINT16 mesgNum, const FIT_UINT8 fieldNum)
+{
+    struct CacheEntry
+    {
+        FIT_UINT16 mesgNum;
+        unsigned int generation;
+        bool valid;
+        FIT_UINT16 index[256];
+        unsigned int stamp[256];
+    };
+    static CacheEntry cache[256] = {};
+    static signed char status[65536] = {};
+
+    const signed char st = status[mesgNum];
+    if (st < 0)
+        return FIT_UINT16_INVALID;
+
+    CacheEntry &entry = cache[mesgNum & 255];
+    if (st > 0 && entry.valid && entry.mesgNum == mesgNum)
+    {
+        if (entry.stamp[fieldNum] == entry.generation)
+            return entry.index[fieldNum];
+        return FIT_UINT16_INVALID;
+    }
+
+    const MESG *mesg = GetMesg(mesgNum);
+    if (mesg == NULL)
+    {
+        status[mesgNum] = -1;
+        return FIT_UINT16_INVALID;
+    }
+    status[mesgNum] = 1;
+
+    unsigned int gen = entry.generation + 1;
+    if (gen == 0)
+    {
+        for (FIT_UINT16 i = 0; i < 256; i++)
+            entry.stamp[i] = 0;
+        gen = 1;
+    }
+    entry.generation = gen;
+    entry.mesgNum = mesgNum;
+    entry.valid = true;
+
+    const FIELD *fields = mesg->fields;
+    for (FIT_UINT16 i = 0; i < mesg->numFields; i++)
+    {
+        const FIT_UINT16 num = fields[i].num;
+        if (num < 256 && entry.stamp[num] != gen)
+        {
+            entry.index[num] = i;
+            entry.stamp[num] = gen;
+        }
+    }
+
+    if (entry.stamp[fieldNum] == gen)
+        return entry.index[fieldNum];
+    return FIT_UINT16_INVALID;
+}
+```

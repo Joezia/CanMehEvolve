@@ -1,0 +1,5 @@
+
+void SetAwakeningsCount(FIT_UINT8 awakeningsCount)
+{
+    SetField(11, &awakeningsCount, sizeof(awakeningsCount), FIT_BASE_TYPE_UINT8, 0, FIT_SUBFIELD_INDEX_MAIN_FIELD);
+}

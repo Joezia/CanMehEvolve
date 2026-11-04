@@ -1,0 +1,16 @@
+I hoisted the `profile->fields` load ahead of the bounds check so it can overlap with the `numFields` comparison, and added branch hints for the invalid cases to keep the valid path hot.
+
+```cpp
+FIT_UINT8 Field::GetNum(void) const
+{
+    if (__builtin_expect(profile == NULL, 0))
+        return FIT_FIELD_NUM_INVALID;
+
+    const FIT_UINT8 numFields = profile->numFields;
+    const auto* fields = profile->fields;
+    if (__builtin_expect(profileIndex >= numFields, 0))
+        return FIT_FIELD_NUM_INVALID;
+
+    return fields[profileIndex].num;
+}
+```

@@ -1,0 +1,11 @@
+FIT_UINT8 Field::GetType() const
+{
+    FIT_UINT8 t = type;
+    if (__builtin_expect(t == FIT_UINT8_INVALID, 1))
+    {
+        auto p = profile;
+        if (__builtin_expect((p != NULL) && (profileIndex < p->numFields), 1))
+            t = p->fields[profileIndex].type;
+    }
+    return t;
+}

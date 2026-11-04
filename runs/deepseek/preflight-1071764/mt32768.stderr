@@ -1,0 +1,8 @@
+[run] mode=preflight host=xcnc3 model_probe={"http_status":200,"model":"deepseek-v4.1-flash-1017","ok":true,"requested_model":"deepseek-v4.1-flash","usage":{"completion_tokens":20,"completion_tokens_details":{"reasoning_tokens":17},"prompt_tokens":36,"prompt_tokens_details":{"cached_tokens":0,"created_cache_tokens":0,"multimodal_tokens":null},"total_tokens":56}}
+[preflight Profile::GetMesg lines=10] finish='stop' completion=11145 reasoning=10916 content_chars=829 t=76.013s usable=1
+[preflight Mesg::GetField lines=10] finish='stop' completion=586 reasoning=460 content_chars=475 t=7.24219s usable=1
+[preflight Mesg::AddField lines=7] finish='stop' completion=999 reasoning=870 content_chars=507 t=15.7875s usable=1
+[preflight MesgDefinition::Supports lines=36] finish='stop' completion=11579 reasoning=11049 content_chars=2146 t=80.7358s usable=1
+[preflight FieldBase::AddRawValue lines=61] finish='stop' completion=9337 reasoning=8317 content_chars=4046 t=101.93s usable=1
+[preflight Decode::ExpandComponents lines=106] finish='stop' completion=27458 reasoning=26285 content_chars=5849 t=206.635s usable=1
+[preflight ConvertStringEncoding lines=190] finish='stop' completion=23042 reasoning=21119 content_chars=7725 t=158.674s usable=1

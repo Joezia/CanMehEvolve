@@ -1,0 +1,59 @@
+--- a/src/fit_field.cpp
++++ b/src/fit_field.cpp
+@@ -15,6 +15,7 @@
+ #include "fit_field.hpp"
+ #include "fit_mesg.hpp"
+ #include "fit_unicode.hpp"
++#include <cstdint>
+ 
+ namespace fit
+ {
+@@ -97,15 +98,12 @@
+     return profile->fields[profileIndex].num;
+ }
+ 
++
+ FIT_UINT8 Field::GetType() const
+ {
+-    if ( type != FIT_UINT8_INVALID )
+-        return type;
+-
+-    if ((profile == NULL) || (profileIndex >= profile->numFields))
+-        return FIT_UINT8_INVALID;
+-
+-    return profile->fields[profileIndex].type;
++    return (type != FIT_UINT8_INVALID) ? type : 
++           (profile && profileIndex < profile->numFields) ? profile->fields[profileIndex].type : 
++           FIT_UINT8_INVALID;
+ }
+ 
+ std::string Field::GetUnits() const
+--- a/src/fit_mesg.cpp
++++ b/src/fit_mesg.cpp
+@@ -14,6 +14,7 @@
+ #include <algorithm>
+ #include "fit_mesg.hpp"
+ #include "fit_mesg_definition.hpp"
++#include <vector>
+ 
+ namespace fit
+ {
+@@ -248,15 +249,11 @@
+     return FIT_NULL;
+ }
+ 
++
+ Field* Mesg::GetField(const FIT_UINT8 fieldNum)
+ {
+-    for (int i = 0; i < (int)fields.size(); i++)
+-    {
+-        if (fields[i].GetNum() == fieldNum)
+-            return &fields[i];
+-    }
+-
+-    return FIT_NULL;
++    auto it = std::find_if(fields.begin(), fields.end(), [fieldNum](const Field& f) { return f.GetNum() == fieldNum; });
++    return (it != fields.end()) ? &(*it) : FIT_NULL;
+ }
+ 
+ Field* Mesg::GetField(const std::string& name)

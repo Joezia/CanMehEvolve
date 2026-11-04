@@ -1,0 +1,10 @@
+The function is already a minimal bounds-checked load; I only add branch-prediction hints so the hot path (valid profile/index) stays fall-through, with no change in behaviour.
+
+```cpp
+FIT_FLOAT64 Field::GetOffset() const
+{
+    if (__builtin_expect((profile == NULL) || (profileIndex >= profile->numFields), 0))
+        return 0;
+    return profile->fields[profileIndex].offset;
+}
+```

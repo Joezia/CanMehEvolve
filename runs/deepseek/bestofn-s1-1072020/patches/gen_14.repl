@@ -1,0 +1,20 @@
+Switched the indexed vector scan to a direct pointer walk over the contiguous field storage, caching the end pointer so the loop avoids repeated size/index bookkeeping.
+
+```cpp
+Field* Mesg::GetField(const FIT_UINT8 fieldNum)
+{
+    if (fields.empty())
+        return FIT_NULL;
+
+    Field* p = fields.data();
+    Field* const end = p + fields.size();
+
+    for (; p != end; ++p)
+    {
+        if (p->GetNum() == fieldNum)
+            return p;
+    }
+
+    return FIT_NULL;
+}
+```

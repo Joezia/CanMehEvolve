@@ -1,0 +1,32 @@
+--- a/src/fit_chrono_shot_data_mesg.hpp
++++ b/src/fit_chrono_shot_data_mesg.hpp
+@@ -14,6 +14,7 @@
+ #define FIT_CHRONO_SHOT_DATA_MESG_HPP
+ 
+ #include "fit_mesg.hpp"
++#include <cstddef>
+ 
+ namespace fit
+ {
+@@ -42,17 +43,15 @@
+     // Checks the validity of timestamp field
+     // Returns FIT_TRUE if field is valid
+     ///////////////////////////////////////////////////////////////////////
++
++```cpp
+     FIT_BOOL IsTimestampValid() const
+     {
+         const Field* field = GetField(253);
+-        if( FIT_NULL == field )
+-        {
+-            return FIT_FALSE;
+-        }
+-
+-        return field->IsValueValid();
++        return (field != FIT_NULL) ? field->IsValueValid() : FIT_FALSE;
+     }
+ 
++
+     ///////////////////////////////////////////////////////////////////////
+     // Returns timestamp field
+     ///////////////////////////////////////////////////////////////////////

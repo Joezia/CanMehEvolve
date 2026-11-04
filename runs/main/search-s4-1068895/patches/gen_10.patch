@@ -1,0 +1,91 @@
+--- a/src/fit_field.cpp
++++ b/src/fit_field.cpp
+@@ -15,6 +15,7 @@
+ #include "fit_field.hpp"
+ #include "fit_mesg.hpp"
+ #include "fit_unicode.hpp"
++#include <cstdint>
+ 
+ namespace fit
+ {
+@@ -97,12 +98,13 @@
+     return profile->fields[profileIndex].num;
+ }
+ 
++
+ FIT_UINT8 Field::GetType() const
+ {
+-    if ( type != FIT_UINT8_INVALID )
++    if (type != FIT_UINT8_INVALID)
+         return type;
+ 
+-    if ((profile == NULL) || (profileIndex >= profile->numFields))
++    if (!profile || profileIndex >= profile->numFields)
+         return FIT_UINT8_INVALID;
+ 
+     return profile->fields[profileIndex].type;
+--- a/src/fit_field_base.cpp
++++ b/src/fit_field_base.cpp
+@@ -16,6 +16,8 @@
+ #include "fit_field_base.hpp"
+ #include "fit_mesg.hpp"
+ #include "fit_unicode.hpp"
++#include <cstring>
++#include <cstdint>
+ 
+ namespace fit
+ {
+@@ -1128,22 +1130,22 @@
+     return (value > 0.0) ? floor(value + 0.5) : ceil(value - 0.5);
+ }
+ 
++
++
+ template <typename T>
+ T FieldBase::GetValue(const FIT_UINT8 fieldArrayIndex) const
+ {
+-    FIT_UINT8 size = baseTypeSizes[GetType() & FIT_BASE_TYPE_NUM_MASK];
++    FIT_UINT8 type = GetType() & FIT_BASE_TYPE_NUM_MASK;
++    FIT_UINT8 size = baseTypeSizes[type];
++    
+     if (fieldArrayIndex >= (FIT_UINT8)values.size())
+     {
+-        return *reinterpret_cast<const T*>(baseTypeInvalids[GetType() & FIT_BASE_TYPE_NUM_MASK]);
+-    }
+-
+-    T rv = 0;
+-
+-    for (int i = 0; i < size; i++)
+-    {
+-        rv |= static_cast<T>(values[(fieldArrayIndex * size) + i]) << (i * 8);
++        return *reinterpret_cast<const T*>(baseTypeInvalids[type]);
+     }
+ 
++    const FIT_UINT8* data = &values[(fieldArrayIndex * size)];
++    T rv;
++    std::memcpy(&rv, data, size);
+     return rv;
+ }
+ 
+--- a/src/fit_mesg_broadcaster.cpp
++++ b/src/fit_mesg_broadcaster.cpp
+@@ -13,6 +13,7 @@
+ #include <istream>
+ #include "fit_mesg_broadcaster.hpp"
+ #include <algorithm>
++#include <vector>
+ 
+ namespace fit
+ {
+@@ -537,9 +538,10 @@
+ }
+ 
+ 
++
+ void MesgBroadcaster::AddListener(RecordMesgListener& recordMesgListener)
+ {
+-   recordMesgListeners.push_back(&recordMesgListener);
++   recordMesgListeners.push_back(std::addressof(recordMesgListener));
+ }
+ 
+ void MesgBroadcaster::RemoveListener(RecordMesgListener& recordMesgListener)

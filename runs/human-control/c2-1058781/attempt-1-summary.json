@@ -1,0 +1,72 @@
+[
+  {
+    "index": 0,
+    "candidate_ms": 335.3594499640167,
+    "reference_ms": 358.27171010896564,
+    "ratio": 0.9360478109254555,
+    "time_reduction_percent": 6.395218907454447
+  },
+  {
+    "index": 1,
+    "candidate_ms": 334.94865195825696,
+    "reference_ms": 357.6985839754343,
+    "ratio": 0.9363991555003199,
+    "time_reduction_percent": 6.3600844499680065
+  },
+  {
+    "index": 2,
+    "candidate_ms": 335.89208289049566,
+    "reference_ms": 358.66451007314026,
+    "ratio": 0.9365077208837842,
+    "time_reduction_percent": 6.34922791162158
+  },
+  {
+    "index": 3,
+    "candidate_ms": 335.48781904391944,
+    "reference_ms": 358.43996214680374,
+    "ratio": 0.9359665619720048,
+    "time_reduction_percent": 6.4033438027995215
+  },
+  {
+    "index": 4,
+    "candidate_ms": 335.3001580107957,
+    "reference_ms": 358.06769295595586,
+    "ratio": 0.9364155566306266,
+    "time_reduction_percent": 6.358444336937341
+  },
+  {
+    "index": 5,
+    "candidate_ms": 335.2993729058653,
+    "reference_ms": 358.43583196401596,
+    "ratio": 0.9354516011098094,
+    "time_reduction_percent": 6.454839889019059
+  },
+  {
+    "index": 6,
+    "candidate_ms": 334.6308749169111,
+    "reference_ms": 357.8317069914192,
+    "ratio": 0.935162726999303,
+    "time_reduction_percent": 6.483727300069697
+  },
+  {
+    "index": 7,
+    "candidate_ms": 334.92872188799083,
+    "reference_ms": 357.756903860718,
+    "ratio": 0.9361907996005727,
+    "time_reduction_percent": 6.380920039942728
+  },
+  {
+    "index": 8,
+    "candidate_ms": 336.7454009130597,
+    "reference_ms": 359.25897816196084,
+    "ratio": 0.9373332926456425,
+    "time_reduction_percent": 6.266670735435753
+  },
+  {
+    "index": 9,
+    "candidate_ms": 335.16698982566595,
+    "reference_ms": 357.6546360272914,
+    "ratio": 0.9371246897526319,
+    "time_reduction_percent": 6.287531024736815
+  }
+]

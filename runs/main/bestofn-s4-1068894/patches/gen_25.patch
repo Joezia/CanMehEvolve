@@ -1,0 +1,25 @@
+--- a/src/fit_mesg.cpp
++++ b/src/fit_mesg.cpp
+@@ -14,6 +14,7 @@
+ #include <algorithm>
+ #include "fit_mesg.hpp"
+ #include "fit_mesg_definition.hpp"
++#include <utility>
+ 
+ namespace fit
+ {
+@@ -26,11 +27,12 @@
+ {
+ }
+ 
++
+ Mesg::Mesg(const Mesg &mesg)
+     : profile(mesg.profile)
+     , localNum(mesg.localNum)
+-    , fields(mesg.fields)
+-    , devFields(mesg.devFields)
++    , fields(std::as_const(mesg.fields))
++    , devFields(std::as_const(mesg.devFields))
+ {
+ }
+ 

@@ -1,0 +1,27 @@
+--- a/src/fit_profile.cpp
++++ b/src/fit_profile.cpp
+@@ -3057,12 +3057,21 @@
+ 
+ const Profile::MESG* Profile::GetMesg(const FIT_UINT16 num)
+ {
+-    for (int i = 0; i < MESGS; i++)
++    int lo = 0;
++    int hi = static_cast<int>(MESGS);
++
++    while (lo < hi)
+     {
+-        if (mesgs[i].num == num)
+-            return &mesgs[i];
++        const int mid = lo + ((hi - lo) >> 1);
++        if (mesgs[mid].num < num)
++            lo = mid + 1;
++        else
++            hi = mid;
+     }
+ 
++    if (lo < static_cast<int>(MESGS) && mesgs[lo].num == num)
++        return &mesgs[lo];
++
+     return NULL;
+ }
+ 

@@ -1,0 +1,25 @@
+Looking at this function, I can see it's a simple getter that caches the type value. The current implementation has two branches that could be optimized.
+
+The key insight is that `type` is likely a member variable that's checked first (the fast path), and only when it's invalid does it fall back to looking up in the profile. However, the condition `type != FIT_UINT8_INVALID` suggests that `type` is often invalid initially, meaning we frequently take the slow path.
+
+But more importantly, we can optimize by:
+1. Using a single return statement with conditional expression to reduce branch misprediction potential
+2. Ensuring the most common path (when type is valid) is checked first and handled efficiently
+
+However, given the benchmark shows the library is at exactly 1.000 (no improvement), and we need to make it faster, the main optimization is likely in reducing the number of conditional branches and making the code more predictable.
+
+The current code has:
+- First conditional check and return
+- Second conditional check with early return
+- Final return
+
+We can collapse this into fewer branches.
+
+```cpp
+FIT_UINT8 Field::GetType() const
+{
+    return (type != FIT_UINT8_INVALID) ? type : 
+           ((profile == NULL || profileIndex >= profile->numFields) ? 
+            FIT_UINT8_INVALID : profile->fields[profileIndex].type);
+}
+```

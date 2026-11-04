@@ -1,0 +1,8 @@
+The function is a single boolean member store, so there is no algorithmic work to remove; the only safe micro-change is to assign the raw value directly (avoiding any implicit conversion path) while keeping the exact semantics.
+
+```cpp
+void Field::SetIsExpanded(FIT_BOOL newValue)
+{
+    isFieldExpanded = newValue;
+}
+```

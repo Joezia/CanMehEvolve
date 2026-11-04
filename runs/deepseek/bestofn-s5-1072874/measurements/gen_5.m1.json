@@ -1,0 +1,6 @@
+{
+ "error": "/home/z/zhouzia/Workspace/CanMehEvolve/build/work-1072874/tree/src/fit_field_base.cpp: In member function ‘FIT_FLOAT64 fit::FieldBase::GetFLOAT64Value(FIT_UINT8, FIT_UINT16) const’:\n/home/z/zhouzia/Workspace/CanMehEvolve/build/work-1072874/tree/src/fit_field_base.cpp:347:10: error: ‘m_pRawValue’ was not declared in this scope; did you mean ‘GetRawValue’?\n  347 |     if (!m_pRawValue)\n      |          ^~~~~~~~~~~\n      |          GetRawValue\n/home/z/zhouzia/Workspace/CanMehEvolve/build/work-1072874/tree/src/fit_field_base.cpp:352:13: error: ‘m_type’ was not declared in this scope; did you mean ‘wctype’?\n  352 |     switch (m_type) { // Note: This checks the type of the MAIN field since data is aligned according to that type\n      |             ^~~~~~\n      |             wctype\n",
+ "ok": false,
+ "rebuilt": 1,
+ "stage": "compile"
+}

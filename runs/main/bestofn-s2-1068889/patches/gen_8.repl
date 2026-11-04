@@ -1,0 +1,10 @@
+```cpp
+#include <algorithm>
+
+void Mesg::AddField(const Field& field)
+{
+    auto it = std::find_if(fields.begin(), fields.end(), [&](const Field& f) { return f.GetNum() == field.GetNum(); });
+    if (it == fields.end())
+        fields.push_back(field);
+}
+```

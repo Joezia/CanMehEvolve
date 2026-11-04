@@ -1,0 +1,10 @@
+submitted: 2026-11-04T15:15:34+08:00
+search_cpp_sha256: 67935a2f31355932a25f305e6e46fcb78d76105dcb99526d9fe80d42e2eb54ea
+binary_sha256: 5fa92919f823c4eff33d422d18a9eb37fc12854ecc2da787c6e1071b83f8bfb2
+model=deepseek-v4.1-flash expect=deepseek-v4.1-flash-1017 max_tokens=32768 timeout=600 http_attempts=1 budget=40 HTTP attempts deadline=9300 (seed1 used 9600)
+seed 2 greedy=1072867 bestofn=1072868(after 1072867)
+seed 3 greedy=1072869 bestofn=1072870(after 1072869)
+seed 4 greedy=1072871 bestofn=1072872(after 1072871)
+seed 5 greedy=1072873 bestofn=1072874(after 1072873)
+dependency removed for bestofn 1072868/70/72/74 at 2026-11-04T15:17:30+08:00 on user's instruction (no global request limiter exists); all 8 seed 2-5 jobs run concurrently
+resume job for seed-1 greedy 40th HTTP attempt: 1072894 (binary build/CanMehSearch-resume, source scripts/resume/Search_resume.cpp), submitted 2026-11-04T15:19:31+08:00

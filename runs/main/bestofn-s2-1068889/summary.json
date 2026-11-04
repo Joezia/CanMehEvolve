@@ -1,0 +1,23 @@
+{
+  "api_calls": 40,
+  "best_confirmed_generation": 3,
+  "best_confirmed_speedup": 1.057347213500698,
+  "best_retained_speedup": 1.057347213500698,
+  "completion_tokens": 9698,
+  "confirmed_candidates": 2,
+  "elapsed_s": 3656.138369445,
+  "ended_because": "generations exhausted",
+  "finished": "2026-11-03T22:46:23+0800",
+  "improved_on_parent_candidates": 2,
+  "mode": "bestofn",
+  "outcomes": {
+    "compile": 10,
+    "correctness": 1,
+    "llm": 1,
+    "measured": 25,
+    "unchanged": 3
+  },
+  "prompt_tokens": 18458,
+  "seed": 2,
+  "total_tokens": 28156
+}

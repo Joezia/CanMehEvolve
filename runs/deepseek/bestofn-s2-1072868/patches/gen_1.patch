@@ -1,0 +1,136 @@
+--- a/src/fit_decode.cpp
++++ b/src/fit_decode.cpp
+@@ -229,6 +229,10 @@
+ {
+     pause = FIT_FALSE;
+     RETURN decodeReturn = RETURN_CONTINUE;
++    FIT_BOOL paused = FIT_FALSE;
++
++    FIT_UINT32 offset = currentByteOffset;
++    FIT_UINT8* buf = buffer;
+ 
+     do
+     {
+@@ -238,25 +242,38 @@
+             bytesRead = (FIT_UINT32)file->gcount();
+         }
+ 
+-        for (; currentByteIndex < bytesRead; currentByteIndex++)
++        FIT_UINT32 i = currentByteIndex;
++        FIT_UINT32 br = bytesRead;
++
++        for (; i < br; ++i)
+         {
+-            if (pause)
++            if (paused)
++            {
++                currentByteIndex = i;
++                currentByteOffset = offset;
+                 return FIT_FALSE;
++            }
+ 
+-            decodeReturn = ReadByte((FIT_UINT8)buffer[currentByteIndex]);
++            decodeReturn = ReadByte((FIT_UINT8)buf[i]);
+ 
+-            switch (decodeReturn) {
+-                case RETURN_CONTINUE:
+-                    break;
++            if (decodeReturn == RETURN_CONTINUE)
++            {
++                ++offset;
++                continue;
++            }
+ 
++            switch (decodeReturn) {
+                 case RETURN_MESG:
++                    currentByteIndex = i;
++                    currentByteOffset = offset;
++
+                     if (mesg.GetNum() == FIT_MESG_NUM_DEVELOPER_DATA_ID)
+                     {
+                         DeveloperDataIdMesg devIdMesg(mesg);
+ 
+                         if (!devIdMesg.IsDeveloperDataIndexValid()) {
+-							throw fit::RuntimeException("Invalid developer data index in DeveloperDataIdMesg");
+-						}
++                            throw fit::RuntimeException("Invalid developer data index in DeveloperDataIdMesg");
++                        }
+ 
+                         FIT_UINT8 index = devIdMesg.GetDeveloperDataIndex();
+                         developers[index] = devIdMesg;
+@@ -267,13 +284,13 @@
+                         FieldDescriptionMesg descMesg(mesg);
+ 
+                         if (!descMesg.IsDeveloperDataIndexValid()) {
+-							throw fit::RuntimeException("Invalid developer data index in FieldDescriptionMesg");
+-						}
++                            throw fit::RuntimeException("Invalid developer data index in FieldDescriptionMesg");
++                        }
+ 
+-						if (!descMesg.IsFieldDefinitionNumberValid())
+-						{
+-							throw fit::RuntimeException("Invalid developer field definition number in FieldDescriptionMesg");
+-						}
++                        if (!descMesg.IsFieldDefinitionNumberValid())
++                        {
++                            throw fit::RuntimeException("Invalid developer field definition number in FieldDescriptionMesg");
++                        }
+ 
+                         FIT_UINT8 index = descMesg.GetDeveloperDataIndex();
+                         FIT_UINT8 fldNum = descMesg.GetFieldDefinitionNumber();
+@@ -281,7 +298,6 @@
+                         try
+                         {
+                             descriptions.at(index)[fldNum] = descMesg;
+-                            
+ 
+                             if (descriptionListener)
+                             {
+@@ -294,32 +310,39 @@
+                         }
+                     }
+ 
+-                    
+-
+                     if (mesgListener)
+                         mesgListener->OnMesg(mesg);
++
++                    if (pause)
++                        paused = FIT_TRUE;
+                     break;
+ 
+                 case RETURN_MESG_DEF:
+-                   
++                    currentByteIndex = i;
++                    currentByteOffset = offset;
++
+                     if (mesgDefinitionListener)
+                     {
+                         mesgDefinitionListener->OnMesgDefinition(localMesgDefs[localMesgIndex]);
+                     }
++
++                    if (pause)
++                        paused = FIT_TRUE;
+                     break;
+ 
+                 case RETURN_END_OF_FILE:
+-                     // Increment so we do not read the same byte twice in the case of a chained file
+-                    currentByteIndex++;
+-                    currentByteOffset++;
++                    currentByteIndex = i + 1;
++                    currentByteOffset = offset + 1;
+                     return FIT_TRUE;
+ 
+                 default:
+-                    currentByteOffset++;
++                    currentByteIndex = i;
++                    currentByteOffset = offset + 1;
+                     return FIT_TRUE;
+             }
+-            currentByteOffset++;
++            ++offset;
+         }
++        currentByteOffset = offset;
+         currentByteIndex = 0;
+     } while ( file->good() );
+ 

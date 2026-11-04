@@ -1,0 +1,6 @@
+{
+ "error": "/home/z/zhouzia/Workspace/CanMehEvolve/build/work-1072872/tree/src/fit_crc.cpp: In static member function ‘static FIT_UINT16 fit::CRC::Get16(FIT_UINT16, FIT_UINT8)’:\n/home/z/zhouzia/Workspace/CanMehEvolve/build/work-1072872/tree/src/fit_crc.cpp:20:49: error: variable ‘constexpr const std::array<short unsigned int, 256> crc_table’ has initializer but incomplete type\n   20 |    static constexpr std::array<FIT_UINT16, 256> crc_table = []() constexpr {\n      |                                                 ^~~~~~~~~\n/home/z/zhouzia/Workspace/CanMehEvolve/build/work-1072872/tree/src/fit_crc.cpp: In lambda function:\n/home/z/zhouzia/Workspace/CanMehEvolve/build/work-1072872/tree/src/fit_crc.cpp:21:35: error: variable ‘std::array<short unsigned int, 256> table’ has initializer but incomplete type\n   21 |       std::array<FIT_UINT16, 256> table{};\n      |                                   ^~~~~\n",
+ "ok": false,
+ "rebuilt": 2,
+ "stage": "compile"
+}

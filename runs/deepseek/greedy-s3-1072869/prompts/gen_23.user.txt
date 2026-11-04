@@ -1,0 +1,14 @@
+File: src/fit_field.cpp
+Function: Field::SetIsExpanded (4 lines)
+One full decode of the four files takes about 480.8 ms in the stock build.
+Time of the current version of the whole library relative to stock: 0.865 (below 1.0 is faster). Best measured so far: 0.865.
+
+Current text of the function:
+```cpp
+void Field::SetIsExpanded(FIT_BOOL newValue)
+{
+    isFieldExpanded = newValue;
+}
+
+```
+Return the faster replacement now.

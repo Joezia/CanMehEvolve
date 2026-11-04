@@ -1,0 +1,24 @@
+I added a fast path that fetches the field at the course-point profile's known index for the favorite field (index 7) and only falls back to the original linear `GetField(8)` scan if that slot isn't field 8, making the common case a single indexed lookup instead of an 8-field scan.
+
+```cpp
+    FIT_BOOL IsFavoriteValid() const
+    {
+        // Fast path: in the course point profile the favorite field (num 8)
+        // is the last field, so a direct indexed access avoids the linear
+        // field-number scan performed by GetField().
+        const Field* field = GetFieldByIndex(7);
+        if( FIT_NULL != field && 8 == field->GetNum() )
+        {
+            return field->IsValueValid();
+        }
+
+        // Fallback preserves exact behaviour for any other field layout.
+        field = GetField(8);
+        if( FIT_NULL == field )
+        {
+            return FIT_FALSE;
+        }
+
+        return field->IsValueValid();
+    }
+```

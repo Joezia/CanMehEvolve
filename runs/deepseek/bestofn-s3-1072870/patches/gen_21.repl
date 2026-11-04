@@ -1,0 +1,16 @@
+Inlined the duplicate-field scan instead of calling `GetField`, and cached the field number once. This removes a function call and null-pointer check from the common path while preserving identical behavior.
+
+```cpp
+void Mesg::AddField(const Field& field)
+{
+    const int num = field.GetNum();
+
+    for (const Field& existing : fields)
+    {
+        if (existing.GetNum() == num)
+            return;
+    }
+
+    fields.push_back(field);
+}
+```

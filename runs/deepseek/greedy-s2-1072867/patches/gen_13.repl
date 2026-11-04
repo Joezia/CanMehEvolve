@@ -1,0 +1,15 @@
+Copy the four derived members as one contiguous tail block with `std::memcpy` instead of four separate assignments, reducing instruction count and letting the compiler emit a single wide move.
+
+```cpp
+#include <cstring>
+```
+
+```cpp
+Field::Field(const Field &field)
+    : FieldBase(field)
+{
+    std::memcpy(reinterpret_cast<char*>(this) + sizeof(FieldBase),
+                reinterpret_cast<const char*>(&field) + sizeof(FieldBase),
+                sizeof(Field) - sizeof(FieldBase));
+}
+```

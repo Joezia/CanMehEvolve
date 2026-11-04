@@ -1,0 +1,59 @@
+--- a/src/fit_profile.cpp
++++ b/src/fit_profile.cpp
+@@ -3079,18 +3079,49 @@
+ 
+ const FIT_UINT16 Profile::GetFieldIndex(const FIT_UINT16 mesgNum, const FIT_UINT8 fieldNum)
+ {
+-    const MESG *mesg = GetMesg(mesgNum);
++    static FIT_UINT16 cache[65536][256];
++    static FIT_UINT8 state[65536] = { 0 };
++    static FIT_UINT16 lastMesgNum = 0;
++    static FIT_UINT16 *lastRow = NULL;
+ 
+-    if (mesg == NULL)
+-        return FIT_UINT16_INVALID;
++    if (lastRow != NULL && mesgNum == lastMesgNum)
++        return lastRow[fieldNum];
++
++    const FIT_UINT8 s = state[mesgNum];
++    if (s == 0)
++    {
++        const MESG *mesg = GetMesg(mesgNum);
++
++        if (mesg == NULL)
++        {
++            state[mesgNum] = 2;
++            return FIT_UINT16_INVALID;
++        }
+ 
+-    for (FIT_UINT16 i = 0; i < mesg->numFields; i++)
++        FIT_UINT16 *row = cache[mesgNum];
++        for (FIT_UINT16 i = 0; i < 256; i++)
++            row[i] = FIT_UINT16_INVALID;
++
++        for (FIT_UINT16 i = 0; i < mesg->numFields; i++)
++        {
++            const FIT_UINT16 num = mesg->fields[i].num;
++            if (num < 256 && row[num] == FIT_UINT16_INVALID)
++                row[num] = i;
++        }
++
++        state[mesgNum] = 1;
++        lastMesgNum = mesgNum;
++        lastRow = row;
++        return row[fieldNum];
++    }
++    else if (s == 2)
+     {
+-        if (mesg->fields[i].num == fieldNum)
+-            return i;
++        return FIT_UINT16_INVALID;
+     }
+ 
+-    return FIT_UINT16_INVALID;
++    lastMesgNum = mesgNum;
++    lastRow = cache[mesgNum];
++    return lastRow[fieldNum];
+ }
+ 
+ const FIT_UINT16 Profile::GetFieldIndex(const std::string& mesgName, const std::string& fieldName)

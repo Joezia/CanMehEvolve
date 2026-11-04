@@ -1,0 +1,11 @@
+--- a/src/fit_field.cpp
++++ b/src/fit_field.cpp
+@@ -92,7 +92,7 @@
+ 
+ FIT_UINT8 Field::GetNum(void) const
+ {
+-    if ((profile == NULL) || (profileIndex >= profile->numFields))
++    if (__builtin_expect((profile == NULL) || (profileIndex >= profile->numFields), 0))
+         return FIT_FIELD_NUM_INVALID;
+     return profile->fields[profileIndex].num;
+ }

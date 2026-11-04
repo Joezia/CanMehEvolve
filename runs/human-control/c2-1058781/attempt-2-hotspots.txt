@@ -1,0 +1,52 @@
+# To display the perf.data header info, please use --header/--header-only options.
+#
+#
+# Total Lost Samples: 0
+#
+# Samples: 32K of event 'cycles:u'
+# Event count (approx.): 101475987920
+#
+# Overhead  Shared Object         Symbol                                                                                                                                                                                IPC   [IPC Coverage]
+# ........  ....................  ....................................................................................................................................................................................  ....................
+#
+    11.08%  libc.so.6             [.] malloc                                                                                                                                                                            -      -            
+    10.87%  libc.so.6             [.] _int_free                                                                                                                                                                         -      -            
+     7.80%  libfit_cand.so        [.] std::vector<unsigned char, std::allocator<unsigned char> >::operator=(std::vector<unsigned char, std::allocator<unsigned char> > const&) [clone .isra.0]                          -      -            
+     6.40%  libc.so.6             [.] cfree@GLIBC_2.2.5                                                                                                                                                                 -      -            
+     5.40%  libfit_cand.so        [.] workloads::(anonymous namespace)::DecodedValueDigest::foldField(fit::FieldBase const&)                                                                                            -      -            
+     4.58%  libfit_cand.so        [.] fit::Decode::ReadByte(unsigned char)                                                                                                                                              -      -            
+     3.92%  libc.so.6             [.] _int_malloc                                                                                                                                                                       -      -            
+     3.61%  libstdc++.so.6.0.33   [.] operator new(unsigned long)                                                                                                                                                       -      -            
+     3.30%  libfit_cand.so        [.] fit::FieldBase::FieldBase(fit::FieldBase const&)                                                                                                                                  -      -            
+     3.22%  libfit_cand.so        [.] fit::FieldBase::GetNumValues() const                                                                                                                                              -      -            
+     2.99%  libfit_cand.so        [.] fit::Field::GetType() const                                                                                                                                                       -      -            
+     2.66%  libfit_cand.so        [.] fit::Field::GetNum() const                                                                                                                                                        -      -            
+     2.11%  libfit_cand.so        [.] fit::Field::Field(fit::Field const&)                                                                                                                                              -      -            
+     1.92%  libfit_cand.so        [.] fit::Mesg::GetField(unsigned char)                                                                                                                                                -      -            
+     1.62%  libfit_cand.so        [.] fit::Mesg::Mesg(fit::Mesg const&)                                                                                                                                                 -      -            
+     1.59%  libfit_cand.so        [.] fit::FieldBase::~FieldBase()                                                                                                                                                      -      -            
+     1.55%  libfit_cand.so        [.] fit::MesgDefinition::MesgDefinition(fit::MesgDefinition const&)                                                                                                                   -      -            
+     1.55%  libfit_cand.so        [.] fit::FieldBase::GetFLOAT64Value(unsigned char, unsigned short) const [clone .part.0]                                                                                              -      -            
+     1.50%  libfit_cand.so        [.] fit::DeveloperFieldDefinition::~DeveloperFieldDefinition()                                                                                                                        -      -            
+     1.34%  libfit_cand.so        [.] fit::FieldBase::Read(void const*, unsigned char)                                                                                                                                  -      -            
+     1.23%  libfit_cand.so        [.] fit::Field::~Field()                                                                                                                                                              -      -            
+     0.96%  libfit_cand.so        [.] fit::CRC::Get16(unsigned short, unsigned char)                                                                                                                                    -      -            
+     0.78%  libc.so.6             [.] __memmove_avx_unaligned_erms                                                                                                                                                      -      -            
+     0.73%  libfit_cand.so        [.] fit::Field::GetNumSubFields() const                                                                                                                                               -      -            
+     0.71%  libfit_cand.so        [.] unsigned char fit::FieldBase::GetValue<unsigned char>(unsigned char) const                                                                                                        -      -            
+     0.71%  libstdc++.so.6.0.33   [.] operator delete(void*)                                                                                                                                                            -      -            
+     0.71%  libstdc++.so.6.0.33   [.] free@plt                                                                                                                                                                          -      -            
+     0.69%  libstdc++.so.6.0.33   [.] operator delete(void*)@plt                                                                                                                                                        -      -            
+     0.65%  libstdc++.so.6.0.33   [.] malloc@plt                                                                                                                                                                        -      -            
+     0.65%  libfit_cand.so        [.] operator new(unsigned long)@plt                                                                                                                                                   -      -            
+     0.65%  libfit_cand.so        [.] fit::Field::IsValid() const                                                                                                                                                       -      -            
+     0.58%  libfit_cand.so        [.] unsigned int fit::FieldBase::GetValue<unsigned int>(unsigned char) const                                                                                                          -      -            
+     0.56%  libstdc++.so.6.0.33   [.] operator delete(void*, unsigned long)                                                                                                                                             -      -            
+     0.55%  libfit_cand.so        [.] fit::MesgDefinition::GetFieldByIndex(unsigned short)                                                                                                                              -      -            
+     0.54%  libfit_cand.so        [.] fit::Field::GetNumComponents() const                                                                                                                                              -      -            
+     0.54%  libfit_cand.so        [.] fit::Field::Field(unsigned short, unsigned char)                                                                                                                                  -      -            
+
+
+#
+# (Cannot load tips.txt file, please install perf!)
+#

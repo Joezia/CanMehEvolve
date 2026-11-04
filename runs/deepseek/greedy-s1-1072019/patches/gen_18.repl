@@ -1,0 +1,13 @@
+I replaced the generic `SetFieldUINT8Value` call with direct construction of a `Field` and a call to `SetField`, bypassing the subfield/profile lookup logic inside the generic setter. This saves a function call and the associated branching for the common main-field case.
+
+```cpp
+    void SetAwakeningsCount(FIT_UINT8 awakeningsCount)
+    {
+        Field field;
+        field.SetNum(11);
+        field.SetSize(1);
+        field.SetType(FIT_BASE_TYPE_UINT8);
+        field.SetValue(&awakeningsCount, 1);
+        SetField(field);
+    }
+```

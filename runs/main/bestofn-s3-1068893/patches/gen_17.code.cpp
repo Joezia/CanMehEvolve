@@ -1,0 +1,16 @@
+
+const Profile::MESG* Profile::GetMesg(const FIT_UINT16 num)
+{
+    // Use a precomputed hash table for O(1) lookup instead of linear scan
+    static bool initialized = false;
+    static std::vector<const Profile::MESG*> lookup_table(65536, nullptr);
+
+    if (!initialized) {
+        for (int i = 0; i < MESGS; i++) {
+            lookup_table[mesgs[i].num] = &mesgs[i];
+        }
+        initialized = true;
+    }
+
+    return lookup_table[num];
+}

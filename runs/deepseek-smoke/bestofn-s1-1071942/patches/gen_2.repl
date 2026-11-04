@@ -1,0 +1,7 @@
+The constructor is already a minimal member-initializer wrapper with no work to remove, so the only safe change is to keep it identical (making it `noexcept` would alter exception behavior of the underlying copy).
+
+```cpp
+    AntRxMesg(const Mesg &mesg) : Mesg(mesg)
+    {
+    }
+```

@@ -1,0 +1,31 @@
+File: src/fit_profile.cpp
+Function: Profile::GetMesg (10 lines)
+One full decode of the four files takes about 358.8 ms in the stock build.
+Time of the current version of the whole library relative to stock: 0.950 (below 1.0 is faster). Best measured so far: 0.946.
+
+Current text of the function:
+```cpp
+const Profile::MESG* Profile::GetMesg(const FIT_UINT16 num)
+{
+    // Precompute sorted indices once per program lifetime
+    static const std::vector<FIT_UINT16> sorted_indices = []() {
+        std::vector<FIT_UINT16> indices(MESGS);
+        for (FIT_UINT16 i = 0; i < MESGS; ++i) indices[i] = i;
+        std::sort(indices.begin(), indices.end(), [](FIT_UINT16 a, FIT_UINT16 b) {
+            return mesgs[a].num < mesgs[b].num;
+        });
+        return indices;
+    }();
+
+    // Use standard library binary_search and lower_bound for better performance
+    auto it = std::lower_bound(sorted_indices.begin(), sorted_indices.end(), num,
+        [](FIT_UINT16 idx, FIT_UINT16 target) { return mesgs[idx].num < target; });
+    
+    if (it != sorted_indices.end() && mesgs[*it].num == num) {
+        return &mesgs[*it];
+    }
+    return NULL;
+}
+
+```
+Return the faster replacement now.

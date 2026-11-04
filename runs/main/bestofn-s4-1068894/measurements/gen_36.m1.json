@@ -1,0 +1,6 @@
+{
+ "error": "/home/z/zhouzia/Workspace/CanMehEvolve/build/work-1068894/tree/src/fit_field.cpp: In copy constructor ‘fit::Field::Field(const fit::Field&)’:\n/home/z/zhouzia/Workspace/CanMehEvolve/build/work-1068894/tree/src/fit_field.cpp:39:54: error: static assertion failed: Field should be trivially copyable for optimal performance\n   39 |     static_assert(std::is_trivially_copyable<Field>::value, \"Field should be trivially copyable for optimal performance\");\n      |                   ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^~~~~\n",
+ "ok": false,
+ "rebuilt": 2,
+ "stage": "compile"
+}

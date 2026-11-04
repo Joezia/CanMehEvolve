@@ -1,0 +1,6 @@
+
+    FIT_BOOL IsAvgNegGradeValid() const
+    {
+        const Field* field = GetField(39);
+        return (field != FIT_NULL) ? field->IsValueValid() : FIT_FALSE;
+    }

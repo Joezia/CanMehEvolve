@@ -1,0 +1,17 @@
+File: src/fit_mesg.cpp
+Function: Mesg::GetFieldByIndex (7 lines)
+One full decode of the four files takes about 358.5 ms in the stock build.
+Time of the current version of the whole library relative to stock: 0.887 (below 1.0 is faster). Best measured so far: 0.887.
+
+Current text of the function:
+```cpp
+Field* Mesg::GetFieldByIndex(const FIT_UINT16 index)
+{
+    if (index < fields.size())
+        return &fields[index];
+
+    return FIT_NULL;
+}
+
+```
+Return the faster replacement now.

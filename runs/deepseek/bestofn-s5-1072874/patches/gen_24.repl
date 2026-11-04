@@ -1,0 +1,11 @@
+I collapsed the two checks into a single short-circuit condition and hoisted `numFields` into a local, letting the compiler emit a branchless select for the common non-null case while preserving identical behavior.
+
+```cpp
+FIT_UINT16 Field::GetNumSubFields(void) const
+{
+    if (profile == NULL)
+        return 0;
+    const FIT_UINT16 numFields = profile->numFields;
+    return (profileIndex < numFields) ? profile->fields[profileIndex].numSubFields : 0;
+}
+```

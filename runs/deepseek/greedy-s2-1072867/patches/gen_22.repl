@@ -1,0 +1,8 @@
+The function is already a single member load with no computation, so there is nothing to shrink; keeping the body identical avoids any behavioural risk while the surrounding call sites are what dominate cost.
+
+```cpp
+FIT_UINT8 FieldDefinition::GetType() const
+{
+    return type;
+}
+```

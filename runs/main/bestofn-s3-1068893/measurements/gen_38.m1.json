@@ -1,0 +1,6 @@
+{
+ "error": "/home/z/zhouzia/Workspace/CanMehEvolve/build/work-1068893/tree/src/fit_field_base.cpp: In member function ‘FIT_FLOAT64 fit::FieldBase::GetFLOAT64Value(FIT_UINT8, FIT_UINT16) const’:\n/home/z/zhouzia/Workspace/CanMehEvolve/build/work-1068893/tree/src/fit_field_base.cpp:352:11: error: ‘FIT_BASE_TYPE’ does not name a type; did you mean ‘FIT_BASE_TYPES’?\n  352 |     const FIT_BASE_TYPE type = GetType();\n      |           ^~~~~~~~~~~~~\n      |           FIT_BASE_TYPES\n/home/z/zhouzia/Workspace/CanMehEvolve/build/work-1068893/tree/src/fit_field_base.cpp:355:13: error: ‘type’ was not declared in this scope; did you mean ‘wctype’?\n  355 |     switch (type) {\n      |             ^~~~\n      |             wctype\n/home/z/zhouzia/Workspace/CanMehEvolve/build/work-1068893/tree/src/fit_field_base.cpp:386:90: error: ‘type’ was not declared in this scope; did you mean ‘wctype’?\n  386 |     const FIT_UINT64* invalidBits = reinterpret_cast<const FIT_UINT64*>(baseTypeInvalids[type & FIT_BASE_TYPE_NUM_MASK]);\n      |                                                                                          ^~~~\n      |                                                                                          wctype\n",
+ "ok": false,
+ "rebuilt": 2,
+ "stage": "compile"
+}

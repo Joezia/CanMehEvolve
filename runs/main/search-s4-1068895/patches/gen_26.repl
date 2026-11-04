@@ -1,0 +1,43 @@
+```cpp
+#include <cstring>
+#include <cstdint>
+#include <type_traits>
+
+template <typename T>
+T FieldBase::GetValue(const FIT_UINT8 fieldArrayIndex) const
+{
+    FIT_UINT8 type = GetType() & FIT_BASE_TYPE_NUM_MASK;
+    FIT_UINT8 size = baseTypeSizes[type];
+    
+    if (fieldArrayIndex >= (FIT_UINT8)values.size())
+    {
+        return *reinterpret_cast<const T*>(baseTypeInvalids[type]);
+    }
+
+    const FIT_UINT8* data = &values[(fieldArrayIndex * size)];
+    
+    // Optimize for common small types by avoiding memcpy overhead
+    if constexpr (std::is_trivially_copyable_v<T> && sizeof(T) <= 8) {
+        if (sizeof(T) == 1) return *reinterpret_cast<const T*>(data);
+        if (sizeof(T) == 2) {
+            uint16_t val;
+            std::memcpy(&val, data, 2);
+            return *reinterpret_cast<T*>(&val);
+        }
+        if (sizeof(T) == 4) {
+            uint32_t val;
+            std::memcpy(&val, data, 4);
+            return *reinterpret_cast<T*>(&val);
+        }
+        if (sizeof(T) == 8) {
+            uint64_t val;
+            std::memcpy(&val, data, 8);
+            return *reinterpret_cast<T*>(&val);
+        }
+    }
+    
+    T rv = 0;
+    std::memcpy(&rv, data, size);
+    return rv;
+}
+```

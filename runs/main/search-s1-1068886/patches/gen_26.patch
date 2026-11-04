@@ -1,0 +1,88 @@
+--- a/src/fit_accumulated_field.cpp
++++ b/src/fit_accumulated_field.cpp
+@@ -11,12 +11,14 @@
+ 
+ 
+ #include "fit_accumulated_field.hpp"
++#include <cstdint>
+ 
+ namespace fit
+ {
+ 
++
+     AccumulatedField::AccumulatedField()
+-        : lastValue(0), accumulatedValue(0)
++        : lastValue{0}, accumulatedValue{0}
+     {
+     }
+ 
+--- a/src/fit_profile.cpp
++++ b/src/fit_profile.cpp
+@@ -11,6 +11,8 @@
+ 
+ 
+ #include "fit_profile.hpp"
++#include <algorithm>
++#include <vector>
+ 
+ namespace fit
+ {
+@@ -3055,14 +3057,25 @@
+    { NULL, "pad", FIT_MESG_NUM_PAD, 0 },
+ };
+ 
++
++
+ const Profile::MESG* Profile::GetMesg(const FIT_UINT16 num)
+ {
+-    for (int i = 0; i < MESGS; i++)
+-    {
+-        if (mesgs[i].num == num)
+-            return &mesgs[i];
+-    }
++    static const std::vector<FIT_UINT16> sorted_indices = []() {
++        std::vector<FIT_UINT16> indices(MESGS);
++        for (FIT_UINT16 i = 0; i < MESGS; ++i) indices[i] = i;
++        std::sort(indices.begin(), indices.end(), [](FIT_UINT16 a, FIT_UINT16 b) {
++            return mesgs[a].num < mesgs[b].num;
++        });
++        return indices;
++    }();
+ 
++    auto it = std::lower_bound(sorted_indices.begin(), sorted_indices.end(), num,
++        [](FIT_UINT16 idx, FIT_UINT16 target) { return mesgs[idx].num < target; });
++
++    if (it != sorted_indices.end() && mesgs[*it].num == num) {
++        return &mesgs[*it];
++    }
+     return NULL;
+ }
+ 
+--- a/src/fit_segment_lap_mesg.hpp
++++ b/src/fit_segment_lap_mesg.hpp
+@@ -15,6 +15,7 @@
+ 
+ #include "fit_mesg.hpp"
+ #include "fit_mesg_with_event.hpp"
++#include <cstdint>
+ 
+ namespace fit
+ {
+@@ -1527,15 +1528,11 @@
+     // Checks the validity of avg_neg_grade field
+     // Returns FIT_TRUE if field is valid
+     ///////////////////////////////////////////////////////////////////////
++
+     FIT_BOOL IsAvgNegGradeValid() const
+     {
+         const Field* field = GetField(39);
+-        if( FIT_NULL == field )
+-        {
+-            return FIT_FALSE;
+-        }
+-
+-        return field->IsValueValid();
++        return (field != FIT_NULL) ? field->IsValueValid() : FIT_FALSE;
+     }
+ 
+     ///////////////////////////////////////////////////////////////////////

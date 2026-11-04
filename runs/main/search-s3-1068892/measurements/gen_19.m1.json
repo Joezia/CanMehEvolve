@@ -1,0 +1,6 @@
+{
+ "error": "/home/z/zhouzia/Workspace/CanMehEvolve/build/work-1068892/tree/src/fit_field_base.cpp: In member function ‘FIT_BOOL fit::FieldBase::Read(const void*, FIT_UINT8)’:\n/home/z/zhouzia/Workspace/CanMehEvolve/build/work-1068892/tree/src/fit_field_base.cpp:1021:17: error: ‘FIT_BASE_TYPE_NUM_STRING’ was not declared in this scope; did you mean ‘FIT_BASE_TYPE_STRING’?\n 1021 |     if (type == FIT_BASE_TYPE_NUM_STRING)\n      |                 ^~~~~~~~~~~~~~~~~~~~~~~~\n      |                 FIT_BASE_TYPE_STRING\n",
+ "ok": false,
+ "rebuilt": 6,
+ "stage": "compile"
+}

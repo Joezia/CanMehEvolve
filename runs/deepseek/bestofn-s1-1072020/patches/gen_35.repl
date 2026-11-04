@@ -1,0 +1,12 @@
+I cached the profile pointer locally and added branch-prediction hints so the common valid-field path stays fall-through and the invalid checks are treated as unlikely.
+
+```cpp
+FIT_UINT8 Field::GetNum(void) const
+{
+    auto* p = profile;
+    if (__builtin_expect(p == NULL, 0) ||
+        __builtin_expect(profileIndex >= p->numFields, 0))
+        return FIT_FIELD_NUM_INVALID;
+    return p->fields[profileIndex].num;
+}
+```

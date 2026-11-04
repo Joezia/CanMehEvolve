@@ -1,0 +1,270 @@
+--- a/src/fit_field_base.cpp
++++ b/src/fit_field_base.cpp
+@@ -16,6 +16,7 @@
+ #include "fit_field_base.hpp"
+ #include "fit_mesg.hpp"
+ #include "fit_unicode.hpp"
++#include <cstring>
+ 
+ namespace fit
+ {
+@@ -25,9 +26,8 @@
+ }
+ 
+ FieldBase::FieldBase(const FieldBase &field)
++    : values(field.values), stringIndexes(field.stringIndexes)
+ {
+-    values = field.values;
+-    stringIndexes = field.stringIndexes;
+ }
+ 
+ FieldBase::~FieldBase()
+@@ -344,98 +344,108 @@
+ 
+ FIT_FLOAT64 FieldBase::GetFLOAT64Value(const FIT_UINT8 fieldArrayIndex, const FIT_UINT16 subFieldIndex) const
+ {
+-    FIT_FLOAT64 float64Value;
+-
+     if (!IsValid())
+         return FIT_FLOAT64_INVALID;
+ 
+-    switch (GetType()) { // Note: This checks the type of the MAIN field since data is aligned according to that type
++    const FIT_UINT8 type = GetType();
++    FIT_FLOAT64 float64Value;
++
++    switch (type) {
+         case FIT_BASE_TYPE_BYTE:
++        case FIT_BASE_TYPE_ENUM:
++        case FIT_BASE_TYPE_UINT8:
+         {
+-            float64Value =
+-                ConvertBaseType<FIT_FLOAT64, FIT_BYTE>(fieldArrayIndex, FIT_BASE_TYPE_FLOAT64);
++            FIT_UINT8 raw = GetValue<FIT_UINT8>(fieldArrayIndex);
++            if (raw == 0xFF)
++                return FIT_FLOAT64_INVALID;
++            float64Value = static_cast<FIT_FLOAT64>(raw);
+             break;
+         }
+-
+-        case FIT_BASE_TYPE_ENUM:
++        case FIT_BASE_TYPE_UINT8Z:
+         {
+-            float64Value =
+-                ConvertBaseType<FIT_FLOAT64, FIT_ENUM>(fieldArrayIndex, FIT_BASE_TYPE_FLOAT64);
++            FIT_UINT8 raw = GetValue<FIT_UINT8>(fieldArrayIndex);
++            if (raw == 0x00)
++                return FIT_FLOAT64_INVALID;
++            float64Value = static_cast<FIT_FLOAT64>(raw);
+             break;
+         }
+-
+         case FIT_BASE_TYPE_SINT8:
+         {
+-            float64Value =
+-                ConvertBaseType<FIT_FLOAT64, FIT_SINT8>(fieldArrayIndex, FIT_BASE_TYPE_FLOAT64);
++            FIT_SINT8 raw = GetValue<FIT_SINT8>(fieldArrayIndex);
++            if (raw == 0x7F)
++                return FIT_FLOAT64_INVALID;
++            float64Value = static_cast<FIT_FLOAT64>(raw);
+             break;
+         }
+-
+-        case FIT_BASE_TYPE_UINT8:
+-        case FIT_BASE_TYPE_UINT8Z:
++        case FIT_BASE_TYPE_SINT16:
+         {
+-            float64Value =
+-                ConvertBaseType<FIT_FLOAT64, FIT_UINT8>(fieldArrayIndex, FIT_BASE_TYPE_FLOAT64);
++            FIT_SINT16 raw = GetValue<FIT_SINT16>(fieldArrayIndex);
++            if (raw == 0x7FFF)
++                return FIT_FLOAT64_INVALID;
++            float64Value = static_cast<FIT_FLOAT64>(raw);
+             break;
+         }
+-
+-        case FIT_BASE_TYPE_SINT16:
++        case FIT_BASE_TYPE_UINT16:
+         {
+-            float64Value =
+-                ConvertBaseType<FIT_FLOAT64, FIT_SINT16>(fieldArrayIndex, FIT_BASE_TYPE_FLOAT64);
++            FIT_UINT16 raw = GetValue<FIT_UINT16>(fieldArrayIndex);
++            if (raw == 0xFFFF)
++                return FIT_FLOAT64_INVALID;
++            float64Value = static_cast<FIT_FLOAT64>(raw);
+             break;
+         }
+-
+         case FIT_BASE_TYPE_UINT16Z:
+-        case FIT_BASE_TYPE_UINT16:
+         {
+-            float64Value =
+-                ConvertBaseType<FIT_FLOAT64, FIT_UINT16>(fieldArrayIndex, FIT_BASE_TYPE_FLOAT64);
++            FIT_UINT16 raw = GetValue<FIT_UINT16>(fieldArrayIndex);
++            if (raw == 0x0000)
++                return FIT_FLOAT64_INVALID;
++            float64Value = static_cast<FIT_FLOAT64>(raw);
+             break;
+         }
+-
+         case FIT_BASE_TYPE_SINT32:
+         {
+-            float64Value =
+-                ConvertBaseType<FIT_FLOAT64, FIT_SINT32>(fieldArrayIndex, FIT_BASE_TYPE_FLOAT64);
++            FIT_SINT32 raw = GetValue<FIT_SINT32>(fieldArrayIndex);
++            if (raw == 0x7FFFFFFF)
++                return FIT_FLOAT64_INVALID;
++            float64Value = static_cast<FIT_FLOAT64>(raw);
+             break;
+         }
+-
+         case FIT_BASE_TYPE_UINT32:
++        {
++            FIT_UINT32 raw = GetValue<FIT_UINT32>(fieldArrayIndex);
++            if (raw == 0xFFFFFFFF)
++                return FIT_FLOAT64_INVALID;
++            float64Value = static_cast<FIT_FLOAT64>(raw);
++            break;
++        }
+         case FIT_BASE_TYPE_UINT32Z:
+         {
+-            float64Value =
+-                ConvertBaseType<FIT_FLOAT64, FIT_UINT32>(fieldArrayIndex, FIT_BASE_TYPE_FLOAT64);
++            FIT_UINT32 raw = GetValue<FIT_UINT32>(fieldArrayIndex);
++            if (raw == 0x00000000)
++                return FIT_FLOAT64_INVALID;
++            float64Value = static_cast<FIT_FLOAT64>(raw);
+             break;
+         }
+-
+         case FIT_BASE_TYPE_FLOAT32:
+         {
+             FIT_FLOAT32 val = GetFLOAT32Value(fieldArrayIndex, subFieldIndex);
+-
+             if (FIT_FLOAT32_INVALID == val)
+-            {
+                 return FIT_FLOAT64_INVALID;
+-            }
+-
+             return static_cast<FIT_FLOAT64>(val);
+         }
+-
+         case FIT_BASE_TYPE_FLOAT64:
+         {
+             FIT_UINT64 uint64Value = GetValue<FIT_UINT64>(fieldArrayIndex);
+             memcpy(&float64Value, &uint64Value, sizeof(FIT_FLOAT64));
+-            break;
++            if (uint64Value == 0xFFFFFFFFFFFFFFFFULL)
++                return FIT_FLOAT64_INVALID;
++            return float64Value / GetScale(subFieldIndex) - GetOffset(subFieldIndex);
+         }
+-
+         default:
+             return FIT_FLOAT64_INVALID;
+     }
+ 
+-    if (memcmp(&float64Value, baseTypeInvalids[FIT_BASE_TYPE_FLOAT64 & FIT_BASE_TYPE_NUM_MASK], sizeof(FIT_FLOAT64)) == 0)
+-    {
++    if (subFieldIndex >= GetNumSubFields())
+         return float64Value;
+-    }
+ 
+     return float64Value / GetScale(subFieldIndex) - GetOffset(subFieldIndex);
+ }
+@@ -1131,20 +1141,40 @@
+ template <typename T>
+ T FieldBase::GetValue(const FIT_UINT8 fieldArrayIndex) const
+ {
+-    FIT_UINT8 size = baseTypeSizes[GetType() & FIT_BASE_TYPE_NUM_MASK];
+-    if (fieldArrayIndex >= (FIT_UINT8)values.size())
++    const FIT_UINT8 type = GetType() & FIT_BASE_TYPE_NUM_MASK;
++
++    if (fieldArrayIndex >= static_cast<FIT_UINT8>(values.size()))
+     {
+-        return *reinterpret_cast<const T*>(baseTypeInvalids[GetType() & FIT_BASE_TYPE_NUM_MASK]);
++        return *reinterpret_cast<const T*>(baseTypeInvalids[type]);
+     }
+ 
+-    T rv = 0;
++    const FIT_UINT8 size = baseTypeSizes[type];
++    const FIT_UINT8* p = values.data() + (fieldArrayIndex * size);
++    FIT_UINT64 rv = 0;
+ 
+-    for (int i = 0; i < size; i++)
++    switch (size)
+     {
+-        rv |= static_cast<T>(values[(fieldArrayIndex * size) + i]) << (i * 8);
++    case 1:
++        rv = p[0];
++        break;
++    case 2:
++        std::memcpy(&rv, p, 2);
++        break;
++    case 4:
++        std::memcpy(&rv, p, 4);
++        break;
++    case 8:
++        std::memcpy(&rv, p, 8);
++        break;
++    default:
++        for (int i = 0; i < size; ++i)
++        {
++            rv |= static_cast<FIT_UINT64>(p[i]) << (i * 8);
++        }
++        break;
+     }
+ 
+-    return rv;
++    return static_cast<T>(rv);
+ }
+ 
+ 
+--- a/src/fit_mesg.cpp
++++ b/src/fit_mesg.cpp
+@@ -174,10 +174,15 @@
+ 
+ void Mesg::AddField(const Field& field)
+ {
+-    Field *existingField = GetField(field.GetNum());
+-
+-    if (existingField == FIT_NULL)
+-        fields.push_back(field);
++    const auto num = field.GetNum();
++    for (const Field& f : fields)
++    {
++        if (f.GetNum() == num)
++            return;
++    }
++    if (fields.empty())
++        fields.reserve(16);
++    fields.push_back(field);
+ }
+ 
+ Field* Mesg::AddField(const FIT_UINT8 fieldNum)
+--- a/src/fit_profile.cpp
++++ b/src/fit_profile.cpp
+@@ -3057,13 +3057,21 @@
+ 
+ const Profile::MESG* Profile::GetMesg(const FIT_UINT16 num)
+ {
+-    for (int i = 0; i < MESGS; i++)
++    static const Profile::MESG* lookup[65536] = {};
++    static bool initialized = false;
++
++    if (!initialized)
+     {
+-        if (mesgs[i].num == num)
+-            return &mesgs[i];
++        for (int i = 0; i < MESGS; i++)
++        {
++            const FIT_UINT16 n = mesgs[i].num;
++            if (lookup[n] == NULL)
++                lookup[n] = &mesgs[i];
++        }
++        initialized = true;
+     }
+ 
+-    return NULL;
++    return lookup[num];
+ }
+ 
+ const Profile::MESG* Profile::GetMesg(const std::string& name)

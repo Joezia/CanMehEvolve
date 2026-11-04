@@ -1,0 +1,5 @@
+
+    AccumulatedField::AccumulatedField()
+        : lastValue{0}, accumulatedValue{0}
+    {
+    }

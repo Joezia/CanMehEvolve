@@ -1,0 +1,11 @@
+[
+  {
+    "batch": "batch1",
+    "pair": "null",
+    "trial": 51,
+    "path": "runs/phase0-1068829/trials/null/t051.json",
+    "bytes": 0,
+    "error": "unreadable json",
+    "reason": null
+  }
+]

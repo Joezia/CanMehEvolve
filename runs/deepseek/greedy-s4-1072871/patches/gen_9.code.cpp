@@ -1,0 +1,48 @@
+const FIT_UINT16 Profile::GetFieldIndex(const FIT_UINT16 mesgNum, const FIT_UINT8 fieldNum)
+{
+    const FIT_UINT32 key = (static_cast<FIT_UINT32>(mesgNum) << 8) | fieldNum;
+    const FIT_UINT32 storedKey = key + 1;
+
+    static FIT_UINT32 cachedKeys[2048] = {};
+    static FIT_UINT16 cachedValues[2048] = {};
+
+    const FIT_UINT32 slot = (key * 2654435761u) >> 21;
+    if (cachedKeys[slot] == storedKey)
+        return cachedValues[slot];
+
+    static FIT_UINT16 lastMesgNum = 0;
+    static const MESG *lastMesg = NULL;
+
+    const MESG *mesg;
+    if (lastMesg != NULL && mesgNum == lastMesgNum)
+    {
+        mesg = lastMesg;
+    }
+    else
+    {
+        mesg = GetMesg(mesgNum);
+        if (mesg != NULL)
+        {
+            lastMesgNum = mesgNum;
+            lastMesg = mesg;
+        }
+    }
+
+    FIT_UINT16 result = FIT_UINT16_INVALID;
+
+    if (mesg != NULL)
+    {
+        for (FIT_UINT16 i = 0; i < mesg->numFields; i++)
+        {
+            if (mesg->fields[i].num == fieldNum)
+            {
+                result = i;
+                break;
+            }
+        }
+    }
+
+    cachedKeys[slot] = storedKey;
+    cachedValues[slot] = result;
+    return result;
+}

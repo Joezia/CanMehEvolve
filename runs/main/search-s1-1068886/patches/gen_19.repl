@@ -1,0 +1,12 @@
+```cpp
+Field::Field(const Field &field)
+    : FieldBase(field)
+    , profile(field.profile)
+    , profileIndex(field.profileIndex)
+    , type(field.type)
+    , isFieldExpanded(field.isFieldExpanded)
+{
+}
+```
+
+The function is already optimal—it's a trivial copy constructor performing member-wise initialization. No changes can improve its performance while maintaining identical behavior. The observed 0.999x speedup likely comes from elsewhere; this function cannot be made faster without changing semantics.

@@ -1,0 +1,1 @@
+{"error":"/home/z/zhouzia/Workspace/CanMehEvolve/build/work-1072869/tree/src/fit_field_base.cpp:33:25: error: attributes are not allowed on a function-definition\n   33 | FieldBase::~FieldBase() __attribute__((always_inline))\n      |                         ^~~~~~~~~~~~~\n","ok":false,"rebuilt":8,"stage":"compile"}

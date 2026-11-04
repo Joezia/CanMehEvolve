@@ -1,0 +1,47 @@
+Looking at this function, the main optimization opportunity is to avoid the repeated `profile->numFields` and `profile->fields` array access by caching the field reference, and to use early returns more efficiently. However, since the function is already quite minimal and the benchmark shows no improvement possible, I need to find a micro-optimization.
+
+The key insight is that `profile->fields[profileIndex].num` involves two pointer dereferences and an array index operation. We can reduce this by getting the field pointer once, but more importantly, we can reorder the condition to check the more likely failure case first (profileIndex bounds check) since `profileIndex` is likely to be out of bounds less often than profile being NULL in valid decoded data.
+
+Actually, the biggest win here is to avoid the `profile->numFields` array access entirely by storing the field count locally, but that doesn't help much. 
+
+Wait - the real optimization is to use a local variable for the profile pointer to avoid dereferencing it multiple times, and to use the fact that if profile is non-null, we can trust that profile->fields exists for valid profileIndex values. But the code is already correct.
+
+Given the benchmark shows 1.000 and we need faster, the only micro-optimization left is to hoist the profile pointer into a local variable to avoid double dereferencing in the condition check:
+
+```cpp
+FIT_UINT8 Field::GetNum(void) const
+{
+    const fit::Profile* p = profile;
+    if ((p == NULL) || (profileIndex >= p->numFields))
+        return FIT_FIELD_NUM_INVALID;
+    return p->fields[profileIndex].num;
+}
+```
+
+But wait - the benchmark might be using `profile` as a member variable, so `fit::Profile*` might not be the right type. Let me check the return type and context. The function returns `FIT_UINT8`, and it's accessing `profile->fields[profileIndex].num`.
+
+Actually, the simplest and most effective micro-optimization for such a small function is to reduce the number of dereferences. Since `profile` is used twice, storing it in a local variable avoids one dereference in the common case where profile is non-NULL:
+
+```cpp
+#include <cstddef>
+
+FIT_UINT8 Field::GetNum(void) const
+{
+    auto p = profile;
+    if (p == nullptr) return FIT_FIELD_NUM_INVALID;
+    if (profileIndex >= p->numFields) return FIT_FIELD_NUM_INVALID;
+    return p->fields[profileIndex].num;
+}
+```
+
+But the original uses `NULL`, so I should stick to that for consistency. Also, the benchmark might require exact behavior, so I need to preserve the exact same logic. The main change is using a local variable to avoid double dereferencing the `profile` pointer:
+
+```cpp
+FIT_UINT8 Field::GetNum(void) const
+{
+    auto p = profile;
+    if ((p == NULL) || (profileIndex >= p->numFields))
+        return FIT_FIELD_NUM_INVALID;
+    return p->fields[profileIndex].num;
+}
+```

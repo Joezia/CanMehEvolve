@@ -1,0 +1,20 @@
+I moved the one-time table construction into a local static object's constructor, so the hot lookup path contains only the guard check and the array load instead of the whole initialization loop. This reduces instruction-cache pressure and keeps the common case branch out of the main code stream.
+
+```cpp
+const Profile::MESG* Profile::GetMesg(const FIT_UINT16 num)
+{
+    struct Table
+    {
+        const Profile::MESG* p[65536];
+        Table() : p{}
+        {
+            for (int i = static_cast<int>(Profile::MESGS) - 1; i >= 0; --i)
+            {
+                p[Profile::mesgs[i].num] = &Profile::mesgs[i];
+            }
+        }
+    };
+    static const Table t;
+    return t.p[num];
+}
+```

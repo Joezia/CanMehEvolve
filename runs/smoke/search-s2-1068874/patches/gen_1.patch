@@ -1,0 +1,129 @@
+--- a/src/fit_field_base.cpp
++++ b/src/fit_field_base.cpp
+@@ -16,6 +16,8 @@
+ #include "fit_field_base.hpp"
+ #include "fit_mesg.hpp"
+ #include "fit_unicode.hpp"
++#include <cstring>
++#include <algorithm>
+ 
+ namespace fit
+ {
+@@ -1005,75 +1007,66 @@
+     values[idx + i] = 0; // null terminate
+ }
+ 
++
+ FIT_BOOL FieldBase::Read(const void *data, const FIT_UINT8 size)
+ {
+-    FIT_UINT8 bytesLeft = size;
+-    FIT_UINT8 typeSize = baseTypeSizes[GetType() & FIT_BASE_TYPE_NUM_MASK];
+-    FIT_BYTE *byteData = (FIT_BYTE *) data;
++    FIT_UINT8 typeIdx = GetType() & FIT_BASE_TYPE_NUM_MASK;
++    FIT_UINT8 typeSize = baseTypeSizes[typeIdx];
++    const FIT_BYTE* byteData = static_cast<const FIT_BYTE*>(data);
+ 
+     values.clear();
+ 
+-    switch (GetType())
++    if (GetType() == FIT_BASE_TYPE_STRING)
+     {
+-        case FIT_BASE_TYPE_STRING:
++        // Fast string handling: check for all-zero input first
++        if (std::all_of(byteData, byteData + size, [](FIT_BYTE b) { return b == 0; }))
+         {
+-            FIT_BOOL hasData = FIT_FALSE;
+-            FIT_UINT8 stringPos = 0;
+-            FIT_UINT8 index = 0;
+-
+-            // Check if the string is empty
+-            while (index < bytesLeft)
+-            {
+-                if (byteData[index] != 0)
+-                {
+-                    hasData = FIT_TRUE;
+-                    break;
+-                }
+-                index++;
+-            }
+-
+-            if (!hasData)
+-                break;
++            return FIT_TRUE;
++        }
+ 
+-            stringIndexes.push_back(stringPos);
++        // Copy entire buffer and find null terminators for stringIndexes
++        values.assign(byteData, byteData + size);
++        
++        // Ensure null-termination
++        if (!values.empty() && values.back() != 0)
++        {
++            values.push_back(0);
++        }
+ 
+-            while (bytesLeft-- > 0)
++        // Build stringIndexes by scanning for nulls in original data
++        stringIndexes.clear();
++        FIT_UINT8 pos = 0;
++        for (FIT_UINT8 i = 0; i < size; ++i)
++        {
++            if (byteData[i] == 0)
+             {
+-                FIT_BYTE byte = *byteData++;
+-                values.push_back(byte);
+-                stringPos++;
+-
+-                if ( ( byte == 0 ) && ( stringPos + 1 < size ) )
+-                {
+-                    stringIndexes.push_back(stringPos);
+-                }
++                stringIndexes.push_back(pos);
++                pos = i + 1;
+             }
++        }
++        stringIndexes.push_back(pos);
++    }
++    else
++    {
++        // Skip leading invalid values
++        FIT_UINT8 bytesLeft = size;
++        const FIT_BYTE* invalidPtr = baseTypeInvalids[typeIdx];
+ 
+-            // Null terminate if not already null terminated
+-            if ( values.back() != 0 )
++        while (bytesLeft >= typeSize)
++        {
++            if (std::memcmp(byteData, invalidPtr, typeSize) != 0)
+             {
+-                values.push_back(0);
++                break;
+             }
++            byteData += typeSize;
++            bytesLeft -= typeSize;
+         }
+-            break;
+ 
+-        default:
++        // If there's remaining valid data, copy it
++        if (bytesLeft > 0)
+         {
+-            int bytes = bytesLeft;
+-            FIT_BYTE *point = byteData;
+-
+-            while (bytes > 0)
+-            {
+-                if (memcmp(point, baseTypeInvalids[GetType() & FIT_BASE_TYPE_NUM_MASK], typeSize) != 0)
+-                {
+-                    values.insert(values.end(), byteData, byteData + bytesLeft);
+-                    break;
+-                }
+-                point += typeSize;
+-                bytes -= typeSize;
+-            }
++            values.insert(values.end(), byteData, byteData + bytesLeft);
+         }
+-            break;
+     }
+ 
+     return FIT_TRUE;

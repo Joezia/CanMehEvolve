@@ -1,0 +1,15 @@
+I hoisted the `profileIndex` and `p->fields` loads above the checks so the two independent loads from the profile can overlap and the fields pointer is ready before the branch. This shortens the dependency chain while preserving the exact return values.
+
+```cpp
+FIT_UINT8 Field::GetNum(void) const
+{
+    const auto *p = profile;
+    const auto index = profileIndex;
+    if (p == NULL)
+        return FIT_FIELD_NUM_INVALID;
+    const auto *fields = p->fields;
+    if (index >= p->numFields)
+        return FIT_FIELD_NUM_INVALID;
+    return fields[index].num;
+}
+```

@@ -1,0 +1,84 @@
+const Profile::MESG* Profile::GetMesg(const FIT_UINT16 num)
+{
+    static const MESG* low[1024] = {};
+    static FIT_UINT16 highNums[MESGS ? MESGS : 1];
+    static const MESG* highPtrs[MESGS ? MESGS : 1];
+    static int highCount = 0;
+    static bool initialized = false;
+
+    if (!initialized)
+    {
+        for (int i = 0; i < static_cast<int>(MESGS); ++i)
+        {
+            const FIT_UINT16 n = mesgs[i].num;
+            if (n < 1024)
+            {
+                if (!low[n])
+                {
+                    low[n] = &mesgs[i];
+                }
+            }
+            else
+            {
+                bool duplicate = false;
+                for (int j = 0; j < highCount; ++j)
+                {
+                    if (highNums[j] == n)
+                    {
+                        duplicate = true;
+                        break;
+                    }
+                }
+                if (!duplicate)
+                {
+                    highNums[highCount] = n;
+                    highPtrs[highCount] = &mesgs[i];
+                    ++highCount;
+                }
+            }
+        }
+
+        for (int i = 1; i < highCount; ++i)
+        {
+            const FIT_UINT16 keyNum = highNums[i];
+            const MESG* keyPtr = highPtrs[i];
+            int j = i - 1;
+            while (j >= 0 && highNums[j] > keyNum)
+            {
+                highNums[j + 1] = highNums[j];
+                highPtrs[j + 1] = highPtrs[j];
+                --j;
+            }
+            highNums[j + 1] = keyNum;
+            highPtrs[j + 1] = keyPtr;
+        }
+
+        initialized = true;
+    }
+
+    if (num < 1024)
+    {
+        return low[num];
+    }
+
+    int lo = 0;
+    int hi = highCount - 1;
+    while (lo <= hi)
+    {
+        const int mid = (lo + hi) >> 1;
+        const FIT_UINT16 midNum = highNums[mid];
+        if (midNum == num)
+        {
+            return highPtrs[mid];
+        }
+        if (midNum < num)
+        {
+            lo = mid + 1;
+        }
+        else
+        {
+            hi = mid - 1;
+        }
+    }
+    return nullptr;
+}

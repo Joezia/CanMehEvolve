@@ -1,0 +1,7 @@
+The constructor is already a minimal forwarding initializer with no body, so there is nothing to remove; keeping it identical preserves exact behavior while letting the compiler inline the empty body fully.
+
+```cpp
+    AntRxMesg(const Mesg &mesg) : Mesg(mesg)
+    {
+    }
+```

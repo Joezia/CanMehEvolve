@@ -1,0 +1,35 @@
+FIT_UINT16 Mesg::GetActiveSubFieldIndexByFieldIndex(const FIT_UINT16 fieldIndex) const
+{
+    if ((int) fieldIndex >= GetNumFields())
+        return FIT_SUBFIELD_INDEX_MAIN_FIELD;
+
+    const Field& field = fields[fieldIndex];
+    const FIT_UINT16 numSubFields = field.GetNumSubFields();
+    if (numSubFields == 0)
+        return FIT_SUBFIELD_INDEX_MAIN_FIELD;
+
+    for (FIT_UINT16 i = 0; i < numSubFields; i++)
+    {
+        const Profile::SUBFIELD* subField = field.GetSubField(i);
+
+        if (subField != FIT_NULL)
+        {
+            const FIT_UINT8 numMaps = subField->numMaps;
+            for (FIT_UINT8 j = 0; j < numMaps; j++)
+            {
+                const auto& map = subField->maps[j];
+                const Field* refField = GetField(map.refFieldNum);
+
+                if (refField != FIT_NULL)
+                {
+                    FIT_FLOAT64 refValue = refField->GetFLOAT64Value(0, FIT_SUBFIELD_INDEX_MAIN_FIELD);
+                    refValue += ((refValue >= 0.0) ? (0.5) : (-0.5));
+                    if ((FIT_SINT32)refValue == map.refFieldValue)
+                        return i;
+                }
+            }
+        }
+    }
+
+    return FIT_SUBFIELD_INDEX_MAIN_FIELD;
+}

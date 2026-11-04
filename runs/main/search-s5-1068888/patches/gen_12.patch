@@ -1,0 +1,100 @@
+--- a/src/fit_chrono_shot_session_mesg.hpp
++++ b/src/fit_chrono_shot_session_mesg.hpp
+@@ -275,12 +275,7 @@
+     FIT_BOOL IsStandardDeviationValid() const
+     {
+         const Field* field = GetField(6);
+-        if( FIT_NULL == field )
+-        {
+-            return FIT_FALSE;
+-        }
+-
+-        return field->IsValueValid();
++        return (field != FIT_NULL) ? field->IsValueValid() : FIT_FALSE;
+     }
+ 
+     ///////////////////////////////////////////////////////////////////////
+--- a/src/fit_field.cpp
++++ b/src/fit_field.cpp
+@@ -15,6 +15,8 @@
+ #include "fit_field.hpp"
+ #include "fit_mesg.hpp"
+ #include "fit_unicode.hpp"
++#include <utility>
++#include <cstddef>
+ 
+ namespace fit
+ {
+@@ -27,9 +29,10 @@
+ {
+ }
+ 
++
+ Field::Field(const Field &field)
+     : FieldBase(field)
+-    , profile(field.profile)
++    , profile(std::move(field.profile))
+     , profileIndex(field.profileIndex)
+     , type(field.type)
+     , isFieldExpanded(field.isFieldExpanded)
+@@ -97,12 +100,13 @@
+     return profile->fields[profileIndex].num;
+ }
+ 
++
+ FIT_UINT8 Field::GetType() const
+ {
+-    if ( type != FIT_UINT8_INVALID )
++    if (type != FIT_UINT8_INVALID)
+         return type;
+ 
+-    if ((profile == NULL) || (profileIndex >= profile->numFields))
++    if (profile == nullptr || profileIndex >= profile->numFields)
+         return FIT_UINT8_INVALID;
+ 
+     return profile->fields[profileIndex].type;
+--- a/src/fit_profile.cpp
++++ b/src/fit_profile.cpp
+@@ -11,6 +11,9 @@
+ 
+ 
+ #include "fit_profile.hpp"
++#include <algorithm>
++#include <array>
++#include <cstddef>
+ 
+ namespace fit
+ {
+@@ -3055,15 +3058,28 @@
+    { NULL, "pad", FIT_MESG_NUM_PAD, 0 },
+ };
+ 
++
++
+ const Profile::MESG* Profile::GetMesg(const FIT_UINT16 num)
+ {
+-    for (int i = 0; i < MESGS; i++)
+-    {
+-        if (mesgs[i].num == num)
++    static std::array<const Profile::MESG*, 256> cache{};
++
++    if (num < cache.size()) {
++        if (const Profile::MESG* cached = cache[num]) {
++            return cached;
++        }
++    }
++
++    for (int i = 0; i < MESGS; i++) {
++        if (mesgs[i].num == num) {
++            if (num < cache.size()) {
++                cache[num] = &mesgs[i];
++            }
+             return &mesgs[i];
++        }
+     }
+ 
+-    return NULL;
++    return nullptr;
+ }
+ 
+ const Profile::MESG* Profile::GetMesg(const std::string& name)

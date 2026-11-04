@@ -1,0 +1,18 @@
+```cpp
+#include <algorithm>
+#include <cstddef>
+
+const Profile::MESG* Profile::GetMesg(const FIT_UINT16 num)
+{
+    // Profile::MESG array is sorted by num in release 21.201.0 (verified by inspecting profile data initialization)
+    // Binary search reduces lookup from O(n) to O(log n), significantly faster for ~150 message types
+    const Profile::MESG* first = mesgs;
+    const Profile::MESG* last = mesgs + MESGS;
+    const Profile::MESG* it = std::lower_bound(first, last, num,
+        [](const Profile::MESG& mesg, FIT_UINT16 value) { return mesg.num < value; });
+    
+    if (it != last && it->num == num)
+        return it;
+    return NULL;
+}
+```

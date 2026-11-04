@@ -1,0 +1,16 @@
+I inlined the duplicate-field scan directly over `fields` and cached the field number, avoiding the `GetField` call and its pointer return. This removes per-field call overhead while preserving the exact duplicate-check behavior.
+
+```cpp
+void Mesg::AddField(const Field& field)
+{
+    const FIT_UINT8 fieldNum = field.GetNum();
+
+    for (Field& existing : fields)
+    {
+        if (existing.GetNum() == fieldNum)
+            return;
+    }
+
+    fields.push_back(field);
+}
+```

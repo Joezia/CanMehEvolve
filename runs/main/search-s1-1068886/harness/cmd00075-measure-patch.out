@@ -1,0 +1,1 @@
+{"error":"/home/z/zhouzia/Workspace/CanMehEvolve/build/work-1068886/tree/src/fit_profile.cpp: In lambda function:\n/home/z/zhouzia/Workspace/CanMehEvolve/build/work-1068886/tree/src/fit_profile.cpp:3067:14: error: ‘iota’ is not a member of ‘std’\n 3067 |         std::iota(indices.begin(), indices.end(), 0);\n      |              ^~~~\n","ok":false,"rebuilt":6,"stage":"compile"}

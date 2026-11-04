@@ -1,0 +1,6 @@
+{
+ "error": "In file included from /home/z/zhouzia/Workspace/CanMehEvolve/build/work-1068888/tree/src/fit_dive_summary_mesg_listener.hpp:16,\n                 from /home/z/zhouzia/Workspace/CanMehEvolve/build/work-1068888/tree/src/fit_mesg_broadcaster.hpp:131,\n                 from /home/z/zhouzia/Workspace/CanMehEvolve/build/work-1068888/tree/src/fit_buffered_mesg_broadcaster.hpp:17,\n                 from /home/z/zhouzia/Workspace/CanMehEvolve/build/work-1068888/tree/src/fit_buffered_mesg_broadcaster.cpp:14:\n/home/z/zhouzia/Workspace/CanMehEvolve/build/work-1068888/tree/src/fit_dive_summary_mesg.hpp: In member function ‘FIT_UINT32 fit::DiveSummaryMesg::GetSurfaceInterval() const’:\n/home/z/zhouzia/Workspace/CanMehEvolve/build/work-1068888/tree/src/fit_dive_summary_mesg.hpp:248:35: error: ‘GetFieldPtr’ was not declared in this scope; did you mean ‘GetField’?\n  248 |         const FIT_UINT32* value = GetFieldPtr(4, 0, FIT_SUBFIELD_INDEX_MAIN_FIELD);\n      |                                   ^~~~~~~~~~~\n      |                                   GetField\n",
+ "ok": false,
+ "rebuilt": 6,
+ "stage": "compile"
+}

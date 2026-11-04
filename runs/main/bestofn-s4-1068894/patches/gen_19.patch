@@ -1,0 +1,25 @@
+--- a/src/fit_mesg_definition.cpp
++++ b/src/fit_mesg_definition.cpp
+@@ -13,6 +13,7 @@
+ #include <ostream>
+ #include "fit_mesg_definition.hpp"
+ #include "fit_developer_field_definition.hpp"
++#include <vector>
+ 
+ namespace fit
+ {
+@@ -105,12 +106,10 @@
+     return FIT_NULL;
+ }
+ 
++
+ FieldDefinition* MesgDefinition::GetFieldByIndex(const FIT_UINT16 index)
+ {
+-    if (index < fields.size())
+-        return &(fields[index]);
+-
+-    return FIT_NULL;
++    return (index < fields.size()) ? &fields[index] : FIT_NULL;
+ }
+ 
+ DeveloperFieldDefinition* MesgDefinition::GetDevFieldByIndex(const FIT_UINT16 index)

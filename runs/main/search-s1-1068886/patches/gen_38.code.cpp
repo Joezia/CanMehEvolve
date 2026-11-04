@@ -1,0 +1,7 @@
+
+void SetSubSport(FIT_SUB_SPORT subSport)
+{
+    fields[39].value.enumValue = static_cast<uint8_t>(subSport);
+    fields[39].isDefined = true;
+    fields[39].numValues = 1;
+}

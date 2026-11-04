@@ -1,0 +1,148 @@
+Hoisted repeated `GetType()` calls, replaced per-byte `push_back` with `vector::assign`, and added fast paths for common base type sizes to avoid `memcmp` calls.
+
+```cpp
+FIT_BOOL FieldBase::Read(const void *data, const FIT_UINT8 size)
+{
+    const FIT_UINT8 type = GetType();
+    const FIT_UINT8 typeSize = baseTypeSizes[type & FIT_BASE_TYPE_NUM_MASK];
+    FIT_BYTE *byteData = (FIT_BYTE *) data;
+
+    values.clear();
+
+    if (type == FIT_BASE_TYPE_STRING)
+    {
+        FIT_BOOL hasData = FIT_FALSE;
+        for (FIT_UINT8 i = 0; i < size; ++i)
+        {
+            if (byteData[i] != 0)
+            {
+                hasData = FIT_TRUE;
+                break;
+            }
+        }
+
+        if (!hasData)
+            return FIT_TRUE;
+
+        stringIndexes.push_back(0);
+        values.assign(byteData, byteData + size);
+
+        for (FIT_UINT8 i = 0; i < size; ++i)
+        {
+            if (byteData[i] == 0 && (i + 2 < size))
+            {
+                stringIndexes.push_back(i + 1);
+            }
+        }
+
+        if (values.back() != 0)
+        {
+            values.push_back(0);
+        }
+    }
+    else
+    {
+        if (size > 0)
+        {
+            const FIT_BYTE *invalid = baseTypeInvalids[type & FIT_BASE_TYPE_NUM_MASK];
+            int bytes = size;
+            const FIT_BYTE *point = byteData;
+            bool allInvalid = true;
+
+            switch (typeSize)
+            {
+                case 1:
+                {
+                    const FIT_BYTE inv = invalid[0];
+                    while (bytes > 0)
+                    {
+                        if (*point != inv)
+                        {
+                            allInvalid = false;
+                            break;
+                        }
+                        ++point;
+                        --bytes;
+                    }
+                    break;
+                }
+                case 2:
+                {
+                    FIT_UINT16 inv;
+                    memcpy(&inv, invalid, 2);
+                    while (bytes > 0)
+                    {
+                        FIT_UINT16 val;
+                        memcpy(&val, point, 2);
+                        if (val != inv)
+                        {
+                            allInvalid = false;
+                            break;
+                        }
+                        point += 2;
+                        bytes -= 2;
+                    }
+                    break;
+                }
+                case 4:
+                {
+                    FIT_UINT32 inv;
+                    memcpy(&inv, invalid, 4);
+                    while (bytes > 0)
+                    {
+                        FIT_UINT32 val;
+                        memcpy(&val, point, 4);
+                        if (val != inv)
+                        {
+                            allInvalid = false;
+                            break;
+                        }
+                        point += 4;
+                        bytes -= 4;
+                    }
+                    break;
+                }
+                case 8:
+                {
+                    FIT_UINT64 inv;
+                    memcpy(&inv, invalid, 8);
+                    while (bytes > 0)
+                    {
+                        FIT_UINT64 val;
+                        memcpy(&val, point, 8);
+                        if (val != inv)
+                        {
+                            allInvalid = false;
+                            break;
+                        }
+                        point += 8;
+                        bytes -= 8;
+                    }
+                    break;
+                }
+                default:
+                {
+                    while (bytes > 0)
+                    {
+                        if (memcmp(point, invalid, typeSize) != 0)
+                        {
+                            allInvalid = false;
+                            break;
+                        }
+                        point += typeSize;
+                        bytes -= typeSize;
+                    }
+                    break;
+                }
+            }
+
+            if (!allInvalid)
+            {
+                values.assign(byteData, byteData + size);
+            }
+        }
+    }
+
+    return FIT_TRUE;
+}
+```

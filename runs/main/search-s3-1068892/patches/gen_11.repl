@@ -1,0 +1,8 @@
+```cpp
+#include <limits>
+
+FIT_FLOAT32 GetRepeatDistance(void) const
+{
+    return GetFieldFLOAT32Value(4, 0, 0x00B5U); // 0x00B5 is compile-time constant for WORKOUT_STEP_MESG_TARGET_VALUE_FIELD_REPEAT_DISTANCE
+}
+```

@@ -1,0 +1,255 @@
+[ 12%] Creating directories for 'nlohmann-json'
+[ 12%] Creating directories for 'cli11'
+[ 25%] Performing download step (download and verify) for 'cli11'
+[ 25%] Performing download step (download, verify and extract) for 'nlohmann-json'
+-- verifying file...
+       file='/home/z/zhouzia/.cmake-downloads/CanMehEvolve/CLI11.hpp'
+-- verifying file...
+       file='/home/z/zhouzia/.cmake-downloads/CanMehEvolve/v3.11.3.tar.gz'
+-- File already exists and hash match (skip download):
+  file='/home/z/zhouzia/.cmake-downloads/CanMehEvolve/CLI11.hpp'
+  SHA256='3935283e4c9db7089ed304476dbab2805c9311c41b125a55e92da4659df0d660'
+-- File already exists and hash match (skip download):
+  file='/home/z/zhouzia/.cmake-downloads/CanMehEvolve/v3.11.3.tar.gz'
+  SHA256='0d8ef5af7f9794e3263480193c491549b2ba6cc74bb018906202ada498a79406'
+[ 31%] No update step for 'cli11'
+-- extracting...
+     src='/home/z/zhouzia/.cmake-downloads/CanMehEvolve/v3.11.3.tar.gz'
+     dst='/home/z/zhouzia/.clean-build-check-1074201/build/nlohmann-json-prefix/src/nlohmann-json'
+-- extracting... [tar xfz]
+[ 37%] No patch step for 'cli11'
+[ 43%] No configure step for 'cli11'
+[ 50%] No build step for 'cli11'
+[ 50%] Performing install step for 'cli11'
+-- cli11 install command succeeded.  See also /home/z/zhouzia/.clean-build-check-1074201/build/cli11-prefix/src/cli11-stamp/cli11-install-*.log
+[ 56%] Completed 'cli11'
+[ 56%] Built target cli11
+-- extracting... [analysis]
+-- extracting... [rename]
+-- extracting... [clean up]
+-- extracting... done
+[ 62%] No update step for 'nlohmann-json'
+[ 68%] No patch step for 'nlohmann-json'
+[ 75%] No configure step for 'nlohmann-json'
+[ 75%] No build step for 'nlohmann-json'
+[ 81%] Performing install step for 'nlohmann-json'
+-- nlohmann-json install command succeeded.  See also /home/z/zhouzia/.clean-build-check-1074201/build/nlohmann-json-prefix/src/nlohmann-json-stamp/nlohmann-json-install-*.log
+[ 87%] Completed 'nlohmann-json'
+[ 87%] Built target nlohmann-json
+[ 93%] Building CXX object CMakeFiles/CanMehHarness.dir/src/Harness.cpp.o
+[100%] Linking CXX executable CanMehHarness
+[100%] Built target CanMehHarness
+[ 87%] Built target nlohmann-json
+[ 87%] Built target cli11
+[ 93%] Building CXX object CMakeFiles/CanMehCalibrate.dir/src/Calibrate.cpp.o
+[100%] Linking CXX executable CanMehCalibrate
+[100%] Built target CanMehCalibrate
+[ 27%] Creating directories for 'googlebenchmark'
+[ 63%] Built target nlohmann-json
+[ 68%] Built target cli11
+[ 72%] Performing download step (download, verify and extract) for 'googlebenchmark'
+-- verifying file...
+       file='/home/z/zhouzia/.cmake-downloads/CanMehEvolve/v1.9.1.tar.gz'
+-- File already exists and hash match (skip download):
+  file='/home/z/zhouzia/.cmake-downloads/CanMehEvolve/v1.9.1.tar.gz'
+  SHA256='32131c08ee31eeff2c8968d7e874f3cb648034377dfc32a4c377fa8796d84981'
+-- extracting...
+     src='/home/z/zhouzia/.cmake-downloads/CanMehEvolve/v1.9.1.tar.gz'
+     dst='/home/z/zhouzia/.clean-build-check-1074201/build/googlebenchmark-prefix/src/googlebenchmark'
+-- extracting... [tar xfz]
+-- extracting... [analysis]
+-- extracting... [rename]
+-- extracting... [clean up]
+-- extracting... done
+[ 77%] No update step for 'googlebenchmark'
+[ 81%] No patch step for 'googlebenchmark'
+[ 81%] Performing configure step for 'googlebenchmark'
+-- The CXX compiler identification is GNU 13.3.0
+-- Detecting CXX compiler ABI info
+-- Detecting CXX compiler ABI info - done
+-- Check for working CXX compiler: /usr/bin/c++ - skipped
+-- Detecting CXX compile features
+-- Detecting CXX compile features - done
+-- Failed to find LLVM FileCheck
+-- Found Git: /usr/bin/git (found version "2.43.0") 
+-- Google Benchmark version: v1.9.1, normalized to 1.9.1
+-- Looking for shm_open in rt
+-- Looking for shm_open in rt - found
+-- Performing Test HAVE_CXX_FLAG_WALL
+-- Performing Test HAVE_CXX_FLAG_WALL - Success
+-- Performing Test HAVE_CXX_FLAG_WEXTRA
+-- Performing Test HAVE_CXX_FLAG_WEXTRA - Success
+-- Performing Test HAVE_CXX_FLAG_WSHADOW
+-- Performing Test HAVE_CXX_FLAG_WSHADOW - Success
+-- Performing Test HAVE_CXX_FLAG_WFLOAT_EQUAL
+-- Performing Test HAVE_CXX_FLAG_WFLOAT_EQUAL - Success
+-- Performing Test HAVE_CXX_FLAG_WOLD_STYLE_CAST
+-- Performing Test HAVE_CXX_FLAG_WOLD_STYLE_CAST - Success
+-- Performing Test HAVE_CXX_FLAG_WCONVERSION
+-- Performing Test HAVE_CXX_FLAG_WCONVERSION - Success
+-- Performing Test HAVE_CXX_FLAG_WERROR
+-- Performing Test HAVE_CXX_FLAG_WERROR - Success
+-- Performing Test HAVE_CXX_FLAG_WSUGGEST_OVERRIDE
+-- Performing Test HAVE_CXX_FLAG_WSUGGEST_OVERRIDE - Success
+-- Performing Test HAVE_CXX_FLAG_PEDANTIC
+-- Performing Test HAVE_CXX_FLAG_PEDANTIC - Success
+-- Performing Test HAVE_CXX_FLAG_PEDANTIC_ERRORS
+-- Performing Test HAVE_CXX_FLAG_PEDANTIC_ERRORS - Success
+-- Performing Test HAVE_CXX_FLAG_WSHORTEN_64_TO_32
+-- Performing Test HAVE_CXX_FLAG_WSHORTEN_64_TO_32 - Failed
+-- Performing Test HAVE_CXX_FLAG_FSTRICT_ALIASING
+-- Performing Test HAVE_CXX_FLAG_FSTRICT_ALIASING - Success
+-- Performing Test HAVE_CXX_FLAG_WNO_DEPRECATED_DECLARATIONS
+-- Performing Test HAVE_CXX_FLAG_WNO_DEPRECATED_DECLARATIONS - Success
+-- Performing Test HAVE_CXX_FLAG_WNO_DEPRECATED
+-- Performing Test HAVE_CXX_FLAG_WNO_DEPRECATED - Success
+-- Performing Test HAVE_CXX_FLAG_WSTRICT_ALIASING
+-- Performing Test HAVE_CXX_FLAG_WSTRICT_ALIASING - Success
+-- Performing Test HAVE_CXX_FLAG_WD654
+-- Performing Test HAVE_CXX_FLAG_WD654 - Failed
+-- Performing Test HAVE_CXX_FLAG_WTHREAD_SAFETY
+-- Performing Test HAVE_CXX_FLAG_WTHREAD_SAFETY - Failed
+-- Performing Test HAVE_CXX_FLAG_COVERAGE
+-- Performing Test HAVE_CXX_FLAG_COVERAGE - Success
+-- Compiling and running to test HAVE_STD_REGEX
+-- Performing Test HAVE_STD_REGEX -- success
+-- Compiling and running to test HAVE_GNU_POSIX_REGEX
+-- Performing Test HAVE_GNU_POSIX_REGEX -- failed to compile
+-- Compiling and running to test HAVE_POSIX_REGEX
+-- Performing Test HAVE_POSIX_REGEX -- success
+-- Compiling and running to test HAVE_STEADY_CLOCK
+-- Performing Test HAVE_STEADY_CLOCK -- success
+-- Performing Test CMAKE_HAVE_LIBC_PTHREAD
+-- Performing Test CMAKE_HAVE_LIBC_PTHREAD - Success
+-- Found Threads: TRUE  
+-- Compiling and running to test HAVE_PTHREAD_AFFINITY
+-- Performing Test HAVE_PTHREAD_AFFINITY -- success
+-- Configuring done (46.0s)
+-- Generating done (0.2s)
+CMake Warning:
+  Manually-specified variables were not used by the project:
+
+    CMAKE_C_COMPILER
+
+
+-- Build files have been written to: /home/z/zhouzia/.clean-build-check-1074201/build/googlebenchmark-prefix/src/googlebenchmark-build
+[ 86%] Performing build step for 'googlebenchmark'
+[ 18%] Building CXX object src/CMakeFiles/benchmark.dir/benchmark_register.cc.o
+[ 18%] Building CXX object src/CMakeFiles/benchmark.dir/benchmark.cc.o
+[ 18%] Building CXX object src/CMakeFiles/benchmark.dir/benchmark_name.cc.o
+[ 18%] Building CXX object src/CMakeFiles/benchmark.dir/benchmark_api_internal.cc.o
+[ 22%] Building CXX object src/CMakeFiles/benchmark.dir/benchmark_runner.cc.o
+[ 27%] Building CXX object src/CMakeFiles/benchmark.dir/check.cc.o
+[ 31%] Building CXX object src/CMakeFiles/benchmark.dir/colorprint.cc.o
+[ 36%] Building CXX object src/CMakeFiles/benchmark.dir/commandlineflags.cc.o
+[ 40%] Building CXX object src/CMakeFiles/benchmark.dir/complexity.cc.o
+[ 45%] Building CXX object src/CMakeFiles/benchmark.dir/console_reporter.cc.o
+[ 50%] Building CXX object src/CMakeFiles/benchmark.dir/counter.cc.o
+[ 54%] Building CXX object src/CMakeFiles/benchmark.dir/csv_reporter.cc.o
+[ 59%] Building CXX object src/CMakeFiles/benchmark.dir/json_reporter.cc.o
+[ 63%] Building CXX object src/CMakeFiles/benchmark.dir/perf_counters.cc.o
+[ 68%] Building CXX object src/CMakeFiles/benchmark.dir/reporter.cc.o
+[ 72%] Building CXX object src/CMakeFiles/benchmark.dir/statistics.cc.o
+[ 77%] Building CXX object src/CMakeFiles/benchmark.dir/string_util.cc.o
+[ 81%] Building CXX object src/CMakeFiles/benchmark.dir/sysinfo.cc.o
+[ 86%] Building CXX object src/CMakeFiles/benchmark.dir/timers.cc.o
+[ 90%] Linking CXX static library libbenchmark.a
+[ 90%] Built target benchmark
+[ 95%] Building CXX object src/CMakeFiles/benchmark_main.dir/benchmark_main.cc.o
+[100%] Linking CXX static library libbenchmark_main.a
+[100%] Built target benchmark_main
+[ 90%] Performing install step for 'googlebenchmark'
+[ 90%] Built target benchmark
+[100%] Built target benchmark_main
+Install the project...
+-- Install configuration: "Release"
+-- Installing: /home/z/zhouzia/.clean-build-check-1074201/build/deps/lib/libbenchmark.a
+-- Installing: /home/z/zhouzia/.clean-build-check-1074201/build/deps/lib/libbenchmark_main.a
+-- Installing: /home/z/zhouzia/.clean-build-check-1074201/build/deps/include/benchmark
+-- Installing: /home/z/zhouzia/.clean-build-check-1074201/build/deps/include/benchmark/export.h
+-- Installing: /home/z/zhouzia/.clean-build-check-1074201/build/deps/include/benchmark/benchmark.h
+-- Installing: /home/z/zhouzia/.clean-build-check-1074201/build/deps/lib/cmake/benchmark/benchmarkConfig.cmake
+-- Installing: /home/z/zhouzia/.clean-build-check-1074201/build/deps/lib/cmake/benchmark/benchmarkConfigVersion.cmake
+-- Installing: /home/z/zhouzia/.clean-build-check-1074201/build/deps/lib/pkgconfig/benchmark.pc
+-- Installing: /home/z/zhouzia/.clean-build-check-1074201/build/deps/lib/pkgconfig/benchmark_main.pc
+-- Installing: /home/z/zhouzia/.clean-build-check-1074201/build/deps/lib/cmake/benchmark/benchmarkTargets.cmake
+-- Installing: /home/z/zhouzia/.clean-build-check-1074201/build/deps/lib/cmake/benchmark/benchmarkTargets-release.cmake
+-- Installing: /home/z/zhouzia/.clean-build-check-1074201/build/deps/share/doc/benchmark
+-- Installing: /home/z/zhouzia/.clean-build-check-1074201/build/deps/share/doc/benchmark/tools.md
+-- Installing: /home/z/zhouzia/.clean-build-check-1074201/build/deps/share/doc/benchmark/_config.yml
+-- Installing: /home/z/zhouzia/.clean-build-check-1074201/build/deps/share/doc/benchmark/random_interleaving.md
+-- Installing: /home/z/zhouzia/.clean-build-check-1074201/build/deps/share/doc/benchmark/user_guide.md
+-- Installing: /home/z/zhouzia/.clean-build-check-1074201/build/deps/share/doc/benchmark/AssemblyTests.md
+-- Installing: /home/z/zhouzia/.clean-build-check-1074201/build/deps/share/doc/benchmark/platform_specific_build_instructions.md
+-- Installing: /home/z/zhouzia/.clean-build-check-1074201/build/deps/share/doc/benchmark/perf_counters.md
+-- Installing: /home/z/zhouzia/.clean-build-check-1074201/build/deps/share/doc/benchmark/assets
+-- Installing: /home/z/zhouzia/.clean-build-check-1074201/build/deps/share/doc/benchmark/assets/images
+-- Installing: /home/z/zhouzia/.clean-build-check-1074201/build/deps/share/doc/benchmark/assets/images/icon_black.xcf
+-- Installing: /home/z/zhouzia/.clean-build-check-1074201/build/deps/share/doc/benchmark/assets/images/icon.xcf
+-- Installing: /home/z/zhouzia/.clean-build-check-1074201/build/deps/share/doc/benchmark/assets/images/icon.png
+-- Installing: /home/z/zhouzia/.clean-build-check-1074201/build/deps/share/doc/benchmark/assets/images/icon_black.png
+-- Installing: /home/z/zhouzia/.clean-build-check-1074201/build/deps/share/doc/benchmark/reducing_variance.md
+-- Installing: /home/z/zhouzia/.clean-build-check-1074201/build/deps/share/doc/benchmark/python_bindings.md
+-- Installing: /home/z/zhouzia/.clean-build-check-1074201/build/deps/share/doc/benchmark/releasing.md
+-- Installing: /home/z/zhouzia/.clean-build-check-1074201/build/deps/share/doc/benchmark/index.md
+-- Installing: /home/z/zhouzia/.clean-build-check-1074201/build/deps/share/doc/benchmark/dependencies.md
+[ 95%] Completed 'googlebenchmark'
+[ 95%] Built target googlebenchmark
+[ 95%] Building CXX object CMakeFiles/CanMehBench.dir/src/BenchmarkProcess.cpp.o
+[100%] Linking CXX executable CanMehBench
+[100%] Built target CanMehBench
+[ 86%] Built target googlebenchmark
+[ 95%] Built target cli11
+[ 95%] Built target nlohmann-json
+[100%] Building CXX object CMakeFiles/CanMehDecodeForSampler.dir/src/DecodeForSampler.cpp.o
+[100%] Linking CXX executable CanMehDecodeForSampler
+[100%] Built target CanMehDecodeForSampler
+[  3%] Creating directories for 'FITSDK'
+[  6%] Performing download step (git clone) for 'FITSDK'
+Cloning into 'FITSDK'...
+HEAD is now at 9b5a3d3 Garmin FIT SDK 21.201.0
+[  6%] Performing update step for 'FITSDK'
+[ 10%] No patch step for 'FITSDK'
+[ 13%] No configure step for 'FITSDK'
+[ 13%] No build step for 'FITSDK'
+[ 17%] No install step for 'FITSDK'
+[ 20%] Completed 'FITSDK'
+[ 20%] Built target FITSDK
+[ 27%] Building CXX object CMakeFiles/CanMehDataGenerator.dir/FITSDK-prefix/src/FITSDK/src/fit.cpp.o
+[ 31%] Building CXX object CMakeFiles/CanMehDataGenerator.dir/FITSDK-prefix/src/FITSDK/src/fit_accumulated_field.cpp.o
+[ 31%] Building CXX object CMakeFiles/CanMehDataGenerator.dir/src/DataGenerator.cpp.o
+[ 31%] Building CXX object CMakeFiles/CanMehDataGenerator.dir/FITSDK-prefix/src/FITSDK/src/fit_accumulator.cpp.o
+[ 34%] Building CXX object CMakeFiles/CanMehDataGenerator.dir/FITSDK-prefix/src/FITSDK/src/fit_buffer_encode.cpp.o
+[ 37%] Building CXX object CMakeFiles/CanMehDataGenerator.dir/FITSDK-prefix/src/FITSDK/src/fit_crc.cpp.o
+[ 41%] Building CXX object CMakeFiles/CanMehDataGenerator.dir/FITSDK-prefix/src/FITSDK/src/fit_buffered_mesg_broadcaster.cpp.o
+[ 44%] Building CXX object CMakeFiles/CanMehDataGenerator.dir/FITSDK-prefix/src/FITSDK/src/fit_buffered_record_mesg_broadcaster.cpp.o
+[ 44%] Building CXX object CMakeFiles/CanMehDataGenerator.dir/FITSDK-prefix/src/FITSDK/src/fit_date_time.cpp.o
+[ 48%] Building CXX object CMakeFiles/CanMehDataGenerator.dir/FITSDK-prefix/src/FITSDK/src/fit_decode.cpp.o
+[ 51%] Building CXX object CMakeFiles/CanMehDataGenerator.dir/FITSDK-prefix/src/FITSDK/src/fit_developer_field.cpp.o
+[ 55%] Building CXX object CMakeFiles/CanMehDataGenerator.dir/FITSDK-prefix/src/FITSDK/src/fit_encode.cpp.o
+[ 58%] Building CXX object CMakeFiles/CanMehDataGenerator.dir/FITSDK-prefix/src/FITSDK/src/fit_factory.cpp.o
+[ 62%] Building CXX object CMakeFiles/CanMehDataGenerator.dir/FITSDK-prefix/src/FITSDK/src/fit_developer_field_definition.cpp.o
+[ 62%] Building CXX object CMakeFiles/CanMehDataGenerator.dir/FITSDK-prefix/src/FITSDK/src/fit_developer_field_description.cpp.o
+[ 65%] Building CXX object CMakeFiles/CanMehDataGenerator.dir/FITSDK-prefix/src/FITSDK/src/fit_field.cpp.o
+[ 68%] Building CXX object CMakeFiles/CanMehDataGenerator.dir/FITSDK-prefix/src/FITSDK/src/fit_field_base.cpp.o
+[ 72%] Building CXX object CMakeFiles/CanMehDataGenerator.dir/FITSDK-prefix/src/FITSDK/src/fit_field_definition.cpp.o
+[ 75%] Building CXX object CMakeFiles/CanMehDataGenerator.dir/FITSDK-prefix/src/FITSDK/src/fit_mesg.cpp.o
+[ 79%] Building CXX object CMakeFiles/CanMehDataGenerator.dir/FITSDK-prefix/src/FITSDK/src/fit_profile.cpp.o
+[ 82%] Building CXX object CMakeFiles/CanMehDataGenerator.dir/FITSDK-prefix/src/FITSDK/src/fit_mesg_broadcaster.cpp.o
+[ 82%] Building CXX object CMakeFiles/CanMehDataGenerator.dir/FITSDK-prefix/src/FITSDK/src/fit_mesg_definition.cpp.o
+[ 86%] Building CXX object CMakeFiles/CanMehDataGenerator.dir/FITSDK-prefix/src/FITSDK/src/fit_protocol_validator.cpp.o
+[ 89%] Building CXX object CMakeFiles/CanMehDataGenerator.dir/FITSDK-prefix/src/FITSDK/src/fit_mesg_with_event_broadcaster.cpp.o
+[ 93%] Building CXX object CMakeFiles/CanMehDataGenerator.dir/FITSDK-prefix/src/FITSDK/src/fit_unicode.cpp.o
+[ 96%] Linking CXX executable CanMehDataGenerator
+[ 96%] Built target CanMehDataGenerator
+[100%] Generating data/long_run.fit
+long_run       403783 bytes   14400 records
+intervals      102887 bytes    3600 records
+treadmill       97448 bytes    5400 records
+ride           302889 bytes   10800 records
+[100%] Built target CanMehData
+[ 87%] Built target nlohmann-json
+[ 87%] Built target cli11
+[ 93%] Building CXX object CMakeFiles/CanMehSearch.dir/src/Search.cpp.o
+[100%] Linking CXX executable CanMehSearch
+[100%] Built target CanMehSearch

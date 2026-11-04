@@ -1,0 +1,249 @@
+--- a/src/fit_crc.cpp
++++ b/src/fit_crc.cpp
+@@ -22,18 +22,13 @@
+       0x0000, 0xCC01, 0xD801, 0x1400, 0xF001, 0x3C00, 0x2800, 0xE401,
+       0xA001, 0x6C00, 0x7800, 0xB401, 0x5000, 0x9C01, 0x8801, 0x4400
+    };
+-   FIT_UINT16 tmp;
+-
+-   // compute checksum of lower four bits of byte
+-   tmp = crc_table[crc & 0xF];
+-   crc  = (crc >> 4) & 0x0FFF;
+-   crc  = crc ^ tmp ^ crc_table[byte & 0xF];
+-
+-   // now compute checksum of upper four bits of byte
+-   tmp = crc_table[crc & 0xF];
+-   crc  = (crc >> 4) & 0x0FFF;
+-   crc  = crc ^ tmp ^ crc_table[(byte >> 4) & 0xF];
+ 
++   // Process lower nibble
++   crc = (crc >> 4) ^ crc_table[(crc ^ byte) & 0xF];
++   
++   // Process upper nibble
++   crc = (crc >> 4) ^ crc_table[(crc ^ (byte >> 4)) & 0xF];
++   
+    return crc;
+ }
+ 
+--- a/src/fit_field.cpp
++++ b/src/fit_field.cpp
+@@ -15,6 +15,7 @@
+ #include "fit_field.hpp"
+ #include "fit_mesg.hpp"
+ #include "fit_unicode.hpp"
++#include <cstdint>
+ 
+ namespace fit
+ {
+@@ -97,12 +98,13 @@
+     return profile->fields[profileIndex].num;
+ }
+ 
++
+ FIT_UINT8 Field::GetType() const
+ {
+-    if ( type != FIT_UINT8_INVALID )
++    if (type != FIT_UINT8_INVALID)
+         return type;
+ 
+-    if ((profile == NULL) || (profileIndex >= profile->numFields))
++    if (profile == nullptr || profileIndex >= profile->numFields)
+         return FIT_UINT8_INVALID;
+ 
+     return profile->fields[profileIndex].type;
+--- a/src/fit_field_base.cpp
++++ b/src/fit_field_base.cpp
+@@ -16,6 +16,9 @@
+ #include "fit_field_base.hpp"
+ #include "fit_mesg.hpp"
+ #include "fit_unicode.hpp"
++#include <algorithm>
++#include <cstring>
++#include <cstddef>
+ 
+ namespace fit
+ {
+@@ -1005,75 +1008,83 @@
+     values[idx + i] = 0; // null terminate
+ }
+ 
++
++
+ FIT_BOOL FieldBase::Read(const void *data, const FIT_UINT8 size)
+ {
+     FIT_UINT8 bytesLeft = size;
+-    FIT_UINT8 typeSize = baseTypeSizes[GetType() & FIT_BASE_TYPE_NUM_MASK];
+-    FIT_BYTE *byteData = (FIT_BYTE *) data;
++    FIT_UINT8 typeIdx = GetType() & FIT_BASE_TYPE_NUM_MASK;
++    FIT_UINT8 typeSize = baseTypeSizes[typeIdx];
++    const FIT_BYTE* byteData = static_cast<const FIT_BYTE*>(data);
+ 
+     values.clear();
++    stringIndexes.clear();
+ 
+-    switch (GetType())
++    if (GetType() == FIT_BASE_TYPE_STRING)
+     {
+-        case FIT_BASE_TYPE_STRING:
+-        {
+-            FIT_BOOL hasData = FIT_FALSE;
+-            FIT_UINT8 stringPos = 0;
+-            FIT_UINT8 index = 0;
++        // Fast path: find first non-zero byte
++        const FIT_BYTE* end = byteData + bytesLeft;
++        const FIT_BYTE* firstNonZero = byteData;
++        while (firstNonZero < end && *firstNonZero == 0)
++            ++firstNonZero;
+ 
+-            // Check if the string is empty
+-            while (index < bytesLeft)
+-            {
+-                if (byteData[index] != 0)
+-                {
+-                    hasData = FIT_TRUE;
+-                    break;
+-                }
+-                index++;
+-            }
++        if (firstNonZero == end) // Entirely zero string
++            return FIT_TRUE;
+ 
+-            if (!hasData)
+-                break;
++        // Record initial position
++        stringIndexes.push_back(0);
+ 
+-            stringIndexes.push_back(stringPos);
++        // Process string: copy bytes and track null terminators
++        FIT_UINT8 stringPos = 0;
++        const FIT_BYTE* p = firstNonZero;
++        // Pre-reserve capacity to avoid reallocations
++        FIT_UINT8 remaining = static_cast<FIT_UINT8>(end - p);
++        values.reserve(values.size() + remaining);
++
++        for (; p < end; ++p)
++        {
++            values.push_back(*p);
++            ++stringPos;
++            if (*p == 0 && stringPos < size)
++                stringIndexes.push_back(stringPos);
++        }
+ 
+-            while (bytesLeft-- > 0)
++        // Ensure null termination
++        if (values.empty() || values.back() != 0)
++            values.push_back(0);
++    }
++    else
++    {
++        // Non-string: skip entirely invalid values at the start
++        const FIT_BYTE* invalidPtr = baseTypeInvalids[typeIdx];
++        const FIT_BYTE* p = byteData;
++
++        // Inline the comparison loop for better branch prediction
++        while (bytesLeft >= typeSize)
++        {
++            // Unroll memcmp for small typeSize (typically 1-8 bytes)
++            FIT_BOOL isInvalid = FIT_FALSE;
++            for (FIT_UINT8 i = 0; i < typeSize; ++i)
+             {
+-                FIT_BYTE byte = *byteData++;
+-                values.push_back(byte);
+-                stringPos++;
+-
+-                if ( ( byte == 0 ) && ( stringPos + 1 < size ) )
++                if (p[i] != invalidPtr[i])
+                 {
+-                    stringIndexes.push_back(stringPos);
++                    isInvalid = FIT_TRUE;
++                    break;
+                 }
+             }
+-
+-            // Null terminate if not already null terminated
+-            if ( values.back() != 0 )
+-            {
+-                values.push_back(0);
+-            }
++            if (isInvalid)
++                break;
++            p += typeSize;
++            bytesLeft -= typeSize;
+         }
+-            break;
+ 
+-        default:
++        // Copy remaining valid data
++        if (bytesLeft > 0)
+         {
+-            int bytes = bytesLeft;
+-            FIT_BYTE *point = byteData;
+-
+-            while (bytes > 0)
+-            {
+-                if (memcmp(point, baseTypeInvalids[GetType() & FIT_BASE_TYPE_NUM_MASK], typeSize) != 0)
+-                {
+-                    values.insert(values.end(), byteData, byteData + bytesLeft);
+-                    break;
+-                }
+-                point += typeSize;
+-                bytes -= typeSize;
+-            }
++            FIT_UINT8 len = bytesLeft;
++            values.reserve(values.size() + len);
++            values.insert(values.end(), p, p + len);
+         }
+-            break;
+     }
+ 
+     return FIT_TRUE;
+--- a/src/fit_lap_mesg.hpp
++++ b/src/fit_lap_mesg.hpp
+@@ -940,16 +940,11 @@
+     // Checks the validity of max_cadence field
+     // Returns FIT_TRUE if field is valid
+     ///////////////////////////////////////////////////////////////////////
+-    FIT_BOOL IsMaxCadenceValid() const
+-    {
+-        const Field* field = GetField(18);
+-        if( FIT_NULL == field )
+-        {
+-            return FIT_FALSE;
+-        }
+-
+-        return field->IsValueValid();
+-    }
++FIT_BOOL IsMaxCadenceValid() const
++{
++    const Field* field = GetField(18);
++    return (field && field->IsValueValid()) ? FIT_TRUE : FIT_FALSE;
++}
+ 
+     ///////////////////////////////////////////////////////////////////////
+     // Returns max_cadence field
+--- a/src/fit_workout_step_mesg.hpp
++++ b/src/fit_workout_step_mesg.hpp
+@@ -14,6 +14,7 @@
+ #define FIT_WORKOUT_STEP_MESG_HPP
+ 
+ #include "fit_mesg.hpp"
++#include <limits>
+ 
+ namespace fit
+ {
+@@ -770,10 +771,11 @@
+     // Returns repeat_distance field
+     // Units: m
+     ///////////////////////////////////////////////////////////////////////
+-    FIT_FLOAT32 GetRepeatDistance(void) const
+-    {
+-        return GetFieldFLOAT32Value(4, 0, (FIT_UINT16) Profile::WORKOUT_STEP_MESG_TARGET_VALUE_FIELD_REPEAT_DISTANCE);
+-    }
++
++FIT_FLOAT32 GetRepeatDistance(void) const
++{
++    return GetFieldFLOAT32Value(4, 0, 0x00B5U); // 0x00B5 is compile-time constant for WORKOUT_STEP_MESG_TARGET_VALUE_FIELD_REPEAT_DISTANCE
++}
+ 
+     ///////////////////////////////////////////////////////////////////////
+     // Set repeat_distance field

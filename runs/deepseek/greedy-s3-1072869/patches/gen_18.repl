@@ -1,0 +1,15 @@
+Reordered the checks so the common profile-lookup path falls through, and reused the already-invalid `type` as the fallback return to remove a separate invalid return branch. This avoids a taken branch on the typical decode path where `type` is unset and the profile field exists.
+
+```cpp
+FIT_UINT8 Field::GetType() const
+{
+    if ((type == FIT_UINT8_INVALID) &&
+        (profile != NULL) &&
+        (profileIndex < profile->numFields))
+    {
+        return profile->fields[profileIndex].type;
+    }
+
+    return type;
+}
+```

@@ -1,0 +1,16 @@
+Looking at this function, it's a simple validation check that retrieves a field by ID and checks if it's valid. The performance bottleneck likely comes from the overhead of the `GetField` call and the virtual `IsValueValid` call.
+
+Since we need identical behavior but faster execution, I can optimize by:
+1. Caching the field pointer to avoid multiple lookups if this is called repeatedly
+2. Using early returns and simplifying the logic
+3. Potentially inlining the check more efficiently
+
+However, given the constraints and that this is already a simple function, the main optimization is to reduce branching and make the code more direct. The current code has two return points and a null check. We can make it more efficient by using a single expression.
+
+```cpp
+    FIT_BOOL IsIdValid() const
+    {
+        const Field* field = GetField(14);
+        return (field != FIT_NULL) && field->IsValueValid();
+    }
+```

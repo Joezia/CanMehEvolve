@@ -1,0 +1,20 @@
+    FIT_BOOL IsFavoriteValid() const
+    {
+        // Fast path: in the course point profile the favorite field (num 8)
+        // is the last field, so a direct indexed access avoids the linear
+        // field-number scan performed by GetField().
+        const Field* field = GetFieldByIndex(7);
+        if( FIT_NULL != field && 8 == field->GetNum() )
+        {
+            return field->IsValueValid();
+        }
+
+        // Fallback preserves exact behaviour for any other field layout.
+        field = GetField(8);
+        if( FIT_NULL == field )
+        {
+            return FIT_FALSE;
+        }
+
+        return field->IsValueValid();
+    }

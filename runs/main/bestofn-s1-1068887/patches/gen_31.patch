@@ -1,0 +1,40 @@
+--- a/src/fit_profile.cpp
++++ b/src/fit_profile.cpp
+@@ -11,6 +11,8 @@
+ 
+ 
+ #include "fit_profile.hpp"
++#include <algorithm>
++#include <array>
+ 
+ namespace fit
+ {
+@@ -3055,14 +3057,23 @@
+    { NULL, "pad", FIT_MESG_NUM_PAD, 0 },
+ };
+ 
++
+ const Profile::MESG* Profile::GetMesg(const FIT_UINT16 num)
+ {
+-    for (int i = 0; i < MESGS; i++)
+-    {
+-        if (mesgs[i].num == num)
+-            return &mesgs[i];
+-    }
++    // Use a precomputed lookup table for O(1) access since message numbers are small and sparse
++    // Assuming MESG numbers fit in a reasonable range (e.g., < 1024), we use direct indexing
++    static std::array<const Profile::MESG*, 1024> lookup_table = []{
++        std::array<const Profile::MESG*, 1024> table{};
++        for (int i = 0; i < MESGS; i++)
++        {
++            if (mesgs[i].num < 1024)
++                table[mesgs[i].num] = &mesgs[i];
++        }
++        return table;
++    }();
+ 
++    if (num < 1024)
++        return lookup_table[num];
+     return NULL;
+ }
+ 

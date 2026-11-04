@@ -1,0 +1,30 @@
+Replaced the byte-wise `memcmp` for integral source types with a direct value comparison (loading the invalid value via `memcpy`), while keeping the original bitwise check for floating-point types. This removes a potential `memcmp` call for the common integer cases without changing invalid-detection semantics.
+
+```include
+#include <cstring>
+#include <type_traits>
+```
+
+```cpp
+template <typename TTo, typename TFrom>
+TTo FieldBase::ConvertBaseType(const FIT_UINT8 fieldArrayIndex, const FIT_UINT8 toBaseType) const
+{
+    FIT_CONST_UINT8_PTR invalid = baseTypeInvalids[GetType() & FIT_BASE_TYPE_NUM_MASK];
+    TFrom value = GetValue<TFrom>(fieldArrayIndex);
+
+    if constexpr (std::is_integral<TFrom>::value)
+    {
+        TFrom invalidValue;
+        std::memcpy(&invalidValue, invalid, sizeof(TFrom));
+        if (value == invalidValue)
+            return *reinterpret_cast<const TTo*>(baseTypeInvalids[toBaseType & FIT_BASE_TYPE_NUM_MASK]);
+    }
+    else
+    {
+        if (std::memcmp(&value, invalid, sizeof(TFrom)) == 0)
+            return *reinterpret_cast<const TTo*>(baseTypeInvalids[toBaseType & FIT_BASE_TYPE_NUM_MASK]);
+    }
+
+    return static_cast<TTo>(value);
+}
+```

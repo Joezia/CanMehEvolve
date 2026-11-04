@@ -1,0 +1,9 @@
+watching job 1068829 for round 50 (/home/z/zhouzia/Workspace/CanMehEvolve/runs/phase0-1068829/trials/slower-10-percent/t050.json); started 2026-11-03T23:56:03+08:00
+round 50 complete for every pair; scancel 1068829 at 2026-11-03T23:59:41+08:00 ()
+null files_at_stop=51
+faster-1-percent files_at_stop=50
+faster-2-percent files_at_stop=50
+faster-5-percent files_at_stop=50
+faster-10-percent files_at_stop=50
+slower-10-percent files_at_stop=50
+A t051 file for the first pair may be half-written; it is an interrupted measurement and is listed as such by phase0_final.py.

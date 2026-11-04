@@ -1,0 +1,6 @@
+{
+ "error": "/home/z/zhouzia/Workspace/CanMehEvolve/build/work-1068895/tree/src/fit_field.cpp: In member function ‘virtual FIT_UINT8 fit::Field::GetType() const’:\n/home/z/zhouzia/Workspace/CanMehEvolve/build/work-1068895/tree/src/fit_field.cpp:113:62: error: invalid initialization of reference of type ‘const FIT_FIELD_DEF&’ from expression of type ‘const fit::Profile::FIELD’\n  113 |     const FIT_FIELD_DEF& field = profile->fields[profileIndex];\n      |                                  ~~~~~~~~~~~~~~~~~~~~~~~~~~~~^\n/home/z/zhouzia/Workspace/CanMehEvolve/build/work-1068895/tree/src/fit_field.cpp:114:18: error: ‘const struct FIT_FIELD_DEF’ has no member named ‘type’\n  114 |     return field.type;\n      |                  ^~~~\n",
+ "ok": false,
+ "rebuilt": 4,
+ "stage": "compile"
+}

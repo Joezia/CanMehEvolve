@@ -1,0 +1,10 @@
+This function is already nearly minimal; I kept the exact semantics but made the fast path explicit with a single combined predicate and a ternary so the compiler can use a conditional move instead of an unpredictable branch.
+
+```cpp
+FIT_UINT16 Field::GetNumSubFields(void) const
+{
+    if (profile == NULL || profileIndex >= profile->numFields)
+        return 0;
+    return profile->fields[profileIndex].numSubFields;
+}
+```

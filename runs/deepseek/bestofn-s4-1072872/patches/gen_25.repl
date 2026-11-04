@@ -1,0 +1,8 @@
+The getter is already a single member load with no computation, so there is nothing to remove; I keep it identical (any attribute like `noexcept` would change the mangled signature and break linking).
+
+```cpp
+FIT_UINT8 FieldDefinition::GetSize() const
+{
+    return size;
+}
+```

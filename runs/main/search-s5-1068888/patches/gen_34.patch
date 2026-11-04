@@ -1,0 +1,245 @@
+--- a/src/fit_field.cpp
++++ b/src/fit_field.cpp
+@@ -15,6 +15,8 @@
+ #include "fit_field.hpp"
+ #include "fit_mesg.hpp"
+ #include "fit_unicode.hpp"
++#include <utility>
++#include <cstddef>
+ 
+ namespace fit
+ {
+@@ -27,9 +29,10 @@
+ {
+ }
+ 
++
+ Field::Field(const Field &field)
+     : FieldBase(field)
+-    , profile(field.profile)
++    , profile(std::move(field.profile))
+     , profileIndex(field.profileIndex)
+     , type(field.type)
+     , isFieldExpanded(field.isFieldExpanded)
+@@ -97,12 +100,13 @@
+     return profile->fields[profileIndex].num;
+ }
+ 
++
+ FIT_UINT8 Field::GetType() const
+ {
+-    if ( type != FIT_UINT8_INVALID )
++    if (type != FIT_UINT8_INVALID)
+         return type;
+ 
+-    if ((profile == NULL) || (profileIndex >= profile->numFields))
++    if (profile == nullptr || profileIndex >= profile->numFields)
+         return FIT_UINT8_INVALID;
+ 
+     return profile->fields[profileIndex].type;
+--- a/src/fit_field_base.cpp
++++ b/src/fit_field_base.cpp
+@@ -16,6 +16,10 @@
+ #include "fit_field_base.hpp"
+ #include "fit_mesg.hpp"
+ #include "fit_unicode.hpp"
++#include <cstddef>
++#include <cstdint>
++#include <cstring>
++#include <algorithm>
+ 
+ namespace fit
+ {
+@@ -61,13 +65,14 @@
+     return NULL != subfield ? subfield->units : "";
+ }
+ 
++
+ FIT_FLOAT64 FieldBase::GetScale(const FIT_UINT16 subFieldIndex) const
+ {
+     if (subFieldIndex >= GetNumSubFields())
+         return GetScale();
+ 
+     auto subfield = GetSubField(subFieldIndex);
+-    return NULL != subfield ? subfield->scale : 1.0;
++    return (subfield != nullptr) ? subfield->scale : 1.0;
+ }
+ 
+ FIT_FLOAT64 FieldBase::GetOffset(const FIT_UINT16 subFieldIndex) const
+@@ -100,13 +105,15 @@
+     return (FIT_UINT8)values.size();
+ }
+ 
++
+ FIT_UINT8 FieldBase::GetNumValues(void) const
+ {
+     if (!IsValid())
+         return 0;
+ 
+-    if (GetType() != FIT_BASE_TYPE_STRING)
+-        return (FIT_UINT8)(values.size() / baseTypeSizes[GetType() & FIT_BASE_TYPE_NUM_MASK]);
++    const auto type = GetType();
++    if (type != FIT_BASE_TYPE_STRING)
++        return (FIT_UINT8)(values.size() / baseTypeSizes[type & FIT_BASE_TYPE_NUM_MASK]);
+ 
+     return (FIT_UINT8)stringIndexes.size();
+ }
+@@ -1005,77 +1012,64 @@
+     values[idx + i] = 0; // null terminate
+ }
+ 
++
+ FIT_BOOL FieldBase::Read(const void *data, const FIT_UINT8 size)
+ {
+     FIT_UINT8 bytesLeft = size;
+-    FIT_UINT8 typeSize = baseTypeSizes[GetType() & FIT_BASE_TYPE_NUM_MASK];
+-    FIT_BYTE *byteData = (FIT_BYTE *) data;
++    FIT_UINT8 typeIdx = GetType() & FIT_BASE_TYPE_NUM_MASK;
++    FIT_UINT8 typeSize = baseTypeSizes[typeIdx];
++    const FIT_BYTE* byteData = static_cast<const FIT_BYTE*>(data);
+ 
+     values.clear();
++    stringIndexes.clear();
+ 
+-    switch (GetType())
++    if (GetType() == FIT_BASE_TYPE_STRING)
++    {
++        // Find first non-zero byte to determine if string has data
++        const FIT_BYTE* end = byteData + bytesLeft;
++        const FIT_BYTE* firstNonZero = std::find_if(byteData, end, [](FIT_BYTE b) { return b != 0; });
++        
++        if (firstNonZero == end)
++            return FIT_TRUE; // Empty string, nothing to do
++        
++        stringIndexes.push_back(0);
++        
++        // Process bytes until we've exhausted bytesLeft or found null terminators
++        for (const FIT_BYTE* p = byteData; p < end; ++p)
++        {
++            values.push_back(*p);
++            
++            if (*p == 0 && (p - byteData + 1) < size)
++                stringIndexes.push_back(static_cast<FIT_UINT8>(p - byteData + 1));
++        }
++        
++        // Ensure null termination
++        if (values.empty() || values.back() != 0)
++            values.push_back(0);
++    }
++    else
+     {
+-        case FIT_BASE_TYPE_STRING:
++        // Skip all invalid values at the beginning
++        const FIT_BYTE* invalid = baseTypeInvalids[typeIdx];
++        const FIT_BYTE* p = byteData;
++        FIT_UINT8 remaining = bytesLeft;
++        
++        // Process in chunks for efficiency
++        while (remaining >= typeSize)
+         {
+-            FIT_BOOL hasData = FIT_FALSE;
+-            FIT_UINT8 stringPos = 0;
+-            FIT_UINT8 index = 0;
+-
+-            // Check if the string is empty
+-            while (index < bytesLeft)
+-            {
+-                if (byteData[index] != 0)
+-                {
+-                    hasData = FIT_TRUE;
+-                    break;
+-                }
+-                index++;
+-            }
+-
+-            if (!hasData)
++            if (memcmp(p, invalid, typeSize) != 0)
+                 break;
+-
+-            stringIndexes.push_back(stringPos);
+-
+-            while (bytesLeft-- > 0)
+-            {
+-                FIT_BYTE byte = *byteData++;
+-                values.push_back(byte);
+-                stringPos++;
+-
+-                if ( ( byte == 0 ) && ( stringPos + 1 < size ) )
+-                {
+-                    stringIndexes.push_back(stringPos);
+-                }
+-            }
+-
+-            // Null terminate if not already null terminated
+-            if ( values.back() != 0 )
+-            {
+-                values.push_back(0);
+-            }
++            p += typeSize;
++            remaining -= typeSize;
+         }
+-            break;
+-
+-        default:
++        
++        // If we found valid data, copy everything from first valid position to end
++        if (remaining > 0)
+         {
+-            int bytes = bytesLeft;
+-            FIT_BYTE *point = byteData;
+-
+-            while (bytes > 0)
+-            {
+-                if (memcmp(point, baseTypeInvalids[GetType() & FIT_BASE_TYPE_NUM_MASK], typeSize) != 0)
+-                {
+-                    values.insert(values.end(), byteData, byteData + bytesLeft);
+-                    break;
+-                }
+-                point += typeSize;
+-                bytes -= typeSize;
+-            }
++            values.insert(values.end(), p, byteData + bytesLeft);
+         }
+-            break;
+     }
+-
++    
+     return FIT_TRUE;
+ }
+ 
+--- a/src/fit_profile.cpp
++++ b/src/fit_profile.cpp
+@@ -11,6 +11,8 @@
+ 
+ 
+ #include "fit_profile.hpp"
++#include <algorithm>
++#include <array>
+ 
+ namespace fit
+ {
+@@ -3055,12 +3057,24 @@
+    { NULL, "pad", FIT_MESG_NUM_PAD, 0 },
+ };
+ 
++
+ const Profile::MESG* Profile::GetMesg(const FIT_UINT16 num)
+ {
++    static std::array<const Profile::MESG*, 256> cache{};
++
++    if (num < cache.size() && cache[num]) {
++        return cache[num];
++    }
++
+     for (int i = 0; i < MESGS; i++)
+     {
+         if (mesgs[i].num == num)
++        {
++            if (num < cache.size()) {
++                cache[num] = &mesgs[i];
++            }
+             return &mesgs[i];
++        }
+     }
+ 
+     return NULL;

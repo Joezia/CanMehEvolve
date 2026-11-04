@@ -1,0 +1,14 @@
+Looking at this function, it's a simple getter that retrieves a FLOAT32 field value. The performance bottleneck is likely in the `GetFieldFLOAT32Value` call overhead. Since this is a hot function called repeatedly during decoding, I can optimize by:
+
+1. Caching the field index (126) as a compile-time constant
+2. Using the more direct `GetField` approach with explicit type casting
+3. Avoiding any potential virtual function overhead or subfield index parameter overhead
+
+However, given the constraints that behavior must be identical and the benchmark compares checksums, I need to maintain the exact same semantics. The fastest replacement would be to inline the field access more directly while preserving the same return value.
+
+```cpp
+    FIT_FLOAT32 GetEnhancedAvgAltitude(void) const
+    {
+        return GetField<FIT_FLOAT32>(126, 0);
+    }
+```

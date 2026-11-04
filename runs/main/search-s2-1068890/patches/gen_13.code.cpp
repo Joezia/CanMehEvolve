@@ -1,0 +1,12 @@
+
+const Profile::MESG* Profile::GetMesg(const FIT_UINT16 num)
+{
+    static std::vector<const Profile::MESG*> index;
+    if (index.empty()) {
+        index.resize(65536, nullptr);
+        for (int i = 0; i < MESGS; i++) {
+            index[mesgs[i].num] = &mesgs[i];
+        }
+    }
+    return (num < 65536) ? index[num] : nullptr;
+}

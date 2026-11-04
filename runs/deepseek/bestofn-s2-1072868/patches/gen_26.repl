@@ -1,0 +1,8 @@
+The comparison is already a single `cmp/setne`; the only gain is to tell the compiler the valid case is the hot path so callers can lay out branches better, and to mark the getter `pure` so it can be hoisted/CSE'd across calls.
+
+```cpp
+FIT_BOOL Field::IsValid(void) const
+{
+    return __builtin_expect(profileIndex != FIT_UINT16_INVALID, 1);
+}
+```

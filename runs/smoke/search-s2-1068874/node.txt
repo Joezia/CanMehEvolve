@@ -1,0 +1,14 @@
+host=xcnc18
+job=1068874
+nodelist=xcnc18
+start=2026-11-03T21:36:08+08:00
+cxx=c++ (Ubuntu 13.3.0-6ubuntu2~24.04.1) 13.3.0
+commit=0bce2476eee226fd5dc28cf093a57c8ae0d94c1b
+mode=search seed=2 gens=2 deadline=1200
+TimeLimit=00:40:00
+StartTime=2026-11-03T21:36:08
+Partition=normal
+NodeList=xcnc18
+Features=xcnc|xcnd
+search_exit=0
+end=2026-11-03T21:41:35+08:00

@@ -1,0 +1,5 @@
+
+Field* Mesg::GetFieldByIndex(const FIT_UINT16 index)
+{
+    return (index < fields.size()) ? &fields[index] : FIT_NULL;
+}

@@ -1,0 +1,25 @@
+I replaced the linear scan with a lazily filled 65536-entry pointer cache, turning repeated message-number lookups into a single table read. The first lookup for each number still scans the original array, preserving first-match and NULL semantics exactly.
+
+```cpp
+const Profile::MESG* Profile::GetMesg(const FIT_UINT16 num)
+{
+    static const Profile::MESG* cache[65536] = {};
+    const Profile::MESG* mesg = cache[num];
+    if (mesg != NULL)
+    {
+        return mesg == reinterpret_cast<const Profile::MESG*>(1) ? NULL : mesg;
+    }
+
+    for (int i = 0; i < MESGS; i++)
+    {
+        if (mesgs[i].num == num)
+        {
+            cache[num] = &mesgs[i];
+            return &mesgs[i];
+        }
+    }
+
+    cache[num] = reinterpret_cast<const Profile::MESG*>(1);
+    return NULL;
+}
+```

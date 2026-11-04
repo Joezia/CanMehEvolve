@@ -1,0 +1,149 @@
+{
+  "113": {
+    "accepted": 0,
+    "attempts": 1,
+    "best_gain": 0.0,
+    "file": "src/fit_field.cpp",
+    "label": "Field::Field"
+  },
+  "115": {
+    "accepted": 0,
+    "attempts": 1,
+    "best_gain": 0.0,
+    "file": "src/fit_field.cpp",
+    "label": "Field::Field"
+  },
+  "122": {
+    "accepted": 0,
+    "attempts": 1,
+    "best_gain": 0.0,
+    "file": "src/fit_field.cpp",
+    "label": "Field::GetNum"
+  },
+  "123": {
+    "accepted": 0,
+    "attempts": 4,
+    "best_gain": 0.0,
+    "file": "src/fit_field.cpp",
+    "label": "Field::GetType"
+  },
+  "127": {
+    "accepted": 1,
+    "attempts": 1,
+    "best_gain": 0.0014064394907500333,
+    "file": "src/fit_field.cpp",
+    "label": "Field::GetNumComponents"
+  },
+  "128": {
+    "accepted": 0,
+    "attempts": 3,
+    "best_gain": 0.0,
+    "file": "src/fit_field.cpp",
+    "label": "Field::GetNumSubFields"
+  },
+  "131": {
+    "accepted": 0,
+    "attempts": 1,
+    "best_gain": 0.0,
+    "file": "src/fit_field.cpp",
+    "label": "Field::GetComponent"
+  },
+  "134": {
+    "accepted": 0,
+    "attempts": 3,
+    "best_gain": 0.0,
+    "file": "src/fit_field_base.cpp",
+    "label": "FieldBase::FieldBase"
+  },
+  "166": {
+    "accepted": 0,
+    "attempts": 1,
+    "best_gain": 0.0,
+    "file": "src/fit_field_base.cpp",
+    "label": "FieldBase::GetFLOAT64Value"
+  },
+  "196": {
+    "accepted": 0,
+    "attempts": 5,
+    "best_gain": 0.0,
+    "file": "src/fit_field_base.cpp",
+    "label": "FieldBase::GetValue"
+  },
+  "233": {
+    "accepted": 0,
+    "attempts": 1,
+    "best_gain": 0.0,
+    "file": "src/fit_mesg.cpp",
+    "label": "Mesg::GetFieldByIndex"
+  },
+  "2549": {
+    "accepted": 0,
+    "attempts": 1,
+    "best_gain": 0.0,
+    "file": "src/fit_lap_mesg.hpp",
+    "label": "GetRepetitionNum"
+  },
+  "26": {
+    "accepted": 0,
+    "attempts": 1,
+    "best_gain": 0.0,
+    "file": "src/fit_crc.cpp",
+    "label": "CRC::Get16"
+  },
+  "267": {
+    "accepted": 0,
+    "attempts": 1,
+    "best_gain": 0.0,
+    "file": "src/fit_mesg.cpp",
+    "label": "Mesg::SetFieldSINT16Value"
+  },
+  "3550": {
+    "accepted": 0,
+    "attempts": 2,
+    "best_gain": 0.0,
+    "file": "src/fit_sdm_profile_mesg.hpp",
+    "label": "IsOdometerRolloverValid"
+  },
+  "362": {
+    "accepted": 0,
+    "attempts": 1,
+    "best_gain": 0.0,
+    "file": "src/fit_mesg_broadcaster.cpp",
+    "label": "MesgBroadcaster::AddListener"
+  },
+  "4335": {
+    "accepted": 0,
+    "attempts": 1,
+    "best_gain": 0.0,
+    "file": "src/fit_session_mesg.hpp",
+    "label": "GetEnhancedAvgAltitude"
+  },
+  "441": {
+    "accepted": 0,
+    "attempts": 1,
+    "best_gain": 0.0,
+    "file": "src/fit_mesg_broadcaster.cpp",
+    "label": "MesgBroadcaster::RemoveListener"
+  },
+  "4937": {
+    "accepted": 0,
+    "attempts": 2,
+    "best_gain": 0.0,
+    "file": "src/fit_totals_mesg.hpp",
+    "label": "SetActiveTime"
+  },
+  "574": {
+    "accepted": 1,
+    "attempts": 6,
+    "best_gain": 0.02101719816320724,
+    "file": "src/fit_profile.cpp",
+    "label": "Profile::GetMesg"
+  },
+  "576": {
+    "accepted": 0,
+    "attempts": 2,
+    "best_gain": 0.0,
+    "file": "src/fit_profile.cpp",
+    "label": "Profile::GetFieldIndex"
+  }
+}

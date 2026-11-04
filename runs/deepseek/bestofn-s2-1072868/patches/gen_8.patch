@@ -1,0 +1,14 @@
+--- a/src/fit_mesg.cpp
++++ b/src/fit_mesg.cpp
+@@ -242,10 +242,7 @@
+ 
+ Field* Mesg::GetFieldByIndex(const FIT_UINT16 index)
+ {
+-    if (index < fields.size())
+-        return &fields[index];
+-
+-    return FIT_NULL;
++    return index < fields.size() ? fields.data() + index : FIT_NULL;
+ }
+ 
+ Field* Mesg::GetField(const FIT_UINT8 fieldNum)

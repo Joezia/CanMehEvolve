@@ -1,0 +1,8 @@
+The getter already compiles to a single load; there is no faster legal implementation, so I keep it identical (adding `noexcept`-free trivial body) to preserve exact behavior.
+
+```cpp
+FIT_UINT8 FieldDefinition::GetSize() const
+{
+    return size;
+}
+```

@@ -1,0 +1,62 @@
+date=2026-11-03T23:58:13+08:00
+host=xlogin2
+job=none
+commit=0bce2476eee226fd5dc28cf093a57c8ae0d94c1b dirty=2 changed files
+cxx=c++ (Ubuntu 13.3.0-6ubuntu2~24.04.1) 13.3.0
+rule: alpha=0.01 min_effect=0.02 processes=10 unstable_spread=0.25 statistic=exact sign-flip on sum of 10 log process ratios
+measurement: measure-pair --repeat 10 --repetitions 9 --no-decision, min_time per pair from runs/phase0-1068829/calibration.json
+min_time faster-1-percent 0.0609s ref_units=20000 cand_units=19801
+min_time faster-10-percent 0.0610s ref_units=20000 cand_units=18181
+min_time faster-2-percent 0.0614s ref_units=20000 cand_units=19607
+min_time faster-5-percent 0.0618s ref_units=20000 cand_units=19047
+min_time null 0.0611s ref_units=20000 cand_units=20000
+min_time slower-10-percent 0.0671s ref_units=20000 cand_units=22000
+min_time sweep-105 0.0649s ref_units=20000 cand_units=21000
+min_time sweep-110 0.0674s ref_units=20000 cand_units=22000
+min_time sweep-200 0.1218s ref_units=20000 cand_units=40000
+min_time sweep-400 0.2403s ref_units=20000 cand_units=80000
+sha256 runs/phase0-1068829/calibration.json: 90708fcf92fe704698029143a7280957aced74ade5fc43c1821d54034a4d84c4
+sha256 build/CanMehHarness: d308a584771ed50fff7eecaa8f68c2cc08f4d1d1db9983b227cad22371627135 mtime=2026-10-26 13:05:16.907036481 +0800
+sha256 build/CanMehCalibrate: 51606bc05c924f4086154f2cc67ea8bd09a7aa307aa64a2a848c88acf9d9db85 mtime=2026-10-26 13:05:35.206814308 +0800
+sha256 build/CanMehSearch: c3f796adf1d24485a39b5eaf0184434704d2c8fab972cd355c51ff316f59a2b6 mtime=2026-11-03 21:36:03.970168055 +0800
+sha256 build/CanMehBench: 2c19208a23ca2d83bb62684a09ceec156703c7a589a2440152285af71fcd2e79 mtime=2026-10-26 13:21:23.283334010 +0800
+sha256 src/Search.cpp: ce80cd7b4f9d2cc9b2636a7046f16f161546cbb946f96d74a07fca150c7d7d3d mtime=2026-11-03 21:35:33.086551884 +0800
+sha256 scripts/phase0.sbatch: 4a8f934def990050a4338479a84e06e1ee2a811b700233f3773c2b1af646cc15 mtime=2026-11-03 21:21:49.208701425 +0800
+sha256 scripts/phase0b.sbatch: 3b10a2297d5435d355e71afd6f66ff8223a6765de982697690c6629cc5507121 mtime=2026-11-03 23:57:39.240598551 +0800
+sha256 scripts/phase0_final.py: f29eb11de325c25aa450df178fd1c5518a998c14c4da00ef59f5b2f2436c3e1e mtime=2026-11-03 23:57:32.172685208 +0800
+sha256 build/calibration/broken-digest/libfit_cand.so: c4be40902e670acec408cc030f757fd2c571509978ac6b3ee9592fcf94b01df1
+sha256 build/calibration/broken-digest/libfit_ref.so: 9a9b3274c00aad84a091fc9497998b9b51216138f3b730614ed53ce8128cf260
+sha256 build/calibration/broken-digest/meta.json: 3bf5359533d3d2f0d7c1d6f38c922d12def05323ca25e28e7b9c3dd35e372e45
+sha256 build/calibration/faster-10-percent/libfit_cand.so: d9adba45daf047fd516e26a5f11ebe0d513acf5a0e31aede2bf241cff9848716
+sha256 build/calibration/faster-10-percent/libfit_ref.so: 5325c1cfff13a3b089c9e03bb4ab8c383406b2f23242be857675e32322b0c75b
+sha256 build/calibration/faster-10-percent/meta.json: 43318bf85505fe5fc815ebfbf3c5fe9b931d4cec4f3519bb0f957620bea0e47d
+sha256 build/calibration/faster-1-percent/libfit_cand.so: 148975d4fc8fc6572c1a32aa1d0bf9d3e5b7a0134dc74242117760666507e720
+sha256 build/calibration/faster-1-percent/libfit_ref.so: 9770063d6bd16049288918d3c17cf9a6bd65304c4b637458ff9dbe35f7c5dbab
+sha256 build/calibration/faster-1-percent/meta.json: 3a1ec15cad793b26d7e7f5cbd1486a7d8e729395ff5fdcc2b54248ce1a7b5bb9
+sha256 build/calibration/faster-2-percent/libfit_cand.so: 64824a577b0078a56fe636341bded2ca0dd82b11636e8f3b532d6bd20d44f138
+sha256 build/calibration/faster-2-percent/libfit_ref.so: 7ee97a2bc74a49dae6b50cc7b73f6208f060e314058f1d954842b15d53160514
+sha256 build/calibration/faster-2-percent/meta.json: 1892a872d9c3fc76148cca113388fa2f55f0d2a0bc4de092517e3b6bb137d122
+sha256 build/calibration/faster-5-percent/libfit_cand.so: ea4decf31e5e16351703d363fc0e53a1e35599ac2e27f0730e96dbcf852cb051
+sha256 build/calibration/faster-5-percent/libfit_ref.so: 9de89fe82678d61af00a3a532317da65b286035f8991596ec66bdd49db870650
+sha256 build/calibration/faster-5-percent/meta.json: 71219104b32bed455f98562b37abfbb1f7c1a6ca5ee3d481aeb9935e7dc21571
+sha256 build/calibration/null/libfit_cand.so: ca3fce0926b440497a29a5b5dd69b9da700dafa081dbef4227a1942e02c3fcc1
+sha256 build/calibration/null/libfit_ref.so: ed8ebd1d6baf7dfbc2397ef127b1109c0406e47eca0bb22e7e4b0eccb72f4cd4
+sha256 build/calibration/null/meta.json: cb01696c21eac54014f6ba463db60f083084fefeaf325fee2d2cad1386f4258f
+sha256 build/calibration/shared-install-name/libfit_cand.so: dbd591d33bd3094e34427f3542d31148a8da9f78ae8750fe6f684bf1e3fea04d
+sha256 build/calibration/shared-install-name/libfit_ref.so: 4bd2b7b493a190925a70f8274f743b090ec0e5b68ae5a5750cbf44aa2f4a6c79
+sha256 build/calibration/shared-install-name/meta.json: 00b0a338c1ed8a35eff5eb50d50c23606991e41959ca7ae7bd30239550e4e8e7
+sha256 build/calibration/slower-10-percent/libfit_cand.so: efad6586ca396edac7bbe9ea63ebe4f4b3945166e519604a78884612e6bfc6f8
+sha256 build/calibration/slower-10-percent/libfit_ref.so: aee449c4b080f3717572fa61f13793e9c2c6f3522048cef79d5168e4f748c877
+sha256 build/calibration/slower-10-percent/meta.json: 5a3b3a1a10bb4b9f77639061a109e29591a03d2ebf9e080f92f91af51b164c1b
+sha256 build/calibration/sweep-105/libfit_cand.so: 4fd407be57cc29f4ce81b9ca83d9b38f689184ceb61b411dfd5583d4b0334422
+sha256 build/calibration/sweep-105/libfit_ref.so: 86e1a89c69a15bd9282e78b194c0dbae9a61a7b6d80381e64f732eef1489b83e
+sha256 build/calibration/sweep-105/meta.json: 06ed4fe0b1e91e95c373c53dedf9b9a1a2de7841f50cedec5ad1941facc02381
+sha256 build/calibration/sweep-110/libfit_cand.so: 6893602dbf97b9cb1af55bec5f2c66e7c6a03d6f6015cb43142d336ea73c6b45
+sha256 build/calibration/sweep-110/libfit_ref.so: 346c5a595d350ad7801afc5031c9826b27c6e0d250c7df12304cf4ec26646bb3
+sha256 build/calibration/sweep-110/meta.json: 5a3b3a1a10bb4b9f77639061a109e29591a03d2ebf9e080f92f91af51b164c1b
+sha256 build/calibration/sweep-200/libfit_cand.so: 9ad603455a04b84f851948955fc8117b831294a67e0e6e169afd2b10a82d009a
+sha256 build/calibration/sweep-200/libfit_ref.so: bb9c7b5b0321b7240a62ce098ce21f6ca77cb1088567431a3acaac040d8ab30d
+sha256 build/calibration/sweep-200/meta.json: e73d772a00ce9ed4d20097429f84b222122bef3120b3f75ffc74e8aed2cde562
+sha256 build/calibration/sweep-400/libfit_cand.so: c0b8d9f46acf28f2adf958d1a426b9af1882a6f1888156430e28c737d01ce1a7
+sha256 build/calibration/sweep-400/libfit_ref.so: d7773c67032b3318f016910954fbbf84ff07304df8c48be00cf8582c25766476
+sha256 build/calibration/sweep-400/meta.json: 734419f1c68ffc7f2f184c80a16f56a99ae1802e774f8c940510a3232ab8afd8

@@ -1,0 +1,223 @@
+--- a/src/fit_field.cpp
++++ b/src/fit_field.cpp
+@@ -15,6 +15,8 @@
+ #include "fit_field.hpp"
+ #include "fit_mesg.hpp"
+ #include "fit_unicode.hpp"
++#include <cstdint>
++#include <cstddef>
+ 
+ namespace fit
+ {
+@@ -97,15 +99,12 @@
+     return profile->fields[profileIndex].num;
+ }
+ 
++
+ FIT_UINT8 Field::GetType() const
+ {
+-    if ( type != FIT_UINT8_INVALID )
+-        return type;
+-
+-    if ((profile == NULL) || (profileIndex >= profile->numFields))
+-        return FIT_UINT8_INVALID;
+-
+-    return profile->fields[profileIndex].type;
++    return (type != FIT_UINT8_INVALID) ? type : 
++           (profile && profileIndex < profile->numFields) ? profile->fields[profileIndex].type : 
++           FIT_UINT8_INVALID;
+ }
+ 
+ std::string Field::GetUnits() const
+@@ -136,11 +135,10 @@
+     return profile->fields[profileIndex].numComponents;
+ }
+ 
++
+ FIT_UINT16 Field::GetNumSubFields(void) const
+ {
+-    if ((profile == NULL) || (profileIndex >= profile->numFields))
+-        return 0;
+-    return profile->fields[profileIndex].numSubFields;
++    return (profile && profileIndex < profile->numFields) ? profile->fields[profileIndex].numSubFields : 0;
+ }
+ 
+ FIT_BOOL Field::GetIsExpanded(void) const
+--- a/src/fit_field_base.cpp
++++ b/src/fit_field_base.cpp
+@@ -16,6 +16,7 @@
+ #include "fit_field_base.hpp"
+ #include "fit_mesg.hpp"
+ #include "fit_unicode.hpp"
++#include <cstring>
+ 
+ namespace fit
+ {
+@@ -342,102 +343,73 @@
+     return static_cast<FIT_FLOAT32>(static_cast<FIT_FLOAT64>(float32Value) / GetScale(subFieldIndex) - GetOffset(subFieldIndex));
+ }
+ 
++
+ FIT_FLOAT64 FieldBase::GetFLOAT64Value(const FIT_UINT8 fieldArrayIndex, const FIT_UINT16 subFieldIndex) const
+ {
+-    FIT_FLOAT64 float64Value;
+-
+     if (!IsValid())
+         return FIT_FLOAT64_INVALID;
+ 
+-    switch (GetType()) { // Note: This checks the type of the MAIN field since data is aligned according to that type
++    FIT_FLOAT64 float64Value;
++
++    switch (GetType()) {
+         case FIT_BASE_TYPE_BYTE:
+-        {
+-            float64Value =
+-                ConvertBaseType<FIT_FLOAT64, FIT_BYTE>(fieldArrayIndex, FIT_BASE_TYPE_FLOAT64);
++            float64Value = ConvertBaseType<FIT_FLOAT64, FIT_BYTE>(fieldArrayIndex, FIT_BASE_TYPE_FLOAT64);
+             break;
+-        }
+-
+         case FIT_BASE_TYPE_ENUM:
+-        {
+-            float64Value =
+-                ConvertBaseType<FIT_FLOAT64, FIT_ENUM>(fieldArrayIndex, FIT_BASE_TYPE_FLOAT64);
++            float64Value = ConvertBaseType<FIT_FLOAT64, FIT_ENUM>(fieldArrayIndex, FIT_BASE_TYPE_FLOAT64);
+             break;
+-        }
+-
+         case FIT_BASE_TYPE_SINT8:
+-        {
+-            float64Value =
+-                ConvertBaseType<FIT_FLOAT64, FIT_SINT8>(fieldArrayIndex, FIT_BASE_TYPE_FLOAT64);
++            float64Value = ConvertBaseType<FIT_FLOAT64, FIT_SINT8>(fieldArrayIndex, FIT_BASE_TYPE_FLOAT64);
+             break;
+-        }
+-
+         case FIT_BASE_TYPE_UINT8:
+         case FIT_BASE_TYPE_UINT8Z:
+-        {
+-            float64Value =
+-                ConvertBaseType<FIT_FLOAT64, FIT_UINT8>(fieldArrayIndex, FIT_BASE_TYPE_FLOAT64);
++            float64Value = ConvertBaseType<FIT_FLOAT64, FIT_UINT8>(fieldArrayIndex, FIT_BASE_TYPE_FLOAT64);
+             break;
+-        }
+-
+         case FIT_BASE_TYPE_SINT16:
+-        {
+-            float64Value =
+-                ConvertBaseType<FIT_FLOAT64, FIT_SINT16>(fieldArrayIndex, FIT_BASE_TYPE_FLOAT64);
++            float64Value = ConvertBaseType<FIT_FLOAT64, FIT_SINT16>(fieldArrayIndex, FIT_BASE_TYPE_FLOAT64);
+             break;
+-        }
+-
+         case FIT_BASE_TYPE_UINT16Z:
+         case FIT_BASE_TYPE_UINT16:
+-        {
+-            float64Value =
+-                ConvertBaseType<FIT_FLOAT64, FIT_UINT16>(fieldArrayIndex, FIT_BASE_TYPE_FLOAT64);
++            float64Value = ConvertBaseType<FIT_FLOAT64, FIT_UINT16>(fieldArrayIndex, FIT_BASE_TYPE_FLOAT64);
+             break;
+-        }
+-
+         case FIT_BASE_TYPE_SINT32:
+-        {
+-            float64Value =
+-                ConvertBaseType<FIT_FLOAT64, FIT_SINT32>(fieldArrayIndex, FIT_BASE_TYPE_FLOAT64);
++            float64Value = ConvertBaseType<FIT_FLOAT64, FIT_SINT32>(fieldArrayIndex, FIT_BASE_TYPE_FLOAT64);
+             break;
+-        }
+-
+         case FIT_BASE_TYPE_UINT32:
+         case FIT_BASE_TYPE_UINT32Z:
+-        {
+-            float64Value =
+-                ConvertBaseType<FIT_FLOAT64, FIT_UINT32>(fieldArrayIndex, FIT_BASE_TYPE_FLOAT64);
++            float64Value = ConvertBaseType<FIT_FLOAT64, FIT_UINT32>(fieldArrayIndex, FIT_BASE_TYPE_FLOAT64);
+             break;
+-        }
+-
+-        case FIT_BASE_TYPE_FLOAT32:
+-        {
++        case FIT_BASE_TYPE_FLOAT32: {
+             FIT_FLOAT32 val = GetFLOAT32Value(fieldArrayIndex, subFieldIndex);
+-
+-            if (FIT_FLOAT32_INVALID == val)
+-            {
++            if (val == FIT_FLOAT32_INVALID) {
+                 return FIT_FLOAT64_INVALID;
+             }
+-
+-            return static_cast<FIT_FLOAT64>(val);
++            float64Value = static_cast<FIT_FLOAT64>(val);
++            break;
+         }
+-
+-        case FIT_BASE_TYPE_FLOAT64:
+-        {
+-            FIT_UINT64 uint64Value = GetValue<FIT_UINT64>(fieldArrayIndex);
+-            memcpy(&float64Value, &uint64Value, sizeof(FIT_FLOAT64));
++        case FIT_BASE_TYPE_FLOAT64: {
++            FIT_FLOAT64 val = GetValue<FIT_FLOAT64>(fieldArrayIndex);
++            float64Value = val;
+             break;
+         }
+-
+         default:
+             return FIT_FLOAT64_INVALID;
+     }
+ 
+-    if (memcmp(&float64Value, baseTypeInvalids[FIT_BASE_TYPE_FLOAT64 & FIT_BASE_TYPE_NUM_MASK], sizeof(FIT_FLOAT64)) == 0)
+-    {
++    // Direct invalid check for FLOAT64 (NaN check is more efficient than memcmp)
++    if (float64Value != float64Value) { // NaN check: NaN != NaN is true
+         return float64Value;
+     }
+ 
+-    return float64Value / GetScale(subFieldIndex) - GetOffset(subFieldIndex);
++    const FIT_FLOAT64 scale = GetScale(subFieldIndex);
++    const FIT_FLOAT64 offset = GetOffset(subFieldIndex);
++    
++    // Only apply scale/offset if necessary (avoid expensive division when scale=1.0 and offset=0.0)
++    if (scale != 1.0 || offset != 0.0) {
++        float64Value = float64Value / scale - offset;
++    }
++
++    return float64Value;
+ }
+ 
+ FIT_WSTRING FieldBase::GetSTRINGValue(const FIT_UINT8 fieldArrayIndex, const FIT_UINT16 subFieldIndex) const
+--- a/src/fit_profile.cpp
++++ b/src/fit_profile.cpp
+@@ -11,6 +11,8 @@
+ 
+ 
+ #include "fit_profile.hpp"
++#include <algorithm>
++#include <vector>
+ 
+ namespace fit
+ {
+@@ -3055,15 +3057,17 @@
+    { NULL, "pad", FIT_MESG_NUM_PAD, 0 },
+ };
+ 
++
+ const Profile::MESG* Profile::GetMesg(const FIT_UINT16 num)
+ {
+-    for (int i = 0; i < MESGS; i++)
+-    {
+-        if (mesgs[i].num == num)
+-            return &mesgs[i];
++    static std::vector<const Profile::MESG*> index;
++    if (index.empty()) {
++        index.resize(65536, nullptr);
++        for (int i = 0; i < MESGS; i++) {
++            index[mesgs[i].num] = &mesgs[i];
++        }
+     }
+-
+-    return NULL;
++    return (num < 65536) ? index[num] : nullptr;
+ }
+ 
+ const Profile::MESG* Profile::GetMesg(const std::string& name)

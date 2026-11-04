@@ -1,0 +1,7 @@
+
+void FieldBase::SetUINT64ZValue(const FIT_UINT64Z value, const FIT_UINT8 fieldArrayIndex)
+{
+    // Directly store the value in the underlying buffer without function call overhead
+    // Assuming FIT_UINT64Z is typedef'd to FIT_UINT64 and storage is already allocated
+    std::memcpy(&data_[fieldArrayIndex * sizeof(FIT_UINT64)], &value, sizeof(FIT_UINT64));
+}

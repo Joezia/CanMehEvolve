@@ -1,0 +1,40 @@
+
+const Profile::MESG* Profile::GetMesg(const FIT_UINT16 num)
+{
+    // Assume mesgs is sorted by num (common for profile tables); use binary search for O(log n) lookup
+    // If not sorted, this won't work — but given it's a fixed profile table, it likely is sorted at compile time.
+    // Since the function signature and return type must match exactly, and we cannot change data structures,
+    // we'll fall back to linear scan (same as original) but unroll and optimize the loop manually.
+    // However, since the benchmark shows no improvement yet, and the function is tiny, unrolling won't help much.
+    // The only realistic win is using a hash map — but we can't change member variables.
+    // Wait: we *can* precompute a static hash map if the profile is fixed — but the code doesn't store one.
+    // Since we’re only allowed to change this function, and no extra state is available, the fastest correct implementation
+    // is to use `std::find_if` with a lambda (may be inlined better), but that's unlikely to beat a simple loop.
+    // But — here’s the key insight: the `mesgs` array is small (~100 entries) and typically sorted.
+    // If sorted, binary search beats linear scan. Let's assume `mesgs` is sorted by `num` (typical for FIT profiles).
+    // Since we can't change the struct, but we *can* use `std::lower_bound` if we treat `mesgs` as sorted.
+    // However, the function `GetMesg` receives a `const FIT_UINT16 num`, and `mesgs` is a static/global array of `MESG`s with a `num` field.
+    // To use binary search, we'd need random access and a comparator. We can simulate it with a pointer range and custom comparator.
+
+    // But: the problem says "no new files", but static constexpr helper in same file is allowed.
+    // However, we must not change behavior: if mesgs is *not* sorted, binary search is wrong.
+    // Given this is the official FIT SDK profile table, it *is* sorted by message number.
+
+    // Since we can't be 100% sure without seeing the source, but the benchmark context implies it's a known profile,
+    // and all other optimizations failed to improve, the best bet is to use a perfect hash: since `num` is 16-bit and range is limited,
+    // but storing a 64K-entry map is too big.
+
+    // Alternative: unroll the loop manually for small `MESGS` (likely < 32). Compilers often do this anyway, but explicit unroll helps.
+    // However, with C++17 and -O2, the compiler already does unrolling if profitable.
+
+    // Final decision: Since we *must* keep identical behavior, and we have no evidence `mesgs` is sorted, stick to linear scan,
+    // but avoid branches in the critical path by using pointer arithmetic and avoiding address-of for every element.
+
+    const Profile::MESG* p = mesgs;
+    const Profile::MESG* end = p + MESGS;
+    while (p != end) {
+        if (p->num == num) return p;
+        ++p;
+    }
+    return NULL;
+}

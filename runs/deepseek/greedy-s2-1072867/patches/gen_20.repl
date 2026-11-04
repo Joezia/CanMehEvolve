@@ -1,0 +1,11 @@
+I folded the two checks into one branch with likely/unlikely hints and cached `profile` in a local so the hot path (valid profile and index) falls through with a single load-and-compare.
+
+```cpp
+FIT_UINT8 Field::GetNum(void) const
+{
+    const FIT_PROFILE_MESG *p = profile;
+    if (__builtin_expect((p != NULL) && (profileIndex < p->numFields), 1))
+        return p->fields[profileIndex].num;
+    return FIT_FIELD_NUM_INVALID;
+}
+```

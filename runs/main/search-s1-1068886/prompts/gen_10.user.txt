@@ -1,0 +1,44 @@
+File: src/fit_segment_lap_mesg.hpp
+Function: GetAvgRightPedalSmoothness (4 lines)
+One full decode of the four files takes about 358.8 ms in the stock build.
+Time of the current version of the whole library relative to stock: 1.000 (below 1.0 is faster). Best measured so far: 0.999.
+
+Your previous attempt failed:
+Stage 'compile' rejected it: In file included from /home/z/zhouzia/Workspace/CanMehEvolve/build/work-1068886/tree/src/fit_segment_lap_mesg_listener.hpp:16,
+                 from /home/z/zhouzia/Workspace/CanMehEvolve/build/work-1068886/tree/src/fit_mesg_broadcaster.hpp:95,
+                 from /home/z/zhouzia/Workspace/CanMehEvolve/build/work-1068886/tree/src/fit_buffered_mesg_broadcaster.hpp:17,
+                 from /home/z/zhouzia/Workspace/CanMehEvolve/build/work-1068886/tree/src/fit_buffered_mesg_broadcaster.cpp:14:
+/home/z/zhouzia/Workspace/CanMehEvolve/build/work-1068886/tree/src/fit_segment_lap_mesg.hpp:2332:1: error: stray ‘`’ in program
+ 2332 | ```cpp
+      | ^
+/home/z/zhouzia/Workspace/CanMehEvolve/build/work-1068886/tree/src/fit_segment_lap_mesg.hpp:2332:2: error: stray ‘`’ in program
+ 2332 | ```cpp
+      |  ^
+/home/z/zhouzia/Workspace/CanMehEvolve/build/work-1068886/tree/src/fit_segment_lap_mesg.hpp:2332:3: error: stray ‘`’ in program
+ 2332 | ```cpp
+      |   ^
+/home/z/zhouzia/Workspace/CanMehEvolve/build/work-1068886/tree/src/fit_segment_lap_mesg.hpp:2332:4: error: ‘cpp’ does not name a type
+ 2332 | ```cpp
+      |    ^~~
+
+The rejected replacement was:
+```cpp
+
+```cpp
+    FIT_FLOAT32 GetAvgRightPedalSmoothness(void) const
+    {
+        // Direct field access without subfield lookup overhead
+        return GetFieldFLOAT32Value(62);
+    }
+
+```
+
+Current text of the function:
+```cpp
+    FIT_FLOAT32 GetAvgRightPedalSmoothness(void) const
+    {
+        return GetFieldFLOAT32Value(62, 0, FIT_SUBFIELD_INDEX_MAIN_FIELD);
+    }
+
+```
+Return the faster replacement now.

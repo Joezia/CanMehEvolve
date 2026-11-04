@@ -1,0 +1,136 @@
+--- a/src/fit_field.cpp
++++ b/src/fit_field.cpp
+@@ -15,6 +15,7 @@
+ #include "fit_field.hpp"
+ #include "fit_mesg.hpp"
+ #include "fit_unicode.hpp"
++#include <cstdint>
+ 
+ namespace fit
+ {
+@@ -97,15 +98,12 @@
+     return profile->fields[profileIndex].num;
+ }
+ 
++
+ FIT_UINT8 Field::GetType() const
+ {
+-    if ( type != FIT_UINT8_INVALID )
+-        return type;
+-
+-    if ((profile == NULL) || (profileIndex >= profile->numFields))
+-        return FIT_UINT8_INVALID;
+-
+-    return profile->fields[profileIndex].type;
++    return (type != FIT_UINT8_INVALID) ? type : 
++           (profile && profileIndex < profile->numFields) ? profile->fields[profileIndex].type : 
++           FIT_UINT8_INVALID;
+ }
+ 
+ std::string Field::GetUnits() const
+--- a/src/fit_mesg.cpp
++++ b/src/fit_mesg.cpp
+@@ -14,6 +14,7 @@
+ #include <algorithm>
+ #include "fit_mesg.hpp"
+ #include "fit_mesg_definition.hpp"
++#include <cmath>
+ 
+ namespace fit
+ {
+@@ -401,6 +402,7 @@
+     return FIT_SUBFIELD_INDEX_MAIN_FIELD;
+ }
+ 
++
+ FIT_UINT16 Mesg::GetActiveSubFieldIndex(const FIT_UINT8 fieldNum) const
+ {
+     const Profile::FIELD* field = Profile::GetField(GetNum(), fieldNum);
+@@ -408,22 +410,33 @@
+     if (field == FIT_NULL)
+         return FIT_SUBFIELD_INDEX_MAIN_FIELD;
+ 
+-    for (int i = 0; i < (int) field->numSubFields; i++)
++    const FIT_UINT8 numSubFields = field->numSubFields;
++    for (FIT_UINT8 i = 0; i < numSubFields; i++)
+     {
+         const Profile::SUBFIELD& subField = field->subFields[i];
++        const FIT_UINT8 numMaps = subField.numMaps;
+ 
+-        for (int j = 0; j < (int) subField.numMaps; j++)
++        bool allMapsMatch = true;
++        for (FIT_UINT8 j = 0; j < numMaps; j++)
+         {
+             const Field* refField = GetField(subField.maps[j].refFieldNum);
+-
+-            if (refField != FIT_NULL)
++            if (refField == FIT_NULL)
++            {
++                allMapsMatch = false;
++                break;
++            }
++            FIT_FLOAT64 refValue = refField->GetFLOAT64Value(0, FIT_SUBFIELD_INDEX_MAIN_FIELD);
++            // Round to nearest integer (handles both positive and negative correctly)
++            FIT_SINT32 rounded = static_cast<FIT_SINT32>(std::floor(refValue + (refValue >= 0.0 ? 0.5 : -0.5)));
++            if (rounded != subField.maps[j].refFieldValue)
+             {
+-                FIT_FLOAT64 refValue = refField->GetFLOAT64Value(0, FIT_SUBFIELD_INDEX_MAIN_FIELD);
+-                refValue += ((refValue >= 0.0) ? (0.5) : (-0.5));
+-                if ((FIT_SINT32)refValue == subField.maps[j].refFieldValue)
+-                    return ((FIT_UINT16) i);
++                allMapsMatch = false;
++                break;
+             }
+         }
++
++        if (allMapsMatch)
++            return static_cast<FIT_UINT16>(i);
+     }
+ 
+     return FIT_SUBFIELD_INDEX_MAIN_FIELD;
+--- a/src/fit_profile.cpp
++++ b/src/fit_profile.cpp
+@@ -11,6 +11,11 @@
+ 
+ 
+ #include "fit_profile.hpp"
++#include <algorithm>
++#include <vector>
++#include <array>
++#include <cstddef>
++#include <atomic>
+ 
+ namespace fit
+ {
+@@ -3055,17 +3060,25 @@
+    { NULL, "pad", FIT_MESG_NUM_PAD, 0 },
+ };
+ 
++
++
++
++
+ const Profile::MESG* Profile::GetMesg(const FIT_UINT16 num)
+ {
+-    for (int i = 0; i < MESGS; i++)
+-    {
+-        if (mesgs[i].num == num)
+-            return &mesgs[i];
++    static std::array<const Profile::MESG*, 65536> index;
++    static std::atomic_flag initialized = ATOMIC_FLAG_INIT;
++    
++    if (!initialized.test_and_set(std::memory_order_acquire)) {
++        for (int i = 0; i < MESGS; i++) {
++            index[mesgs[i].num] = &mesgs[i];
++        }
++        initialized.test_and_set(std::memory_order_release);
+     }
+-
+-    return NULL;
++    return index[num];
+ }
+ 
++
+ const Profile::MESG* Profile::GetMesg(const std::string& name)
+ {
+     for (int i = 0; i < MESGS; i++)

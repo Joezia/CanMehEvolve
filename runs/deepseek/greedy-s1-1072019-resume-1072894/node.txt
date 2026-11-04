@@ -1,0 +1,9 @@
+host=xcnd7
+job=1072894
+start=2026-11-04T15:19:31+08:00
+resumed_from=/home/z/zhouzia/Workspace/CanMehEvolve/runs/deepseek/greedy-s1-1072019
+binary_sha256=47198c3e7514ec18e27eb826366e63a656fb87c6fe29df2ef85294c912f33959
+resume_source_sha256=860554d07ff3698fb569de6d4c56e7c7637d10ca07bf71b4110e27feea60e98f
+search_exit=0
+fixed_best_patch=/home/z/zhouzia/Workspace/CanMehEvolve/runs/deepseek/greedy-s1-1072019/best.patch
+end=2026-11-04T15:29:52+08:00

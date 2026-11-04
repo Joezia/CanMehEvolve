@@ -1,0 +1,14 @@
+```cpp
+#include <algorithm>
+#include <cstddef>
+
+const Profile::MESG* Profile::GetMesg(const FIT_UINT16 num)
+{
+    // Use std::find_if with a lambda to potentially enable better optimization
+    // and allow the compiler to auto-vectorize or use better branch prediction
+    const auto* end = mesgs + MESGS;
+    const auto* it = std::find_if(mesgs, end,
+        [num](const Profile::MESG& m) { return m.num == num; });
+    return (it != end) ? &*it : NULL;
+}
+```

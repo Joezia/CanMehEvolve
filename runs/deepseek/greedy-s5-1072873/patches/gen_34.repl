@@ -1,0 +1,12 @@
+I replaced the null-check branch with a conditional pointer to a static zero, eliminating the unpredictable null branch while preserving the bounds check. This reduces branch mispredictions when decoding fields that lack a profile.
+
+```cpp
+FIT_UINT8 Field::GetNum(void) const
+{
+    static const decltype(profile->numFields) zero = 0;
+    const auto *numFields = profile ? &profile->numFields : &zero;
+    if (profileIndex >= *numFields)
+        return FIT_FIELD_NUM_INVALID;
+    return profile->fields[profileIndex].num;
+}
+```

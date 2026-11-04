@@ -1,0 +1,5 @@
+
+    void SetTimestamp(FIT_DATE_TIME timestamp)
+    {
+        WriteField(253, &timestamp, sizeof(FIT_DATE_TIME), FIT_SUBFIELD_INDEX_MAIN_FIELD);
+    }

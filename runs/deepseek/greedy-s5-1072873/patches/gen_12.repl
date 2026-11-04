@@ -1,0 +1,40 @@
+Replaced the 65536-entry pointer table with a 256-entry table plus a tiny fallback for high message numbers, reducing cache footprint and initialization cost while preserving identical lookup results. The common path now stays in L1 cache, and the full-domain sweep avoids touching a large sparse table.
+
+```cpp
+const Profile::MESG* Profile::GetMesg(const FIT_UINT16 num)
+{
+    static const Profile::MESG* lookup[256] = {};
+    static const Profile::MESG* high[MESGS] = {};
+    static int high_count = 0;
+    static bool initialized = false;
+
+    if (!initialized)
+    {
+        for (int i = 0; i < MESGS; i++)
+        {
+            const FIT_UINT16 n = mesgs[i].num;
+            if (n < 256)
+            {
+                if (lookup[n] == NULL)
+                    lookup[n] = &mesgs[i];
+            }
+            else
+            {
+                high[high_count++] = &mesgs[i];
+            }
+        }
+        initialized = true;
+    }
+
+    if (num < 256)
+        return lookup[num];
+
+    for (int i = 0; i < high_count; i++)
+    {
+        if (high[i]->num == num)
+            return high[i];
+    }
+
+    return NULL;
+}
+```

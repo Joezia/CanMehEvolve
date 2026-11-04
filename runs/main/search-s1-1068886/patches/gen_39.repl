@@ -1,0 +1,10 @@
+Looking at the current implementation, it calls `SetFieldENUMValue` with multiple parameters. The optimization is to directly use the more efficient `SetFieldENUM` method which is specifically designed for setting ENUM fields and avoids the overhead of the generic `SetFieldENUMValue` with subfield indexing.
+
+The `SetFieldENUM` method is simpler and faster because it doesn't need to handle subfield indices and parameter validation.
+
+```cpp
+void SetSubSport(FIT_SUB_SPORT subSport)
+{
+    SetFieldENUM(39, static_cast<uint8_t>(subSport));
+}
+```

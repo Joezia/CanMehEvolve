@@ -1,0 +1,22 @@
+Removed the `max_num` check and use a single initialization flag; returning `lookup[num]` directly is equivalent because the table is zero-initialized. This saves one branch and one load per call.
+
+```cpp
+const Profile::MESG* Profile::GetMesg(const FIT_UINT16 num)
+{
+    static const Profile::MESG* lookup[65536] = {};
+    static bool initialized = false;
+
+    if (!initialized)
+    {
+        for (int i = 0; i < MESGS; i++)
+        {
+            FIT_UINT16 n = mesgs[i].num;
+            if (lookup[n] == NULL)
+                lookup[n] = &mesgs[i];
+        }
+        initialized = true;
+    }
+
+    return lookup[num];
+}
+```

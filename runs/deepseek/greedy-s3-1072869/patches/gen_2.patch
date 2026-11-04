@@ -1,0 +1,28 @@
+--- a/src/fit_field.cpp
++++ b/src/fit_field.cpp
+@@ -15,6 +15,7 @@
+ #include "fit_field.hpp"
+ #include "fit_mesg.hpp"
+ #include "fit_unicode.hpp"
++#include <cstring>
+ 
+ namespace fit
+ {
+@@ -28,12 +29,16 @@
+ }
+ 
+ Field::Field(const Field &field)
+-    : FieldBase(field)
++    : FieldBase()
+     , profile(field.profile)
+     , profileIndex(field.profileIndex)
+     , type(field.type)
+     , isFieldExpanded(field.isFieldExpanded)
+ {
++    fieldId = field.fieldId;
++    size = field.size;
++    numValues = field.numValues;
++    std::memcpy(values, field.values, field.size);
+ }
+ 
+ Field::Field(const Profile::MESG_INDEX mesgIndex, const FIT_UINT16 fieldIndex)

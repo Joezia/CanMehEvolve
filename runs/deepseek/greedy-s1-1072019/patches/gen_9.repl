@@ -1,0 +1,40 @@
+I replaced the 64K-entry pointer table with a small direct table for message numbers below 256 and a sparse two-level table for higher numbers, preserving first-match semantics. This keeps hot low-number lookups in a 2 KB table and lets the full-domain sweep skip almost all of the large sparse table.
+
+```cpp
+const Profile::MESG* Profile::GetMesg(const FIT_UINT16 num)
+{
+    static const Profile::MESG* low[256] = {};
+    static const Profile::MESG* highPool[256][256] = {};
+    static const Profile::MESG** high[256] = {};
+    static bool initialized = false;
+
+    if (!initialized)
+    {
+        for (int i = 0; i < MESGS; ++i)
+        {
+            const FIT_UINT16 n = mesgs[i].num;
+            if (n < 256)
+            {
+                if (low[n] == nullptr)
+                    low[n] = &mesgs[i];
+            }
+            else
+            {
+                const unsigned hi = n >> 8;
+                const unsigned lo = n & 0xFF;
+                if (high[hi] == nullptr)
+                    high[hi] = highPool[hi];
+                if (highPool[hi][lo] == nullptr)
+                    highPool[hi][lo] = &mesgs[i];
+            }
+        }
+        initialized = true;
+    }
+
+    if (num < 256)
+        return low[num];
+
+    const Profile::MESG** block = high[num >> 8];
+    return block ? block[num & 0xFF] : nullptr;
+}
+```

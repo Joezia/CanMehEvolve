@@ -1,0 +1,180 @@
+File: src/fit_field_base.cpp
+Function: FieldBase::GetFLOAT64Value (97 lines)
+One full decode of the four files takes about 358.7 ms in the stock build.
+Time of the current version of the whole library relative to stock: 0.932 (below 1.0 is faster). Best measured so far: 0.932.
+
+Your previous attempt failed:
+Stage 'compile' rejected it: /home/z/zhouzia/Workspace/CanMehEvolve/build/work-1068888/tree/src/fit_field_base.cpp: In member function ‘FIT_FLOAT64 fit::FieldBase::GetFLOAT64Value(FIT_UINT8, FIT_UINT16) const’:
+/home/z/zhouzia/Workspace/CanMehEvolve/build/work-1068888/tree/src/fit_field_base.cpp:352:11: error: ‘FIT_BASE_TYPE’ does not name a type; did you mean ‘FIT_BASE_TYPES’?
+  352 |     const FIT_BASE_TYPE type = GetType();
+      |           ^~~~~~~~~~~~~
+      |           FIT_BASE_TYPES
+/home/z/zhouzia/Workspace/CanMehEvolve/build/work-1068888/tree/src/fit_field_base.cpp:355:9: error: ‘type’ was not declared in this scope; did you mean ‘wctype’?
+  355 |     if (type == FIT_BASE_TYPE_FLOAT32)
+      |         ^~~~
+      |         wctype
+/home/z/zhouzia/Workspace/CanMehEvolve/build/work-1068888/tree/src/fit_field_base.cpp:361:9: error: ‘type’ was not declared in this scope; did you mean ‘wctype’?
+  361 |     if (type == FIT_BASE_TYPE_FLOAT64)
+      |         ^~~~
+      |         wctype
+/home/z/zhouzia/Workspace/CanMehEvolve/build/work-1068888/tree/src/fit_field_base.cpp:364:25: error: ‘data_’ was not declared in this scope
+  364 |         memcpy(&value, &data_[fieldArrayIndex * sizeof(FIT_FLOAT64)], sizeof(FIT_FLOAT64));
+      |                         ^~~~~
+/home/z/zhouzia/Workspace/CanMehEvolve/build/work-1068888/tree/src/fit_field_base.cpp:372:13: error: ‘type’ was not declared in this scope; did you mean ‘wctype’?
+  372 |     switch (type) {
+      |           
+... [truncated]
+The rejected replacement was:
+```cpp
+
+FIT_FLOAT64 FieldBase::GetFLOAT64Value(const FIT_UINT8 fieldArrayIndex, const FIT_UINT16 subFieldIndex) const
+{
+    if (!IsValid())
+        return FIT_FLOAT64_INVALID;
+
+    const FIT_BASE_TYPE type = GetType();
+
+    // Handle invalid types early and FLOAT32 specially to avoid unnecessary conversions
+    if (type == FIT_BASE_TYPE_FLOAT32)
+    {
+        FIT_FLOAT32 val = GetFLOAT32Value(fieldArrayIndex, subFieldIndex);
+        return (val == FIT_FLOAT32_INVALID) ? FIT_FLOAT64_INVALID : static_cast<FIT_FLOAT64>(val);
+    }
+
+    if (type == FIT_BASE_TYPE_FLOAT64)
+    {
+        FIT_FLOAT64 value;
+        memcpy(&value, &data_[fieldArrayIndex * sizeof(FIT_FLOAT64)], sizeof(FIT_FLOAT64));
+        if (memcmp(&value, baseTypeInvalids[FIT_BASE_TYPE_FLOAT64 & FIT_BASE_TYPE_NUM_MASK], sizeof(FIT_FLOAT64)) == 0)
+            return value;
+        return value / GetScale(subFieldIndex) - GetOffset(subFieldIndex);
+    }
+
+    // Use template specialization for direct conversion instead of generic ConvertBaseType
+    FIT_FLOAT64 value = 0.0;
+    switch (type) {
+        case FIT_BASE_TYPE_BYTE:      value = ConvertBaseType<FIT_FLOAT64, FIT_BYTE>(fieldArrayIndex, FIT_BASE_TYPE_FLOAT64); break;
+        case FIT_BASE_TYPE_ENUM:      value = ConvertBaseType<FIT_FLOAT64, FIT_ENUM>(fieldArrayIndex, FIT_BASE_TYPE_FLOAT64); break;
+        case FIT_BASE_TYPE_SINT8:     value = ConvertBaseType<FIT_FLOAT64, FIT_SINT8>(fieldArrayIndex, FIT_BASE_TYPE_FLOAT64); break;
+        case FIT_BASE_TYPE_UINT8:
+        case FIT_BASE_TYPE_UINT8Z:    value = ConvertBaseType<FIT_FLOAT64, FIT_UINT8>(fieldArrayIndex, FIT_BASE_TYPE_FLOAT64); break;
+        case FIT_BASE_TYPE_SINT16:    value = ConvertBaseType<FIT_FLOAT64, FIT_SINT16>(fieldArrayIndex, FIT_BASE_TYPE_FLOAT64); break;
+        case FIT_BASE_TYPE_UINT16Z:
+        case FIT_BASE_TYPE_UINT16:    value = ConvertBaseType<FIT_FLOAT64, FIT_UINT16>(fieldArrayIndex, FIT_BASE_TYPE_FLOAT64); break;
+        case FIT_BASE_TYPE_SINT32:    value = ConvertBaseType<FIT_FLOAT64, FIT_SINT32>(fieldArrayIndex, FIT_BASE_TYPE_FLOAT64); break;
+        case FIT_BASE_TYPE_UINT32:
+        case FIT_BASE_TYPE_UINT32Z:   value = ConvertBaseType<FIT_FLOAT64, FIT_UINT32>(fieldArrayIndex, FIT_BASE_TYPE_FLOAT64); break;
+        default:                      return FIT_FLOAT64_INVALID;
+    }
+
+    // Early return for invalid values (avoiding division for invalids)
+    if (memcmp(&value, baseTypeInvalids[FIT_BASE_TYPE_FLOAT64 & FIT_BASE_TYPE_NUM_MASK], sizeof(FIT_FLOAT64)) == 0)
+        return value;
+
+    return value / GetScale(subFieldIndex) - GetOffset(subFieldIndex);
+}
+
+```
+
+Current text of the function:
+```cpp
+FIT_FLOAT64 FieldBase::GetFLOAT64Value(const FIT_UINT8 fieldArrayIndex, const FIT_UINT16 subFieldIndex) const
+{
+    FIT_FLOAT64 float64Value;
+
+    if (!IsValid())
+        return FIT_FLOAT64_INVALID;
+
+    switch (GetType()) { // Note: This checks the type of the MAIN field since data is aligned according to that type
+        case FIT_BASE_TYPE_BYTE:
+        {
+            float64Value =
+                ConvertBaseType<FIT_FLOAT64, FIT_BYTE>(fieldArrayIndex, FIT_BASE_TYPE_FLOAT64);
+            break;
+        }
+
+        case FIT_BASE_TYPE_ENUM:
+        {
+            float64Value =
+                ConvertBaseType<FIT_FLOAT64, FIT_ENUM>(fieldArrayIndex, FIT_BASE_TYPE_FLOAT64);
+            break;
+        }
+
+        case FIT_BASE_TYPE_SINT8:
+        {
+            float64Value =
+                ConvertBaseType<FIT_FLOAT64, FIT_SINT8>(fieldArrayIndex, FIT_BASE_TYPE_FLOAT64);
+            break;
+        }
+
+        case FIT_BASE_TYPE_UINT8:
+        case FIT_BASE_TYPE_UINT8Z:
+        {
+            float64Value =
+                ConvertBaseType<FIT_FLOAT64, FIT_UINT8>(fieldArrayIndex, FIT_BASE_TYPE_FLOAT64);
+            break;
+        }
+
+        case FIT_BASE_TYPE_SINT16:
+        {
+            float64Value =
+                ConvertBaseType<FIT_FLOAT64, FIT_SINT16>(fieldArrayIndex, FIT_BASE_TYPE_FLOAT64);
+            break;
+        }
+
+        case FIT_BASE_TYPE_UINT16Z:
+        case FIT_BASE_TYPE_UINT16:
+        {
+            float64Value =
+                ConvertBaseType<FIT_FLOAT64, FIT_UINT16>(fieldArrayIndex, FIT_BASE_TYPE_FLOAT64);
+            break;
+        }
+
+        case FIT_BASE_TYPE_SINT32:
+        {
+            float64Value =
+                ConvertBaseType<FIT_FLOAT64, FIT_SINT32>(fieldArrayIndex, FIT_BASE_TYPE_FLOAT64);
+            break;
+        }
+
+        case FIT_BASE_TYPE_UINT32:
+        case FIT_BASE_TYPE_UINT32Z:
+        {
+            float64Value =
+                ConvertBaseType<FIT_FLOAT64, FIT_UINT32>(fieldArrayIndex, FIT_BASE_TYPE_FLOAT64);
+            break;
+        }
+
+        case FIT_BASE_TYPE_FLOAT32:
+        {
+            FIT_FLOAT32 val = GetFLOAT32Value(fieldArrayIndex, subFieldIndex);
+
+            if (FIT_FLOAT32_INVALID == val)
+            {
+                return FIT_FLOAT64_INVALID;
+            }
+
+            return static_cast<FIT_FLOAT64>(val);
+        }
+
+        case FIT_BASE_TYPE_FLOAT64:
+        {
+            FIT_UINT64 uint64Value = GetValue<FIT_UINT64>(fieldArrayIndex);
+            memcpy(&float64Value, &uint64Value, sizeof(FIT_FLOAT64));
+            break;
+        }
+
+        default:
+            return FIT_FLOAT64_INVALID;
+    }
+
+    if (memcmp(&float64Value, baseTypeInvalids[FIT_BASE_TYPE_FLOAT64 & FIT_BASE_TYPE_NUM_MASK], sizeof(FIT_FLOAT64)) == 0)
+    {
+        return float64Value;
+    }
+
+    return float64Value / GetScale(subFieldIndex) - GetOffset(subFieldIndex);
+}
+
+```
+Return the faster replacement now.

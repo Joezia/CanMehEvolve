@@ -1,0 +1,13 @@
+I inlined the generic `GetFieldUINT32Value` wrapper by resolving field 4 once and extracting its UINT32 value directly, removing a function-call layer on this per-field path. The forwarded arguments to `GetValueUINT32` match the wrapper's, so behavior is byte-for-byte identical.
+
+```cpp
+    FIT_UINT32 GetSurfaceInterval(void) const
+    {
+        const Field& field = GetField(4);
+        if (field.GetNumValues() > 0)
+        {
+            return field.GetValueUINT32(0, FIT_SUBFIELD_INDEX_MAIN_FIELD);
+        }
+        return 0;
+    }
+```

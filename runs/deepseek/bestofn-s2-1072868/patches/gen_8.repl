@@ -1,0 +1,8 @@
+Replaced the reference-forming indexed access with direct `data()` pointer arithmetic in a single conditional, reducing the body to one bounds check and one pointer add. This is equivalent for all inputs and can compile to tighter, often branchless code.
+
+```cpp
+Field* Mesg::GetFieldByIndex(const FIT_UINT16 index)
+{
+    return index < fields.size() ? fields.data() + index : FIT_NULL;
+}
+```

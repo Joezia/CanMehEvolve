@@ -1,0 +1,23 @@
+I inlined the field lookup and hoisted the first-field check, avoiding the out-of-line `GetField` call and its loop setup when the timestamp is the first field.
+```cpp
+    FIT_BOOL IsTimestampValid() const
+    {
+        const Field* field = GetFieldByIndex(0);
+        if( FIT_NULL != field && field->GetNum() == 253 )
+        {
+            return field->IsValueValid();
+        }
+
+        const FIT_UINT8 num_fields = GetNumFields();
+        for( FIT_UINT8 i = 1; i < num_fields; ++i )
+        {
+            field = GetFieldByIndex(i);
+            if( FIT_NULL != field && field->GetNum() == 253 )
+            {
+                return field->IsValueValid();
+            }
+        }
+
+        return FIT_FALSE;
+    }
+```

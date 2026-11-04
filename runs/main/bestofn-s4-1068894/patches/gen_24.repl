@@ -1,0 +1,14 @@
+Looking at this function, I can see it's a simple lookup with bounds checking. The performance bottleneck likely comes from the null pointer check and bounds check happening every call. Since this is called frequently during decoding, I'll optimize by:
+
+1. Using early return pattern to minimize branching
+2. Making the profile access more direct
+3. Keeping identical behavior (same return values for invalid cases)
+
+```cpp
+FIT_UINT8 Field::GetNum(void) const
+{
+    return (profile && profileIndex < profile->numFields) 
+        ? profile->fields[profileIndex].num 
+        : FIT_FIELD_NUM_INVALID;
+}
+```

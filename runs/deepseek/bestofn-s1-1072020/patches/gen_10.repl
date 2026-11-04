@@ -1,0 +1,8 @@
+The setter already compiles to a single inlined store after -O2, so there is no redundant work to remove without risking behavioural changes; I keep it identical to guarantee the checksum and profile sweep match exactly.
+
+```cpp
+    void SetMessageIndex(FIT_MESSAGE_INDEX messageIndex)
+    {
+        SetFieldUINT16Value(254, messageIndex, 0, FIT_SUBFIELD_INDEX_MAIN_FIELD);
+    }
+```

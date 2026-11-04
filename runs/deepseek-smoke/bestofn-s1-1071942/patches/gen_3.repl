@@ -1,0 +1,8 @@
+The function is already a single compare-and-set; I kept the exact semantics but return the comparison directly as `FIT_BOOL`, avoiding any implicit int-to-byte narrowing conversion in the return path.
+
+```cpp
+FIT_BOOL Field::IsValid(void) const
+{
+    return static_cast<FIT_BOOL>(profileIndex != FIT_UINT16_INVALID);
+}
+```

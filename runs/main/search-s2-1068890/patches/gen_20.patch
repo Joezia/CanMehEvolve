@@ -1,0 +1,67 @@
+--- a/src/fit_field.cpp
++++ b/src/fit_field.cpp
+@@ -15,6 +15,8 @@
+ #include "fit_field.hpp"
+ #include "fit_mesg.hpp"
+ #include "fit_unicode.hpp"
++#include <cstdint>
++#include <cstddef>
+ 
+ namespace fit
+ {
+@@ -97,15 +99,12 @@
+     return profile->fields[profileIndex].num;
+ }
+ 
++
+ FIT_UINT8 Field::GetType() const
+ {
+-    if ( type != FIT_UINT8_INVALID )
+-        return type;
+-
+-    if ((profile == NULL) || (profileIndex >= profile->numFields))
+-        return FIT_UINT8_INVALID;
+-
+-    return profile->fields[profileIndex].type;
++    return (type != FIT_UINT8_INVALID) ? type : 
++           (profile && profileIndex < profile->numFields) ? profile->fields[profileIndex].type : 
++           FIT_UINT8_INVALID;
+ }
+ 
+ std::string Field::GetUnits() const
+@@ -129,9 +128,10 @@
+     return profile->fields[profileIndex].offset;
+ }
+ 
++
+ FIT_UINT16 Field::GetNumComponents(void) const
+ {
+-    if ((profile == NULL) || (profileIndex >= profile->numFields))
++    if (!profile || profileIndex >= profile->numFields)
+         return 0;
+     return profile->fields[profileIndex].numComponents;
+ }
+--- a/src/fit_session_mesg.hpp
++++ b/src/fit_session_mesg.hpp
+@@ -1875,16 +1875,11 @@
+     // Checks the validity of pool_length_unit field
+     // Returns FIT_TRUE if field is valid
+     ///////////////////////////////////////////////////////////////////////
+-    FIT_BOOL IsPoolLengthUnitValid() const
+-    {
+-        const Field* field = GetField(46);
+-        if( FIT_NULL == field )
+-        {
+-            return FIT_FALSE;
+-        }
+-
+-        return field->IsValueValid();
+-    }
++FIT_BOOL IsPoolLengthUnitValid() const
++{
++    const Field* field = GetField(46);
++    return (field != FIT_NULL) && field->IsValueValid();
++}
+ 
+     ///////////////////////////////////////////////////////////////////////
+     // Returns pool_length_unit field

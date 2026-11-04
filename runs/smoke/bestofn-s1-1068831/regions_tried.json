@@ -1,0 +1,23 @@
+{
+  "2299": {
+    "accepted": 0,
+    "attempts": 1,
+    "best_gain": 0.0,
+    "file": "src/fit_hsa_step_data_mesg.hpp",
+    "label": "GetNumSteps"
+  },
+  "3971": {
+    "accepted": 0,
+    "attempts": 1,
+    "best_gain": 0.0,
+    "file": "src/fit_session_mesg.hpp",
+    "label": "SetTimestamp"
+  },
+  "5498": {
+    "accepted": 0,
+    "attempts": 1,
+    "best_gain": 0.0,
+    "file": "src/fit_zones_target_mesg.hpp",
+    "label": "ZonesTargetMesg"
+  }
+}

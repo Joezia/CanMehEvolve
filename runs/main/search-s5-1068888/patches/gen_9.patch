@@ -1,0 +1,81 @@
+--- a/src/fit_dive_summary_mesg.hpp
++++ b/src/fit_dive_summary_mesg.hpp
+@@ -14,6 +14,7 @@
+ #define FIT_DIVE_SUMMARY_MESG_HPP
+ 
+ #include "fit_mesg.hpp"
++#include <cstdint>
+ 
+ namespace fit
+ {
+@@ -243,9 +244,11 @@
+     // Units: s
+     // Comment: Time since end of last dive
+     ///////////////////////////////////////////////////////////////////////
++
+     FIT_UINT32 GetSurfaceInterval(void) const
+     {
+-        return GetFieldUINT32Value(4, 0, FIT_SUBFIELD_INDEX_MAIN_FIELD);
++        const FIT_UINT32* value = GetFieldUINT32Ptr(4, 0, FIT_SUBFIELD_INDEX_MAIN_FIELD);
++        return value ? *value : 0;
+     }
+ 
+     ///////////////////////////////////////////////////////////////////////
+--- a/src/fit_field.cpp
++++ b/src/fit_field.cpp
+@@ -15,6 +15,7 @@
+ #include "fit_field.hpp"
+ #include "fit_mesg.hpp"
+ #include "fit_unicode.hpp"
++#include <utility>
+ 
+ namespace fit
+ {
+@@ -27,9 +28,10 @@
+ {
+ }
+ 
++
+ Field::Field(const Field &field)
+     : FieldBase(field)
+-    , profile(field.profile)
++    , profile(std::move(field.profile))
+     , profileIndex(field.profileIndex)
+     , type(field.type)
+     , isFieldExpanded(field.isFieldExpanded)
+--- a/src/fit_profile.cpp
++++ b/src/fit_profile.cpp
+@@ -11,6 +11,8 @@
+ 
+ 
+ #include "fit_profile.hpp"
++#include <algorithm>
++#include <array>
+ 
+ namespace fit
+ {
+@@ -3055,12 +3057,24 @@
+    { NULL, "pad", FIT_MESG_NUM_PAD, 0 },
+ };
+ 
++
+ const Profile::MESG* Profile::GetMesg(const FIT_UINT16 num)
+ {
++    static std::array<const Profile::MESG*, 256> cache{};
++
++    if (num < cache.size() && cache[num]) {
++        return cache[num];
++    }
++
+     for (int i = 0; i < MESGS; i++)
+     {
+         if (mesgs[i].num == num)
++        {
++            if (num < cache.size()) {
++                cache[num] = &mesgs[i];
++            }
+             return &mesgs[i];
++        }
+     }
+ 
+     return NULL;

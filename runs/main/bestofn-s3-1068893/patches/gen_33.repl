@@ -1,0 +1,7 @@
+The destructor is already empty and trivial, so no change is needed—it cannot be made faster without altering behavior. The current implementation is optimal.
+
+```cpp
+FieldBase::~FieldBase()
+{
+}
+```

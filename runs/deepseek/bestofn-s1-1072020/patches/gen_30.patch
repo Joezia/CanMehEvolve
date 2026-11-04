@@ -1,0 +1,22 @@
+--- a/src/fit_developer_field_definition.cpp
++++ b/src/fit_developer_field_definition.cpp
+@@ -70,17 +70,8 @@
+ 
+ DeveloperFieldDefinition::~DeveloperFieldDefinition()
+ {
+-    if ( nullptr != mesg )
+-    {
+-        delete mesg;
+-        mesg = nullptr;
+-    }
+-
+-    if ( nullptr != developer )
+-    {
+-        delete developer;
+-        developer = nullptr;
+-    }
++    delete mesg;
++    delete developer;
+ }
+ 
+ FIT_BOOL DeveloperFieldDefinition::IsDefined() const

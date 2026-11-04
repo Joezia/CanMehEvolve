@@ -1,0 +1,9 @@
+{
+  "error": "perf exited with status 255: Error:\nThe sys_perf_event_open() syscall returned with 3 (No such process) for event (cycles:P).\n/bin/dmesg | grep -i perf may provide additional information.\n\n",
+  "in_image": 0,
+  "located": 0,
+  "ok": false,
+  "ran": true,
+  "tool": "perf",
+  "total": 0
+}

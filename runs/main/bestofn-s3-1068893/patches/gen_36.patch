@@ -1,0 +1,29 @@
+--- a/src/fit_segment_lap_mesg.hpp
++++ b/src/fit_segment_lap_mesg.hpp
+@@ -15,6 +15,7 @@
+ 
+ #include "fit_mesg.hpp"
+ #include "fit_mesg_with_event.hpp"
++#include <algorithm>
+ 
+ namespace fit
+ {
+@@ -2345,15 +2346,11 @@
+     // Checks the validity of avg_combined_pedal_smoothness field
+     // Returns FIT_TRUE if field is valid
+     ///////////////////////////////////////////////////////////////////////
++
++```cpp
+     FIT_BOOL IsAvgCombinedPedalSmoothnessValid() const
+     {
+-        const Field* field = GetField(63);
+-        if( FIT_NULL == field )
+-        {
+-            return FIT_FALSE;
+-        }
+-
+-        return field->IsValueValid();
++        return (GetField(63) != FIT_NULL) && GetField(63)->IsValueValid();
+     }
+ 
+     ///////////////////////////////////////////////////////////////////////

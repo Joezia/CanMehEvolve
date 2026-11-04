@@ -1,0 +1,11 @@
+The function is already minimal; I only added branch-prediction hints and a local pointer so the hot valid path stays fall-through and the profile pointer is loaded once.
+
+```cpp
+FIT_UINT8 Field::GetNum(void) const
+{
+    const Profile* p = profile;
+    if (__builtin_expect(p == NULL, 0) || __builtin_expect(profileIndex >= p->numFields, 0))
+        return FIT_FIELD_NUM_INVALID;
+    return p->fields[profileIndex].num;
+}
+```

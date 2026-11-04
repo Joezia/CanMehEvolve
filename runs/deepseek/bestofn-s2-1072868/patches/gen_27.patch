@@ -1,0 +1,45 @@
+--- a/src/fit_profile.cpp
++++ b/src/fit_profile.cpp
+@@ -3079,18 +3079,37 @@
+ 
+ const FIT_UINT16 Profile::GetFieldIndex(const FIT_UINT16 mesgNum, const FIT_UINT8 fieldNum)
+ {
+-    const MESG *mesg = GetMesg(mesgNum);
++    static const MESG *mesgCache[65536];
++    static unsigned char mesgValid[65536];
++    static FIT_UINT16 fieldTable[65536][256];
++    static unsigned char fieldTableValid[65536];
+ 
++    if (!mesgValid[mesgNum])
++    {
++        mesgCache[mesgNum] = GetMesg(mesgNum);
++        mesgValid[mesgNum] = 1;
++    }
++
++    const MESG *mesg = mesgCache[mesgNum];
+     if (mesg == NULL)
+         return FIT_UINT16_INVALID;
+ 
+-    for (FIT_UINT16 i = 0; i < mesg->numFields; i++)
++    if (!fieldTableValid[mesgNum])
+     {
+-        if (mesg->fields[i].num == fieldNum)
+-            return i;
++        FIT_UINT16 *table = fieldTable[mesgNum];
++        for (FIT_UINT16 i = 0; i < 256; i++)
++            table[i] = FIT_UINT16_INVALID;
++
++        for (FIT_UINT16 i = 0; i < mesg->numFields; i++)
++        {
++            const FIT_UINT8 num = mesg->fields[i].num;
++            if (table[num] == FIT_UINT16_INVALID)
++                table[num] = i;
++        }
++        fieldTableValid[mesgNum] = 1;
+     }
+ 
+-    return FIT_UINT16_INVALID;
++    return fieldTable[mesgNum][fieldNum];
+ }
+ 
+ const FIT_UINT16 Profile::GetFieldIndex(const std::string& mesgName, const std::string& fieldName)

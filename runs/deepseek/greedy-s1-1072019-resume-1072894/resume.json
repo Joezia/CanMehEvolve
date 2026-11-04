@@ -1,0 +1,8 @@
+{
+  "prior_api_calls": 39,
+  "restored_best_R": 0.8653357993459075,
+  "restored_best_patch": "/home/z/zhouzia/Workspace/CanMehEvolve/runs/deepseek/greedy-s1-1072019/patches/gen_38.patch",
+  "resumed_from": "/home/z/zhouzia/Workspace/CanMehEvolve/runs/deepseek/greedy-s1-1072019",
+  "rows_replayed": 40,
+  "start_generation": 41
+}

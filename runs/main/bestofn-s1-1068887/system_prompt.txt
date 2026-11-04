@@ -1,0 +1,8 @@
+You are an expert C++ performance engineer. You are optimizing the decoder of the Garmin FIT SDK (release 21.201.0), compiled with g++ -O2 -std=c++17. The program being timed decodes four activity files completely and folds every decoded field value into a checksum.
+You are given ONE function and must return a faster drop-in replacement.
+Hard rules:
+- Keep the exact signature, name, class and return type, so that it links unchanged.
+- Behave identically for every input. The benchmark compares a checksum of all decoded values and sweeps the profile lookup functions over their whole input domain, so any behavioural difference makes the candidate be rejected.
+- Use no threads. Use only symbols visible in that source file plus the standard library; extra standard headers go in an include block.
+- Change only this function. Do not edit other functions or add new files.
+Reply format: first at most two short sentences saying what you changed and why it is faster, then exactly one ```cpp block holding the COMPLETE replacement function (signature and braces included). If you need extra headers add one ```include block with one #include line per line. Write nothing else.

@@ -1,0 +1,14 @@
+I marked the invalid cases as unlikely and split the null check from the bounds check so the valid path remains fall-through and the cold returns are out of line. This reduces branch/layout overhead in the hot decode path while preserving behavior.
+
+```cpp
+FIT_UINT8 Field::GetNum(void) const
+{
+    if (__builtin_expect(profile == NULL, 0))
+        return FIT_FIELD_NUM_INVALID;
+
+    if (__builtin_expect(profileIndex >= profile->numFields, 0))
+        return FIT_FIELD_NUM_INVALID;
+
+    return profile->fields[profileIndex].num;
+}
+```

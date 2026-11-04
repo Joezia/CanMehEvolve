@@ -1,0 +1,14 @@
+Merged the early returns into a single return path and reuse the already-loaded `type` as the invalid fallback, avoiding a separate constant materialization. The common invalid-type path now falls through to the profile check without extra return blocks.
+
+```cpp
+FIT_UINT8 Field::GetType() const
+{
+    if ( type == FIT_UINT8_INVALID )
+    {
+        if ( ( profile != NULL ) && ( profileIndex < profile->numFields ) )
+            return profile->fields[profileIndex].type;
+    }
+
+    return type;
+}
+```

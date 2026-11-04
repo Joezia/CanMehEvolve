@@ -1,0 +1,9 @@
+The rewrite collapses the null check and validity call into a single short-circuit expression, removing an explicit branch and letting the compiler inline the field lookup more aggressively.
+
+```cpp
+    FIT_BOOL IsIdValid() const
+    {
+        const Field* field = GetField(14);
+        return (FIT_NULL != field) && field->IsValueValid();
+    }
+```

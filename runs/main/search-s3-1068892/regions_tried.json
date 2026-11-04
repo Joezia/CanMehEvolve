@@ -1,0 +1,128 @@
+{
+  "113": {
+    "accepted": 0,
+    "attempts": 1,
+    "best_gain": 0.0,
+    "file": "src/fit_field.cpp",
+    "label": "Field::Field"
+  },
+  "115": {
+    "accepted": 0,
+    "attempts": 1,
+    "best_gain": 0.0,
+    "file": "src/fit_field.cpp",
+    "label": "Field::Field"
+  },
+  "118": {
+    "accepted": 1,
+    "attempts": 1,
+    "best_gain": 0.0004497464072590329,
+    "file": "src/fit_field.cpp",
+    "label": "Field::IsValid"
+  },
+  "122": {
+    "accepted": 0,
+    "attempts": 2,
+    "best_gain": 0.0,
+    "file": "src/fit_field.cpp",
+    "label": "Field::GetNum"
+  },
+  "123": {
+    "accepted": 0,
+    "attempts": 3,
+    "best_gain": 0.0,
+    "file": "src/fit_field.cpp",
+    "label": "Field::GetType"
+  },
+  "127": {
+    "accepted": 0,
+    "attempts": 1,
+    "best_gain": 0.0,
+    "file": "src/fit_field.cpp",
+    "label": "Field::GetNumComponents"
+  },
+  "128": {
+    "accepted": 2,
+    "attempts": 3,
+    "best_gain": 0.0008805508323381783,
+    "file": "src/fit_field.cpp",
+    "label": "Field::GetNumSubFields"
+  },
+  "134": {
+    "accepted": 1,
+    "attempts": 1,
+    "best_gain": 0.0005249280509167509,
+    "file": "src/fit_field_base.cpp",
+    "label": "FieldBase::FieldBase"
+  },
+  "166": {
+    "accepted": 0,
+    "attempts": 2,
+    "best_gain": 0.0,
+    "file": "src/fit_field_base.cpp",
+    "label": "FieldBase::GetFLOAT64Value"
+  },
+  "192": {
+    "accepted": 2,
+    "attempts": 10,
+    "best_gain": 0.012501795923152259,
+    "file": "src/fit_field_base.cpp",
+    "label": "FieldBase::Read"
+  },
+  "196": {
+    "accepted": 0,
+    "attempts": 1,
+    "best_gain": 0.0,
+    "file": "src/fit_field_base.cpp",
+    "label": "FieldBase::GetValue"
+  },
+  "197": {
+    "accepted": 0,
+    "attempts": 1,
+    "best_gain": 0.0,
+    "file": "src/fit_field_base.cpp",
+    "label": "FieldBase::ConvertBaseType"
+  },
+  "213": {
+    "accepted": 0,
+    "attempts": 1,
+    "best_gain": 0.0,
+    "file": "src/fit_mesg.cpp",
+    "label": "Mesg::Mesg"
+  },
+  "2430": {
+    "accepted": 0,
+    "attempts": 2,
+    "best_gain": 0.0,
+    "file": "src/fit_lap_mesg.hpp",
+    "label": "IsMaxCadenceValid"
+  },
+  "26": {
+    "accepted": 0,
+    "attempts": 1,
+    "best_gain": 0.0,
+    "file": "src/fit_crc.cpp",
+    "label": "CRC::Get16"
+  },
+  "50": {
+    "accepted": 0,
+    "attempts": 2,
+    "best_gain": 0.0,
+    "file": "src/fit_decode.cpp",
+    "label": "Decode::Resume"
+  },
+  "5381": {
+    "accepted": 0,
+    "attempts": 1,
+    "best_gain": 0.0,
+    "file": "src/fit_workout_step_mesg.hpp",
+    "label": "GetRepeatDistance"
+  },
+  "574": {
+    "accepted": 0,
+    "attempts": 6,
+    "best_gain": 0.0,
+    "file": "src/fit_profile.cpp",
+    "label": "Profile::GetMesg"
+  }
+}

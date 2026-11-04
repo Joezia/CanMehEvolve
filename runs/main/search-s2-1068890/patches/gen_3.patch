@@ -1,0 +1,31 @@
+--- a/src/fit_field.cpp
++++ b/src/fit_field.cpp
+@@ -15,6 +15,7 @@
+ #include "fit_field.hpp"
+ #include "fit_mesg.hpp"
+ #include "fit_unicode.hpp"
++#include <cstdint>
+ 
+ namespace fit
+ {
+@@ -97,15 +98,16 @@
+     return profile->fields[profileIndex].num;
+ }
+ 
++
+ FIT_UINT8 Field::GetType() const
+ {
+-    if ( type != FIT_UINT8_INVALID )
++    if (type != FIT_UINT8_INVALID)
+         return type;
+ 
+-    if ((profile == NULL) || (profileIndex >= profile->numFields))
+-        return FIT_UINT8_INVALID;
++    if (profile && profileIndex < profile->numFields)
++        return profile->fields[profileIndex].type;
+ 
+-    return profile->fields[profileIndex].type;
++    return FIT_UINT8_INVALID;
+ }
+ 
+ std::string Field::GetUnits() const

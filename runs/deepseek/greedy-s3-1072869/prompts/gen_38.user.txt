@@ -1,0 +1,20 @@
+File: src/fit_field_base.cpp
+Function: FieldBase::GetValuesBYTE (10 lines)
+One full decode of the four files takes about 480.8 ms in the stock build.
+Time of the current version of the whole library relative to stock: 0.856 (below 1.0 is faster). Best measured so far: 0.856.
+
+Current text of the function:
+```cpp
+FIT_BYTE FieldBase::GetValuesBYTE(FIT_UINT8 index) const
+{
+    /// Returns the Nth byte of the jagged values array
+    if (index >= GetSize())
+    {
+        return FIT_BYTE_INVALID;
+    }
+
+    return values[index];
+}
+
+```
+Return the faster replacement now.

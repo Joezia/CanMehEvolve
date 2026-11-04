@@ -1,0 +1,19 @@
+{
+  "api_calls": 2,
+  "best_confirmed_generation": 0,
+  "best_confirmed_speedup": 1.0,
+  "best_retained_speedup": 1.0,
+  "completion_tokens": 846,
+  "confirmed_candidates": 0,
+  "elapsed_s": 189.687495055,
+  "ended_because": "generations exhausted",
+  "finished": "2026-11-03T21:41:35+0800",
+  "improved_on_parent_candidates": 0,
+  "mode": "search",
+  "outcomes": {
+    "correctness": 2
+  },
+  "prompt_tokens": 1946,
+  "seed": 2,
+  "total_tokens": 2792
+}

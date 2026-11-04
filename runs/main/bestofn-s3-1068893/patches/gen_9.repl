@@ -1,0 +1,37 @@
+Looking at this function, the key insight is that `profileIndex >= profile->numFields` is a bounds check that can be optimized. Since `profileIndex` is likely an unsigned type (common in C++ SDKs), comparing it with `numFields` (also likely unsigned) is efficient, but we can eliminate the redundant null check on `profile` by restructuring the logic.
+
+However, the real optimization opportunity is recognizing that `profile` and `profileIndex` are likely accessed together frequently. The current code checks `profile == NULL` first, then `profileIndex >= profile->numFields`, which means if `profile` is non-null, we do two checks. We can combine this into a single condition using short-circuit evaluation more efficiently.
+
+But actually, the biggest win is realizing that `FIT_UINT8_INVALID` is probably 0xFF (255), and `type` is initialized to that value. The common case is likely that `type != FIT_UINT8_INVALID` is false (i.e., type needs to be looked up from profile), so we want that path to be faster.
+
+Wait - re-reading: the stock build takes 480ms, and we need faster. The current function has three branches in the worst case. We can reduce this to one branch for the common case by reordering or using conditional expressions.
+
+The most effective optimization is to use the fact that if `profile` is non-null, then `profileIndex` should be valid (since this is internal SDK code), so we can hoist the null check and use a more efficient pattern.
+
+But the actual fastest approach is to eliminate the redundant check - if `profile` is non-null, then `profileIndex` is guaranteed to be in range (this is an invariant in well-designed SDK code). So we can do:
+
+```cpp
+FIT_UINT8 Field::GetType() const
+{
+    if (type != FIT_UINT8_INVALID)
+        return type;
+
+    return (profile && (profileIndex < profile->numFields))
+        ? profile->fields[profileIndex].type
+        : FIT_UINT8_INVALID;
+}
+```
+
+This reduces the branch prediction penalty by combining the null check and bounds check into a single conditional expression, and the ternary operator compiles to a conditional move on modern CPUs when the values are simple, avoiding branches entirely in the common case.
+
+```cpp
+FIT_UINT8 Field::GetType() const
+{
+    if (type != FIT_UINT8_INVALID)
+        return type;
+
+    return (profile && (profileIndex < profile->numFields))
+        ? profile->fields[profileIndex].type
+        : FIT_UINT8_INVALID;
+}
+```

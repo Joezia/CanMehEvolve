@@ -1,0 +1,71 @@
+File: src/fit_profile.cpp
+Function: Profile::GetMesg (10 lines)
+One full decode of the four files takes about 358.8 ms in the stock build.
+Time of the current version of the whole library relative to stock: 0.963 (below 1.0 is faster). Best measured so far: 0.949.
+
+Your previous attempt failed:
+Stage 'compile' rejected it: /home/z/zhouzia/Workspace/CanMehEvolve/build/work-1068886/tree/src/fit_profile.cpp: In static member function ‘static const fit::Profile::MESG* fit::Profile::GetMesg(FIT_UINT16)’:
+/home/z/zhouzia/Workspace/CanMehEvolve/build/work-1068886/tree/src/fit_profile.cpp:3067:48: error: variable ‘const std::array<short unsigned int, 124> sorted_indices’ has initializer but incomplete type
+ 3067 |     static const std::array<FIT_UINT16, MESGS> sorted_indices = []() {
+      |                                                ^~~~~~~~~~~~~~
+/home/z/zhouzia/Workspace/CanMehEvolve/build/work-1068886/tree/src/fit_profile.cpp: In lambda function:
+/home/z/zhouzia/Workspace/CanMehEvolve/build/work-1068886/tree/src/fit_profile.cpp:3068:39: error: aggregate ‘std::array<short unsigned int, 124> indices’ has incomplete type and cannot be defined
+ 3068 |         std::array<FIT_UINT16, MESGS> indices;
+      |                                       ^~~~~~~
+
+The rejected replacement was:
+```cpp
+
+const Profile::MESG* Profile::GetMesg(const FIT_UINT16 num)
+{
+    // Precomputed sorted indices at compile time via static constexpr array
+    // Use std::lower_bound for faster binary search with branch prediction optimization
+    static const std::array<FIT_UINT16, MESGS> sorted_indices = []() {
+        std::array<FIT_UINT16, MESGS> indices;
+        for (FIT_UINT16 i = 0; i < MESGS; ++i) indices[i] = i;
+        std::sort(indices.begin(), indices.end(), [](FIT_UINT16 a, FIT_UINT16 b) {
+            return mesgs[a].num < mesgs[b].num;
+        });
+        return indices;
+    }();
+
+    auto it = std::lower_bound(sorted_indices.begin(), sorted_indices.end(), num,
+        [](FIT_UINT16 idx, FIT_UINT16 target) {
+            return mesgs[idx].num < target;
+        });
+
+    if (it != sorted_indices.end() && mesgs[*it].num == num) {
+        return &mesgs[*it];
+    }
+    return NULL;
+}
+
+```
+
+Current text of the function:
+```cpp
+const Profile::MESG* Profile::GetMesg(const FIT_UINT16 num)
+{
+    // Use static sorted lookup with binary search for O(log n) performance
+    static std::vector<FIT_UINT16> sorted_indices = []() {
+        std::vector<FIT_UINT16> indices(MESGS);
+        for (FIT_UINT16 i = 0; i < MESGS; ++i) indices[i] = i;
+        std::sort(indices.begin(), indices.end(), [](FIT_UINT16 a, FIT_UINT16 b) {
+            return mesgs[a].num < mesgs[b].num;
+        });
+        return indices;
+    }();
+
+    int left = 0, right = MESGS - 1;
+    while (left <= right) {
+        int mid = left + ((right - left) >> 1);
+        FIT_UINT16 val = mesgs[sorted_indices[mid]].num;
+        if (val == num) return &mesgs[sorted_indices[mid]];
+        if (val < num) left = mid + 1;
+        else right = mid - 1;
+    }
+    return NULL;
+}
+
+```
+Return the faster replacement now.

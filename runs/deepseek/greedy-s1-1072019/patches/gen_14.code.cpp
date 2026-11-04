@@ -1,0 +1,93 @@
+FIT_UINT16 Mesg::GetActiveSubFieldIndexByFieldIndex(const FIT_UINT16 fieldIndex) const
+{
+    if (fieldIndex >= GetNumFields())
+        return FIT_SUBFIELD_INDEX_MAIN_FIELD;
+
+    const Field& field = fields[fieldIndex];
+    const FIT_UINT16 numSubFields = field.GetNumSubFields();
+
+    if (numSubFields == 0)
+        return FIT_SUBFIELD_INDEX_MAIN_FIELD;
+
+    if (numSubFields == 1)
+    {
+        const Profile::SUBFIELD* subField = field.GetSubField(0);
+        if (subField == FIT_NULL)
+            return FIT_SUBFIELD_INDEX_MAIN_FIELD;
+
+        const FIT_UINT16 numMaps = subField->numMaps;
+        if (numMaps == 0)
+            return FIT_SUBFIELD_INDEX_MAIN_FIELD;
+
+        if (numMaps == 1)
+        {
+            const auto& map = subField->maps[0];
+            const Field* refField = GetField(map.refFieldNum);
+            if (refField != FIT_NULL)
+            {
+                FIT_FLOAT64 refValue = refField->GetFLOAT64Value(0, FIT_SUBFIELD_INDEX_MAIN_FIELD);
+                refValue += ((refValue >= 0.0) ? 0.5 : -0.5);
+                if ((FIT_SINT32)refValue == map.refFieldValue)
+                    return 0;
+            }
+            return FIT_SUBFIELD_INDEX_MAIN_FIELD;
+        }
+    }
+
+    enum { CACHE_SIZE = 16, CACHE_MASK = CACHE_SIZE - 1 };
+    const Field* cachedFields[CACHE_SIZE];
+    FIT_UINT16 cachedNums[CACHE_SIZE];
+    FIT_SINT32 cachedVals[CACHE_SIZE];
+    FIT_UINT16 cachedSet = 0;
+
+    for (FIT_UINT16 i = 0; i < numSubFields; i++)
+    {
+        const Profile::SUBFIELD* subField = field.GetSubField(i);
+
+        if (subField != FIT_NULL)
+        {
+            const FIT_UINT16 numMaps = subField->numMaps;
+
+            for (FIT_UINT16 j = 0; j < numMaps; j++)
+            {
+                const auto& map = subField->maps[j];
+                const FIT_UINT16 refFieldNum = map.refFieldNum;
+                const FIT_UINT16 slot = (FIT_UINT16)(refFieldNum & CACHE_MASK);
+                const FIT_UINT16 bit = (FIT_UINT16)(1u << slot);
+
+                const Field* refField;
+                FIT_SINT32 refValueInt;
+
+                if ((cachedSet & bit) != 0 && cachedNums[slot] == refFieldNum)
+                {
+                    refField = cachedFields[slot];
+                    refValueInt = cachedVals[slot];
+                }
+                else
+                {
+                    refField = GetField(refFieldNum);
+                    if (refField != FIT_NULL)
+                    {
+                        FIT_FLOAT64 refValue = refField->GetFLOAT64Value(0, FIT_SUBFIELD_INDEX_MAIN_FIELD);
+                        refValue += ((refValue >= 0.0) ? 0.5 : -0.5);
+                        refValueInt = (FIT_SINT32)refValue;
+                    }
+                    else
+                    {
+                        refValueInt = 0;
+                    }
+
+                    cachedFields[slot] = refField;
+                    cachedNums[slot] = refFieldNum;
+                    cachedVals[slot] = refValueInt;
+                    cachedSet = (FIT_UINT16)(cachedSet | bit);
+                }
+
+                if (refField != FIT_NULL && refValueInt == map.refFieldValue)
+                    return i;
+            }
+        }
+    }
+
+    return FIT_SUBFIELD_INDEX_MAIN_FIELD;
+}

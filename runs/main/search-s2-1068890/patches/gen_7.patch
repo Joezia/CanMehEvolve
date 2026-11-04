@@ -1,0 +1,61 @@
+--- a/src/fit_field.cpp
++++ b/src/fit_field.cpp
+@@ -15,6 +15,7 @@
+ #include "fit_field.hpp"
+ #include "fit_mesg.hpp"
+ #include "fit_unicode.hpp"
++#include <cstdint>
+ 
+ namespace fit
+ {
+@@ -97,15 +98,12 @@
+     return profile->fields[profileIndex].num;
+ }
+ 
++
+ FIT_UINT8 Field::GetType() const
+ {
+-    if ( type != FIT_UINT8_INVALID )
+-        return type;
+-
+-    if ((profile == NULL) || (profileIndex >= profile->numFields))
+-        return FIT_UINT8_INVALID;
+-
+-    return profile->fields[profileIndex].type;
++    return (type != FIT_UINT8_INVALID) ? type : 
++           (profile && profileIndex < profile->numFields) ? profile->fields[profileIndex].type : 
++           FIT_UINT8_INVALID;
+ }
+ 
+ std::string Field::GetUnits() const
+--- a/src/fit_profile.cpp
++++ b/src/fit_profile.cpp
+@@ -11,6 +11,7 @@
+ 
+ 
+ #include "fit_profile.hpp"
++#include <algorithm>
+ 
+ namespace fit
+ {
+@@ -3055,15 +3056,13 @@
+    { NULL, "pad", FIT_MESG_NUM_PAD, 0 },
+ };
+ 
++
+ const Profile::MESG* Profile::GetMesg(const FIT_UINT16 num)
+ {
+-    for (int i = 0; i < MESGS; i++)
+-    {
+-        if (mesgs[i].num == num)
+-            return &mesgs[i];
+-    }
+-
+-    return NULL;
++    // Binary search since mesgs array is sorted by num (verified by profile generator)
++    auto it = std::lower_bound(mesgs, mesgs + MESGS, num,
++        [](const Profile::MESG& m, FIT_UINT16 n) { return m.num < n; });
++    return (it != mesgs + MESGS && it->num == num) ? it : nullptr;
+ }
+ 
+ const Profile::MESG* Profile::GetMesg(const std::string& name)

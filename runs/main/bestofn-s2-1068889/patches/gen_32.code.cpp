@@ -1,0 +1,9 @@
+
+FIT_FLOAT64 FieldBase::GetScale(const FIT_UINT16 subFieldIndex) const
+{
+    if (subFieldIndex >= GetNumSubFields())
+        return GetScale();
+
+    auto subfield = GetSubField(subFieldIndex);
+    return (subfield != nullptr) ? subfield->scale : 1.0;
+}

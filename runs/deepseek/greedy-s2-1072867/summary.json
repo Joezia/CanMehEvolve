@@ -1,0 +1,122 @@
+{
+  "api_calls": 40,
+  "best_confirmed_generation": 0,
+  "best_confirmed_speedup": 1.0,
+  "best_ranked_generation": 40,
+  "best_ranked_speedup": 1.2146203917088136,
+  "best_retained_speedup": 1.2146203917088136,
+  "completion_tokens": 575762,
+  "confirmed_candidates": 13,
+  "elapsed_s": 9244.345611223,
+  "ended_because": "generations exhausted",
+  "finished": "2026-11-04T17:51:56+0800",
+  "improved_on_parent_candidates": 11,
+  "llm_seconds": 5727.289650750001,
+  "max_tokens": 32768,
+  "mode": "greedy",
+  "outcomes": {
+    "compile": 10,
+    "correctness": 2,
+    "crash": 1,
+    "llm_http": 1,
+    "llm_nocode": 1,
+    "measured": 21,
+    "truncated": 2,
+    "unchanged": 2
+  },
+  "prompt_tokens": 20899,
+  "rank_updates": [
+    {
+      "R": 0.9307129804205011,
+      "generation": 2,
+      "label": "Profile::GetMesg",
+      "previous_R": 1.0,
+      "region": 574,
+      "speedup": 1.0744450985825884
+    },
+    {
+      "R": 0.8858916377166567,
+      "generation": 3,
+      "label": "FieldBase::FieldBase",
+      "previous_R": 0.9307129804205011,
+      "region": 134,
+      "speedup": 1.1288062302715174
+    },
+    {
+      "R": 0.8753339713864976,
+      "generation": 7,
+      "label": "FieldBase::GetValue",
+      "previous_R": 0.8858916377166567,
+      "region": 196,
+      "speedup": 1.1424211017607782
+    },
+    {
+      "R": 0.8743993066294098,
+      "generation": 8,
+      "label": "Mesg::AddField",
+      "previous_R": 0.8753339713864976,
+      "region": 226,
+      "speedup": 1.143642260942257
+    },
+    {
+      "R": 0.8722446038289691,
+      "generation": 21,
+      "label": "Field::GetNum",
+      "previous_R": 0.8743993066294098,
+      "region": 122,
+      "speedup": 1.1464673964278045
+    },
+    {
+      "R": 0.8716105171827393,
+      "generation": 24,
+      "label": "FieldBase::GetValue",
+      "previous_R": 0.8722446038289691,
+      "region": 196,
+      "speedup": 1.1473014382986648
+    },
+    {
+      "R": 0.871322927374328,
+      "generation": 26,
+      "label": "Field::GetNum",
+      "previous_R": 0.8716105171827393,
+      "region": 122,
+      "speedup": 1.1476801178794085
+    },
+    {
+      "R": 0.8551547424115309,
+      "generation": 27,
+      "label": "Profile::GetFieldIndex",
+      "previous_R": 0.871322927374328,
+      "region": 576,
+      "speedup": 1.1693790028925133
+    },
+    {
+      "R": 0.854800603000648,
+      "generation": 33,
+      "label": "Profile::GetMesg",
+      "previous_R": 0.8551547424115309,
+      "region": 574,
+      "speedup": 1.1698634704861597
+    },
+    {
+      "R": 0.847178286201314,
+      "generation": 37,
+      "label": "Decode::Resume",
+      "previous_R": 0.854800603000648,
+      "region": 50,
+      "speedup": 1.1803890825435666
+    },
+    {
+      "R": 0.823302495846566,
+      "generation": 40,
+      "label": "FieldBase::GetNumValues",
+      "previous_R": 0.847178286201314,
+      "region": 143,
+      "speedup": 1.2146203917088136
+    }
+  ],
+  "reasoning_tokens": 564776,
+  "seed": 2,
+  "total_tokens": 596661,
+  "truncated_replies": 2
+}

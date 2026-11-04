@@ -1,0 +1,29 @@
+--- a/src/fit_field.cpp
++++ b/src/fit_field.cpp
+@@ -70,7 +70,7 @@
+ 
+ FIT_BOOL Field::IsValid(void) const
+ {
+-    return profileIndex != FIT_UINT16_INVALID;
++    return static_cast<FIT_BOOL>(profileIndex != FIT_UINT16_INVALID);
+ }
+ 
+ FIT_BOOL Field::GetIsAccumulated() const
+--- a/src/fit_mesg.cpp
++++ b/src/fit_mesg.cpp
+@@ -250,10 +250,12 @@
+ 
+ Field* Mesg::GetField(const FIT_UINT8 fieldNum)
+ {
+-    for (int i = 0; i < (int)fields.size(); i++)
++    Field* const data = fields.data();
++    const auto count = fields.size();
++    for (decltype(fields.size()) i = 0; i < count; ++i)
+     {
+-        if (fields[i].GetNum() == fieldNum)
+-            return &fields[i];
++        if (data[i].GetNum() == fieldNum)
++            return &data[i];
+     }
+ 
+     return FIT_NULL;

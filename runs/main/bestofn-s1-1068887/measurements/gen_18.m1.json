@@ -1,0 +1,6 @@
+{
+ "error": "In file included from /home/z/zhouzia/Workspace/CanMehEvolve/build/work-1068887/tree/src/fit_sleep_assessment_mesg_listener.hpp:16,\n                 from /home/z/zhouzia/Workspace/CanMehEvolve/build/work-1068887/tree/src/fit_mesg_broadcaster.hpp:143,\n                 from /home/z/zhouzia/Workspace/CanMehEvolve/build/work-1068887/tree/src/fit_buffered_mesg_broadcaster.hpp:17,\n                 from /home/z/zhouzia/Workspace/CanMehEvolve/build/work-1068887/tree/src/fit_buffered_mesg_broadcaster.cpp:14:\n/home/z/zhouzia/Workspace/CanMehEvolve/build/work-1068887/tree/src/fit_sleep_assessment_mesg.hpp:445:1: error: stray ‘`’ in program\n  445 | ```cpp\n      | ^\n/home/z/zhouzia/Workspace/CanMehEvolve/build/work-1068887/tree/src/fit_sleep_assessment_mesg.hpp:445:2: error: stray ‘`’ in program\n  445 | ```cpp\n      |  ^\n/home/z/zhouzia/Workspace/CanMehEvolve/build/work-1068887/tree/src/fit_sleep_assessment_mesg.hpp:445:3: error: stray ‘`’ in program\n  445 | ```cpp\n      |   ^\n/home/z/zhouzia/Workspace/CanMehEvolve/build/work-1068887/tree/src/fit_sleep_assessment_mesg.hpp:445:4: error: ‘cpp’ does not name a type\n  445 | ```cpp\n      |    ^~~\n",
+ "ok": false,
+ "rebuilt": 4,
+ "stage": "compile"
+}

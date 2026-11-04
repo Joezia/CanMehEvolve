@@ -1,0 +1,8 @@
+The getter already compiles to a single byte load, so the only safe lever is letting the compiler treat it as side-effect-free (enabling CSE/inlining where the definition is visible); the body stays an exact byte load.
+
+```cpp
+__attribute__((pure)) FIT_UINT8 FieldDefinition::GetNum() const
+{
+    return num;
+}
+```

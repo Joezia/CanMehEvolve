@@ -1,0 +1,9 @@
+Kept the single delegation but forced the callee to be inlined into this wrapper with GCC's `flatten` attribute, so the hot path becomes one store+return instead of an extra call/jump hop. Semantics are identical since the same setter runs with the same arguments.
+
+```cpp
+__attribute__((flatten))
+void FieldBase::SetUINT64ZValue(const FIT_UINT64Z value, const FIT_UINT8 fieldArrayIndex)
+{
+    SetUINT64Value(value, fieldArrayIndex);
+}
+```

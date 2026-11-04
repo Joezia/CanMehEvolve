@@ -1,0 +1,39 @@
+Looking at this function, it's performing a linear search through an array of fields for each field lookup. Since field numbers are typically small and the number of fields per message is limited, we can optimize this by precomputing a lookup table.
+
+The key insight is that field numbers are typically sequential and small (0-255), so we can create a mapping from field number to index for each message type, avoiding the linear search entirely.
+
+However, since we can only modify this one function and must maintain exact behavior, and given the constraints of the codebase, the fastest drop-in replacement is to unroll the loop for the common case where messages have very few fields (typically 1-4 fields per message in FIT profile).
+
+But actually, the most effective optimization without changing data structures is to use a small fixed-size loop unrolling since the number of fields per message is small (typically < 10). But the real bottleneck is the linear search.
+
+Wait - looking at the context again: the benchmark compares checksums and sweeps profile lookup functions over their whole input domain. This means we need to maintain identical behavior.
+
+The fastest approach while maintaining behavior is to use a small constant-time optimization for the common small array case. Since FIT messages typically have very few fields (most have 1-5), we can unroll the loop for the first few fields.
+
+```cpp
+const FIT_UINT16 Profile::GetFieldIndex(const FIT_UINT16 mesgNum, const FIT_UINT8 fieldNum)
+{
+    const MESG *mesg = GetMesg(mesgNum);
+
+    if (mesg == NULL)
+        return FIT_UINT16_INVALID;
+
+    // Unroll loop for small number of fields (typical case in FIT profile)
+    const FIT_UINT16 numFields = mesg->numFields;
+    if (numFields > 0 && mesg->fields[0].num == fieldNum) return 0;
+    if (numFields > 1 && mesg->fields[1].num == fieldNum) return 1;
+    if (numFields > 2 && mesg->fields[2].num == fieldNum) return 2;
+    if (numFields > 3 && mesg->fields[3].num == fieldNum) return 3;
+    if (numFields > 4 && mesg->fields[4].num == fieldNum) return 4;
+    if (numFields > 5 && mesg->fields[5].num == fieldNum) return 5;
+    
+    // Fallback for larger field counts
+    for (FIT_UINT16 i = 6; i < numFields; i++)
+    {
+        if (mesg->fields[i].num == fieldNum)
+            return i;
+    }
+
+    return FIT_UINT16_INVALID;
+}
+```

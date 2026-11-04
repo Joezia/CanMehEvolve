@@ -1,0 +1,11 @@
+The function is already a single branch plus one indexed load; I hoisted `profile` into a local pointer so the null check and the dereference use one load, letting the compiler emit a tighter branch-and-load sequence.
+
+```cpp
+FIT_UINT16 Field::GetNumSubFields(void) const
+{
+    const Profile* p = profile;
+    if ((p == NULL) || (profileIndex >= p->numFields))
+        return 0;
+    return p->fields[profileIndex].numSubFields;
+}
+```

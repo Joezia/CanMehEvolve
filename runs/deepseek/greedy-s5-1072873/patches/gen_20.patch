@@ -1,0 +1,163 @@
+--- a/src/fit_field_base.cpp
++++ b/src/fit_field_base.cpp
+@@ -16,6 +16,7 @@
+ #include "fit_field_base.hpp"
+ #include "fit_mesg.hpp"
+ #include "fit_unicode.hpp"
++#include <cstring>
+ 
+ namespace fit
+ {
+@@ -25,9 +26,9 @@
+ }
+ 
+ FieldBase::FieldBase(const FieldBase &field)
++    : values(field.values),
++      stringIndexes(field.stringIndexes)
+ {
+-    values = field.values;
+-    stringIndexes = field.stringIndexes;
+ }
+ 
+ FieldBase::~FieldBase()
+@@ -1131,20 +1132,50 @@
+ template <typename T>
+ T FieldBase::GetValue(const FIT_UINT8 fieldArrayIndex) const
+ {
+-    FIT_UINT8 size = baseTypeSizes[GetType() & FIT_BASE_TYPE_NUM_MASK];
++    const FIT_UINT8 type = GetType();
++    const FIT_UINT8 baseType = type & FIT_BASE_TYPE_NUM_MASK;
++    const FIT_UINT8 size = baseTypeSizes[baseType];
++
+     if (fieldArrayIndex >= (FIT_UINT8)values.size())
+     {
+-        return *reinterpret_cast<const T*>(baseTypeInvalids[GetType() & FIT_BASE_TYPE_NUM_MASK]);
++        return *reinterpret_cast<const T*>(baseTypeInvalids[baseType]);
+     }
+ 
+-    T rv = 0;
++    const FIT_UINT8* p = values.data() + (fieldArrayIndex * size);
++    FIT_UINT64 rv;
+ 
+-    for (int i = 0; i < size; i++)
++    switch (size)
+     {
+-        rv |= static_cast<T>(values[(fieldArrayIndex * size) + i]) << (i * 8);
++        case 1:
++            rv = p[0];
++            break;
++        case 2:
++        {
++            FIT_UINT16 v;
++            std::memcpy(&v, p, sizeof(v));
++            rv = v;
++            break;
++        }
++        case 4:
++        {
++            FIT_UINT32 v;
++            std::memcpy(&v, p, sizeof(v));
++            rv = v;
++            break;
++        }
++        case 8:
++        {
++            FIT_UINT64 v;
++            std::memcpy(&v, p, sizeof(v));
++            rv = v;
++            break;
++        }
++        default:
++            rv = 0;
++            break;
+     }
+ 
+-    return rv;
++    return static_cast<T>(rv);
+ }
+ 
+ 
+--- a/src/fit_profile.cpp
++++ b/src/fit_profile.cpp
+@@ -11,6 +11,7 @@
+ 
+ 
+ #include "fit_profile.hpp"
++#include <cstring>
+ 
+ namespace fit
+ {
+@@ -3057,13 +3058,20 @@
+ 
+ const Profile::MESG* Profile::GetMesg(const FIT_UINT16 num)
+ {
+-    for (int i = 0; i < MESGS; i++)
++    static const Profile::MESG* lookup[65536] = {};
++    static bool initialized = false;
++
++    if (!initialized)
+     {
+-        if (mesgs[i].num == num)
+-            return &mesgs[i];
++        for (int i = 0; i < MESGS; i++)
++        {
++            if (lookup[mesgs[i].num] == NULL)
++                lookup[mesgs[i].num] = &mesgs[i];
++        }
++        initialized = true;
+     }
+ 
+-    return NULL;
++    return lookup[num];
+ }
+ 
+ const Profile::MESG* Profile::GetMesg(const std::string& name)
+@@ -3079,18 +3087,42 @@
+ 
+ const FIT_UINT16 Profile::GetFieldIndex(const FIT_UINT16 mesgNum, const FIT_UINT8 fieldNum)
+ {
+-    const MESG *mesg = GetMesg(mesgNum);
++    struct CacheEntry
++    {
++        FIT_UINT32 key; // 0 = empty, otherwise mesgNum + 1
++        const MESG *mesg;
++        FIT_UINT16 index[256];
++    };
++
++    static CacheEntry cache[64] = {};
++
++    CacheEntry &e = cache[mesgNum & 63];
++    const FIT_UINT32 key = static_cast<FIT_UINT32>(mesgNum) + 1;
+ 
+-    if (mesg == NULL)
++    if (e.key == key)
++    {
++        return e.mesg ? e.index[fieldNum] : FIT_UINT16_INVALID;
++    }
++
++    e.key = key;
++    e.mesg = GetMesg(mesgNum);
++
++    if (e.mesg == NULL)
++    {
+         return FIT_UINT16_INVALID;
++    }
++
++    std::memset(e.index, 0xFF, sizeof(e.index));
+ 
+-    for (FIT_UINT16 i = 0; i < mesg->numFields; i++)
++    const MESG *mesg = e.mesg;
++    const FIELD *fields = mesg->fields;
++    for (FIT_UINT16 i = mesg->numFields; i > 0; )
+     {
+-        if (mesg->fields[i].num == fieldNum)
+-            return i;
++        --i;
++        e.index[fields[i].num] = i;
+     }
+ 
+-    return FIT_UINT16_INVALID;
++    return e.index[fieldNum];
+ }
+ 
+ const FIT_UINT16 Profile::GetFieldIndex(const std::string& mesgName, const std::string& fieldName)

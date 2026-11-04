@@ -1,0 +1,11 @@
+The member-wise copy is already optimal because the vector copy constructors perform a single contiguous copy; any manual reconstruction would add overhead. I kept the implementation identical to preserve exact behavior.
+
+```cpp
+Mesg::Mesg(const Mesg &mesg)
+    : profile(mesg.profile)
+    , localNum(mesg.localNum)
+    , fields(mesg.fields)
+    , devFields(mesg.devFields)
+{
+}
+```

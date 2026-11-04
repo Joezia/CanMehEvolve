@@ -1,0 +1,5 @@
+FIT_BOOL IsMaxCadenceValid() const
+{
+    const Field* field = GetField(18);
+    return (field && field->IsValueValid()) ? FIT_TRUE : FIT_FALSE;
+}

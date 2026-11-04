@@ -1,0 +1,8 @@
+This setter is a thin forwarder to `SetFieldFLOAT32Value` with constant arguments; there is no redundant computation to remove without altering behavior, so the optimal drop-in is the identical body (the compiler already inlines the constant-index call).
+
+```cpp
+    void SetTotalFractionalAscent(FIT_FLOAT32 totalFractionalAscent)
+    {
+        SetFieldFLOAT32Value(89, totalFractionalAscent, 0, FIT_SUBFIELD_INDEX_MAIN_FIELD);
+    }
+```

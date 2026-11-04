@@ -1,0 +1,128 @@
+{
+  "113": {
+    "accepted": 0,
+    "attempts": 1,
+    "best_gain": 0.0,
+    "file": "src/fit_field.cpp",
+    "label": "Field::Field"
+  },
+  "115": {
+    "accepted": 0,
+    "attempts": 1,
+    "best_gain": 0.0,
+    "file": "src/fit_field.cpp",
+    "label": "Field::Field"
+  },
+  "122": {
+    "accepted": 0,
+    "attempts": 4,
+    "best_gain": 0.0,
+    "file": "src/fit_field.cpp",
+    "label": "Field::GetNum"
+  },
+  "123": {
+    "accepted": 0,
+    "attempts": 3,
+    "best_gain": 0.0,
+    "file": "src/fit_field.cpp",
+    "label": "Field::GetType"
+  },
+  "126": {
+    "accepted": 0,
+    "attempts": 1,
+    "best_gain": 0.0,
+    "file": "src/fit_field.cpp",
+    "label": "Field::GetOffset"
+  },
+  "134": {
+    "accepted": 1,
+    "attempts": 3,
+    "best_gain": 0.0,
+    "file": "src/fit_field_base.cpp",
+    "label": "FieldBase::FieldBase"
+  },
+  "174": {
+    "accepted": 0,
+    "attempts": 1,
+    "best_gain": 0.0,
+    "file": "src/fit_field_base.cpp",
+    "label": "FieldBase::AddRawValue"
+  },
+  "192": {
+    "accepted": 1,
+    "attempts": 1,
+    "best_gain": 0.0,
+    "file": "src/fit_field_base.cpp",
+    "label": "FieldBase::Read"
+  },
+  "197": {
+    "accepted": 0,
+    "attempts": 1,
+    "best_gain": 0.0,
+    "file": "src/fit_field_base.cpp",
+    "label": "FieldBase::ConvertBaseType"
+  },
+  "203": {
+    "accepted": 1,
+    "attempts": 1,
+    "best_gain": 0.0,
+    "file": "src/fit_field_definition.cpp",
+    "label": "FieldDefinition::GetNum"
+  },
+  "234": {
+    "accepted": 2,
+    "attempts": 2,
+    "best_gain": 0.0,
+    "file": "src/fit_mesg.cpp",
+    "label": "Mesg::GetField"
+  },
+  "248": {
+    "accepted": 0,
+    "attempts": 1,
+    "best_gain": 0.0,
+    "file": "src/fit_mesg.cpp",
+    "label": "Mesg::GetFieldUINT8Value"
+  },
+  "26": {
+    "accepted": 2,
+    "attempts": 3,
+    "best_gain": 0.0,
+    "file": "src/fit_crc.cpp",
+    "label": "CRC::Get16"
+  },
+  "4335": {
+    "accepted": 0,
+    "attempts": 1,
+    "best_gain": 0.0,
+    "file": "src/fit_session_mesg.hpp",
+    "label": "GetEnhancedAvgAltitude"
+  },
+  "574": {
+    "accepted": 2,
+    "attempts": 6,
+    "best_gain": 0.0,
+    "file": "src/fit_profile.cpp",
+    "label": "Profile::GetMesg"
+  },
+  "576": {
+    "accepted": 2,
+    "attempts": 2,
+    "best_gain": 0.0,
+    "file": "src/fit_profile.cpp",
+    "label": "Profile::GetFieldIndex"
+  },
+  "85": {
+    "accepted": 0,
+    "attempts": 1,
+    "best_gain": 0.0,
+    "file": "src/fit_developer_field_definition.cpp",
+    "label": "DeveloperFieldDefinition::IsDefined"
+  },
+  "872": {
+    "accepted": 0,
+    "attempts": 1,
+    "best_gain": 0.0,
+    "file": "src/fit_bike_profile_mesg.hpp",
+    "label": "IsIdValid"
+  }
+}

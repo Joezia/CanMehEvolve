@@ -1,0 +1,19 @@
+This replaces the generic `std::find`/`erase` pair with a direct pointer scan and in-place shift using the vector's `data()`/`pop_back()`, avoiding iterator abstraction and the erase machinery for these tiny listener lists.
+
+```cpp
+void MesgBroadcaster::RemoveListener(HrvValueMesgListener& hrvValueMesgListener)
+{
+    HrvValueMesgListener **begin = hrvValueMesgListeners.data();
+    HrvValueMesgListener **end = begin + hrvValueMesgListeners.size();
+    HrvValueMesgListener **it = begin;
+    while (it != end && *it != &hrvValueMesgListener)
+        ++it;
+    if (it != end)
+    {
+        HrvValueMesgListener **src = it + 1;
+        while (src != end)
+            *it++ = *src++;
+        hrvValueMesgListeners.pop_back();
+    }
+}
+```

@@ -1,0 +1,8 @@
+Removed the redundant null checks and post-delete null assignments: `delete nullptr` is already a no-op and the members are dead after destruction, so this eliminates two branches and two stores per call.
+```cpp
+DeveloperFieldDefinition::~DeveloperFieldDefinition()
+{
+    delete mesg;
+    delete developer;
+}
+```

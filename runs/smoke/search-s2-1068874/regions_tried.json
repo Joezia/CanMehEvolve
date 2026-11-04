@@ -1,0 +1,9 @@
+{
+  "192": {
+    "accepted": 0,
+    "attempts": 2,
+    "best_gain": 0.0,
+    "file": "src/fit_field_base.cpp",
+    "label": "FieldBase::Read"
+  }
+}

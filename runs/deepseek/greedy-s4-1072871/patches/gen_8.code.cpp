@@ -1,0 +1,131 @@
+FIT_BOOL FieldBase::Read(const void *data, const FIT_UINT8 size)
+{
+    const FIT_UINT8 type = GetType();
+    const FIT_UINT8 typeIndex = type & FIT_BASE_TYPE_NUM_MASK;
+    const FIT_UINT8 typeSize = baseTypeSizes[typeIndex];
+    FIT_BYTE *byteData = (FIT_BYTE *) data;
+
+    values.clear();
+
+    if (type == FIT_BASE_TYPE_STRING)
+    {
+        FIT_UINT8 index = 0;
+        while (index < size && byteData[index] == 0)
+        {
+            ++index;
+        }
+
+        if (index == size)
+        {
+            return FIT_TRUE;
+        }
+
+        stringIndexes.push_back(0);
+        values.assign(byteData, byteData + size);
+
+        for (int i = 0; i + 2 < (int)size; ++i)
+        {
+            if (byteData[i] == 0)
+            {
+                stringIndexes.push_back((FIT_UINT8)(i + 1));
+            }
+        }
+
+        if (values.back() != 0)
+        {
+            values.push_back(0);
+        }
+
+        return FIT_TRUE;
+    }
+
+    const void *invalid = baseTypeInvalids[typeIndex];
+    int bytes = size;
+    FIT_BYTE *point = byteData;
+
+    if (typeSize == 1)
+    {
+        const FIT_UINT8 inv = ((const FIT_UINT8 *)invalid)[0];
+        while (bytes > 0)
+        {
+            if ((FIT_UINT8)*point != inv)
+            {
+                values.assign(byteData, byteData + size);
+                return FIT_TRUE;
+            }
+            ++point;
+            --bytes;
+        }
+        return FIT_TRUE;
+    }
+
+    if (typeSize == 2)
+    {
+        FIT_UINT16 inv;
+        std::memcpy(&inv, invalid, 2);
+        while (bytes > 0)
+        {
+            FIT_UINT16 value;
+            std::memcpy(&value, point, 2);
+            if (value != inv)
+            {
+                values.assign(byteData, byteData + size);
+                return FIT_TRUE;
+            }
+            point += 2;
+            bytes -= 2;
+        }
+        return FIT_TRUE;
+    }
+
+    if (typeSize == 4)
+    {
+        FIT_UINT32 inv;
+        std::memcpy(&inv, invalid, 4);
+        while (bytes > 0)
+        {
+            FIT_UINT32 value;
+            std::memcpy(&value, point, 4);
+            if (value != inv)
+            {
+                values.assign(byteData, byteData + size);
+                return FIT_TRUE;
+            }
+            point += 4;
+            bytes -= 4;
+        }
+        return FIT_TRUE;
+    }
+
+    if (typeSize == 8)
+    {
+        FIT_UINT64 inv;
+        std::memcpy(&inv, invalid, 8);
+        while (bytes > 0)
+        {
+            FIT_UINT64 value;
+            std::memcpy(&value, point, 8);
+            if (value != inv)
+            {
+                values.assign(byteData, byteData + size);
+                return FIT_TRUE;
+            }
+            point += 8;
+            bytes -= 8;
+        }
+        return FIT_TRUE;
+    }
+
+    while (bytes > 0)
+    {
+        if (std::memcmp(point, invalid, typeSize) != 0)
+        {
+            values.assign(byteData, byteData + size);
+            return FIT_TRUE;
+        }
+        point += typeSize;
+        bytes -= typeSize;
+    }
+
+    return FIT_TRUE;
+}

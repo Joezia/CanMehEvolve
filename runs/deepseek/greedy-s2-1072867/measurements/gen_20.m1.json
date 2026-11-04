@@ -1,0 +1,6 @@
+{
+ "error": "/home/z/zhouzia/Workspace/CanMehEvolve/build/work-1072867/tree/src/fit_field.cpp: In member function ‘virtual FIT_UINT8 fit::Field::GetNum() const’:\n/home/z/zhouzia/Workspace/CanMehEvolve/build/work-1072867/tree/src/fit_field.cpp:95:11: error: ‘FIT_PROFILE_MESG’ does not name a type; did you mean ‘FIT_PROFILE_HPP’?\n   95 |     const FIT_PROFILE_MESG *p = profile;\n      |           ^~~~~~~~~~~~~~~~\n      |           FIT_PROFILE_HPP\n/home/z/zhouzia/Workspace/CanMehEvolve/build/work-1072867/tree/src/fit_field.cpp:96:27: error: ‘p’ was not declared in this scope\n   96 |     if (__builtin_expect((p != NULL) && (profileIndex < p->numFields), 1))\n      |                           ^\n",
+ "ok": false,
+ "rebuilt": 4,
+ "stage": "compile"
+}

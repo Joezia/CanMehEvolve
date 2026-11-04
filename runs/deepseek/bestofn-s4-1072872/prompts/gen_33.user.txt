@@ -1,0 +1,21 @@
+File: src/fit_field_base.cpp
+Function: FieldBase::ConvertBaseType (11 lines)
+One full decode of the four files takes about 482.0 ms in the stock build.
+Time of the current version of the whole library relative to stock: 1.000 (below 1.0 is faster). Best measured so far: 1.000.
+
+Current text of the function:
+```cpp
+template <typename TTo, typename TFrom>
+TTo FieldBase::ConvertBaseType(const FIT_UINT8 fieldArrayIndex, const FIT_UINT8 toBaseType) const
+{
+    FIT_CONST_UINT8_PTR invalid = baseTypeInvalids[GetType() & FIT_BASE_TYPE_NUM_MASK];
+    TFrom value = GetValue<TFrom>(fieldArrayIndex);
+
+    if (memcmp(&value, invalid, sizeof(TFrom)) == 0)
+        return *reinterpret_cast<const TTo*>(baseTypeInvalids[toBaseType & FIT_BASE_TYPE_NUM_MASK]);
+
+    return static_cast<TTo>(value);
+}
+
+```
+Return the faster replacement now.

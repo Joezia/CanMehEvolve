@@ -1,0 +1,9 @@
+The change simplifies the conditional logic by combining the null check and validity check into a single short-circuit expression, avoiding an explicit branch and reducing instruction count. This improves performance by enabling better branch prediction and reducing code size.
+
+```cpp
+    FIT_BOOL IsHrCalcTypeValid() const
+    {
+        const Field* field = GetField(5);
+        return (field != FIT_NULL) && field->IsValueValid();
+    }
+```

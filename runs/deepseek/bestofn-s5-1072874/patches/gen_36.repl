@@ -1,0 +1,9 @@
+The function is already a minimal inlined field lookup, so I kept the exact semantics but collapsed the null check and validity call into a single conditional return expression, which lets the compiler emit a tighter branch/select sequence without changing any return value.
+
+```cpp
+    FIT_BOOL IsOpponentScoreValid() const
+    {
+        const Field* field = GetField(8);
+        return (FIT_NULL != field) ? field->IsValueValid() : FIT_FALSE;
+    }
+```

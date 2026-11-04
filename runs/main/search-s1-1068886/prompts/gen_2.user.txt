@@ -1,0 +1,14 @@
+File: src/fit_hsa_body_battery_data_mesg.hpp
+Function: SetTimestamp (4 lines)
+One full decode of the four files takes about 358.8 ms in the stock build.
+Time of the current version of the whole library relative to stock: 0.999 (below 1.0 is faster). Best measured so far: 0.999.
+
+Current text of the function:
+```cpp
+    void SetTimestamp(FIT_DATE_TIME timestamp)
+    {
+        SetFieldUINT32Value(253, timestamp, 0, FIT_SUBFIELD_INDEX_MAIN_FIELD);
+    }
+
+```
+Return the faster replacement now.

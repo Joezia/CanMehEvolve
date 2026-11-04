@@ -1,0 +1,93 @@
+FIT_BOOL FieldBase::Read(const void *data, const FIT_UINT8 size)
+{
+    FIT_UINT8 bytesLeft = size;
+    FIT_UINT8 type = GetType();
+    FIT_UINT8 typeSize = baseTypeSizes[type & FIT_BASE_TYPE_NUM_MASK];
+    FIT_BYTE *byteData = (FIT_BYTE *) data;
+
+    values.clear();
+
+    switch (type)
+    {
+        case FIT_BASE_TYPE_STRING:
+        {
+            if (size == 0)
+                break;
+
+            FIT_UINT8 index = 0;
+            while (index < size && byteData[index] == 0)
+                index++;
+            if (index == size)
+                break;
+
+            values.insert(values.end(), byteData, byteData + size);
+            stringIndexes.push_back(0);
+
+            for (FIT_UINT8 i = 0; i < size; ++i)
+            {
+                if (byteData[i] == 0 && i + 2 < size)
+                    stringIndexes.push_back(i + 1);
+            }
+
+            if (values.back() != 0)
+                values.push_back(0);
+        }
+            break;
+
+        default:
+        {
+            const FIT_BYTE *invalid = baseTypeInvalids[type & FIT_BASE_TYPE_NUM_MASK];
+            int bytes = bytesLeft;
+            FIT_BYTE *point = byteData;
+
+            while (bytes > 0)
+            {
+                bool isInvalid;
+                switch (typeSize)
+                {
+                    case 1:
+                        isInvalid = (*point == *invalid);
+                        break;
+                    case 2:
+                    {
+                        FIT_UINT16 a, b;
+                        memcpy(&a, point, 2);
+                        memcpy(&b, invalid, 2);
+                        isInvalid = (a == b);
+                    }
+                        break;
+                    case 4:
+                    {
+                        FIT_UINT32 a, b;
+                        memcpy(&a, point, 4);
+                        memcpy(&b, invalid, 4);
+                        isInvalid = (a == b);
+                    }
+                        break;
+                    case 8:
+                    {
+                        FIT_UINT64 a, b;
+                        memcpy(&a, point, 8);
+                        memcpy(&b, invalid, 8);
+                        isInvalid = (a == b);
+                    }
+                        break;
+                    default:
+                        isInvalid = (memcmp(point, invalid, typeSize) == 0);
+                        break;
+                }
+
+                if (!isInvalid)
+                {
+                    values.insert(values.end(), byteData, byteData + bytesLeft);
+                    break;
+                }
+                point += typeSize;
+                bytes -= typeSize;
+            }
+        }
+            break;
+    }
+
+    return FIT_TRUE;
+}

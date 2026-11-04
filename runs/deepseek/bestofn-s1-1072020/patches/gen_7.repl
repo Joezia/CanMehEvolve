@@ -1,0 +1,9 @@
+Using the member-initializer list lets both vectors be copy-constructed directly (one allocation and a memcpy of the trivially-copyable element type), instead of default-constructing them and then going through `vector::operator=`, which adds null-initialization and extra size/capacity branches.
+
+```cpp
+FieldBase::FieldBase(const FieldBase &field)
+    : values(field.values)
+    , stringIndexes(field.stringIndexes)
+{
+}
+```

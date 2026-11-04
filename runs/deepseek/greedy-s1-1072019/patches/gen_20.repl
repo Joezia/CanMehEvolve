@@ -1,0 +1,11 @@
+The function is already minimal; the only safe micro-optimisation is to read the size once and index the contiguous buffer, keeping behaviour identical.
+
+```cpp
+Field* Mesg::GetFieldByIndex(const FIT_UINT16 index)
+{
+    if (index < fields.size())
+        return &fields[index];
+
+    return FIT_NULL;
+}
+```

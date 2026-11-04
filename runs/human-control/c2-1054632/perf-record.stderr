@@ -1,0 +1,12 @@
+2026-11-01T16:25:57+08:00
+Running ./build/CanMehDecodeForSampler
+Run on (24 X 3200 MHz CPU s)
+CPU Caches:
+  L1 Data 32 KiB (x12)
+  L1 Instruction 32 KiB (x12)
+  L2 Unified 256 KiB (x12)
+  L3 Unified 15360 KiB (x2)
+Load Average: 0.38, 0.33, 0.15
+***WARNING*** CPU scaling is enabled, the benchmark real time measurements may be noisy and will incur extra overhead.
+[ perf record: Woken up 49 times to write data ]
+[ perf record: Captured and wrote 12.141 MB runs/human-control/c2-1054632/perf.data (1507 samples) ]

@@ -1,0 +1,11 @@
+--- a/src/fit_field.cpp
++++ b/src/fit_field.cpp
+@@ -117,7 +117,7 @@
+ 
+ FIT_FLOAT64 Field::GetScale() const
+ {
+-    if ((profile == NULL) || (profileIndex >= profile->numFields))
++    if (__builtin_expect((profile == NULL) || (profileIndex >= profile->numFields), 0))
+         return 1;
+     return profile->fields[profileIndex].scale;
+ }

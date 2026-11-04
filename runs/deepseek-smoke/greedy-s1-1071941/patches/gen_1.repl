@@ -1,0 +1,16 @@
+Hoisted the vector size and data pointer out of the loop so the scan avoids repeated `size()`/`operator[]` work on the vector object. This keeps the same first-match semantics while giving the compiler a simpler pointer/index loop.
+
+```cpp
+Field* Mesg::GetField(const FIT_UINT8 fieldNum)
+{
+    Field* const data = fields.data();
+    const auto count = fields.size();
+    for (decltype(fields.size()) i = 0; i < count; ++i)
+    {
+        if (data[i].GetNum() == fieldNum)
+            return &data[i];
+    }
+
+    return FIT_NULL;
+}
+```

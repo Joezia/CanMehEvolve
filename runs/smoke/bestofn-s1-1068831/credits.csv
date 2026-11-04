@@ -1,0 +1,4 @@
+generation,calls,prompt_tokens,completion_tokens,total_tokens,best_confirmed_speedup,best_retained_speedup,elapsed_s
+1,1,386,45,431,1,1,69.2
+2,2,763,77,840,1,1,72.0
+3,3,1152,121,1273,1,1,75.0

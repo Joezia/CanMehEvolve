@@ -1,0 +1,44 @@
+Looking at this function, it's performing a linear search through fields for each field lookup. Since field numbers are typically small and the number of fields per message is limited, we can optimize by precomputing a mapping from field number to index for each message type.
+
+However, given the constraints (must behave identically, no new data structures, same signature), the only optimization possible within this function is to use a more efficient search strategy or reduce overhead.
+
+The current implementation is a simple linear search. Since the number of fields per message is typically small (often < 10), the overhead of function calls and array bounds checking might be the bottleneck.
+
+The fastest approach within these constraints is to unroll the loop for small arrays or use early termination more efficiently. But the most practical optimization for this specific case is to cache the field index lookup using a small fixed-size array when the message is known to have few fields, but since we can't add state, we need to optimize the search itself.
+
+Actually, re-reading the constraints: we need identical behavior, and the benchmark compares checksums, so we can't change the algorithm. But we can optimize the loop.
+
+The current code has a branch inside the loop (comparison). We can reduce branch misprediction by checking the most common fields first, but without knowing the distribution, that's not reliable.
+
+The real optimization is to use a more efficient loop structure - unroll for small counts or use compiler hints.
+
+But the biggest win is likely to avoid the function call overhead or use compiler optimizations. Since we can't change the signature, the best we can do is optimize the loop itself.
+
+Given that FIT messages typically have very few fields (usually 1-8), the linear search is actually quite efficient, but we can make it faster by:
+1. Using const references where possible
+2. Unrolling for very small arrays
+3. Using compiler hints like `__builtin_expect`
+
+However, the most practical and safe optimization that maintains identical behavior is to use a pointer increment instead of array indexing to reduce address calculation overhead.
+
+```cpp
+const FIT_UINT16 Profile::GetFieldIndex(const FIT_UINT16 mesgNum, const FIT_UINT8 fieldNum)
+{
+    const MESG *mesg = GetMesg(mesgNum);
+
+    if (mesg == NULL)
+        return FIT_UINT16_INVALID;
+
+    const FIELD *field = mesg->fields;
+    const FIELD *field_end = field + mesg->numFields;
+
+    while (field < field_end)
+    {
+        if (field->num == fieldNum)
+            return static_cast<FIT_UINT16>(field - mesg->fields);
+        field++;
+    }
+
+    return FIT_UINT16_INVALID;
+}
+```

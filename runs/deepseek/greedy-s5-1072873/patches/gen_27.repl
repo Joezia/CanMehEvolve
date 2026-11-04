@@ -1,0 +1,12 @@
+I bypassed the generic `Mesg::SetFieldUINT8Value` dispatcher (which re-scans for the field and branches on the subfield index) by resolving field 0 once and writing the main value directly; this removes a call layer and a branch from every set.
+
+```cpp
+    void SetHeliumContent(FIT_UINT8 heliumContent)
+    {
+        Field* pField = GetField(0);
+        if (pField != FIT_NULL)
+        {
+            pField->SetUINT8Value(heliumContent);
+        }
+    }
+```

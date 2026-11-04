@@ -1,0 +1,363 @@
+--- a/src/fit_crc.cpp
++++ b/src/fit_crc.cpp
+@@ -22,18 +22,13 @@
+       0x0000, 0xCC01, 0xD801, 0x1400, 0xF001, 0x3C00, 0x2800, 0xE401,
+       0xA001, 0x6C00, 0x7800, 0xB401, 0x5000, 0x9C01, 0x8801, 0x4400
+    };
+-   FIT_UINT16 tmp;
+-
+-   // compute checksum of lower four bits of byte
+-   tmp = crc_table[crc & 0xF];
+-   crc  = (crc >> 4) & 0x0FFF;
+-   crc  = crc ^ tmp ^ crc_table[byte & 0xF];
+-
+-   // now compute checksum of upper four bits of byte
+-   tmp = crc_table[crc & 0xF];
+-   crc  = (crc >> 4) & 0x0FFF;
+-   crc  = crc ^ tmp ^ crc_table[(byte >> 4) & 0xF];
+ 
++   // Process lower nibble
++   crc = (crc >> 4) ^ crc_table[(crc ^ byte) & 0xF];
++   
++   // Process upper nibble
++   crc = (crc >> 4) ^ crc_table[(crc ^ (byte >> 4)) & 0xF];
++   
+    return crc;
+ }
+ 
+--- a/src/fit_field.cpp
++++ b/src/fit_field.cpp
+@@ -15,6 +15,8 @@
+ #include "fit_field.hpp"
+ #include "fit_mesg.hpp"
+ #include "fit_unicode.hpp"
++#include <cstdint>
++#include <cstddef>
+ 
+ namespace fit
+ {
+@@ -90,19 +92,21 @@
+     return profile->fields[profileIndex].name;
+ }
+ 
++
+ FIT_UINT8 Field::GetNum(void) const
+ {
+-    if ((profile == NULL) || (profileIndex >= profile->numFields))
++    if (profile == nullptr || profileIndex >= profile->numFields)
+         return FIT_FIELD_NUM_INVALID;
+     return profile->fields[profileIndex].num;
+ }
+ 
++
+ FIT_UINT8 Field::GetType() const
+ {
+-    if ( type != FIT_UINT8_INVALID )
++    if (type != FIT_UINT8_INVALID)
+         return type;
+ 
+-    if ((profile == NULL) || (profileIndex >= profile->numFields))
++    if (profile == nullptr || profileIndex >= profile->numFields)
+         return FIT_UINT8_INVALID;
+ 
+     return profile->fields[profileIndex].type;
+--- a/src/fit_field_base.cpp
++++ b/src/fit_field_base.cpp
+@@ -16,6 +16,9 @@
+ #include "fit_field_base.hpp"
+ #include "fit_mesg.hpp"
+ #include "fit_unicode.hpp"
++#include <cstring>
++#include <algorithm>
++#include <utility>
+ 
+ namespace fit
+ {
+@@ -24,10 +27,11 @@
+ {
+ }
+ 
++
+ FieldBase::FieldBase(const FieldBase &field)
+ {
+-    values = field.values;
+-    stringIndexes = field.stringIndexes;
++    values = std::move(field.values);
++    stringIndexes = std::move(field.stringIndexes);
+ }
+ 
+ FieldBase::~FieldBase()
+@@ -342,102 +346,61 @@
+     return static_cast<FIT_FLOAT32>(static_cast<FIT_FLOAT64>(float32Value) / GetScale(subFieldIndex) - GetOffset(subFieldIndex));
+ }
+ 
++
+ FIT_FLOAT64 FieldBase::GetFLOAT64Value(const FIT_UINT8 fieldArrayIndex, const FIT_UINT16 subFieldIndex) const
+ {
+-    FIT_FLOAT64 float64Value;
+-
+     if (!IsValid())
+         return FIT_FLOAT64_INVALID;
+ 
+-    switch (GetType()) { // Note: This checks the type of the MAIN field since data is aligned according to that type
+-        case FIT_BASE_TYPE_BYTE:
+-        {
+-            float64Value =
+-                ConvertBaseType<FIT_FLOAT64, FIT_BYTE>(fieldArrayIndex, FIT_BASE_TYPE_FLOAT64);
+-            break;
++    const FIT_BASE_TYPE type = GetType();
++
++    switch (type) {
++        case FIT_BASE_TYPE_FLOAT64: {
++            FIT_UINT64 uint64Value = GetValue<FIT_UINT64>(fieldArrayIndex);
++            FIT_FLOAT64 value;
++            std::memcpy(&value, &uint64Value, sizeof(FIT_FLOAT64));
++            if (std::memcmp(&value, baseTypeInvalids[FIT_BASE_TYPE_FLOAT64 & FIT_BASE_TYPE_NUM_MASK], sizeof(FIT_FLOAT64)) == 0)
++                return FIT_FLOAT64_INVALID;
++            return value / GetScale(subFieldIndex) - GetOffset(subFieldIndex);
+         }
+ 
+-        case FIT_BASE_TYPE_ENUM:
+-        {
+-            float64Value =
+-                ConvertBaseType<FIT_FLOAT64, FIT_ENUM>(fieldArrayIndex, FIT_BASE_TYPE_FLOAT64);
+-            break;
++        case FIT_BASE_TYPE_FLOAT32: {
++            FIT_FLOAT32 val = GetFLOAT32Value(fieldArrayIndex, subFieldIndex);
++            if (val == FIT_FLOAT32_INVALID)
++                return FIT_FLOAT64_INVALID;
++            return static_cast<FIT_FLOAT64>(val);
+         }
+ 
++        case FIT_BASE_TYPE_BYTE:
++            return ConvertBaseType<FIT_FLOAT64, FIT_BYTE>(fieldArrayIndex, FIT_BASE_TYPE_FLOAT64) / GetScale(subFieldIndex) - GetOffset(subFieldIndex);
++
++        case FIT_BASE_TYPE_ENUM:
++            return ConvertBaseType<FIT_FLOAT64, FIT_ENUM>(fieldArrayIndex, FIT_BASE_TYPE_FLOAT64) / GetScale(subFieldIndex) - GetOffset(subFieldIndex);
++
+         case FIT_BASE_TYPE_SINT8:
+-        {
+-            float64Value =
+-                ConvertBaseType<FIT_FLOAT64, FIT_SINT8>(fieldArrayIndex, FIT_BASE_TYPE_FLOAT64);
+-            break;
+-        }
++            return ConvertBaseType<FIT_FLOAT64, FIT_SINT8>(fieldArrayIndex, FIT_BASE_TYPE_FLOAT64) / GetScale(subFieldIndex) - GetOffset(subFieldIndex);
+ 
+         case FIT_BASE_TYPE_UINT8:
+         case FIT_BASE_TYPE_UINT8Z:
+-        {
+-            float64Value =
+-                ConvertBaseType<FIT_FLOAT64, FIT_UINT8>(fieldArrayIndex, FIT_BASE_TYPE_FLOAT64);
+-            break;
+-        }
++            return ConvertBaseType<FIT_FLOAT64, FIT_UINT8>(fieldArrayIndex, FIT_BASE_TYPE_FLOAT64) / GetScale(subFieldIndex) - GetOffset(subFieldIndex);
+ 
+         case FIT_BASE_TYPE_SINT16:
+-        {
+-            float64Value =
+-                ConvertBaseType<FIT_FLOAT64, FIT_SINT16>(fieldArrayIndex, FIT_BASE_TYPE_FLOAT64);
+-            break;
+-        }
++            return ConvertBaseType<FIT_FLOAT64, FIT_SINT16>(fieldArrayIndex, FIT_BASE_TYPE_FLOAT64) / GetScale(subFieldIndex) - GetOffset(subFieldIndex);
+ 
+         case FIT_BASE_TYPE_UINT16Z:
+         case FIT_BASE_TYPE_UINT16:
+-        {
+-            float64Value =
+-                ConvertBaseType<FIT_FLOAT64, FIT_UINT16>(fieldArrayIndex, FIT_BASE_TYPE_FLOAT64);
+-            break;
+-        }
++            return ConvertBaseType<FIT_FLOAT64, FIT_UINT16>(fieldArrayIndex, FIT_BASE_TYPE_FLOAT64) / GetScale(subFieldIndex) - GetOffset(subFieldIndex);
+ 
+         case FIT_BASE_TYPE_SINT32:
+-        {
+-            float64Value =
+-                ConvertBaseType<FIT_FLOAT64, FIT_SINT32>(fieldArrayIndex, FIT_BASE_TYPE_FLOAT64);
+-            break;
+-        }
++            return ConvertBaseType<FIT_FLOAT64, FIT_SINT32>(fieldArrayIndex, FIT_BASE_TYPE_FLOAT64) / GetScale(subFieldIndex) - GetOffset(subFieldIndex);
+ 
+         case FIT_BASE_TYPE_UINT32:
+         case FIT_BASE_TYPE_UINT32Z:
+-        {
+-            float64Value =
+-                ConvertBaseType<FIT_FLOAT64, FIT_UINT32>(fieldArrayIndex, FIT_BASE_TYPE_FLOAT64);
+-            break;
+-        }
+-
+-        case FIT_BASE_TYPE_FLOAT32:
+-        {
+-            FIT_FLOAT32 val = GetFLOAT32Value(fieldArrayIndex, subFieldIndex);
+-
+-            if (FIT_FLOAT32_INVALID == val)
+-            {
+-                return FIT_FLOAT64_INVALID;
+-            }
+-
+-            return static_cast<FIT_FLOAT64>(val);
+-        }
+-
+-        case FIT_BASE_TYPE_FLOAT64:
+-        {
+-            FIT_UINT64 uint64Value = GetValue<FIT_UINT64>(fieldArrayIndex);
+-            memcpy(&float64Value, &uint64Value, sizeof(FIT_FLOAT64));
+-            break;
+-        }
++            return ConvertBaseType<FIT_FLOAT64, FIT_UINT32>(fieldArrayIndex, FIT_BASE_TYPE_FLOAT64) / GetScale(subFieldIndex) - GetOffset(subFieldIndex);
+ 
+         default:
+             return FIT_FLOAT64_INVALID;
+     }
+-
+-    if (memcmp(&float64Value, baseTypeInvalids[FIT_BASE_TYPE_FLOAT64 & FIT_BASE_TYPE_NUM_MASK], sizeof(FIT_FLOAT64)) == 0)
+-    {
+-        return float64Value;
+-    }
+-
+-    return float64Value / GetScale(subFieldIndex) - GetOffset(subFieldIndex);
+ }
+ 
+ FIT_WSTRING FieldBase::GetSTRINGValue(const FIT_UINT8 fieldArrayIndex, const FIT_UINT16 subFieldIndex) const
+@@ -1005,75 +968,65 @@
+     values[idx + i] = 0; // null terminate
+ }
+ 
++
+ FIT_BOOL FieldBase::Read(const void *data, const FIT_UINT8 size)
+ {
+-    FIT_UINT8 bytesLeft = size;
+-    FIT_UINT8 typeSize = baseTypeSizes[GetType() & FIT_BASE_TYPE_NUM_MASK];
++    FIT_UINT8 type = GetType() & FIT_BASE_TYPE_NUM_MASK;
++    FIT_UINT8 typeSize = baseTypeSizes[type];
+     FIT_BYTE *byteData = (FIT_BYTE *) data;
++    FIT_UINT8 bytesLeft = size;
+ 
+     values.clear();
+ 
+-    switch (GetType())
++    if (GetType() == FIT_BASE_TYPE_STRING)
+     {
+-        case FIT_BASE_TYPE_STRING:
+-        {
+-            FIT_BOOL hasData = FIT_FALSE;
+-            FIT_UINT8 stringPos = 0;
+-            FIT_UINT8 index = 0;
++        // Find first non-zero byte
++        FIT_UINT8 idx = 0;
++        while (idx < bytesLeft && byteData[idx] == 0) idx++;
+ 
+-            // Check if the string is empty
+-            while (index < bytesLeft)
+-            {
+-                if (byteData[index] != 0)
+-                {
+-                    hasData = FIT_TRUE;
+-                    break;
+-                }
+-                index++;
+-            }
++        if (idx == bytesLeft) return FIT_TRUE; // all zeros, empty string
+ 
+-            if (!hasData)
+-                break;
++        // Reserve space for performance
++        values.reserve(bytesLeft + 1);
+ 
+-            stringIndexes.push_back(stringPos);
++        // Copy all bytes, track string indexes
++        FIT_UINT8 stringPos = 0;
++        stringIndexes.clear();
++        stringIndexes.push_back(stringPos);
+ 
+-            while (bytesLeft-- > 0)
+-            {
+-                FIT_BYTE byte = *byteData++;
+-                values.push_back(byte);
+-                stringPos++;
+-
+-                if ( ( byte == 0 ) && ( stringPos + 1 < size ) )
+-                {
+-                    stringIndexes.push_back(stringPos);
+-                }
+-            }
++        while (bytesLeft > 0)
++        {
++            FIT_BYTE byte = *byteData++;
++            values.push_back(byte);
++            stringPos++;
++            bytesLeft--;
+ 
+-            // Null terminate if not already null terminated
+-            if ( values.back() != 0 )
+-            {
+-                values.push_back(0);
+-            }
++            if (byte == 0 && bytesLeft > 0)
++                stringIndexes.push_back(stringPos);
+         }
+-            break;
+ 
+-        default:
+-        {
+-            int bytes = bytesLeft;
+-            FIT_BYTE *point = byteData;
++        // Ensure null termination
++        if (values.back() != 0)
++            values.push_back(0);
++    }
++    else
++    {
++        // For non-string types: skip leading invalid values
++        FIT_UINT8 remaining = bytesLeft;
++        FIT_BYTE *p = byteData;
++        const FIT_BYTE* invalid = baseTypeInvalids[type];
+ 
+-            while (bytes > 0)
+-            {
+-                if (memcmp(point, baseTypeInvalids[GetType() & FIT_BASE_TYPE_NUM_MASK], typeSize) != 0)
+-                {
+-                    values.insert(values.end(), byteData, byteData + bytesLeft);
+-                    break;
+-                }
+-                point += typeSize;
+-                bytes -= typeSize;
+-            }
++        while (remaining >= typeSize)
++        {
++            if (memcmp(p, invalid, typeSize) != 0)
++                break;
++            p += typeSize;
++            remaining -= typeSize;
+         }
+-            break;
++
++        // Copy remaining valid data
++        if (remaining > 0)
++            values.insert(values.end(), p, p + remaining);
+     }
+ 
+     return FIT_TRUE;
+--- a/src/fit_lap_mesg.hpp
++++ b/src/fit_lap_mesg.hpp
+@@ -940,16 +940,11 @@
+     // Checks the validity of max_cadence field
+     // Returns FIT_TRUE if field is valid
+     ///////////////////////////////////////////////////////////////////////
+-    FIT_BOOL IsMaxCadenceValid() const
+-    {
+-        const Field* field = GetField(18);
+-        if( FIT_NULL == field )
+-        {
+-            return FIT_FALSE;
+-        }
+-
+-        return field->IsValueValid();
+-    }
++FIT_BOOL IsMaxCadenceValid() const
++{
++    const Field* field = GetField(18);
++    return (field && field->IsValueValid()) ? FIT_TRUE : FIT_FALSE;
++}
+ 
+     ///////////////////////////////////////////////////////////////////////
+     // Returns max_cadence field

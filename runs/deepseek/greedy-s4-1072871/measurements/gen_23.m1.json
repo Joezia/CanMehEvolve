@@ -1,0 +1,6 @@
+{
+ "error": "In file included from /home/z/zhouzia/Workspace/CanMehEvolve/build/work-1072871/tree/src/fit_bike_profile_mesg_listener.hpp:16,\n                 from /home/z/zhouzia/Workspace/CanMehEvolve/build/work-1072871/tree/src/fit_mesg_broadcaster.hpp:38,\n                 from /home/z/zhouzia/Workspace/CanMehEvolve/build/work-1072871/tree/src/fit_buffered_mesg_broadcaster.hpp:17,\n                 from /home/z/zhouzia/Workspace/CanMehEvolve/build/work-1072871/tree/src/fit_buffered_mesg_broadcaster.cpp:14:\n/home/z/zhouzia/Workspace/CanMehEvolve/build/work-1072871/tree/src/fit_bike_profile_mesg.hpp: In member function ‘FIT_BOOL fit::BikeProfileMesg::IsIdValid() const’:\n/home/z/zhouzia/Workspace/CanMehEvolve/build/work-1072871/tree/src/fit_bike_profile_mesg.hpp:551:35: error: ‘std::vector<fit::Field> fit::Mesg::fields’ is private within this context\n  551 |         for (const Field& field : fields)\n      |                                   ^~~~~~\nIn file included from /home/z/zhouzia/Workspace/CanMehEvolve/build/work-1072871/tree/src/fit_mesg_broadcaster.hpp:18:\n/home/z/zhouzia/Workspace/CanMehEvolve/build/work-1072871/tree/src/fit_mesg.hpp:108:24: note: declared private here\n  108 |     std::vector<Field> fields;\n      |                        ^~~~~~\n",
+ "ok": false,
+ "rebuilt": 8,
+ "stage": "compile"
+}

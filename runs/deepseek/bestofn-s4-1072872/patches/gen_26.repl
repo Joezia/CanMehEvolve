@@ -1,0 +1,16 @@
+I cached the member loads in locals and added branch hints so the common valid-type path stays a single load/compare/return, while the fallback profile path avoids redundant member reloads.
+```cpp
+FIT_UINT8 Field::GetType() const
+{
+    const FIT_UINT8 t = type;
+    if (__builtin_expect(t != FIT_UINT8_INVALID, 1))
+        return t;
+
+    const auto p = profile;
+    const auto idx = profileIndex;
+    if (__builtin_expect(p != NULL && idx < p->numFields, 1))
+        return p->fields[idx].type;
+
+    return FIT_UINT8_INVALID;
+}
+```

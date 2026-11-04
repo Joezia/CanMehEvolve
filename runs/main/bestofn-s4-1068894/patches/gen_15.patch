@@ -1,0 +1,11 @@
+--- a/src/fit_session_mesg.hpp
++++ b/src/fit_session_mesg.hpp
+@@ -4266,7 +4266,7 @@
+     ///////////////////////////////////////////////////////////////////////
+     FIT_FLOAT32 GetEnhancedAvgAltitude(void) const
+     {
+-        return GetFieldFLOAT32Value(126, 0, FIT_SUBFIELD_INDEX_MAIN_FIELD);
++        return GetField<FIT_FLOAT32>(126, 0);
+     }
+ 
+     ///////////////////////////////////////////////////////////////////////

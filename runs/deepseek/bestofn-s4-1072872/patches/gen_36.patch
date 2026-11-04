@@ -1,0 +1,17 @@
+--- a/src/fit_field.cpp
++++ b/src/fit_field.cpp
+@@ -28,12 +28,13 @@
+ }
+ 
+ Field::Field(const Field &field)
+-    : FieldBase(field)
++    : FieldBase(field.fieldDefinition)
+     , profile(field.profile)
+     , profileIndex(field.profileIndex)
+     , type(field.type)
+     , isFieldExpanded(field.isFieldExpanded)
+ {
++    values = field.values;
+ }
+ 
+ Field::Field(const Profile::MESG_INDEX mesgIndex, const FIT_UINT16 fieldIndex)

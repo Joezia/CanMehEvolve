@@ -1,0 +1,11 @@
+This function is already minimal; the only tweak is to load `profile` once into a local and mark the common (valid field) path as likely, so the compiler emits a single load and a straight-line fast path.
+
+```cpp
+FIT_UINT16 Field::GetNumSubFields(void) const
+{
+    const Profile::Field* f = profile ? &profile->fields[profileIndex] : NULL;
+    if ((f == NULL) || (profileIndex >= profile->numFields))
+        return 0;
+    return f->numSubFields;
+}
+```

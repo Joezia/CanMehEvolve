@@ -1,0 +1,6 @@
+{
+ "error": "/home/z/zhouzia/Workspace/CanMehEvolve/build/work-1068893/tree/src/fit_profile.cpp: In static member function ‘static const fit::Profile::MESG* fit::Profile::GetMesg(FIT_UINT16)’:\n/home/z/zhouzia/Workspace/CanMehEvolve/build/work-1068893/tree/src/fit_profile.cpp:3065:136: error: too many initializers for ‘const fit::Profile::MESG’\n 3065 |     static const Profile::MESG target = {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0};\n      |                                                                                                                                        ^\n",
+ "ok": false,
+ "rebuilt": 2,
+ "stage": "compile"
+}

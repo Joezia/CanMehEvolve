@@ -1,0 +1,85 @@
+
+FIT_BOOL FieldBase::Read(const void *data, const FIT_UINT8 size)
+{
+    FIT_UINT8 type = GetType() & FIT_BASE_TYPE_NUM_MASK;
+    FIT_UINT8 typeSize = baseTypeSizes[type];
+    const FIT_BYTE* byteData = static_cast<const FIT_BYTE*>(data);
+    FIT_UINT8 bytesLeft = size;
+
+    values.clear();
+
+    if (GetType() == FIT_BASE_TYPE_STRING)
+    {
+        // Find first non-zero byte
+        FIT_UINT8 idx = 0;
+        while (idx < bytesLeft && byteData[idx] == 0) idx++;
+
+        if (idx == bytesLeft) return FIT_TRUE; // all zeros, empty string
+
+        // Reserve space for performance
+        values.reserve(bytesLeft + 1);
+
+        // Copy all bytes, track string indexes
+        FIT_UINT8 stringPos = 0;
+        stringIndexes.clear();
+        stringIndexes.push_back(stringPos);
+
+        // Optimized loop: process bytes in larger chunks when possible
+        const FIT_BYTE* end = byteData + bytesLeft;
+        const FIT_BYTE* src = byteData + idx;
+        const FIT_BYTE* srcEnd = end - 7; // process 8 bytes at a time when possible
+
+        // Process 8-byte chunks first
+        while (src + 8 <= srcEnd) {
+            FIT_UINT64 chunk;
+            std::memcpy(&chunk, src, 8);
+            if (chunk == 0) {
+                values.insert(values.end(), src, src + 8);
+                stringPos += 8;
+                src += 8;
+                // Check for nulls inside chunk
+                for (int i = 0; i < 8; i++) {
+                    if (src[-8+i] == 0 && src-8+i+1 < end)
+                        stringIndexes.push_back(stringPos);
+                }
+            } else {
+                // Process byte-by-byte from here
+                break;
+            }
+        }
+
+        // Process remaining bytes
+        for (; src < end; src++) {
+            FIT_BYTE byte = *src;
+            values.push_back(byte);
+            stringPos++;
+            if (byte == 0 && src + 1 < end)
+                stringIndexes.push_back(stringPos);
+        }
+
+        // Ensure null termination
+        if (values.empty() || values.back() != 0)
+            values.push_back(0);
+    }
+    else
+    {
+        // For non-string types: skip leading invalid values
+        FIT_UINT8 remaining = bytesLeft;
+        const FIT_BYTE* p = byteData;
+        const FIT_BYTE* invalid = baseTypeInvalids[type];
+
+        while (remaining >= typeSize)
+        {
+            if (memcmp(p, invalid, typeSize) != 0)
+                break;
+            p += typeSize;
+            remaining -= typeSize;
+        }
+
+        // Copy remaining valid data
+        if (remaining > 0)
+            values.insert(values.end(), p, p + remaining);
+    }
+
+    return FIT_TRUE;
+}

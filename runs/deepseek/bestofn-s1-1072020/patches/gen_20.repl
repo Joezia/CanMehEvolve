@@ -1,0 +1,10 @@
+The null check is unavoidable, so the only gain is to express it as a single conditional expression and hint the common non-null case, letting the compiler emit one compare plus a conditional move instead of a branch and two returns.
+
+```cpp
+FIT_UINT16 Mesg::GetNum() const
+{
+    return (__builtin_expect(profile != FIT_NULL, 1))
+        ? profile->num
+        : FIT_MESG_NUM_INVALID;
+}
+```

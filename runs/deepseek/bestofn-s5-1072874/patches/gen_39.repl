@@ -1,0 +1,17 @@
+The linear scan is replaced by a lazily-built, static 65536-entry direct lookup table indexed by message number, giving O(1) lookup instead of scanning all `MESGS` entries on every call. The table is built once (iterating backwards so the first matching entry wins, preserving identical semantics).
+```cpp
+const Profile::MESG* Profile::GetMesg(const FIT_UINT16 num)
+{
+    static const std::array<const MESG*, 65536> table = [] {
+        std::array<const MESG*, 65536> t{};
+        for (int i = MESGS - 1; i >= 0; --i)
+            t[mesgs[i].num] = &mesgs[i];
+        return t;
+    }();
+
+    return table[num];
+}
+```
+```include
+#include <array>
+```

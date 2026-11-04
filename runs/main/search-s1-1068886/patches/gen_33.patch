@@ -1,0 +1,95 @@
+--- a/src/fit_accumulated_field.cpp
++++ b/src/fit_accumulated_field.cpp
+@@ -11,12 +11,14 @@
+ 
+ 
+ #include "fit_accumulated_field.hpp"
++#include <cstdint>
+ 
+ namespace fit
+ {
+ 
++
+     AccumulatedField::AccumulatedField()
+-        : lastValue(0), accumulatedValue(0)
++        : lastValue{0}, accumulatedValue{0}
+     {
+     }
+ 
+--- a/src/fit_field_base.cpp
++++ b/src/fit_field_base.cpp
+@@ -16,6 +16,7 @@
+ #include "fit_field_base.hpp"
+ #include "fit_mesg.hpp"
+ #include "fit_unicode.hpp"
++#include <cstring>
+ 
+ namespace fit
+ {
+@@ -847,17 +848,15 @@
+     SetUINT32Value(value, fieldArrayIndex);
+ }
+ 
++
+ void FieldBase::SetUINT32Value(const FIT_UINT32 value, const FIT_UINT8 fieldArrayIndex)
+ {
+-    if ((FIT_UINT8)values.size() < ((fieldArrayIndex + 1) * sizeof(FIT_UINT32)))
+-    {
+-        values.resize((fieldArrayIndex + 1) * sizeof(FIT_UINT32));
+-    }
+-
+-    for (size_t i = 0; i < sizeof(FIT_UINT32); i++)
++    const size_t offset = fieldArrayIndex * sizeof(FIT_UINT32);
++    if (values.size() < offset + sizeof(FIT_UINT32))
+     {
+-        values[(fieldArrayIndex * sizeof(FIT_UINT32)) + i] = ((FIT_BYTE)(value >> (8 * i)));
++        values.resize(offset + sizeof(FIT_UINT32));
+     }
++    std::memcpy(&values[offset], &value, sizeof(FIT_UINT32));
+ }
+ 
+ void FieldBase::SetUINT32ZValue(const FIT_UINT32Z value, const FIT_UINT8 fieldArrayIndex)
+--- a/src/fit_profile.cpp
++++ b/src/fit_profile.cpp
+@@ -11,6 +11,8 @@
+ 
+ 
+ #include "fit_profile.hpp"
++#include <algorithm>
++#include <vector>
+ 
+ namespace fit
+ {
+@@ -3055,14 +3057,27 @@
+    { NULL, "pad", FIT_MESG_NUM_PAD, 0 },
+ };
+ 
++
+ const Profile::MESG* Profile::GetMesg(const FIT_UINT16 num)
+ {
+-    for (int i = 0; i < MESGS; i++)
+-    {
+-        if (mesgs[i].num == num)
+-            return &mesgs[i];
++    // Use static sorted lookup with binary search for O(log n) performance
++    static std::vector<FIT_UINT16> sorted_indices = []() {
++        std::vector<FIT_UINT16> indices(MESGS);
++        for (FIT_UINT16 i = 0; i < MESGS; ++i) indices[i] = i;
++        std::sort(indices.begin(), indices.end(), [](FIT_UINT16 a, FIT_UINT16 b) {
++            return mesgs[a].num < mesgs[b].num;
++        });
++        return indices;
++    }();
++
++    int left = 0, right = MESGS - 1;
++    while (left <= right) {
++        int mid = left + ((right - left) >> 1);
++        FIT_UINT16 val = mesgs[sorted_indices[mid]].num;
++        if (val == num) return &mesgs[sorted_indices[mid]];
++        if (val < num) left = mid + 1;
++        else right = mid - 1;
+     }
+-
+     return NULL;
+ }
+ 

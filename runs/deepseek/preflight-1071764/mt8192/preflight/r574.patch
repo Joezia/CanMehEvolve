@@ -1,0 +1,37 @@
+--- a/src/fit_profile.cpp
++++ b/src/fit_profile.cpp
+@@ -11,6 +11,7 @@
+ 
+ 
+ #include "fit_profile.hpp"
++#include <cstdint>
+ 
+ namespace fit
+ {
+@@ -3057,13 +3058,22 @@
+ 
+ const Profile::MESG* Profile::GetMesg(const FIT_UINT16 num)
+ {
+-    for (int i = 0; i < MESGS; i++)
++    static std::int16_t lookup[65536];
++    static bool initialized = false;
++
++    if (!initialized)
+     {
+-        if (mesgs[i].num == num)
+-            return &mesgs[i];
++        for (int i = 0; i < 65536; ++i)
++            lookup[i] = -1;
++
++        for (int i = static_cast<int>(MESGS) - 1; i >= 0; --i)
++            lookup[mesgs[i].num] = static_cast<std::int16_t>(i);
++
++        initialized = true;
+     }
+ 
+-    return NULL;
++    const std::int16_t idx = lookup[num];
++    return idx >= 0 ? &mesgs[idx] : NULL;
+ }
+ 
+ const Profile::MESG* Profile::GetMesg(const std::string& name)

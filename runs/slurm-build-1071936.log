@@ -1,0 +1,5 @@
+[ 87%] Built target cli11
+[ 87%] Built target nlohmann-json
+[ 93%] Building CXX object CMakeFiles/CanMehSearch.dir/src/Search.cpp.o
+[100%] Linking CXX executable CanMehSearch
+[100%] Built target CanMehSearch

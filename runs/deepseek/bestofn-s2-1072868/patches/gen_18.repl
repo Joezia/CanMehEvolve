@@ -1,0 +1,11 @@
+I cached the `profile` pointer in a local so the bounds check and field lookup use one stable base pointer, avoiding a repeated member load. This keeps the same validation and return behavior while giving the compiler a slightly tighter access path.
+
+```cpp
+FIT_UINT8 Field::GetNum(void) const
+{
+    const auto p = profile;
+    if ((p == NULL) || (profileIndex >= p->numFields))
+        return FIT_FIELD_NUM_INVALID;
+    return p->fields[profileIndex].num;
+}
+```

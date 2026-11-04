@@ -1,0 +1,10 @@
+
+Field::Field(const Field &field)
+    : FieldBase(field)
+    , profile(field.profile)
+    , profileIndex(field.profileIndex)
+    , type(field.type)
+    , isFieldExpanded(field.isFieldExpanded)
+{
+    static_assert(std::is_trivially_copyable<Field>::value, "Field should be trivially copyable for optimal performance");
+}

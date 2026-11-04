@@ -1,0 +1,21 @@
+--- a/src/fit_mesg.cpp
++++ b/src/fit_mesg.cpp
+@@ -174,10 +174,15 @@
+ 
+ void Mesg::AddField(const Field& field)
+ {
+-    Field *existingField = GetField(field.GetNum());
++    const FIT_UINT8 fieldNum = field.GetNum();
+ 
+-    if (existingField == FIT_NULL)
+-        fields.push_back(field);
++    for (std::vector<Field>::iterator it = fields.begin(); it != fields.end(); ++it)
++    {
++        if (it->GetNum() == fieldNum)
++            return;
++    }
++
++    fields.push_back(field);
+ }
+ 
+ Field* Mesg::AddField(const FIT_UINT8 fieldNum)

@@ -1,0 +1,13 @@
+Replaced the four separate member initializations with a single `memcpy` of the contiguous derived-member block, letting the compiler emit wider loads/stores while preserving the base class copy.
+
+```cpp
+#include <cstring>
+
+Field::Field(const Field &field)
+    : FieldBase(field)
+{
+    std::memcpy(&profile, &field.profile,
+                reinterpret_cast<const char*>(&field.isFieldExpanded) + sizeof(field.isFieldExpanded)
+                - reinterpret_cast<const char*>(&field.profile));
+}
+```

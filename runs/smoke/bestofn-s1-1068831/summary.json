@@ -1,0 +1,19 @@
+{
+  "api_calls": 3,
+  "best_confirmed_generation": 0,
+  "best_confirmed_speedup": 1.0,
+  "best_retained_speedup": 1.0,
+  "completion_tokens": 121,
+  "confirmed_candidates": 0,
+  "elapsed_s": 74.974751046,
+  "ended_because": "generations exhausted",
+  "finished": "2026-11-03T21:31:13+0800",
+  "improved_on_parent_candidates": 0,
+  "mode": "bestofn",
+  "outcomes": {
+    "compile": 3
+  },
+  "prompt_tokens": 1152,
+  "seed": 1,
+  "total_tokens": 1273
+}

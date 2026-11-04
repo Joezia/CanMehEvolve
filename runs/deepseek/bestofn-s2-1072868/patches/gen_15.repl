@@ -1,0 +1,9 @@
+Use the member-initializer list so `values` and `stringIndexes` are copy-constructed directly instead of default-constructed and then assigned, avoiding extra work in the constructor body.
+
+```cpp
+FieldBase::FieldBase(const FieldBase &field)
+    : values(field.values),
+      stringIndexes(field.stringIndexes)
+{
+}
+```

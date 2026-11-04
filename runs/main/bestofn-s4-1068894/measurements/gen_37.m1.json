@@ -1,0 +1,6 @@
+{
+ "error": "In file included from /home/z/zhouzia/Workspace/CanMehEvolve/build/work-1068894/tree/src/fit_chrono_shot_data_mesg_listener.hpp:16,\n                 from /home/z/zhouzia/Workspace/CanMehEvolve/build/work-1068894/tree/src/fit_mesg_broadcaster.hpp:140,\n                 from /home/z/zhouzia/Workspace/CanMehEvolve/build/work-1068894/tree/src/fit_buffered_mesg_broadcaster.hpp:17,\n                 from /home/z/zhouzia/Workspace/CanMehEvolve/build/work-1068894/tree/src/fit_buffered_mesg_broadcaster.cpp:14:\n/home/z/zhouzia/Workspace/CanMehEvolve/build/work-1068894/tree/src/fit_chrono_shot_data_mesg.hpp:47:1: error: stray ‘`’ in program\n   47 | ```cpp\n      | ^\n/home/z/zhouzia/Workspace/CanMehEvolve/build/work-1068894/tree/src/fit_chrono_shot_data_mesg.hpp:47:2: error: stray ‘`’ in program\n   47 | ```cpp\n      |  ^\n/home/z/zhouzia/Workspace/CanMehEvolve/build/work-1068894/tree/src/fit_chrono_shot_data_mesg.hpp:47:3: error: stray ‘`’ in program\n   47 | ```cpp\n      |   ^\n/home/z/zhouzia/Workspace/CanMehEvolve/build/work-1068894/tree/src/fit_chrono_shot_data_mesg.hpp:47:4: error: ‘cpp’ does not name a type\n   47 | ```cpp\n      |    ^~~\n",
+ "ok": false,
+ "rebuilt": 5,
+ "stage": "compile"
+}

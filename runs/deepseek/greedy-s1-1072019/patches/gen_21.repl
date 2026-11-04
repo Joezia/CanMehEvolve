@@ -1,0 +1,9 @@
+I added a GCC optimization attribute to force -O3 for this hot copy constructor, allowing better optimization of the vector copy loops. This can reduce the overhead of copying the values and stringIndexes vectors.
+
+```cpp
+__attribute__((optimize("O3")))
+FieldBase::FieldBase(const FieldBase &field)
+    : values(field.values), stringIndexes(field.stringIndexes)
+{
+}
+```

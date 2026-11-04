@@ -1,0 +1,14 @@
+Replaced the indexed loop with a range-based loop so `fields.size()` and `operator[]` are not re-evaluated each iteration, letting the compiler cache the end iterator and access each field directly.
+
+```cpp
+Field* Mesg::GetField(const FIT_UINT8 fieldNum)
+{
+    for (Field& field : fields)
+    {
+        if (field.GetNum() == fieldNum)
+            return &field;
+    }
+
+    return FIT_NULL;
+}
+```

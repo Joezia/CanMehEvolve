@@ -1,0 +1,23 @@
+{
+  "118": {
+    "accepted": 0,
+    "attempts": 1,
+    "best_gain": 0.0,
+    "file": "src/fit_field.cpp",
+    "label": "Field::IsValid"
+  },
+  "234": {
+    "accepted": 1,
+    "attempts": 1,
+    "best_gain": 0.0,
+    "file": "src/fit_mesg.cpp",
+    "label": "Mesg::GetField"
+  },
+  "706": {
+    "accepted": 0,
+    "attempts": 1,
+    "best_gain": 0.0,
+    "file": "src/fit_ant_rx_mesg.hpp",
+    "label": "AntRxMesg"
+  }
+}

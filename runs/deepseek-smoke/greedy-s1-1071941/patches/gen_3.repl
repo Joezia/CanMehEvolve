@@ -1,0 +1,8 @@
+Replaced the comparison with a direct branchless cast so the compiler emits a single `cmp`/`setne` on the 16-bit member with no extra temporary.
+
+```cpp
+FIT_BOOL Field::IsValid(void) const
+{
+    return static_cast<FIT_BOOL>(profileIndex != FIT_UINT16_INVALID);
+}
+```

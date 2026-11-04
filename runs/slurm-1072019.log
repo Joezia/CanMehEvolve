@@ -1,0 +1,2 @@
+rm: cannot remove '/home/z/zhouzia/Workspace/CanMehEvolve/build/work-1072019/.nfs0000000070ba3fca000018b9': Device or resource busy
+rm: cannot remove '/home/z/zhouzia/Workspace/CanMehEvolve/build/work-1072019/scratch': Directory not empty

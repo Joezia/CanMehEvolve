@@ -1,0 +1,5 @@
+
+void SetSensorType(FIT_SENSOR_TYPE sensorType)
+{
+    fields[0].SetEnumValue(sensorType, 0, FIT_SUBFIELD_INDEX_MAIN_FIELD);
+}

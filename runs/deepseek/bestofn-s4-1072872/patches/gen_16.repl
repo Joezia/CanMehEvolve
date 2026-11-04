@@ -1,0 +1,8 @@
+The copy constructor now uses a member-initializer list so `values` and `stringIndexes` are copy-constructed directly, avoiding the previous default-construct-then-`operator=` sequence (which zero-initializes each vector and re-checks capacity before allocating).
+
+```cpp
+FieldBase::FieldBase(const FieldBase &field)
+    : values(field.values), stringIndexes(field.stringIndexes)
+{
+}
+```

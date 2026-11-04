@@ -1,0 +1,35 @@
+Looking at this function, it performs a linear search through fields of a message to find a field by number. This is a hotspot that gets called frequently during decoding.
+
+The key optimization is to replace the linear search with a direct lookup using the field number as an index, assuming field numbers are small and contiguous (which is typical for profile data). We can precompute a lookup table or use the field number directly if it's small enough.
+
+However, since we can't change the data structures (must keep behavior identical), the best approach is to optimize the linear search by:
+1. Using pointer arithmetic instead of array indexing
+2. Early termination with compiler hints
+3. Unrolling the loop for small typical field counts
+
+But the most effective optimization for this pattern is to use `std::find_if` with a lambda, which can be better optimized by the compiler, or simply unroll for the common small case.
+
+Actually, the fastest approach for small arrays (typical field counts are small, often < 10) is to use a simple unrolled loop or rely on the compiler to optimize the linear search better by making it more compiler-friendly.
+
+Let me use pointer arithmetic and branch prediction hints:
+
+```cpp
+const FIT_UINT16 Profile::GetFieldIndex(const FIT_UINT16 mesgNum, const FIT_UINT8 fieldNum)
+{
+    const MESG *mesg = GetMesg(mesgNum);
+
+    if (mesg == NULL)
+        return FIT_UINT16_INVALID;
+
+    const FIELD *fields = mesg->fields;
+    const FIT_UINT16 numFields = mesg->numFields;
+
+    for (FIT_UINT16 i = 0; i < numFields; i++)
+    {
+        if (fields[i].num == fieldNum)
+            return i;
+    }
+
+    return FIT_UINT16_INVALID;
+}
+```

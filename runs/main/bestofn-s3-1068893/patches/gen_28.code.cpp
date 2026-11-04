@@ -1,0 +1,23 @@
+
+const Profile::MESG* Profile::GetMesg(const FIT_UINT16 num)
+{
+    static const int MESG_HASH_SIZE = 128;
+    static const FIT_UINT16 MESG_HASH_MASK = MESG_HASH_SIZE - 1;
+    static std::vector<const Profile::MESG*> hash_table(MESG_HASH_SIZE, nullptr);
+    static bool initialized = false;
+
+    if (!initialized) {
+        for (int i = 0; i < MESGS; i++) {
+            FIT_UINT16 idx = mesgs[i].num & MESG_HASH_MASK;
+            hash_table[idx] = &mesgs[i];
+        }
+        initialized = true;
+    }
+
+    FIT_UINT16 idx = num & MESG_HASH_MASK;
+    if (hash_table[idx] && hash_table[idx]->num == num) {
+        return hash_table[idx];
+    }
+
+    return NULL;
+}

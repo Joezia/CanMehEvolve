@@ -1,0 +1,21 @@
+const Profile::MESG* Profile::GetMesg(const FIT_UINT16 num)
+{
+    static const Profile::MESG* cache[65536] = {};
+    const Profile::MESG* mesg = cache[num];
+    if (mesg != NULL)
+    {
+        return mesg == reinterpret_cast<const Profile::MESG*>(1) ? NULL : mesg;
+    }
+
+    for (int i = 0; i < MESGS; i++)
+    {
+        if (mesgs[i].num == num)
+        {
+            cache[num] = &mesgs[i];
+            return &mesgs[i];
+        }
+    }
+
+    cache[num] = reinterpret_cast<const Profile::MESG*>(1);
+    return NULL;
+}

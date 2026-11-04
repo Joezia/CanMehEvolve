@@ -1,0 +1,49 @@
+{
+  "api_calls": 40,
+  "best_confirmed_generation": 0,
+  "best_confirmed_speedup": 1.0,
+  "best_ranked_generation": 34,
+  "best_ranked_speedup": 1.068321850666974,
+  "best_retained_speedup": 1.0693212761028765,
+  "completion_tokens": 280388,
+  "confirmed_candidates": 2,
+  "elapsed_s": 5836.293715642,
+  "ended_because": "generations exhausted",
+  "finished": "2026-11-04T16:56:49+0800",
+  "improved_on_parent_candidates": 2,
+  "llm_seconds": 2754.453859067,
+  "max_tokens": 32768,
+  "mode": "bestofn",
+  "outcomes": {
+    "compile": 3,
+    "correctness": 1,
+    "llm_http": 1,
+    "llm_nocode": 1,
+    "measured": 29,
+    "truncated": 1,
+    "unchanged": 4
+  },
+  "prompt_tokens": 19104,
+  "rank_updates": [
+    {
+      "R": 0.9434316792018169,
+      "generation": 3,
+      "label": "FieldBase::FieldBase",
+      "previous_R": 1.0,
+      "region": 134,
+      "speedup": 1.0599601667457703
+    },
+    {
+      "R": 0.9360475023287043,
+      "generation": 34,
+      "label": "Profile::GetMesg",
+      "previous_R": 0.9434316792018169,
+      "region": 574,
+      "speedup": 1.068321850666974
+    }
+  ],
+  "reasoning_tokens": 271575,
+  "seed": 2,
+  "total_tokens": 299492,
+  "truncated_replies": 1
+}

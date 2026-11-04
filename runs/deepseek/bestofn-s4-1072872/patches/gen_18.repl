@@ -1,0 +1,12 @@
+This function is already minimal; I only added branch-prediction hints so the two invalid-input checks (which are essentially never taken) are pushed off the hot path, leaving the field lookup straight-line.
+
+```cpp
+FIT_UINT8 Field::GetNum(void) const
+{
+    if (__builtin_expect(profile == NULL, 0))
+        return FIT_FIELD_NUM_INVALID;
+    if (__builtin_expect(profileIndex >= profile->numFields, 0))
+        return FIT_FIELD_NUM_INVALID;
+    return profile->fields[profileIndex].num;
+}
+```

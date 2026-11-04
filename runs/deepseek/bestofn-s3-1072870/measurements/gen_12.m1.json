@@ -1,0 +1,6 @@
+{
+ "error": "/home/z/zhouzia/Workspace/CanMehEvolve/build/work-1072870/tree/src/fit_profile.cpp: In static member function ‘static const FIT_UINT16 fit::Profile::GetFieldIndex(FIT_UINT16, FIT_UINT8)’:\n/home/z/zhouzia/Workspace/CanMehEvolve/build/work-1072870/tree/src/fit_profile.cpp:3102:15: error: ‘Field’ does not name a type\n 3102 |         const Field *fields = mesg->fields;\n      |               ^~~~~\n/home/z/zhouzia/Workspace/CanMehEvolve/build/work-1072870/tree/src/fit_profile.cpp:3107:17: error: ‘fields’ was not declared in this scope; did you mean ‘hrFields’?\n 3107 |             if (fields[i].num == fieldNum)\n      |                 ^~~~~~\n      |                 hrFields\n",
+ "ok": false,
+ "rebuilt": 2,
+ "stage": "compile"
+}

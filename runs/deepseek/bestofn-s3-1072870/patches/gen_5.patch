@@ -1,0 +1,16 @@
+--- a/src/fit_course_point_mesg.hpp
++++ b/src/fit_course_point_mesg.hpp
+@@ -273,12 +273,7 @@
+     FIT_BOOL IsFavoriteValid() const
+     {
+         const Field* field = GetField(8);
+-        if( FIT_NULL == field )
+-        {
+-            return FIT_FALSE;
+-        }
+-
+-        return field->IsValueValid();
++        return (FIT_NULL != field) && field->IsValueValid();
+     }
+ 
+     ///////////////////////////////////////////////////////////////////////

@@ -1,0 +1,10 @@
+Added branch-prediction hints so the common valid-profile path falls through and the null/bounds check is treated as unlikely, reducing misprediction cost without changing behavior.
+
+```cpp
+FIT_FLOAT64 Field::GetScale() const
+{
+    if (__builtin_expect((profile == NULL) || (profileIndex >= profile->numFields), 0))
+        return 1;
+    return profile->fields[profileIndex].scale;
+}
+```

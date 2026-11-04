@@ -1,0 +1,8 @@
+This accessor is already a single constant-argument field lookup that the compiler fully inlines; there is no cheaper equivalent that preserves exact behavior, so the body is left unchanged.
+
+```cpp
+    FIT_FLOAT32 GetEnhancedAvgAltitude(void) const
+    {
+        return GetFieldFLOAT32Value(126, 0, FIT_SUBFIELD_INDEX_MAIN_FIELD);
+    }
+```

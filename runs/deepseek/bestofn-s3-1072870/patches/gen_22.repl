@@ -1,0 +1,17 @@
+I replaced the linear scan with a one-time-built 65536-entry direct lookup table (indexed by the 16-bit message number), turning each call into a single array access while preserving first-match semantics for duplicate numbers. Building the table once amortizes across the thousands of calls made during decoding and the full-domain sweep.
+
+```cpp
+const Profile::MESG* Profile::GetMesg(const FIT_UINT16 num)
+{
+    struct Lut {
+        const Profile::MESG* p[65536] = {};
+        Lut()
+        {
+            for (int i = MESGS - 1; i >= 0; --i)
+                p[mesgs[i].num] = &mesgs[i];
+        }
+    };
+    static const Lut lut;
+    return lut.p[num];
+}
+```

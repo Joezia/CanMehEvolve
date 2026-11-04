@@ -1,0 +1,222 @@
+--- a/src/fit_accumulated_field.cpp
++++ b/src/fit_accumulated_field.cpp
+@@ -11,12 +11,14 @@
+ 
+ 
+ #include "fit_accumulated_field.hpp"
++#include <cstdint>
+ 
+ namespace fit
+ {
+ 
++
+     AccumulatedField::AccumulatedField()
+-        : lastValue(0), accumulatedValue(0)
++        : lastValue{0}, accumulatedValue{0}
+     {
+     }
+ 
+--- a/src/fit_field_base.cpp
++++ b/src/fit_field_base.cpp
+@@ -16,6 +16,8 @@
+ #include "fit_field_base.hpp"
+ #include "fit_mesg.hpp"
+ #include "fit_unicode.hpp"
++#include <cstring>
++#include <algorithm>
+ 
+ namespace fit
+ {
+@@ -1005,75 +1007,68 @@
+     values[idx + i] = 0; // null terminate
+ }
+ 
++
+ FIT_BOOL FieldBase::Read(const void *data, const FIT_UINT8 size)
+ {
+-    FIT_UINT8 bytesLeft = size;
+-    FIT_UINT8 typeSize = baseTypeSizes[GetType() & FIT_BASE_TYPE_NUM_MASK];
+-    FIT_BYTE *byteData = (FIT_BYTE *) data;
++    FIT_UINT8 typeIndex = GetType() & FIT_BASE_TYPE_NUM_MASK;
++    FIT_UINT8 typeSize = baseTypeSizes[typeIndex];
++    const FIT_BYTE* byteData = static_cast<const FIT_BYTE*>(data);
+ 
+     values.clear();
+ 
+-    switch (GetType())
++    if (GetType() == FIT_BASE_TYPE_STRING)
+     {
+-        case FIT_BASE_TYPE_STRING:
+-        {
+-            FIT_BOOL hasData = FIT_FALSE;
+-            FIT_UINT8 stringPos = 0;
+-            FIT_UINT8 index = 0;
+-
+-            // Check if the string is empty
+-            while (index < bytesLeft)
+-            {
+-                if (byteData[index] != 0)
+-                {
+-                    hasData = FIT_TRUE;
+-                    break;
+-                }
+-                index++;
+-            }
+-
+-            if (!hasData)
+-                break;
+-
+-            stringIndexes.push_back(stringPos);
+-
+-            while (bytesLeft-- > 0)
+-            {
+-                FIT_BYTE byte = *byteData++;
+-                values.push_back(byte);
+-                stringPos++;
+-
+-                if ( ( byte == 0 ) && ( stringPos + 1 < size ) )
+-                {
+-                    stringIndexes.push_back(stringPos);
+-                }
+-            }
++        // Find first non-zero byte to detect if string is empty
++        const FIT_BYTE* end = byteData + size;
++        const FIT_BYTE* firstNonZero = std::find_if(byteData, end, [](FIT_BYTE b) { return b != 0; });
++        
++        if (firstNonZero == end)
++            return FIT_TRUE; // Empty string, nothing to do
++
++        // Reserve space for all bytes + possible null terminator
++        values.reserve(size + 1);
++
++        // Copy all bytes and track string positions
++        FIT_UINT8 stringPos = 0;
++        for (FIT_UINT8 i = 0; i < size; i++)
++        {
++            FIT_BYTE byte = byteData[i];
++            values.push_back(byte);
++            stringPos++;
+ 
+-            // Null terminate if not already null terminated
+-            if ( values.back() != 0 )
++            if (byte == 0 && stringPos < size)
+             {
+-                values.push_back(0);
++                stringIndexes.push_back(stringPos);
+             }
+         }
+-            break;
+ 
+-        default:
++        // Null terminate if not already null terminated
++        if (values.back() != 0)
+         {
+-            int bytes = bytesLeft;
+-            FIT_BYTE *point = byteData;
+-
+-            while (bytes > 0)
++            values.push_back(0);
++        }
++    }
++    else
++    {
++        // For non-string types, check if entire data is invalid
++        const FIT_BYTE* invalid = baseTypeInvalids[typeIndex];
++        FIT_BOOL allInvalid = FIT_TRUE;
++        
++        // Check if any data is valid (not equal to invalid value)
++        for (FIT_UINT8 i = 0; i < size; i += typeSize)
++        {
++            if (size - i < typeSize) break;
++            if (std::memcmp(byteData + i, invalid, typeSize) != 0)
+             {
+-                if (memcmp(point, baseTypeInvalids[GetType() & FIT_BASE_TYPE_NUM_MASK], typeSize) != 0)
+-                {
+-                    values.insert(values.end(), byteData, byteData + bytesLeft);
+-                    break;
+-                }
+-                point += typeSize;
+-                bytes -= typeSize;
++                allInvalid = FIT_FALSE;
++                break;
+             }
+         }
+-            break;
++        
++        if (!allInvalid)
++        {
++            values.insert(values.end(), byteData, byteData + size);
++        }
+     }
+ 
+     return FIT_TRUE;
+--- a/src/fit_profile.cpp
++++ b/src/fit_profile.cpp
+@@ -11,6 +11,8 @@
+ 
+ 
+ #include "fit_profile.hpp"
++#include <algorithm>
++#include <vector>
+ 
+ namespace fit
+ {
+@@ -3055,14 +3057,25 @@
+    { NULL, "pad", FIT_MESG_NUM_PAD, 0 },
+ };
+ 
++
++
+ const Profile::MESG* Profile::GetMesg(const FIT_UINT16 num)
+ {
+-    for (int i = 0; i < MESGS; i++)
+-    {
+-        if (mesgs[i].num == num)
+-            return &mesgs[i];
+-    }
++    static const std::vector<FIT_UINT16> sorted_indices = []() {
++        std::vector<FIT_UINT16> indices(MESGS);
++        for (FIT_UINT16 i = 0; i < MESGS; ++i) indices[i] = i;
++        std::sort(indices.begin(), indices.end(), [](FIT_UINT16 a, FIT_UINT16 b) {
++            return mesgs[a].num < mesgs[b].num;
++        });
++        return indices;
++    }();
+ 
++    auto it = std::lower_bound(sorted_indices.begin(), sorted_indices.end(), num,
++        [](FIT_UINT16 idx, FIT_UINT16 target) { return mesgs[idx].num < target; });
++
++    if (it != sorted_indices.end() && mesgs[*it].num == num) {
++        return &mesgs[*it];
++    }
+     return NULL;
+ }
+ 
+--- a/src/fit_segment_lap_mesg.hpp
++++ b/src/fit_segment_lap_mesg.hpp
+@@ -15,6 +15,7 @@
+ 
+ #include "fit_mesg.hpp"
+ #include "fit_mesg_with_event.hpp"
++#include <cstdint>
+ 
+ namespace fit
+ {
+@@ -1527,15 +1528,11 @@
+     // Checks the validity of avg_neg_grade field
+     // Returns FIT_TRUE if field is valid
+     ///////////////////////////////////////////////////////////////////////
++
+     FIT_BOOL IsAvgNegGradeValid() const
+     {
+         const Field* field = GetField(39);
+-        if( FIT_NULL == field )
+-        {
+-            return FIT_FALSE;
+-        }
+-
+-        return field->IsValueValid();
++        return (field != FIT_NULL) ? field->IsValueValid() : FIT_FALSE;
+     }
+ 
+     ///////////////////////////////////////////////////////////////////////

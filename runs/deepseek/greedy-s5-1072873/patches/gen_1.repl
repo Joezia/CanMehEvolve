@@ -1,0 +1,8 @@
+The setter is not on the decode hot path (decode uses the getters), so there is no safe internal micro-optimization to make; I keep the body identical to preserve exact behavior.
+
+```cpp
+    void SetSensorType(FIT_SENSOR_TYPE sensorType)
+    {
+        SetFieldENUMValue(0, sensorType, 0, FIT_SUBFIELD_INDEX_MAIN_FIELD);
+    }
+```

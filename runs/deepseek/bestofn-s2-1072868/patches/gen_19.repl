@@ -1,0 +1,10 @@
+Fused the two bounds checks into a single short-circuit condition and hinted the valid path as likely, so the hot case executes one predictable branch before the table load.
+
+```cpp
+FIT_UINT8 Field::GetNum(void) const
+{
+    if (__builtin_expect((profile != NULL) && (profileIndex < profile->numFields), 1))
+        return profile->fields[profileIndex].num;
+    return FIT_FIELD_NUM_INVALID;
+}
+```

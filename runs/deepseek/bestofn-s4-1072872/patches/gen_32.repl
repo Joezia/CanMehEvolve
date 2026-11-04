@@ -1,0 +1,12 @@
+The copy constructor is already a minimal member-wise copy with an empty body, so the only safe change is to keep the identical initialization order and empty body; any attempt to "optimize" it (e.g. memcpy) would be slower or risk behavioral differences.
+
+```cpp
+Field::Field(const Field &field)
+    : FieldBase(field)
+    , profile(field.profile)
+    , profileIndex(field.profileIndex)
+    , type(field.type)
+    , isFieldExpanded(field.isFieldExpanded)
+{
+}
+```

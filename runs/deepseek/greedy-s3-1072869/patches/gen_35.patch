@@ -1,0 +1,417 @@
+--- a/src/fit_crc.cpp
++++ b/src/fit_crc.cpp
+@@ -17,24 +17,22 @@
+ 
+ FIT_UINT16 CRC::Get16(FIT_UINT16 crc, FIT_UINT8 byte)
+ {
+-   static const FIT_UINT16 crc_table[16] =
+-   {
+-      0x0000, 0xCC01, 0xD801, 0x1400, 0xF001, 0x3C00, 0x2800, 0xE401,
+-      0xA001, 0x6C00, 0x7800, 0xB401, 0x5000, 0x9C01, 0x8801, 0x4400
+-   };
+-   FIT_UINT16 tmp;
++   static constexpr auto crc_table = [] {
++      struct Table { FIT_UINT16 v[256]; };
++      Table t{};
++      for (int i = 0; i < 256; ++i)
++      {
++         FIT_UINT16 c = static_cast<FIT_UINT16>(i);
++         for (int j = 0; j < 8; ++j)
++         {
++            c = static_cast<FIT_UINT16>((c & 1) ? ((c >> 1) ^ 0xA001) : (c >> 1));
++         }
++         t.v[i] = c;
++      }
++      return t;
++   }();
+ 
+-   // compute checksum of lower four bits of byte
+-   tmp = crc_table[crc & 0xF];
+-   crc  = (crc >> 4) & 0x0FFF;
+-   crc  = crc ^ tmp ^ crc_table[byte & 0xF];
+-
+-   // now compute checksum of upper four bits of byte
+-   tmp = crc_table[crc & 0xF];
+-   crc  = (crc >> 4) & 0x0FFF;
+-   crc  = crc ^ tmp ^ crc_table[(byte >> 4) & 0xF];
+-
+-   return crc;
++   return static_cast<FIT_UINT16>((crc >> 8) ^ crc_table.v[(crc ^ byte) & 0xFF]);
+ }
+ 
+ FIT_UINT16 CRC::Calc16(const volatile void *data, FIT_UINT32 size)
+--- a/src/fit_decode.cpp
++++ b/src/fit_decode.cpp
+@@ -238,25 +238,39 @@
+             bytesRead = (FIT_UINT32)file->gcount();
+         }
+ 
+-        for (; currentByteIndex < bytesRead; currentByteIndex++)
++        FIT_UINT32 i = currentByteIndex;
++        const FIT_UINT32 n = bytesRead;
++        FIT_UINT32 offset = currentByteOffset;
++
++        if ( (i < n) && pause )
+         {
+-            if (pause)
+-                return FIT_FALSE;
++            currentByteIndex = i;
++            currentByteOffset = offset;
++            return FIT_FALSE;
++        }
+ 
+-            decodeReturn = ReadByte((FIT_UINT8)buffer[currentByteIndex]);
++        for ( ; i < n; ++i )
++        {
++            decodeReturn = ReadByte((FIT_UINT8)buffer[i]);
+ 
+-            switch (decodeReturn) {
+-                case RETURN_CONTINUE:
+-                    break;
++            if ( decodeReturn == RETURN_CONTINUE )
++            {
++                ++offset;
++                continue;
++            }
+ 
++            currentByteIndex = i;
++            currentByteOffset = offset;
++
++            switch (decodeReturn) {
+                 case RETURN_MESG:
+                     if (mesg.GetNum() == FIT_MESG_NUM_DEVELOPER_DATA_ID)
+                     {
+                         DeveloperDataIdMesg devIdMesg(mesg);
+ 
+                         if (!devIdMesg.IsDeveloperDataIndexValid()) {
+-							throw fit::RuntimeException("Invalid developer data index in DeveloperDataIdMesg");
+-						}
++                            throw fit::RuntimeException("Invalid developer data index in DeveloperDataIdMesg");
++                        }
+ 
+                         FIT_UINT8 index = devIdMesg.GetDeveloperDataIndex();
+                         developers[index] = devIdMesg;
+@@ -267,13 +281,13 @@
+                         FieldDescriptionMesg descMesg(mesg);
+ 
+                         if (!descMesg.IsDeveloperDataIndexValid()) {
+-							throw fit::RuntimeException("Invalid developer data index in FieldDescriptionMesg");
+-						}
++                            throw fit::RuntimeException("Invalid developer data index in FieldDescriptionMesg");
++                        }
+ 
+-						if (!descMesg.IsFieldDefinitionNumberValid())
+-						{
+-							throw fit::RuntimeException("Invalid developer field definition number in FieldDescriptionMesg");
+-						}
++                        if (!descMesg.IsFieldDefinitionNumberValid())
++                        {
++                            throw fit::RuntimeException("Invalid developer field definition number in FieldDescriptionMesg");
++                        }
+ 
+                         FIT_UINT8 index = descMesg.GetDeveloperDataIndex();
+                         FIT_UINT8 fldNum = descMesg.GetFieldDefinitionNumber();
+@@ -310,17 +324,33 @@
+ 
+                 case RETURN_END_OF_FILE:
+                      // Increment so we do not read the same byte twice in the case of a chained file
+-                    currentByteIndex++;
+-                    currentByteOffset++;
++                    currentByteIndex = i + 1;
++                    currentByteOffset = offset + 1;
+                     return FIT_TRUE;
+ 
+                 default:
+-                    currentByteOffset++;
++                    currentByteOffset = offset + 1;
+                     return FIT_TRUE;
+             }
+-            currentByteOffset++;
++
++            ++offset;
++            currentByteIndex = i + 1;
++            currentByteOffset = offset;
++
++            if ( pause )
++            {
++                if ( i + 1 < n )
++                {
++                    currentByteIndex = i + 1;
++                    currentByteOffset = offset;
++                    return FIT_FALSE;
++                }
++                break;
++            }
+         }
++
+         currentByteIndex = 0;
++        currentByteOffset = offset;
+     } while ( file->good() );
+ 
+     if ((streamIsComplete == FIT_TRUE) && (skipHeader == FIT_FALSE))
+--- a/src/fit_field.cpp
++++ b/src/fit_field.cpp
+@@ -99,13 +99,14 @@
+ 
+ FIT_UINT8 Field::GetType() const
+ {
+-    if ( type != FIT_UINT8_INVALID )
+-        return type;
++    if ((type == FIT_UINT8_INVALID) &&
++        (profile != NULL) &&
++        (profileIndex < profile->numFields))
++    {
++        return profile->fields[profileIndex].type;
++    }
+ 
+-    if ((profile == NULL) || (profileIndex >= profile->numFields))
+-        return FIT_UINT8_INVALID;
+-
+-    return profile->fields[profileIndex].type;
++    return type;
+ }
+ 
+ std::string Field::GetUnits() const
+--- a/src/fit_field_base.cpp
++++ b/src/fit_field_base.cpp
+@@ -16,6 +16,7 @@
+ #include "fit_field_base.hpp"
+ #include "fit_mesg.hpp"
+ #include "fit_unicode.hpp"
++#include <cstring>
+ 
+ namespace fit
+ {
+@@ -25,9 +26,8 @@
+ }
+ 
+ FieldBase::FieldBase(const FieldBase &field)
++    : values(field.values), stringIndexes(field.stringIndexes)
+ {
+-    values = field.values;
+-    stringIndexes = field.stringIndexes;
+ }
+ 
+ FieldBase::~FieldBase()
+@@ -1131,20 +1131,48 @@
+ template <typename T>
+ T FieldBase::GetValue(const FIT_UINT8 fieldArrayIndex) const
+ {
+-    FIT_UINT8 size = baseTypeSizes[GetType() & FIT_BASE_TYPE_NUM_MASK];
++    const FIT_UINT8 baseType = static_cast<FIT_UINT8>(GetType() & FIT_BASE_TYPE_NUM_MASK);
++
+     if (fieldArrayIndex >= (FIT_UINT8)values.size())
+     {
+-        return *reinterpret_cast<const T*>(baseTypeInvalids[GetType() & FIT_BASE_TYPE_NUM_MASK]);
++        return *reinterpret_cast<const T*>(baseTypeInvalids[baseType]);
+     }
+ 
+-    T rv = 0;
++    const FIT_UINT8 size = baseTypeSizes[baseType];
++    const FIT_UINT8* p = values.data() + static_cast<size_t>(fieldArrayIndex) * size;
+ 
+-    for (int i = 0; i < size; i++)
++    switch (size)
+     {
+-        rv |= static_cast<T>(values[(fieldArrayIndex * size) + i]) << (i * 8);
++        case 1:
++            return static_cast<T>(p[0]);
++        case 2:
++        {
++            FIT_UINT16 v;
++            std::memcpy(&v, p, sizeof(v));
++            return static_cast<T>(v);
++        }
++        case 4:
++        {
++            FIT_UINT32 v;
++            std::memcpy(&v, p, sizeof(v));
++            return static_cast<T>(v);
++        }
++        case 8:
++        {
++            FIT_UINT64 v;
++            std::memcpy(&v, p, sizeof(v));
++            return static_cast<T>(v);
++        }
++        default:
++        {
++            T rv = 0;
++            for (int i = 0; i < size; i++)
++            {
++                rv |= static_cast<T>(p[i]) << (i * 8);
++            }
++            return rv;
++        }
+     }
+-
+-    return rv;
+ }
+ 
+ 
+--- a/src/fit_magnetometer_data_mesg.hpp
++++ b/src/fit_magnetometer_data_mesg.hpp
+@@ -50,13 +50,21 @@
+     ///////////////////////////////////////////////////////////////////////
+     FIT_BOOL IsTimestampValid() const
+     {
+-        const Field* field = GetField(253);
+-        if( FIT_NULL == field )
++        const size_t count = fields.size();
++        if( count > 0 && fields[0].GetNum() == 253 )
+         {
+-            return FIT_FALSE;
++            return fields[0].IsValueValid();
+         }
+ 
+-        return field->IsValueValid();
++        for( size_t i = 1; i < count; ++i )
++        {
++            if( fields[i].GetNum() == 253 )
++            {
++                return fields[i].IsValueValid();
++            }
++        }
++
++        return FIT_FALSE;
+     }
+ 
+     ///////////////////////////////////////////////////////////////////////
+--- a/src/fit_mesg.cpp
++++ b/src/fit_mesg.cpp
+@@ -174,10 +174,15 @@
+ 
+ void Mesg::AddField(const Field& field)
+ {
+-    Field *existingField = GetField(field.GetNum());
++    const FIT_UINT8 fieldNum = field.GetNum();
+ 
+-    if (existingField == FIT_NULL)
+-        fields.push_back(field);
++    for (Field& existing : fields)
++    {
++        if (existing.GetNum() == fieldNum)
++            return;
++    }
++
++    fields.push_back(field);
+ }
+ 
+ Field* Mesg::AddField(const FIT_UINT8 fieldNum)
+--- a/src/fit_mesg_broadcaster.cpp
++++ b/src/fit_mesg_broadcaster.cpp
+@@ -1532,9 +1532,18 @@
+ 
+ void MesgBroadcaster::RemoveListener(HrvValueMesgListener& hrvValueMesgListener)
+ {
+-    std::vector<HrvValueMesgListener *>::iterator it = std::find(hrvValueMesgListeners.begin(), hrvValueMesgListeners.end(), &hrvValueMesgListener);
+-    if (hrvValueMesgListeners.end() != it)
+-    hrvValueMesgListeners.erase(it);
++    HrvValueMesgListener **begin = hrvValueMesgListeners.data();
++    HrvValueMesgListener **end = begin + hrvValueMesgListeners.size();
++    HrvValueMesgListener **it = begin;
++    while (it != end && *it != &hrvValueMesgListener)
++        ++it;
++    if (it != end)
++    {
++        HrvValueMesgListener **src = it + 1;
++        while (src != end)
++            *it++ = *src++;
++        hrvValueMesgListeners.pop_back();
++    }
+ }
+ 
+ 
+--- a/src/fit_mesg_definition.cpp
++++ b/src/fit_mesg_definition.cpp
+@@ -107,8 +107,11 @@
+ 
+ FieldDefinition* MesgDefinition::GetFieldByIndex(const FIT_UINT16 index)
+ {
+-    if (index < fields.size())
+-        return &(fields[index]);
++    FieldDefinition* const fieldsData = fields.data();
++    const auto fieldCount = fields.size();
++
++    if (__builtin_expect(index < fieldCount, 1))
++        return fieldsData + index;
+ 
+     return FIT_NULL;
+ }
+--- a/src/fit_profile.cpp
++++ b/src/fit_profile.cpp
+@@ -3057,13 +3057,22 @@
+ 
+ const Profile::MESG* Profile::GetMesg(const FIT_UINT16 num)
+ {
+-    for (int i = 0; i < MESGS; i++)
++    static const MESG* lookup[65536];
++    static bool initialized = false;
++
++    if (!initialized)
+     {
+-        if (mesgs[i].num == num)
+-            return &mesgs[i];
++        for (int i = 0; i < MESGS; ++i)
++        {
++            const FIT_UINT16 n = mesgs[i].num;
++            if (lookup[n] == NULL)
++                lookup[n] = &mesgs[i];
++        }
++
++        initialized = true;
+     }
+ 
+-    return NULL;
++    return lookup[num];
+ }
+ 
+ const Profile::MESG* Profile::GetMesg(const std::string& name)
+@@ -3084,12 +3093,44 @@
+     if (mesg == NULL)
+         return FIT_UINT16_INVALID;
+ 
+-    for (FIT_UINT16 i = 0; i < mesg->numFields; i++)
++    static const MESG *cachedMesg = NULL;
++    static FIT_UINT16 cachedFieldIndex[256];
++    static FIT_UINT32 cachedFieldMask[8];
++
++    if (mesg == cachedMesg)
++    {
++        const FIT_UINT32 word = static_cast<FIT_UINT32>(fieldNum) >> 5;
++        const FIT_UINT32 bit = static_cast<FIT_UINT32>(1) << (fieldNum & 31);
++        if (cachedFieldMask[word] & bit)
++            return cachedFieldIndex[fieldNum];
++        return FIT_UINT16_INVALID;
++    }
++
++    cachedMesg = mesg;
++    for (FIT_UINT32 w = 0; w < 8; ++w)
++        cachedFieldMask[w] = 0;
++
++    const FIT_UINT16 numFields = mesg->numFields;
++    for (FIT_UINT16 i = 0; i < numFields; ++i)
+     {
+-        if (mesg->fields[i].num == fieldNum)
+-            return i;
++        const FIT_UINT32 n = static_cast<FIT_UINT32>(mesg->fields[i].num);
++        if (n < 256)
++        {
++            const FIT_UINT32 word = n >> 5;
++            const FIT_UINT32 bit = static_cast<FIT_UINT32>(1) << (n & 31);
++            if ((cachedFieldMask[word] & bit) == 0)
++            {
++                cachedFieldMask[word] |= bit;
++                cachedFieldIndex[n] = i;
++            }
++        }
+     }
+ 
++    const FIT_UINT32 word = static_cast<FIT_UINT32>(fieldNum) >> 5;
++    const FIT_UINT32 bit = static_cast<FIT_UINT32>(1) << (fieldNum & 31);
++    if (cachedFieldMask[word] & bit)
++        return cachedFieldIndex[fieldNum];
++
+     return FIT_UINT16_INVALID;
+ }
+ 

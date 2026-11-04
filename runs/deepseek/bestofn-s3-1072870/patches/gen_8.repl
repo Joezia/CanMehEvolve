@@ -1,0 +1,7 @@
+The destructor body is already empty, so the compiler emits only a `ret`; there is nothing to remove, and any change risks altering linkage or codegen at call sites, so the fastest safe replacement is identical.
+
+```cpp
+FieldBase::~FieldBase()
+{
+}
+```

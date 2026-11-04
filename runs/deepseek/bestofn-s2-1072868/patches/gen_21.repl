@@ -1,0 +1,12 @@
+Added branch-prediction hints so the common valid-field path stays straight-line and the rare invalid returns are placed out of line. This preserves all bounds/null behavior while reducing branch-layout overhead.
+
+```cpp
+FIT_UINT8 Field::GetNum(void) const
+{
+    if (__builtin_expect(profile == NULL, 0))
+        return FIT_FIELD_NUM_INVALID;
+    if (__builtin_expect(profileIndex >= profile->numFields, 0))
+        return FIT_FIELD_NUM_INVALID;
+    return profile->fields[profileIndex].num;
+}
+```

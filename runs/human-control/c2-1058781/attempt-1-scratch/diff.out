@@ -1,0 +1,31 @@
+--- a/src/fit_profile.cpp
++++ b/src/fit_profile.cpp
+@@ -3057,13 +3057,23 @@
+ 
+ const Profile::MESG* Profile::GetMesg(const FIT_UINT16 num)
+ {
+-    for (int i = 0; i < MESGS; i++)
++    struct LookupTable
+     {
+-        if (mesgs[i].num == num)
+-            return &mesgs[i];
+-    }
++        const MESG* byNumber[65536] = {};
+ 
+-    return NULL;
++        LookupTable()
++        {
++            for (int i = 0; i < MESGS; ++i)
++            {
++                const FIT_UINT16 messageNumber = mesgs[i].num;
++                if (byNumber[messageNumber] == NULL)
++                    byNumber[messageNumber] = &mesgs[i];
++            }
++        }
++    };
++
++    static const LookupTable table;
++    return table.byNumber[num];
+ }
+ 
+ const Profile::MESG* Profile::GetMesg(const std::string& name)

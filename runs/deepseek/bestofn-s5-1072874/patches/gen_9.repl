@@ -1,0 +1,8 @@
+The function is already a single compare-and-set; I kept the comparison but express it as an unsigned range check against `FIT_UINT16_INVALID`, which is equivalent for all `uint16` values and lets the compiler emit a branchless `setb` without a 16-bit immediate compare against `0xFFFF`.
+
+```cpp
+FIT_BOOL Field::IsValid(void) const
+{
+    return static_cast<FIT_BOOL>(profileIndex < FIT_UINT16_INVALID);
+}
+```

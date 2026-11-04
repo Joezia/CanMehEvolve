@@ -1,0 +1,9 @@
+I replaced the default-construct-then-copy-assign body with a member initializer list, so `values` and `stringIndexes` are copy-constructed directly in place (one allocation each) instead of being default-constructed and then reassigned.
+
+```cpp
+FieldBase::FieldBase(const FieldBase &field)
+    : values(field.values)
+    , stringIndexes(field.stringIndexes)
+{
+}
+```

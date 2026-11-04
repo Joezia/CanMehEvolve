@@ -1,0 +1,6 @@
+{
+ "error": "/home/z/zhouzia/Workspace/CanMehEvolve/build/work-1068890/tree/src/fit_field_base.cpp: In instantiation of ‘T fit::FieldBase::GetValue(FIT_UINT8) const [with T = double; FIT_UINT8 = unsigned char]’:\n/home/z/zhouzia/Workspace/CanMehEvolve/build/work-1068890/tree/src/fit_field_base.cpp:391:52:   required from here\n/home/z/zhouzia/Workspace/CanMehEvolve/build/work-1068890/tree/src/fit_field_base.cpp:1116:68: error: invalid operands of types ‘double’ and ‘int’ to binary ‘operator<<’\n 1116 |         rv |= static_cast<T>(values[(fieldArrayIndex * size) + i]) << (i * 8);\n      |               ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^~~~~~~~~~\n",
+ "ok": false,
+ "rebuilt": 3,
+ "stage": "compile"
+}

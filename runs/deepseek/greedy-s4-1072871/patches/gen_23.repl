@@ -1,0 +1,16 @@
+Replaced the out-of-line `GetField(14)` lookup with a direct forward scan of the message’s field vector, avoiding the function call and const-cast while preserving first-match semantics.
+
+```cpp
+    FIT_BOOL IsIdValid() const
+    {
+        for (const Field& field : fields)
+        {
+            if (field.GetNum() == 14)
+            {
+                return field.IsValueValid();
+            }
+        }
+
+        return FIT_FALSE;
+    }
+```

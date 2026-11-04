@@ -1,0 +1,32 @@
+--- a/src/fit_mesg.cpp
++++ b/src/fit_mesg.cpp
+@@ -14,6 +14,7 @@
+ #include <algorithm>
+ #include "fit_mesg.hpp"
+ #include "fit_mesg_definition.hpp"
++#include <vector>
+ 
+ namespace fit
+ {
+@@ -172,12 +173,17 @@
+     return FIT_FALSE;
+ }
+ 
++
+ void Mesg::AddField(const Field& field)
+ {
+-    Field *existingField = GetField(field.GetNum());
+-
+-    if (existingField == FIT_NULL)
+-        fields.push_back(field);
++    const std::size_t num = field.GetNum();
++    for (auto& f : fields) {
++        if (f.GetNum() == num) {
++            f = field;
++            return;
++        }
++    }
++    fields.push_back(field);
+ }
+ 
+ Field* Mesg::AddField(const FIT_UINT8 fieldNum)

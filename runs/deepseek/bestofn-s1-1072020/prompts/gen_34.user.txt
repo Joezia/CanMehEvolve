@@ -1,0 +1,16 @@
+File: src/fit_mesg_broadcaster.cpp
+Function: MesgBroadcaster::RemoveListener (6 lines)
+One full decode of the four files takes about 358.9 ms in the stock build.
+Time of the current version of the whole library relative to stock: 1.000 (below 1.0 is faster). Best measured so far: 1.000.
+
+Current text of the function:
+```cpp
+void MesgBroadcaster::RemoveListener(HrMesgListener& hrMesgListener)
+{
+    std::vector<HrMesgListener *>::iterator it = std::find(hrMesgListeners.begin(), hrMesgListeners.end(), &hrMesgListener);
+    if (hrMesgListeners.end() != it)
+    hrMesgListeners.erase(it);
+}
+
+```
+Return the faster replacement now.

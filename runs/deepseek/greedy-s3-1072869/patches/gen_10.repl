@@ -1,0 +1,14 @@
+I replaced the repeated getter calls and variable integer division with direct member access and a shift-based size computation, valid because FIT base-type sizes are powers of two. This removes call overhead and the expensive division from the hot path.
+
+```cpp
+FIT_UINT8 FieldBase::GetNumValues(void) const
+{
+    if (num == FIT_UINT8_INVALID)
+        return 0;
+
+    if (type == FIT_BASE_TYPE_STRING)
+        return (FIT_UINT8)stringIndexes.size();
+
+    return (FIT_UINT8)(values.size() >> (baseTypeSizes[type & FIT_BASE_TYPE_NUM_MASK] >> 1));
+}
+```

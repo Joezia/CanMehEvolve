@@ -1,0 +1,50 @@
+File: src/fit_lap_mesg.hpp
+Function: IsMaxCadenceValid (10 lines)
+One full decode of the four files takes about 479.2 ms in the stock build.
+Time of the current version of the whole library relative to stock: 0.988 (below 1.0 is faster). Best measured so far: 0.988.
+
+Your previous attempt failed:
+Stage 'compile' rejected it: In file included from /home/z/zhouzia/Workspace/CanMehEvolve/build/work-1068892/tree/src/fit_lap_mesg_listener.hpp:16,
+                 from /home/z/zhouzia/Workspace/CanMehEvolve/build/work-1068892/tree/src/fit_mesg_broadcaster.hpp:58,
+                 from /home/z/zhouzia/Workspace/CanMehEvolve/build/work-1068892/tree/src/fit_buffered_mesg_broadcaster.hpp:17,
+                 from /home/z/zhouzia/Workspace/CanMehEvolve/build/work-1068892/tree/src/fit_buffered_mesg_broadcaster.cpp:14:
+/home/z/zhouzia/Workspace/CanMehEvolve/build/work-1068892/tree/src/fit_lap_mesg.hpp:945:1: error: stray ‘`’ in program
+  945 | ```cpp
+      | ^
+/home/z/zhouzia/Workspace/CanMehEvolve/build/work-1068892/tree/src/fit_lap_mesg.hpp:945:2: error: stray ‘`’ in program
+  945 | ```cpp
+      |  ^
+/home/z/zhouzia/Workspace/CanMehEvolve/build/work-1068892/tree/src/fit_lap_mesg.hpp:945:3: error: stray ‘`’ in program
+  945 | ```cpp
+      |   ^
+/home/z/zhouzia/Workspace/CanMehEvolve/build/work-1068892/tree/src/fit_lap_mesg.hpp:945:4: error: ‘cpp’ does not name a type
+  945 | ```cpp
+      |    ^~~
+
+The rejected replacement was:
+```cpp
+
+```cpp
+    FIT_BOOL IsMaxCadenceValid() const
+    {
+        const Field* field = GetField(18);
+        return (field != FIT_NULL) ? field->IsValueValid() : FIT_FALSE;
+    }
+
+```
+
+Current text of the function:
+```cpp
+    FIT_BOOL IsMaxCadenceValid() const
+    {
+        const Field* field = GetField(18);
+        if( FIT_NULL == field )
+        {
+            return FIT_FALSE;
+        }
+
+        return field->IsValueValid();
+    }
+
+```
+Return the faster replacement now.

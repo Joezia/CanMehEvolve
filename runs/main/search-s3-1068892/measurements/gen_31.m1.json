@@ -1,0 +1,6 @@
+{
+ "error": "/home/z/zhouzia/Workspace/CanMehEvolve/build/work-1068892/tree/src/fit_field_base.cpp:1013:1: error: stray ‘`’ in program\n 1013 | ```cpp\n      | ^\n/home/z/zhouzia/Workspace/CanMehEvolve/build/work-1068892/tree/src/fit_field_base.cpp:1013:2: error: stray ‘`’ in program\n 1013 | ```cpp\n      |  ^\n/home/z/zhouzia/Workspace/CanMehEvolve/build/work-1068892/tree/src/fit_field_base.cpp:1013:3: error: stray ‘`’ in program\n 1013 | ```cpp\n      |   ^\n/home/z/zhouzia/Workspace/CanMehEvolve/build/work-1068892/tree/src/fit_field_base.cpp:1013:4: error: ‘cpp’ does not name a type\n 1013 | ```cpp\n      |    ^~~\n",
+ "ok": false,
+ "rebuilt": 6,
+ "stage": "compile"
+}

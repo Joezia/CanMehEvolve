@@ -1,0 +1,1 @@
+{"error":"the candidate died on signal 11 (invalid memory access): CanMehBench is folding every Profile::GetMesg, GetFieldIndex and GetField answer; a candidate with undersized tables dies here\n","ok":false,"rebuilt":4,"stage":"crash"}

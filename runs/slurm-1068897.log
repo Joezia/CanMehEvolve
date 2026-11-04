@@ -1,0 +1,2 @@
+cp: cannot stat '/home/z/zhouzia/Workspace/CanMehEvolve/build/work-c1-1068897-O3native/meta.json': No such file or directory
+cp: cannot stat 'build/work-c1-1068897-O3native/libfit_ref.so': No such file or directory

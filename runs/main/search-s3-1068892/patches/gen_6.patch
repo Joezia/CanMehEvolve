@@ -1,0 +1,187 @@
+--- a/src/fit_crc.cpp
++++ b/src/fit_crc.cpp
+@@ -22,18 +22,13 @@
+       0x0000, 0xCC01, 0xD801, 0x1400, 0xF001, 0x3C00, 0x2800, 0xE401,
+       0xA001, 0x6C00, 0x7800, 0xB401, 0x5000, 0x9C01, 0x8801, 0x4400
+    };
+-   FIT_UINT16 tmp;
+-
+-   // compute checksum of lower four bits of byte
+-   tmp = crc_table[crc & 0xF];
+-   crc  = (crc >> 4) & 0x0FFF;
+-   crc  = crc ^ tmp ^ crc_table[byte & 0xF];
+-
+-   // now compute checksum of upper four bits of byte
+-   tmp = crc_table[crc & 0xF];
+-   crc  = (crc >> 4) & 0x0FFF;
+-   crc  = crc ^ tmp ^ crc_table[(byte >> 4) & 0xF];
+ 
++   // Process lower nibble
++   crc = (crc >> 4) ^ crc_table[(crc ^ byte) & 0xF];
++   
++   // Process upper nibble
++   crc = (crc >> 4) ^ crc_table[(crc ^ (byte >> 4)) & 0xF];
++   
+    return crc;
+ }
+ 
+--- a/src/fit_decode.cpp
++++ b/src/fit_decode.cpp
+@@ -225,6 +225,8 @@
+     pause = FIT_TRUE;
+ }
+ 
++
++```cpp
+ FIT_BOOL Decode::Resume(void)
+ {
+     pause = FIT_FALSE;
+@@ -232,10 +234,10 @@
+ 
+     do
+     {
+-        if ( currentByteIndex == 0 )
++        if (currentByteIndex == 0)
+         {
+             file->read(buffer, BufferSize);
+-            bytesRead = (FIT_UINT32)file->gcount();
++            bytesRead = static_cast<FIT_UINT32>(file->gcount());
+         }
+ 
+         for (; currentByteIndex < bytesRead; currentByteIndex++)
+@@ -243,7 +245,7 @@
+             if (pause)
+                 return FIT_FALSE;
+ 
+-            decodeReturn = ReadByte((FIT_UINT8)buffer[currentByteIndex]);
++            decodeReturn = ReadByte(static_cast<FIT_UINT8>(buffer[currentByteIndex]));
+ 
+             switch (decodeReturn) {
+                 case RETURN_CONTINUE:
+@@ -281,27 +283,23 @@
+                         try
+                         {
+                             descriptions.at(index)[fldNum] = descMesg;
+-                            
+ 
+                             if (descriptionListener)
+                             {
+                                 descriptionListener->OnDeveloperFieldDescription(DeveloperFieldDescription(descMesg, developers[index]));
+                             }
+                         }
+-                        catch (std::out_of_range)
++                        catch (const std::out_of_range&)
+                         {
+                             // Description without a Developer Data Id Message
+                         }
+                     }
+ 
+-                    
+-
+                     if (mesgListener)
+                         mesgListener->OnMesg(mesg);
+                     break;
+ 
+                 case RETURN_MESG_DEF:
+-                   
+                     if (mesgDefinitionListener)
+                     {
+                         mesgDefinitionListener->OnMesgDefinition(localMesgDefs[localMesgIndex]);
+@@ -309,7 +307,6 @@
+                     break;
+ 
+                 case RETURN_END_OF_FILE:
+-                     // Increment so we do not read the same byte twice in the case of a chained file
+                     currentByteIndex++;
+                     currentByteOffset++;
+                     return FIT_TRUE;
+@@ -321,53 +318,36 @@
+             currentByteOffset++;
+         }
+         currentByteIndex = 0;
+-    } while ( file->good() );
++    } while (file->good());
+ 
+     if ((streamIsComplete == FIT_TRUE) && (skipHeader == FIT_FALSE))
+     {
+-        // When decoding a complete file we should exit via RETURN_END_OF_FILE state only.
+-      std::ostringstream message;
+-      message << "FIT decode error: Unexpected end of input stream at byte: " << currentByteOffset;
++        std::ostringstream message;
++        message << "FIT decode error: Unexpected end of input stream at byte: " << currentByteOffset;
+         throw RuntimeException(message.str());
+     }
++
+     if (streamIsComplete == FIT_FALSE)
+     {
+-        // If stream is not yet complete caller can resume() when there is more data
+-        // or decide there was an error.
+         if ((decodeReturn == RETURN_MESG) || (decodeReturn == RETURN_MESG_DEF))
+         {
+-            // Our stream ended on a complete message, maybe we are done decoding.
+             return FIT_TRUE;
+         }
+-        else
+-        {
+-            // EOF was encountered mid message. Caller may want to resume once
+-            // more bytes are available.
+-            return FIT_FALSE;
+-        }
++        return FIT_FALSE;
+     }
+-        // if Decoding Records section only, file should end on a complete message
+-        // (unless incomplete stream option above was also used)
+     else
+     {
+         if ((decodeReturn == RETURN_MESG) || (decodeReturn == RETURN_MESG_DEF))
+         {
+-            // Our stream ended on a complete message, we are done decoding.
+             return FIT_TRUE;
+         }
+-        else
++        if (invalidDataSize == FIT_FALSE)
+         {
+-            if (invalidDataSize == FIT_FALSE)
+-            {
+-                std::ostringstream message;
+-                message << "FIT decode error: Unexpected end of input stream at byte: " << currentByteOffset;
+-                throw RuntimeException(message.str());
+-            }
+-            else
+-            {
+-                return FIT_TRUE;
+-            }
++            std::ostringstream message;
++            message << "FIT decode error: Unexpected end of input stream at byte: " << currentByteOffset;
++            throw RuntimeException(message.str());
+         }
++        return FIT_TRUE;
+     }
+ }
+ 
+--- a/src/fit_field.cpp
++++ b/src/fit_field.cpp
+@@ -15,6 +15,7 @@
+ #include "fit_field.hpp"
+ #include "fit_mesg.hpp"
+ #include "fit_unicode.hpp"
++#include <cstdint>
+ 
+ namespace fit
+ {
+@@ -97,12 +98,13 @@
+     return profile->fields[profileIndex].num;
+ }
+ 
++
+ FIT_UINT8 Field::GetType() const
+ {
+-    if ( type != FIT_UINT8_INVALID )
++    if (type != FIT_UINT8_INVALID)
+         return type;
+ 
+-    if ((profile == NULL) || (profileIndex >= profile->numFields))
++    if (profile == nullptr || profileIndex >= profile->numFields)
+         return FIT_UINT8_INVALID;
+ 
+     return profile->fields[profileIndex].type;

@@ -1,0 +1,33 @@
+const FIT_UINT16 Profile::GetFieldIndex(const FIT_UINT16 mesgNum, const FIT_UINT8 fieldNum)
+{
+    static_assert(FIT_UINT16_INVALID == 0xFFFF, "FIT_UINT16_INVALID must be 0xFFFF");
+
+    struct CacheEntry
+    {
+        FIT_UINT32 key;
+        FIT_UINT16 table[256];
+    };
+
+    static CacheEntry cache[1024] = {};
+
+    CacheEntry &e = cache[mesgNum & 1023];
+    const FIT_UINT32 key = static_cast<FIT_UINT32>(mesgNum) + 1;
+
+    if (e.key == key)
+        return e.table[fieldNum];
+
+    e.key = key;
+    std::memset(e.table, 0xFF, sizeof(e.table));
+
+    const MESG *mesg = GetMesg(mesgNum);
+    if (mesg != NULL)
+    {
+        for (FIT_UINT16 i = mesg->numFields; i > 0; )
+        {
+            --i;
+            e.table[mesg->fields[i].num] = i;
+        }
+    }
+
+    return e.table[fieldNum];
+}

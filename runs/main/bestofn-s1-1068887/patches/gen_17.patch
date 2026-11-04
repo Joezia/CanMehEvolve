@@ -1,0 +1,39 @@
+--- a/src/fit_profile.cpp
++++ b/src/fit_profile.cpp
+@@ -11,6 +11,8 @@
+ 
+ 
+ #include "fit_profile.hpp"
++#include <algorithm>
++#include <vector>
+ 
+ namespace fit
+ {
+@@ -3055,15 +3057,21 @@
+    { NULL, "pad", FIT_MESG_NUM_PAD, 0 },
+ };
+ 
++
+ const Profile::MESG* Profile::GetMesg(const FIT_UINT16 num)
+ {
+-    for (int i = 0; i < MESGS; i++)
+-    {
+-        if (mesgs[i].num == num)
+-            return &mesgs[i];
++    static std::vector<const Profile::MESG*> mesg_by_num;
++    static bool initialized = false;
++    
++    if (!initialized) {
++        mesg_by_num.resize(65536, nullptr);
++        for (int i = 0; i < MESGS; i++) {
++            mesg_by_num[mesgs[i].num] = &mesgs[i];
++        }
++        initialized = true;
+     }
+-
+-    return NULL;
++    
++    return (num < 65536) ? mesg_by_num[num] : nullptr;
+ }
+ 
+ const Profile::MESG* Profile::GetMesg(const std::string& name)

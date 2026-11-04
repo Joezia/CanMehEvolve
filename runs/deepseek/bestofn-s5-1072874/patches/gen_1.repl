@@ -1,0 +1,8 @@
+The function already compiles to a single inlined field-store, and any alternative (e.g. calling the lower-level `SetField` directly) is either identical after inlining or risks a signature/access mismatch, so I kept the exact same call.
+
+```cpp
+    void SetSensorType(FIT_SENSOR_TYPE sensorType)
+    {
+        SetFieldENUMValue(0, sensorType, 0, FIT_SUBFIELD_INDEX_MAIN_FIELD);
+    }
+```

@@ -1,0 +1,134 @@
+--- a/src/fit_accumulated_field.cpp
++++ b/src/fit_accumulated_field.cpp
+@@ -11,12 +11,14 @@
+ 
+ 
+ #include "fit_accumulated_field.hpp"
++#include <cstdint>
+ 
+ namespace fit
+ {
+ 
++
+     AccumulatedField::AccumulatedField()
+-        : lastValue(0), accumulatedValue(0)
++        : lastValue{0}, accumulatedValue{0}
+     {
+     }
+ 
+--- a/src/fit_field_base.cpp
++++ b/src/fit_field_base.cpp
+@@ -16,6 +16,7 @@
+ #include "fit_field_base.hpp"
+ #include "fit_mesg.hpp"
+ #include "fit_unicode.hpp"
++#include <cstring>
+ 
+ namespace fit
+ {
+@@ -1128,22 +1129,21 @@
+     return (value > 0.0) ? floor(value + 0.5) : ceil(value - 0.5);
+ }
+ 
++
+ template <typename T>
+ T FieldBase::GetValue(const FIT_UINT8 fieldArrayIndex) const
+ {
+-    FIT_UINT8 size = baseTypeSizes[GetType() & FIT_BASE_TYPE_NUM_MASK];
+-    if (fieldArrayIndex >= (FIT_UINT8)values.size())
++    const FIT_UINT8 typeIdx = GetType() & FIT_BASE_TYPE_NUM_MASK;
++    const FIT_UINT8 size = baseTypeSizes[typeIdx];
++    
++    if (fieldArrayIndex >= (FIT_UINT8)values.size() / size)
+     {
+-        return *reinterpret_cast<const T*>(baseTypeInvalids[GetType() & FIT_BASE_TYPE_NUM_MASK]);
++        return *reinterpret_cast<const T*>(baseTypeInvalids[typeIdx]);
+     }
+ 
++    const FIT_UINT8 offset = fieldArrayIndex * size;
+     T rv = 0;
+-
+-    for (int i = 0; i < size; i++)
+-    {
+-        rv |= static_cast<T>(values[(fieldArrayIndex * size) + i]) << (i * 8);
+-    }
+-
++    std::memcpy(&rv, &values[offset], size);
+     return rv;
+ }
+ 
+--- a/src/fit_profile.cpp
++++ b/src/fit_profile.cpp
+@@ -11,6 +11,9 @@
+ 
+ 
+ #include "fit_profile.hpp"
++#include <algorithm>
++#include <vector>
++#include <cstdint>
+ 
+ namespace fit
+ {
+@@ -3055,14 +3058,29 @@
+    { NULL, "pad", FIT_MESG_NUM_PAD, 0 },
+ };
+ 
++
++
+ const Profile::MESG* Profile::GetMesg(const FIT_UINT16 num)
+ {
+-    for (int i = 0; i < MESGS; i++)
+-    {
+-        if (mesgs[i].num == num)
+-            return &mesgs[i];
+-    }
++    // Precomputed sorted indices at compile time via static constexpr array
++    // Use std::lower_bound for faster binary search with branch prediction optimization
++    static const std::array<FIT_UINT16, MESGS> sorted_indices = []() {
++        std::array<FIT_UINT16, MESGS> indices;
++        for (FIT_UINT16 i = 0; i < MESGS; ++i) indices[i] = i;
++        std::sort(indices.begin(), indices.end(), [](FIT_UINT16 a, FIT_UINT16 b) {
++            return mesgs[a].num < mesgs[b].num;
++        });
++        return indices;
++    }();
++
++    auto it = std::lower_bound(sorted_indices.begin(), sorted_indices.end(), num,
++        [](FIT_UINT16 idx, FIT_UINT16 target) {
++            return mesgs[idx].num < target;
++        });
+ 
++    if (it != sorted_indices.end() && mesgs[*it].num == num) {
++        return &mesgs[*it];
++    }
+     return NULL;
+ }
+ 
+--- a/src/fit_segment_lap_mesg.hpp
++++ b/src/fit_segment_lap_mesg.hpp
+@@ -15,6 +15,7 @@
+ 
+ #include "fit_mesg.hpp"
+ #include "fit_mesg_with_event.hpp"
++#include <cstdint>
+ 
+ namespace fit
+ {
+@@ -1527,15 +1528,11 @@
+     // Checks the validity of avg_neg_grade field
+     // Returns FIT_TRUE if field is valid
+     ///////////////////////////////////////////////////////////////////////
++
+     FIT_BOOL IsAvgNegGradeValid() const
+     {
+         const Field* field = GetField(39);
+-        if( FIT_NULL == field )
+-        {
+-            return FIT_FALSE;
+-        }
+-
+-        return field->IsValueValid();
++        return (field != FIT_NULL) ? field->IsValueValid() : FIT_FALSE;
+     }
+ 
+     ///////////////////////////////////////////////////////////////////////

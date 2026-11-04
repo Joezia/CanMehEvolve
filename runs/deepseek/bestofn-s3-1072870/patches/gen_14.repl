@@ -1,0 +1,16 @@
+Hoisted the profile pointer and combined the validity checks into a single hot path, with branch hints marking the cached-type and invalid-profile cases as unlikely. This reduces repeated member loads and improves branch layout without changing behavior.
+
+```cpp
+FIT_UINT8 Field::GetType() const
+{
+    if (__builtin_expect(type != FIT_UINT8_INVALID, 0))
+        return type;
+
+    const auto* const p = profile;
+    if (__builtin_expect(p == nullptr, 0) ||
+        __builtin_expect(profileIndex >= p->numFields, 0))
+        return FIT_UINT8_INVALID;
+
+    return p->fields[profileIndex].type;
+}
+```

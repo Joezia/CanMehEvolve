@@ -1,0 +1,22 @@
+File: src/fit_field_base.cpp
+Function: FieldBase::SetUINT32Value (12 lines)
+One full decode of the four files takes about 358.8 ms in the stock build.
+Time of the current version of the whole library relative to stock: 0.949 (below 1.0 is faster). Best measured so far: 0.949.
+
+Current text of the function:
+```cpp
+void FieldBase::SetUINT32Value(const FIT_UINT32 value, const FIT_UINT8 fieldArrayIndex)
+{
+    if ((FIT_UINT8)values.size() < ((fieldArrayIndex + 1) * sizeof(FIT_UINT32)))
+    {
+        values.resize((fieldArrayIndex + 1) * sizeof(FIT_UINT32));
+    }
+
+    for (size_t i = 0; i < sizeof(FIT_UINT32); i++)
+    {
+        values[(fieldArrayIndex * sizeof(FIT_UINT32)) + i] = ((FIT_BYTE)(value >> (8 * i)));
+    }
+}
+
+```
+Return the faster replacement now.

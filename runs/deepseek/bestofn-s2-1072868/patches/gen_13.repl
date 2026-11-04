@@ -1,0 +1,5 @@
+Defaulted the copy constructor instead of hand-listing members: it is behaviourally identical but lets the compiler generate the memberwise copy directly and, when the base and members are trivially copyable, treat `Field` copies as trivial (memcpy/register moves) at call sites.
+
+```cpp
+Field::Field(const Field &field) = default;
+```

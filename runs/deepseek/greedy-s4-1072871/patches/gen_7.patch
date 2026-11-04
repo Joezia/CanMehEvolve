@@ -1,0 +1,64 @@
+--- a/src/fit_mesg.cpp
++++ b/src/fit_mesg.cpp
+@@ -250,10 +250,10 @@
+ 
+ Field* Mesg::GetField(const FIT_UINT8 fieldNum)
+ {
+-    for (int i = 0; i < (int)fields.size(); i++)
++    for (Field& field : fields)
+     {
+-        if (fields[i].GetNum() == fieldNum)
+-            return &fields[i];
++        if (field.GetNum() == fieldNum)
++            return &field;
+     }
+ 
+     return FIT_NULL;
+--- a/src/fit_profile.cpp
++++ b/src/fit_profile.cpp
+@@ -3057,13 +3057,41 @@
+ 
+ const Profile::MESG* Profile::GetMesg(const FIT_UINT16 num)
+ {
+-    for (int i = 0; i < MESGS; i++)
++    struct Entry
+     {
+-        if (mesgs[i].num == num)
+-            return &mesgs[i];
++        FIT_UINT16 key;
++        FIT_UINT16 val;
++    };
++
++    static Entry table[4096] = {};
++    static bool initialized = false;
++
++    if (!initialized)
++    {
++        for (int i = static_cast<int>(MESGS) - 1; i >= 0; --i)
++        {
++            const FIT_UINT16 n = mesgs[i].num;
++            unsigned h = (static_cast<unsigned>(n) * 2654435761u) >> 20;
++            while (table[h].val != 0 && table[h].key != n)
++            {
++                h = (h + 1) & 4095u;
++            }
++            table[h].key = n;
++            table[h].val = static_cast<FIT_UINT16>(i + 1);
++        }
++        initialized = true;
+     }
+ 
+-    return NULL;
++    unsigned h = (static_cast<unsigned>(num) * 2654435761u) >> 20;
++    while (table[h].val != 0)
++    {
++        if (table[h].key == num)
++        {
++            return &mesgs[table[h].val - 1];
++        }
++        h = (h + 1) & 4095u;
++    }
++    return nullptr;
+ }
+ 
+ const Profile::MESG* Profile::GetMesg(const std::string& name)

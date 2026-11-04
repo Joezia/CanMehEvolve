@@ -1,0 +1,56 @@
+File: src/fit_profile.cpp
+Function: Profile::GetFieldIndex (15 lines)
+One full decode of the four files takes about 359.5 ms in the stock build.
+Time of the current version of the whole library relative to stock: 0.847 (below 1.0 is faster). Best measured so far: 0.847.
+
+Current text of the function:
+```cpp
+const FIT_UINT16 Profile::GetFieldIndex(const FIT_UINT16 mesgNum, const FIT_UINT8 fieldNum)
+{
+    static FIT_UINT16 *fieldIndex[65536] = {};
+    FIT_UINT16 *table = fieldIndex[mesgNum];
+
+    if (table == NULL)
+    {
+        const MESG *mesg = GetMesg(mesgNum);
+
+        if (mesg == NULL)
+        {
+            fieldIndex[mesgNum] = reinterpret_cast<FIT_UINT16 *>(1);
+            return FIT_UINT16_INVALID;
+        }
+
+        table = new (std::nothrow) FIT_UINT16[256];
+
+        if (table == NULL)
+        {
+            for (FIT_UINT16 i = 0; i < mesg->numFields; i++)
+            {
+                if (mesg->fields[i].num == fieldNum)
+                    return i;
+            }
+            return FIT_UINT16_INVALID;
+        }
+
+        for (FIT_UINT16 i = 0; i < 256; i++)
+            table[i] = FIT_UINT16_INVALID;
+
+        for (FIT_UINT16 i = 0; i < mesg->numFields; i++)
+        {
+            const FIT_UINT8 num = mesg->fields[i].num;
+            if (table[num] == FIT_UINT16_INVALID)
+                table[num] = i;
+        }
+
+        fieldIndex[mesgNum] = table;
+    }
+    else if (table == reinterpret_cast<FIT_UINT16 *>(1))
+    {
+        return FIT_UINT16_INVALID;
+    }
+
+    return table[fieldNum];
+}
+
+```
+Return the faster replacement now.

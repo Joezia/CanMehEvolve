@@ -1,0 +1,8 @@
+Copy-constructing the members in the initializer list avoids default-constructing them and then assigning, eliminating a redundant (and potentially allocating) assignment step.
+
+```cpp
+FieldBase::FieldBase(const FieldBase &field)
+    : values(field.values), stringIndexes(field.stringIndexes)
+{
+}
+```

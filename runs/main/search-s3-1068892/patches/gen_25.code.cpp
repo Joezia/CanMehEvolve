@@ -1,0 +1,13 @@
+
+FIT_UINT8 Field::GetType() const
+{
+    if (type != FIT_UINT8_INVALID)
+        return type;
+
+    if (profile == nullptr || profileIndex >= profile->numFields)
+        return FIT_UINT8_INVALID;
+
+    // Avoid repeated profile->fields access by caching the field pointer
+    const auto& field = profile->fields[profileIndex];
+    return field.type;
+}

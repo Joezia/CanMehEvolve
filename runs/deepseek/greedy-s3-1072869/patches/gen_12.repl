@@ -1,0 +1,51 @@
+I replaced the linear field scan with a per-message 256-entry lookup cache (bitmask plus index array) built once per `MESG`, so repeated lookups become O(1). This avoids rescanning the same field list for every decoded field.
+
+```cpp
+const FIT_UINT16 Profile::GetFieldIndex(const FIT_UINT16 mesgNum, const FIT_UINT8 fieldNum)
+{
+    const MESG *mesg = GetMesg(mesgNum);
+
+    if (mesg == NULL)
+        return FIT_UINT16_INVALID;
+
+    static const MESG *cachedMesg = NULL;
+    static FIT_UINT16 cachedFieldIndex[256];
+    static FIT_UINT32 cachedFieldMask[8];
+
+    if (mesg == cachedMesg)
+    {
+        const FIT_UINT32 word = static_cast<FIT_UINT32>(fieldNum) >> 5;
+        const FIT_UINT32 bit = static_cast<FIT_UINT32>(1) << (fieldNum & 31);
+        if (cachedFieldMask[word] & bit)
+            return cachedFieldIndex[fieldNum];
+        return FIT_UINT16_INVALID;
+    }
+
+    cachedMesg = mesg;
+    for (FIT_UINT32 w = 0; w < 8; ++w)
+        cachedFieldMask[w] = 0;
+
+    const FIT_UINT16 numFields = mesg->numFields;
+    for (FIT_UINT16 i = 0; i < numFields; ++i)
+    {
+        const FIT_UINT32 n = static_cast<FIT_UINT32>(mesg->fields[i].num);
+        if (n < 256)
+        {
+            const FIT_UINT32 word = n >> 5;
+            const FIT_UINT32 bit = static_cast<FIT_UINT32>(1) << (n & 31);
+            if ((cachedFieldMask[word] & bit) == 0)
+            {
+                cachedFieldMask[word] |= bit;
+                cachedFieldIndex[n] = i;
+            }
+        }
+    }
+
+    const FIT_UINT32 word = static_cast<FIT_UINT32>(fieldNum) >> 5;
+    const FIT_UINT32 bit = static_cast<FIT_UINT32>(1) << (fieldNum & 31);
+    if (cachedFieldMask[word] & bit)
+        return cachedFieldIndex[fieldNum];
+
+    return FIT_UINT16_INVALID;
+}
+```

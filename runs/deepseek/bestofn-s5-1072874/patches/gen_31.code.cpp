@@ -1,0 +1,60 @@
+const FIT_UINT16 Profile::GetFieldIndex(const FIT_UINT16 mesgNum, const FIT_UINT8 fieldNum)
+{
+    struct FieldTable
+    {
+        FIT_UINT16 index[256];
+    };
+
+    struct CacheEntry
+    {
+        const MESG *mesg;
+        FieldTable *fieldTable;
+        FIT_UINT8 known;
+    };
+
+    static CacheEntry cache[65536];
+    static FieldTable tablePool[1024];
+    static FIT_UINT16 tableCount = 0;
+
+    CacheEntry &entry = cache[mesgNum];
+    if (!entry.known)
+    {
+        entry.mesg = GetMesg(mesgNum);
+        entry.fieldTable = NULL;
+        entry.known = 1;
+    }
+
+    if (entry.mesg == NULL)
+        return FIT_UINT16_INVALID;
+
+    FieldTable *table = entry.fieldTable;
+    if (table == NULL)
+    {
+        if (tableCount < 1024)
+        {
+            table = &tablePool[tableCount++];
+            for (FIT_UINT16 i = 0; i < 256; i++)
+                table->index[i] = FIT_UINT16_INVALID;
+
+            for (FIT_UINT16 i = 0; i < entry.mesg->numFields; i++)
+            {
+                const FIT_UINT16 num = static_cast<FIT_UINT16>(entry.mesg->fields[i].num);
+                if (num < 256 && table->index[num] == FIT_UINT16_INVALID)
+                    table->index[num] = i;
+            }
+
+            entry.fieldTable = table;
+        }
+        else
+        {
+            for (FIT_UINT16 i = 0; i < entry.mesg->numFields; i++)
+            {
+                if (entry.mesg->fields[i].num == fieldNum)
+                    return i;
+            }
+            return FIT_UINT16_INVALID;
+        }
+    }
+
+    return table->index[fieldNum];
+}

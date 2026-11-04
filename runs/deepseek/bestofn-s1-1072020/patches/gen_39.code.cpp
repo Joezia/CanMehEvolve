@@ -1,0 +1,38 @@
+template <typename T>
+T FieldBase::GetValue(const FIT_UINT8 fieldArrayIndex) const
+{
+    const FIT_UINT8 type = GetType() & FIT_BASE_TYPE_NUM_MASK;
+    const FIT_UINT8 size = baseTypeSizes[type];
+
+    if (fieldArrayIndex >= (FIT_UINT8)values.size())
+    {
+        return *reinterpret_cast<const T*>(baseTypeInvalids[type]);
+    }
+
+    const FIT_UINT8* p = &values[fieldArrayIndex * size];
+
+    if (sizeof(T) >= 8 || size <= sizeof(T))
+    {
+        FIT_UINT64 rv = 0;
+        switch (size)
+        {
+            case 8: rv |= static_cast<FIT_UINT64>(p[7]) << 56; [[fallthrough]];
+            case 7: rv |= static_cast<FIT_UINT64>(p[6]) << 48; [[fallthrough]];
+            case 6: rv |= static_cast<FIT_UINT64>(p[5]) << 40; [[fallthrough]];
+            case 5: rv |= static_cast<FIT_UINT64>(p[4]) << 32; [[fallthrough]];
+            case 4: rv |= static_cast<FIT_UINT64>(p[3]) << 24; [[fallthrough]];
+            case 3: rv |= static_cast<FIT_UINT64>(p[2]) << 16; [[fallthrough]];
+            case 2: rv |= static_cast<FIT_UINT64>(p[1]) << 8;  [[fallthrough]];
+            case 1: rv |= static_cast<FIT_UINT64>(p[0]);       break;
+            default: break;
+        }
+        return static_cast<T>(rv);
+    }
+
+    T rv = 0;
+    for (int i = 0; i < size; i++)
+    {
+        rv |= static_cast<T>(p[i]) << (i * 8);
+    }
+    return rv;
+}

@@ -1,0 +1,79 @@
+Added a small direct-mapped cache of per-message field-index tables, built lazily after repeated hits, so repeated lookups avoid `GetMesg` and linear field scans. The cache preserves the original first-match semantics while making the hot path a few array accesses.
+
+```cpp
+const FIT_UINT16 Profile::GetFieldIndex(const FIT_UINT16 mesgNum, const FIT_UINT8 fieldNum)
+{
+    struct CacheEntry
+    {
+        FIT_UINT16 mesgNum;
+        const MESG *mesg;
+        bool valid;
+        bool isNull;
+        bool tableBuilt;
+        FIT_UINT16 hits;
+        FIT_UINT16 buildThreshold;
+        FIT_UINT16 index[256];
+    };
+    static CacheEntry cache[16];
+
+    CacheEntry &e = cache[mesgNum & 15];
+
+    if (e.valid && e.mesgNum == mesgNum)
+    {
+        if (e.isNull)
+            return FIT_UINT16_INVALID;
+
+        if (e.tableBuilt)
+            return e.index[fieldNum];
+
+        if (e.hits < e.buildThreshold)
+        {
+            ++e.hits;
+            const MESG *mesg = e.mesg;
+            for (FIT_UINT16 i = 0; i < mesg->numFields; ++i)
+            {
+                if (mesg->fields[i].num == fieldNum)
+                    return i;
+            }
+            return FIT_UINT16_INVALID;
+        }
+
+        for (FIT_UINT16 i = 0; i < 256; ++i)
+            e.index[i] = FIT_UINT16_INVALID;
+
+        const MESG *mesg = e.mesg;
+        for (FIT_UINT16 i = mesg->numFields; i > 0; --i)
+            e.index[mesg->fields[i - 1].num] = i - 1;
+
+        e.tableBuilt = true;
+        return e.index[fieldNum];
+    }
+
+    const MESG *mesg = GetMesg(mesgNum);
+    e.mesgNum = mesgNum;
+    e.mesg = mesg;
+    e.valid = true;
+    e.isNull = (mesg == NULL);
+    e.tableBuilt = false;
+    e.hits = 0;
+
+    if (mesg == NULL)
+    {
+        e.buildThreshold = 0;
+        return FIT_UINT16_INVALID;
+    }
+
+    if (mesg->numFields <= 8)
+        e.buildThreshold = 0xFFFF;
+    else
+        e.buildThreshold = (256 / mesg->numFields) + 4;
+
+    for (FIT_UINT16 i = 0; i < mesg->numFields; ++i)
+    {
+        if (mesg->fields[i].num == fieldNum)
+            return i;
+    }
+
+    return FIT_UINT16_INVALID;
+}
+```

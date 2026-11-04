@@ -1,0 +1,7 @@
+host=xcnc2
+job=1074078
+start=2026-11-04T19:32:15+08:00
+patch=/home/z/zhouzia/Workspace/CanMehEvolve/runs/deepseek/greedy-s1-1072019/patches/gen_35.patch
+patch_sha256=c68a4c281acca52ee8536c0afa79a8230a64284fd21ada0a35f5ed9cf6987102
+binary_sha256=5fa92919f823c4eff33d422d18a9eb37fc12854ecc2da787c6e1071b83f8bfb2
+end=2026-11-04T19:39:22+08:00

@@ -1,0 +1,24 @@
+Looking at this function, the key insight is that `profile` and `profileIndex` are likely used together frequently, and the current implementation has a redundant null check pattern. However, since the benchmark shows no improvement yet, I need to optimize for the common case where `type != FIT_UINT8_INVALID` (which appears to be the case after initial setup).
+
+The main optimization is to eliminate the conditional branching by using early return and ensuring the profile access pattern is as efficient as possible. But more importantly, I notice the function can be simplified to reduce branches - the current code has two conditional returns before the final one.
+
+Actually, the biggest win here is likely to reorder the checks to handle the most common case first. Since `type` is set initially and only invalid when not yet resolved, the first check should be fastest. But looking more carefully, the issue might be the double lookup of `profile` - if we can cache it or reduce pointer dereferences...
+
+Wait - the real optimization is recognizing that `profileIndex` bounds check and `profile` null check can be combined more efficiently, and the final return can be structured to avoid redundant condition evaluation.
+
+The fastest approach is to minimize branches and pointer dereferences:
+
+```cpp
+FIT_UINT8 Field::GetType() const
+{
+    if (type != FIT_UINT8_INVALID)
+        return type;
+        
+    if (profile == NULL)
+        return FIT_UINT8_INVALID;
+        
+    return (profileIndex < profile->numFields) 
+        ? profile->fields[profileIndex].type 
+        : FIT_UINT8_INVALID;
+}
+```

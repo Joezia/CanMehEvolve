@@ -1,0 +1,47 @@
+--- a/src/fit_field_base.cpp
++++ b/src/fit_field_base.cpp
+@@ -16,6 +16,7 @@
+ #include "fit_field_base.hpp"
+ #include "fit_mesg.hpp"
+ #include "fit_unicode.hpp"
++#include <cstring>
+ 
+ namespace fit
+ {
+@@ -1151,10 +1152,33 @@
+ template <typename TTo, typename TFrom>
+ TTo FieldBase::ConvertBaseType(const FIT_UINT8 fieldArrayIndex, const FIT_UINT8 toBaseType) const
+ {
+-    FIT_CONST_UINT8_PTR invalid = baseTypeInvalids[GetType() & FIT_BASE_TYPE_NUM_MASK];
+-    TFrom value = GetValue<TFrom>(fieldArrayIndex);
++    const FIT_UINT8* invalid = baseTypeInvalids[type & FIT_BASE_TYPE_NUM_MASK];
++    const FIT_UINT8* src = &field[fieldArrayIndex];
++    TFrom value;
++    std::memcpy(&value, src, sizeof(TFrom));
++
++    bool isInvalid;
++    if constexpr (std::is_floating_point<TFrom>::value) {
++        if constexpr (sizeof(TFrom) == 4) {
++            FIT_UINT32 v, i;
++            std::memcpy(&v, &value, 4);
++            std::memcpy(&i, invalid, 4);
++            isInvalid = (v == i);
++        } else if constexpr (sizeof(TFrom) == 8) {
++            FIT_UINT64 v, i;
++            std::memcpy(&v, &value, 8);
++            std::memcpy(&i, invalid, 8);
++            isInvalid = (v == i);
++        } else {
++            isInvalid = (std::memcmp(&value, invalid, sizeof(TFrom)) == 0);
++        }
++    } else {
++        TFrom invalidValue;
++        std::memcpy(&invalidValue, invalid, sizeof(TFrom));
++        isInvalid = (value == invalidValue);
++    }
+ 
+-    if (memcmp(&value, invalid, sizeof(TFrom)) == 0)
++    if (isInvalid)
+         return *reinterpret_cast<const TTo*>(baseTypeInvalids[toBaseType & FIT_BASE_TYPE_NUM_MASK]);
+ 
+     return static_cast<TTo>(value);

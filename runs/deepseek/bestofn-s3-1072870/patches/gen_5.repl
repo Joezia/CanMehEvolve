@@ -1,0 +1,9 @@
+The null-check and validity test are folded into one short-circuit expression, removing the separate branch/return and the temporary pointer use so the compiler emits a tighter inlined sequence around the `GetField(8)` lookup.
+
+```cpp
+    FIT_BOOL IsFavoriteValid() const
+    {
+        const Field* field = GetField(8);
+        return (FIT_NULL != field) && field->IsValueValid();
+    }
+```

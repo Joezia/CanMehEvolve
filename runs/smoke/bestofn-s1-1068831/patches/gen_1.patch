@@ -1,0 +1,22 @@
+--- a/src/fit_hsa_step_data_mesg.hpp
++++ b/src/fit_hsa_step_data_mesg.hpp
+@@ -14,6 +14,7 @@
+ #define FIT_HSA_STEP_DATA_MESG_HPP
+ 
+ #include "fit_mesg.hpp"
++#include <cstdint>
+ 
+ namespace fit
+ {
+@@ -109,9 +110,10 @@
+     ///////////////////////////////////////////////////////////////////////
+     // Returns number of steps
+     ///////////////////////////////////////////////////////////////////////
++
+     FIT_UINT8 GetNumSteps(void) const
+     {
+-        return GetFieldNumValues(1, FIT_SUBFIELD_INDEX_MAIN_FIELD);
++        return GetFieldValue<FIT_UINT8>(1, FIT_SUBFIELD_INDEX_MAIN_FIELD, 0);
+     }
+ 
+     ///////////////////////////////////////////////////////////////////////

@@ -1,0 +1,1 @@
+{"error":"the candidate died on signal 6 (abort, which std::terminate raises for an uncaught exception): terminate called after throwing an instance of 'fit::RuntimeException'\n  what():  Invalid developer data index in DeveloperDataIdMesg\n","ok":false,"rebuilt":2,"stage":"crash"}

@@ -1,0 +1,20 @@
+--- a/src/fit_field_base.cpp
++++ b/src/fit_field_base.cpp
+@@ -105,8 +105,15 @@
+     if (!IsValid())
+         return 0;
+ 
+-    if (GetType() != FIT_BASE_TYPE_STRING)
+-        return (FIT_UINT8)(values.size() / baseTypeSizes[GetType() & FIT_BASE_TYPE_NUM_MASK]);
++    const FIT_UINT8 type = GetType();
++    if (type != FIT_BASE_TYPE_STRING)
++    {
++        static const FIT_UINT8 shifts[32] = {
++            0, 0, 0, 1, 1, 2, 2, 0, 2, 3, 0, 1, 2, 0, 3, 3,
++            3, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0
++        };
++        return (FIT_UINT8)(values.size() >> shifts[type & FIT_BASE_TYPE_NUM_MASK]);
++    }
+ 
+     return (FIT_UINT8)stringIndexes.size();
+ }

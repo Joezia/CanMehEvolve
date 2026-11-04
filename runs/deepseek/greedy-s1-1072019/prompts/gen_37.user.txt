@@ -1,0 +1,19 @@
+File: src/fit_developer_field.cpp
+Function: DeveloperField::GetType (9 lines)
+One full decode of the four files takes about 358.5 ms in the stock build.
+Time of the current version of the whole library relative to stock: 0.868 (below 1.0 is faster). Best measured so far: 0.868.
+
+Current text of the function:
+```cpp
+FIT_UINT8 DeveloperField::GetType() const
+{
+    if (mDefinition->IsDefined())
+    {
+        return mDefinition->GetType();
+    }
+
+    return FIT_BASE_TYPE_UINT8;
+}
+
+```
+Return the faster replacement now.

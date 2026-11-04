@@ -1,0 +1,21 @@
+Replaced the 512 KB pointer table with a 128 KB 16-bit index table (index+1, zero as “not found”), which improves cache behaviour while preserving first-match semantics. The extra branch and subtract are cheap and predictable compared with the saved cache footprint.
+```cpp
+const Profile::MESG* Profile::GetMesg(const FIT_UINT16 num)
+{
+    static FIT_UINT16 table[65536] = {};
+    static bool initialized = false;
+
+    if (!initialized)
+    {
+        for (int i = 0; i < MESGS; ++i)
+        {
+            if (table[mesgs[i].num] == 0)
+                table[mesgs[i].num] = static_cast<FIT_UINT16>(i + 1);
+        }
+        initialized = true;
+    }
+
+    const FIT_UINT16 index = table[num];
+    return index ? &mesgs[index - 1] : nullptr;
+}
+```

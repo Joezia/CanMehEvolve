@@ -1,0 +1,13 @@
+job=1074201 host=xcnc0 start=2026-11-04T20:06:32+08:00
+cmake=cmake version 3.28.3
+cxx=c++ (Ubuntu 13.3.0-6ubuntu2~24.04.1) 13.3.0
+source_files_copied=109
+build_exit=0 end_build=2026-11-04T20:12:58+08:00
+CanMehHarness --help: ok
+CanMehSearch --help: ok
+CanMehBench --help: ok
+CanMehCalibrate --help: ok
+rule-eval on 3 stored trials: ok
+tracked-file scan: SDK dirs present in copy: 0
+key scan: files containing the key in copy: 0
+end=2026-11-04T20:12:58+08:00

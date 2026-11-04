@@ -1,0 +1,31 @@
+--- a/src/fit_field_base.cpp
++++ b/src/fit_field_base.cpp
+@@ -16,6 +16,7 @@
+ #include "fit_field_base.hpp"
+ #include "fit_mesg.hpp"
+ #include "fit_unicode.hpp"
++#include <cstring>
+ 
+ namespace fit
+ {
+@@ -1154,8 +1155,18 @@
+     FIT_CONST_UINT8_PTR invalid = baseTypeInvalids[GetType() & FIT_BASE_TYPE_NUM_MASK];
+     TFrom value = GetValue<TFrom>(fieldArrayIndex);
+ 
+-    if (memcmp(&value, invalid, sizeof(TFrom)) == 0)
+-        return *reinterpret_cast<const TTo*>(baseTypeInvalids[toBaseType & FIT_BASE_TYPE_NUM_MASK]);
++    if constexpr (std::is_integral<TFrom>::value)
++    {
++        TFrom invalidValue;
++        std::memcpy(&invalidValue, invalid, sizeof(TFrom));
++        if (value == invalidValue)
++            return *reinterpret_cast<const TTo*>(baseTypeInvalids[toBaseType & FIT_BASE_TYPE_NUM_MASK]);
++    }
++    else
++    {
++        if (std::memcmp(&value, invalid, sizeof(TFrom)) == 0)
++            return *reinterpret_cast<const TTo*>(baseTypeInvalids[toBaseType & FIT_BASE_TYPE_NUM_MASK]);
++    }
+ 
+     return static_cast<TTo>(value);
+ }

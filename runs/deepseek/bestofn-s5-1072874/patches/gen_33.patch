@@ -1,0 +1,185 @@
+--- a/src/fit_field_base.cpp
++++ b/src/fit_field_base.cpp
+@@ -16,6 +16,7 @@
+ #include "fit_field_base.hpp"
+ #include "fit_mesg.hpp"
+ #include "fit_unicode.hpp"
++#include <cstring>
+ 
+ namespace fit
+ {
+@@ -1007,73 +1008,136 @@
+ 
+ FIT_BOOL FieldBase::Read(const void *data, const FIT_UINT8 size)
+ {
+-    FIT_UINT8 bytesLeft = size;
+-    FIT_UINT8 typeSize = baseTypeSizes[GetType() & FIT_BASE_TYPE_NUM_MASK];
++    const FIT_UINT8 type = GetType();
++    const FIT_UINT8 typeIndex = type & FIT_BASE_TYPE_NUM_MASK;
++    const FIT_UINT8 typeSize = baseTypeSizes[typeIndex];
+     FIT_BYTE *byteData = (FIT_BYTE *) data;
+ 
+     values.clear();
+ 
+-    switch (GetType())
++    if (type == FIT_BASE_TYPE_STRING)
+     {
+-        case FIT_BASE_TYPE_STRING:
++        FIT_UINT8 index = 0;
++        while (index < size)
+         {
+-            FIT_BOOL hasData = FIT_FALSE;
+-            FIT_UINT8 stringPos = 0;
+-            FIT_UINT8 index = 0;
++            if (byteData[index] != 0)
++                break;
++            ++index;
++        }
++
++        if (index == size)
++            return FIT_TRUE;
++
++        stringIndexes.push_back(0);
++
++        values.reserve(size + 1);
++        values.assign(byteData, byteData + size);
++
++        if (size > 2)
++        {
++            const FIT_UINT8 limit = size - 2;
++            for (FIT_UINT8 i = 0; i < limit; ++i)
++            {
++                if (byteData[i] == 0)
++                    stringIndexes.push_back(i + 1);
++            }
++        }
++
++        if (values.back() != 0)
++            values.push_back(0);
++    }
++    else
++    {
++        const FIT_BYTE *invalid = baseTypeInvalids[typeIndex];
+ 
+-            // Check if the string is empty
+-            while (index < bytesLeft)
++        if (typeSize == 1)
++        {
++            const FIT_BYTE invalidByte = invalid[0];
++            const FIT_BYTE *point = byteData;
++            int bytes = size;
++            while (bytes > 0)
+             {
+-                if (byteData[index] != 0)
++                if (*point != invalidByte)
+                 {
+-                    hasData = FIT_TRUE;
++                    values.assign(byteData, byteData + size);
+                     break;
+                 }
+-                index++;
++                ++point;
++                --bytes;
+             }
+-
+-            if (!hasData)
+-                break;
+-
+-            stringIndexes.push_back(stringPos);
+-
+-            while (bytesLeft-- > 0)
++        }
++        else if (typeSize == 2)
++        {
++            FIT_UINT16 invalidValue;
++            std::memcpy(&invalidValue, invalid, 2);
++            const FIT_BYTE *point = byteData;
++            int bytes = size;
++            while (bytes > 0)
+             {
+-                FIT_BYTE byte = *byteData++;
+-                values.push_back(byte);
+-                stringPos++;
+-
+-                if ( ( byte == 0 ) && ( stringPos + 1 < size ) )
++                FIT_UINT16 value;
++                std::memcpy(&value, point, 2);
++                if (value != invalidValue)
+                 {
+-                    stringIndexes.push_back(stringPos);
++                    values.assign(byteData, byteData + size);
++                    break;
+                 }
++                point += 2;
++                bytes -= 2;
+             }
+-
+-            // Null terminate if not already null terminated
+-            if ( values.back() != 0 )
++        }
++        else if (typeSize == 4)
++        {
++            FIT_UINT32 invalidValue;
++            std::memcpy(&invalidValue, invalid, 4);
++            const FIT_BYTE *point = byteData;
++            int bytes = size;
++            while (bytes > 0)
+             {
+-                values.push_back(0);
++                FIT_UINT32 value;
++                std::memcpy(&value, point, 4);
++                if (value != invalidValue)
++                {
++                    values.assign(byteData, byteData + size);
++                    break;
++                }
++                point += 4;
++                bytes -= 4;
+             }
+         }
+-            break;
+-
+-        default:
++        else if (typeSize == 8)
+         {
+-            int bytes = bytesLeft;
+-            FIT_BYTE *point = byteData;
+-
++            FIT_UINT64 invalidValue;
++            std::memcpy(&invalidValue, invalid, 8);
++            const FIT_BYTE *point = byteData;
++            int bytes = size;
++            while (bytes > 0)
++            {
++                FIT_UINT64 value;
++                std::memcpy(&value, point, 8);
++                if (value != invalidValue)
++                {
++                    values.assign(byteData, byteData + size);
++                    break;
++                }
++                point += 8;
++                bytes -= 8;
++            }
++        }
++        else
++        {
++            const FIT_BYTE *point = byteData;
++            int bytes = size;
+             while (bytes > 0)
+             {
+-                if (memcmp(point, baseTypeInvalids[GetType() & FIT_BASE_TYPE_NUM_MASK], typeSize) != 0)
++                if (std::memcmp(point, invalid, typeSize) != 0)
+                 {
+-                    values.insert(values.end(), byteData, byteData + bytesLeft);
++                    values.assign(byteData, byteData + size);
+                     break;
+                 }
+                 point += typeSize;
+                 bytes -= typeSize;
+             }
+         }
+-            break;
+     }
+ 
+     return FIT_TRUE;

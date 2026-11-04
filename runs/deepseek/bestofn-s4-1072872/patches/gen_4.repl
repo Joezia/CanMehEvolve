@@ -1,0 +1,15 @@
+I replaced the four scalar member copies with a single memcpy of the derived-class tail, reducing load/store instructions. The base-class copy remains unchanged.
+
+```include
+#include <cstring>
+```
+
+```cpp
+Field::Field(const Field &field)
+    : FieldBase(field)
+{
+    std::memcpy(static_cast<void*>(reinterpret_cast<char*>(this) + sizeof(FieldBase)),
+                static_cast<const void*>(reinterpret_cast<const char*>(&field) + sizeof(FieldBase)),
+                sizeof(Field) - sizeof(FieldBase));
+}
+```

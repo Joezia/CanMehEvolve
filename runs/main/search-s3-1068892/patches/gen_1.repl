@@ -1,0 +1,26 @@
+Looking at the function, I can see it's checking for a cached type value first, then falling back to profile lookup. The performance bottleneck is likely the null pointer checks and the array access in the profile lookup path.
+
+Since the benchmark confirms we need identical behavior, I should optimize the most common path while preserving all checks. The key insight is that if `type != FIT_UINT8_INVALID`, we return immediately (fast path). For the slower path, we can reduce branch mispredictions by reordering checks and potentially using early returns more efficiently.
+
+However, given the current implementation is already quite minimal, the main optimization opportunity is in the conditional logic structure. We can make the common case (cached value available) even faster by ensuring the first check is as efficient as possible, and the second path has fewer branches.
+
+Actually, looking more carefully - the current code has 3 conditional branches. We can reduce this to 2 branches in the common case by restructuring slightly, but more importantly, we can make the profile access more direct by caching the profile pointer in a local variable to avoid repeated member access.
+
+But wait - the real optimization here is recognizing that the current implementation is already quite optimal for the common case. However, we can eliminate one branch by combining the profile checks more efficiently.
+
+The fastest approach is to check `type` first (common case), then if invalid, do a single check for profile validity and index bounds together, then return the field type directly.
+
+```cpp
+#include <cstdint>
+
+FIT_UINT8 Field::GetType() const
+{
+    if (type != FIT_UINT8_INVALID)
+        return type;
+
+    if (profile == nullptr || profileIndex >= profile->numFields)
+        return FIT_UINT8_INVALID;
+
+    return profile->fields[profileIndex].type;
+}
+```

@@ -1,0 +1,6 @@
+
+    void SetTimestamp(FIT_DATE_TIME timestamp)
+    {
+        Mesg::SetFieldUINT32Value(253, static_cast<FIT_UINT32>(timestamp), 0, FIT_SUBFIELD_INDEX_MAIN_FIELD);
+    }
+

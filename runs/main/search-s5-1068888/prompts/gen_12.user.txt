@@ -1,0 +1,20 @@
+File: src/fit_chrono_shot_session_mesg.hpp
+Function: IsStandardDeviationValid (10 lines)
+One full decode of the four files takes about 358.7 ms in the stock build.
+Time of the current version of the whole library relative to stock: 0.932 (below 1.0 is faster). Best measured so far: 0.932.
+
+Current text of the function:
+```cpp
+    FIT_BOOL IsStandardDeviationValid() const
+    {
+        const Field* field = GetField(6);
+        if( FIT_NULL == field )
+        {
+            return FIT_FALSE;
+        }
+
+        return field->IsValueValid();
+    }
+
+```
+Return the faster replacement now.

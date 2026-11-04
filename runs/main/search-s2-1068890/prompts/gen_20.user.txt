@@ -1,0 +1,50 @@
+File: src/fit_session_mesg.hpp
+Function: IsPoolLengthUnitValid (10 lines)
+One full decode of the four files takes about 359.8 ms in the stock build.
+Time of the current version of the whole library relative to stock: 1.001 (below 1.0 is faster). Best measured so far: 0.945.
+
+Your previous attempt failed:
+Stage 'compile' rejected it: In file included from /home/z/zhouzia/Workspace/CanMehEvolve/build/work-1068890/tree/src/fit_session_mesg_listener.hpp:16,
+                 from /home/z/zhouzia/Workspace/CanMehEvolve/build/work-1068890/tree/src/fit_mesg_broadcaster.hpp:57,
+                 from /home/z/zhouzia/Workspace/CanMehEvolve/build/work-1068890/tree/src/fit_buffered_mesg_broadcaster.hpp:17,
+                 from /home/z/zhouzia/Workspace/CanMehEvolve/build/work-1068890/tree/src/fit_buffered_mesg_broadcaster.cpp:14:
+/home/z/zhouzia/Workspace/CanMehEvolve/build/work-1068890/tree/src/fit_session_mesg.hpp:1880:1: error: stray ‘`’ in program
+ 1880 | ```cpp
+      | ^
+/home/z/zhouzia/Workspace/CanMehEvolve/build/work-1068890/tree/src/fit_session_mesg.hpp:1880:2: error: stray ‘`’ in program
+ 1880 | ```cpp
+      |  ^
+/home/z/zhouzia/Workspace/CanMehEvolve/build/work-1068890/tree/src/fit_session_mesg.hpp:1880:3: error: stray ‘`’ in program
+ 1880 | ```cpp
+      |   ^
+/home/z/zhouzia/Workspace/CanMehEvolve/build/work-1068890/tree/src/fit_session_mesg.hpp:1880:4: error: ‘cpp’ does not name a type
+ 1880 | ```cpp
+      |    ^~~
+
+The rejected replacement was:
+```cpp
+
+```cpp
+    FIT_BOOL IsPoolLengthUnitValid() const
+    {
+        const Field* field = GetField(46);
+        return (field != FIT_NULL) ? field->IsValueValid() : FIT_FALSE;
+    }
+
+```
+
+Current text of the function:
+```cpp
+    FIT_BOOL IsPoolLengthUnitValid() const
+    {
+        const Field* field = GetField(46);
+        if( FIT_NULL == field )
+        {
+            return FIT_FALSE;
+        }
+
+        return field->IsValueValid();
+    }
+
+```
+Return the faster replacement now.

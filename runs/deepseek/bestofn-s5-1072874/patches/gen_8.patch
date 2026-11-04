@@ -1,0 +1,26 @@
+--- a/src/fit_profile.cpp
++++ b/src/fit_profile.cpp
+@@ -3057,13 +3057,17 @@
+ 
+ const Profile::MESG* Profile::GetMesg(const FIT_UINT16 num)
+ {
+-    for (int i = 0; i < MESGS; i++)
+-    {
+-        if (mesgs[i].num == num)
+-            return &mesgs[i];
+-    }
++    static const FIT_UINT16* const index = []() -> FIT_UINT16* {
++        static FIT_UINT16 t[65536];
++        for (int i = 0; i < 65536; ++i)
++            t[i] = 0xFFFF;
++        for (int i = MESGS - 1; i >= 0; --i)
++            t[mesgs[i].num] = static_cast<FIT_UINT16>(i);
++        return t;
++    }();
+ 
+-    return NULL;
++    const FIT_UINT16 i = index[num];
++    return (i == 0xFFFF) ? NULL : &mesgs[i];
+ }
+ 
+ const Profile::MESG* Profile::GetMesg(const std::string& name)

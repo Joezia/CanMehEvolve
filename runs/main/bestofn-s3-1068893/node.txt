@@ -1,0 +1,14 @@
+host=xcnd8
+job=1068893
+nodelist=xcnd8
+start=2026-11-03T23:25:11+08:00
+cxx=c++ (Ubuntu 13.3.0-6ubuntu2~24.04.1) 13.3.0
+commit=0bce2476eee226fd5dc28cf093a57c8ae0d94c1b
+mode=bestofn seed=3 gens=40 deadline=8400
+TimeLimit=03:00:00
+StartTime=2026-11-03T23:25:10
+Partition=normal
+NodeList=xcnd8
+Features=xcnc|xcnd
+search_exit=0
+end=2026-11-04T00:32:26+08:00

@@ -1,0 +1,70 @@
+```cpp
+#include <cstring>
+#include <algorithm>
+
+FIT_BOOL FieldBase::Read(const void *data, const FIT_UINT8 size)
+{
+    FIT_UINT8 typeIndex = GetType() & FIT_BASE_TYPE_NUM_MASK;
+    FIT_UINT8 typeSize = baseTypeSizes[typeIndex];
+    const FIT_BYTE* byteData = static_cast<const FIT_BYTE*>(data);
+
+    values.clear();
+
+    if (GetType() == FIT_BASE_TYPE_STRING)
+    {
+        // Find first non-zero byte to detect if string is empty
+        const FIT_BYTE* end = byteData + size;
+        const FIT_BYTE* firstNonZero = std::find_if(byteData, end, [](FIT_BYTE b) { return b != 0; });
+        
+        if (firstNonZero == end)
+            return FIT_TRUE; // Empty string, nothing to do
+
+        // Reserve space for all bytes + possible null terminator
+        values.reserve(size + 1);
+
+        // Copy all bytes and track string positions
+        FIT_UINT8 stringPos = 0;
+        for (FIT_UINT8 i = 0; i < size; i++)
+        {
+            FIT_BYTE byte = byteData[i];
+            values.push_back(byte);
+            stringPos++;
+
+            if (byte == 0 && stringPos < size)
+            {
+                stringIndexes.push_back(stringPos);
+            }
+        }
+
+        // Null terminate if not already null terminated
+        if (values.back() != 0)
+        {
+            values.push_back(0);
+        }
+    }
+    else
+    {
+        // For non-string types, check if entire data is invalid
+        const FIT_BYTE* invalid = baseTypeInvalids[typeIndex];
+        FIT_BOOL allInvalid = FIT_TRUE;
+        
+        // Check if any data is valid (not equal to invalid value)
+        for (FIT_UINT8 i = 0; i < size; i += typeSize)
+        {
+            if (size - i < typeSize) break;
+            if (std::memcmp(byteData + i, invalid, typeSize) != 0)
+            {
+                allInvalid = FIT_FALSE;
+                break;
+            }
+        }
+        
+        if (!allInvalid)
+        {
+            values.insert(values.end(), byteData, byteData + size);
+        }
+    }
+
+    return FIT_TRUE;
+}
+```

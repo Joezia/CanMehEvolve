@@ -1,0 +1,1794 @@
+{
+  "rule_binary_sha256": "c3f796adf1d24485a39b5eaf0184434704d2c8fab972cd355c51ff316f59a2b6",
+  "rule": {
+    "alpha": 0.01,
+    "min_effect": 0.02,
+    "processes": 10,
+    "unstable_spread": 0.25
+  },
+  "batches": {
+    "batch1": "runs/phase0-1068829",
+    "batch2": "/home/z/zhouzia/Workspace/CanMehEvolve/runs/phase0b-1069564"
+  },
+  "pairs": {
+    "null": {
+      "true_ratio": 1.0,
+      "batch1": {
+        "attempted": 51,
+        "valid": 50,
+        "invalid": 1,
+        "single": {
+          "k": 0,
+          "n": 50,
+          "rate": 0.0,
+          "clopper_pearson_95": [
+            0.0,
+            0.07112173646419767
+          ],
+          "wilson_95": [
+            0.0,
+            0.07134760017861413
+          ]
+        },
+        "two_stage": {
+          "k": 0,
+          "n": 25,
+          "rate": 0.0,
+          "clopper_pearson_95": [
+            0.0,
+            0.13718517153071258
+          ],
+          "wilson_95": [
+            0.0,
+            0.13319225276039096
+          ],
+          "dropped_pairs": 0,
+          "median_kept_ratio_of_accepted": null
+        },
+        "true_ratio": 1.0,
+        "reported_ratio": {
+          "median": 1.0010500008952856,
+          "mean": 1.0013098797572775,
+          "sd": 0.003860138244329894,
+          "min": 0.9925203182054547,
+          "max": 1.010555524317256,
+          "p05": 0.9957136357140736,
+          "p95": 1.0077236400391434
+        },
+        "bias": {
+          "median_abs": 0.0010500008952856188,
+          "mean_abs": 0.0013098797572774767,
+          "median_rel_pct": 0.10500008952856188,
+          "mean_rel_pct": 0.13098797572774767
+        },
+        "median_p_value": 0.4248046875,
+        "median_ratio_spread": 0.03296668434413763,
+        "unstable_trials": 0,
+        "reference_ms_median": 29.64798716129735,
+        "autocorr_lag1": {
+          "median_of_trial_medians": -0.06947034022965715,
+          "p05": -0.24539980353833907,
+          "p95": 0.07955643649096789,
+          "min_over_processes": -0.8301330526068142,
+          "max_over_processes": 0.7028351670300844,
+          "share_trials_median_positive": 0.22
+        },
+        "rule_outcomes": {
+          "mean log-ratio not below zero": 34,
+          "sign-flip p not below alpha": 16
+        }
+      },
+      "batch2": {
+        "attempted": 50,
+        "valid": 50,
+        "invalid": 0,
+        "single": {
+          "k": 0,
+          "n": 50,
+          "rate": 0.0,
+          "clopper_pearson_95": [
+            0.0,
+            0.07112173646419767
+          ],
+          "wilson_95": [
+            0.0,
+            0.07134760017861413
+          ]
+        },
+        "two_stage": {
+          "k": 0,
+          "n": 25,
+          "rate": 0.0,
+          "clopper_pearson_95": [
+            0.0,
+            0.13718517153071258
+          ],
+          "wilson_95": [
+            0.0,
+            0.13319225276039096
+          ],
+          "dropped_pairs": 0,
+          "median_kept_ratio_of_accepted": null
+        },
+        "true_ratio": 1.0,
+        "reported_ratio": {
+          "median": 1.0001407249574066,
+          "mean": 0.9996730487836277,
+          "sd": 0.003563536975855648,
+          "min": 0.993298806716873,
+          "max": 1.0078501307764114,
+          "p05": 0.9940760731276853,
+          "p95": 1.005716816920983
+        },
+        "bias": {
+          "median_abs": 0.00014072495740657942,
+          "mean_abs": -0.0003269512163722732,
+          "median_rel_pct": 0.014072495740657942,
+          "mean_rel_pct": -0.03269512163722732
+        },
+        "median_p_value": 0.5126953125,
+        "median_ratio_spread": 0.02911440304922036,
+        "unstable_trials": 0,
+        "reference_ms_median": 29.57574933922539,
+        "autocorr_lag1": {
+          "median_of_trial_medians": -0.12529308974726758,
+          "p05": -0.2839640013547253,
+          "p95": 0.07192889283808247,
+          "min_over_processes": -0.9012649154040375,
+          "max_over_processes": 0.7218475434887851,
+          "share_trials_median_positive": 0.18
+        },
+        "rule_outcomes": {
+          "mean log-ratio not below zero": 22,
+          "sign-flip p not below alpha": 28
+        }
+      },
+      "combined": {
+        "attempted": 101,
+        "valid": 100,
+        "invalid": 1,
+        "single": {
+          "k": 0,
+          "n": 100,
+          "rate": 0.0,
+          "clopper_pearson_95": [
+            0.0,
+            0.03621669264517641
+          ],
+          "wilson_95": [
+            0.0,
+            0.03699349876899627
+          ]
+        },
+        "two_stage": {
+          "k": 0,
+          "n": 50,
+          "rate": 0.0,
+          "clopper_pearson_95": [
+            0.0,
+            0.07112173646419767
+          ],
+          "wilson_95": [
+            0.0,
+            0.07134760017861413
+          ],
+          "dropped_pairs": 0,
+          "median_kept_ratio_of_accepted": null
+        },
+        "true_ratio": 1.0,
+        "reported_ratio": {
+          "median": 1.0003793208839775,
+          "mean": 1.0004914642704525,
+          "sd": 0.003803884255716678,
+          "min": 0.9925203182054547,
+          "max": 1.010555524317256,
+          "p05": 0.9943854339912614,
+          "p95": 1.0067241149987576
+        },
+        "bias": {
+          "median_abs": 0.0003793208839775186,
+          "mean_abs": 0.0004914642704525463,
+          "median_rel_pct": 0.03793208839775186,
+          "mean_rel_pct": 0.049146427045254626
+        },
+        "median_p_value": 0.48046875,
+        "median_ratio_spread": 0.030062330053523267,
+        "unstable_trials": 0,
+        "reference_ms_median": 29.637033566056438,
+        "autocorr_lag1": {
+          "median_of_trial_medians": -0.09270408380339588,
+          "p05": -0.2727503318238765,
+          "p95": 0.07995827436754051,
+          "min_over_processes": -0.9012649154040375,
+          "max_over_processes": 0.7218475434887851,
+          "share_trials_median_positive": 0.2
+        },
+        "rule_outcomes": {
+          "mean log-ratio not below zero": 56,
+          "sign-flip p not below alpha": 44
+        }
+      },
+      "batch_comparison": {
+        "acceptance_fisher_p": 1.0,
+        "median_ratio_diff": -0.0009092759378790394,
+        "median_ratio_permutation_p": 0.10994450277486126,
+        "reference_ms_median": [
+          29.64798716129735,
+          29.57574933922539
+        ]
+      }
+    },
+    "faster-1-percent": {
+      "true_ratio": 0.99005,
+      "batch1": {
+        "attempted": 50,
+        "valid": 50,
+        "invalid": 0,
+        "single": {
+          "k": 0,
+          "n": 50,
+          "rate": 0.0,
+          "clopper_pearson_95": [
+            0.0,
+            0.07112173646419767
+          ],
+          "wilson_95": [
+            0.0,
+            0.07134760017861413
+          ]
+        },
+        "two_stage": {
+          "k": 0,
+          "n": 25,
+          "rate": 0.0,
+          "clopper_pearson_95": [
+            0.0,
+            0.13718517153071258
+          ],
+          "wilson_95": [
+            0.0,
+            0.13319225276039096
+          ],
+          "dropped_pairs": 0,
+          "median_kept_ratio_of_accepted": null
+        },
+        "true_ratio": 0.99005,
+        "reported_ratio": {
+          "median": 0.9897340820724037,
+          "mean": 0.9898798819128296,
+          "sd": 0.0035338676867092598,
+          "min": 0.9809064750612977,
+          "max": 0.999237608599687,
+          "p05": 0.9841599697488942,
+          "p95": 0.9961926072379996
+        },
+        "bias": {
+          "median_abs": -0.00031591792759633197,
+          "mean_abs": -0.0001701180871703789,
+          "median_rel_pct": -0.031909290197094285,
+          "mean_rel_pct": -0.01718277735168718
+        },
+        "median_p_value": 0.0166015625,
+        "median_ratio_spread": 0.0320569662303839,
+        "unstable_trials": 0,
+        "reference_ms_median": 29.649478247544415,
+        "autocorr_lag1": {
+          "median_of_trial_medians": -0.12093869749772662,
+          "p05": -0.26712565614313843,
+          "p95": 0.03709373051332295,
+          "min_over_processes": -0.8749329009506193,
+          "max_over_processes": 0.7313533285081921,
+          "share_trials_median_positive": 0.14
+        },
+        "rule_outcomes": {
+          "sign-flip p not below alpha": 34,
+          "median ratio above 1 - minEffect": 16
+        }
+      },
+      "batch2": {
+        "attempted": 50,
+        "valid": 50,
+        "invalid": 0,
+        "single": {
+          "k": 1,
+          "n": 50,
+          "rate": 0.02,
+          "clopper_pearson_95": [
+            0.0005062279830408412,
+            0.10646954571149997
+          ],
+          "wilson_95": [
+            0.003539259232504602,
+            0.10495443693896496
+          ]
+        },
+        "two_stage": {
+          "k": 0,
+          "n": 25,
+          "rate": 0.0,
+          "clopper_pearson_95": [
+            0.0,
+            0.13718517153071258
+          ],
+          "wilson_95": [
+            0.0,
+            0.13319225276039096
+          ],
+          "dropped_pairs": 0,
+          "median_kept_ratio_of_accepted": null
+        },
+        "true_ratio": 0.99005,
+        "reported_ratio": {
+          "median": 0.9897476908937308,
+          "mean": 0.9900935259046972,
+          "sd": 0.003789985492817833,
+          "min": 0.9799395159403916,
+          "max": 0.99821404067262,
+          "p05": 0.9841944456008835,
+          "p95": 0.9959111597565445
+        },
+        "bias": {
+          "median_abs": -0.00030230910626916074,
+          "mean_abs": 4.352590469725026e-05,
+          "median_rel_pct": -0.030534731202379754,
+          "mean_rel_pct": 0.004396333992954928
+        },
+        "median_p_value": 0.013671875,
+        "median_ratio_spread": 0.03046049287158631,
+        "unstable_trials": 0,
+        "reference_ms_median": 29.569196495382737,
+        "autocorr_lag1": {
+          "median_of_trial_medians": -0.10900388498799045,
+          "p05": -0.3683715954872697,
+          "p95": 0.034247419628645775,
+          "min_over_processes": -0.8390887433540154,
+          "max_over_processes": 0.7709648771138685,
+          "share_trials_median_positive": 0.2
+        },
+        "rule_outcomes": {
+          "median ratio above 1 - minEffect": 20,
+          "sign-flip p not below alpha": 29,
+          "accepted as faster": 1
+        }
+      },
+      "combined": {
+        "attempted": 100,
+        "valid": 100,
+        "invalid": 0,
+        "single": {
+          "k": 1,
+          "n": 100,
+          "rate": 0.01,
+          "clopper_pearson_95": [
+            0.0002531460329773805,
+            0.05445938539208067
+          ],
+          "wilson_95": [
+            0.0017674320446096452,
+            0.05448619674900669
+          ]
+        },
+        "two_stage": {
+          "k": 0,
+          "n": 50,
+          "rate": 0.0,
+          "clopper_pearson_95": [
+            0.0,
+            0.07112173646419767
+          ],
+          "wilson_95": [
+            0.0,
+            0.07134760017861413
+          ],
+          "dropped_pairs": 0,
+          "median_kept_ratio_of_accepted": null
+        },
+        "true_ratio": 0.99005,
+        "reported_ratio": {
+          "median": 0.9897340820724037,
+          "mean": 0.9899867039087634,
+          "sd": 0.0036657218075413236,
+          "min": 0.9799395159403916,
+          "max": 0.999237608599687,
+          "p05": 0.9841220422434176,
+          "p95": 0.996429881247457
+        },
+        "bias": {
+          "median_abs": -0.00031591792759633197,
+          "mean_abs": -6.329609123656432e-05,
+          "median_rel_pct": -0.031909290197094285,
+          "mean_rel_pct": -0.006393221679366125
+        },
+        "median_p_value": 0.015625,
+        "median_ratio_spread": 0.031054472980682923,
+        "unstable_trials": 0,
+        "reference_ms_median": 29.622318242521338,
+        "autocorr_lag1": {
+          "median_of_trial_medians": -0.11531480475792986,
+          "p05": -0.32946092463310755,
+          "p95": 0.0410636349589771,
+          "min_over_processes": -0.8749329009506193,
+          "max_over_processes": 0.7709648771138685,
+          "share_trials_median_positive": 0.17
+        },
+        "rule_outcomes": {
+          "sign-flip p not below alpha": 63,
+          "median ratio above 1 - minEffect": 36,
+          "accepted as faster": 1
+        }
+      },
+      "batch_comparison": {
+        "acceptance_fisher_p": 1.0,
+        "median_ratio_diff": 1.3608821327171228e-05,
+        "median_ratio_permutation_p": 0.9887505624718764,
+        "reference_ms_median": [
+          29.649478247544415,
+          29.569196495382737
+        ]
+      }
+    },
+    "faster-2-percent": {
+      "true_ratio": 0.98035,
+      "batch1": {
+        "attempted": 50,
+        "valid": 50,
+        "invalid": 0,
+        "single": {
+          "k": 22,
+          "n": 50,
+          "rate": 0.44,
+          "clopper_pearson_95": [
+            0.2999072209275436,
+            0.5874558770583267
+          ],
+          "wilson_95": [
+            0.31162199120253675,
+            0.576939720818897
+          ]
+        },
+        "two_stage": {
+          "k": 5,
+          "n": 25,
+          "rate": 0.2,
+          "clopper_pearson_95": [
+            0.06831146401248406,
+            0.4070374322786773
+          ],
+          "wilson_95": [
+            0.08860584630746873,
+            0.39130950534876585
+          ],
+          "dropped_pairs": 0,
+          "median_kept_ratio_of_accepted": 0.9784705784725589
+        },
+        "true_ratio": 0.98035,
+        "reported_ratio": {
+          "median": 0.9803857031299262,
+          "mean": 0.9805196767615707,
+          "sd": 0.003413508645481648,
+          "min": 0.9722380326671232,
+          "max": 0.9907070676344026,
+          "p05": 0.9757193972036458,
+          "p95": 0.9850086756698347
+        },
+        "bias": {
+          "median_abs": 3.570312992617897e-05,
+          "mean_abs": 0.00016967676157064737,
+          "median_rel_pct": 0.003641875853131939,
+          "mean_rel_pct": 0.017307773914484355
+        },
+        "median_p_value": 0.001953125,
+        "median_ratio_spread": 0.02902527740030003,
+        "unstable_trials": 0,
+        "reference_ms_median": 29.669894739830248,
+        "autocorr_lag1": {
+          "median_of_trial_medians": -0.09739170885384249,
+          "p05": -0.28932138204792535,
+          "p95": 0.12382620783593201,
+          "min_over_processes": -0.889138524198526,
+          "max_over_processes": 0.6831325121388203,
+          "share_trials_median_positive": 0.22
+        },
+        "rule_outcomes": {
+          "accepted as faster": 22,
+          "median ratio above 1 - minEffect": 26,
+          "sign-flip p not below alpha": 2
+        }
+      },
+      "batch2": {
+        "attempted": 50,
+        "valid": 50,
+        "invalid": 0,
+        "single": {
+          "k": 20,
+          "n": 50,
+          "rate": 0.4,
+          "clopper_pearson_95": [
+            0.2640783950945368,
+            0.5482059715208196
+          ],
+          "wilson_95": [
+            0.27608389644428605,
+            0.5381856235914368
+          ]
+        },
+        "two_stage": {
+          "k": 5,
+          "n": 25,
+          "rate": 0.2,
+          "clopper_pearson_95": [
+            0.06831146401248406,
+            0.4070374322786773
+          ],
+          "wilson_95": [
+            0.08860584630746873,
+            0.39130950534876585
+          ],
+          "dropped_pairs": 0,
+          "median_kept_ratio_of_accepted": 0.9773815490285649
+        },
+        "true_ratio": 0.98035,
+        "reported_ratio": {
+          "median": 0.9812436286159738,
+          "mean": 0.9807383599058876,
+          "sd": 0.004169113955632264,
+          "min": 0.9711386372530963,
+          "max": 0.9885238614083145,
+          "p05": 0.9735891856115941,
+          "p95": 0.9874323619204989
+        },
+        "bias": {
+          "median_abs": 0.0008936286159737516,
+          "mean_abs": 0.00038835990588759195,
+          "median_rel_pct": 0.09115403845297614,
+          "mean_rel_pct": 0.03961441382032865
+        },
+        "median_p_value": 0.001953125,
+        "median_ratio_spread": 0.03126137602996426,
+        "unstable_trials": 0,
+        "reference_ms_median": 29.555094020906836,
+        "autocorr_lag1": {
+          "median_of_trial_medians": -0.09152116536424044,
+          "p05": -0.2798377378348854,
+          "p95": 0.09211649721674178,
+          "min_over_processes": -0.925130619674472,
+          "max_over_processes": 0.5717300490061247,
+          "share_trials_median_positive": 0.24
+        },
+        "rule_outcomes": {
+          "sign-flip p not below alpha": 4,
+          "median ratio above 1 - minEffect": 26,
+          "accepted as faster": 20
+        }
+      },
+      "combined": {
+        "attempted": 100,
+        "valid": 100,
+        "invalid": 0,
+        "single": {
+          "k": 42,
+          "n": 100,
+          "rate": 0.42,
+          "clopper_pearson_95": [
+            0.3219855393547969,
+            0.5228808042760862
+          ],
+          "wilson_95": [
+            0.3279838260663658,
+            0.5179351337366737
+          ]
+        },
+        "two_stage": {
+          "k": 10,
+          "n": 50,
+          "rate": 0.2,
+          "clopper_pearson_95": [
+            0.100302237472571,
+            0.33718310838348786
+          ],
+          "wilson_95": [
+            0.11243749964234825,
+            0.33037106046482023
+          ],
+          "dropped_pairs": 0,
+          "median_kept_ratio_of_accepted": 0.9781719645489735
+        },
+        "true_ratio": 0.98035,
+        "reported_ratio": {
+          "median": 0.9808408533102123,
+          "mean": 0.9806290183337292,
+          "sd": 0.0038116573564940122,
+          "min": 0.9711386372530963,
+          "max": 0.9907070676344026,
+          "p05": 0.9745799954105403,
+          "p95": 0.9869860746267987
+        },
+        "bias": {
+          "median_abs": 0.0004908533102122581,
+          "mean_abs": 0.00027901833372911966,
+          "median_rel_pct": 0.050069190616846844,
+          "mean_rel_pct": 0.0284610938674065
+        },
+        "median_p_value": 0.001953125,
+        "median_ratio_spread": 0.02979182647187839,
+        "unstable_trials": 0,
+        "reference_ms_median": 29.610837227664888,
+        "autocorr_lag1": {
+          "median_of_trial_medians": -0.09152116536424044,
+          "p05": -0.28980079632822003,
+          "p95": 0.10882061940486083,
+          "min_over_processes": -0.925130619674472,
+          "max_over_processes": 0.6831325121388203,
+          "share_trials_median_positive": 0.23
+        },
+        "rule_outcomes": {
+          "accepted as faster": 42,
+          "median ratio above 1 - minEffect": 52,
+          "sign-flip p not below alpha": 6
+        }
+      },
+      "batch_comparison": {
+        "acceptance_fisher_p": 0.8395903728990841,
+        "median_ratio_diff": 0.0008579254860475727,
+        "median_ratio_permutation_p": 0.5213739313034348,
+        "reference_ms_median": [
+          29.669894739830248,
+          29.555094020906836
+        ]
+      }
+    },
+    "faster-5-percent": {
+      "true_ratio": 0.95235,
+      "batch1": {
+        "attempted": 50,
+        "valid": 50,
+        "invalid": 0,
+        "single": {
+          "k": 49,
+          "n": 50,
+          "rate": 0.98,
+          "clopper_pearson_95": [
+            0.8935304542885001,
+            0.9994937720169592
+          ],
+          "wilson_95": [
+            0.8950455630610349,
+            0.9964607407674954
+          ]
+        },
+        "two_stage": {
+          "k": 24,
+          "n": 25,
+          "rate": 0.96,
+          "clopper_pearson_95": [
+            0.796483086077586,
+            0.9989878003006891
+          ],
+          "wilson_95": [
+            0.8045593608838223,
+            0.9929037665766179
+          ],
+          "dropped_pairs": 0,
+          "median_kept_ratio_of_accepted": 0.9551093895415248
+        },
+        "true_ratio": 0.95235,
+        "reported_ratio": {
+          "median": 0.9541901281091694,
+          "mean": 0.9537880675430636,
+          "sd": 0.003164285548439752,
+          "min": 0.9471960231525011,
+          "max": 0.9607085380258391,
+          "p05": 0.9488681521219582,
+          "p95": 0.9588284078610627
+        },
+        "bias": {
+          "median_abs": 0.0018401281091693367,
+          "mean_abs": 0.001438067543063526,
+          "median_rel_pct": 0.19321973110404123,
+          "mean_rel_pct": 0.15100199958665678
+        },
+        "median_p_value": 0.001953125,
+        "median_ratio_spread": 0.03219820491098552,
+        "unstable_trials": 1,
+        "reference_ms_median": 29.64503807015717,
+        "autocorr_lag1": {
+          "median_of_trial_medians": -0.12764484284936206,
+          "p05": -0.2989788737363131,
+          "p95": 0.04500921182751243,
+          "min_over_processes": -0.8517344952956432,
+          "max_over_processes": 0.6577411561138417,
+          "share_trials_median_positive": 0.16
+        },
+        "rule_outcomes": {
+          "accepted as faster": 49,
+          "sign-flip p not below alpha": 1
+        }
+      },
+      "batch2": {
+        "attempted": 50,
+        "valid": 50,
+        "invalid": 0,
+        "single": {
+          "k": 50,
+          "n": 50,
+          "rate": 1.0,
+          "clopper_pearson_95": [
+            0.9288782635358024,
+            1.0
+          ],
+          "wilson_95": [
+            0.9286523998213857,
+            0.9999999999999999
+          ]
+        },
+        "two_stage": {
+          "k": 25,
+          "n": 25,
+          "rate": 1.0,
+          "clopper_pearson_95": [
+            0.8628148284692874,
+            1.0
+          ],
+          "wilson_95": [
+            0.866807747239609,
+            1.0
+          ],
+          "dropped_pairs": 0,
+          "median_kept_ratio_of_accepted": 0.9548126966438764
+        },
+        "true_ratio": 0.95235,
+        "reported_ratio": {
+          "median": 0.9528061804429229,
+          "mean": 0.9529245234587959,
+          "sd": 0.004099306401965894,
+          "min": 0.945495275930446,
+          "max": 0.9639762110289474,
+          "p05": 0.946171928704724,
+          "p95": 0.9585701060235003
+        },
+        "bias": {
+          "median_abs": 0.00045618044292283777,
+          "mean_abs": 0.0005745234587958281,
+          "median_rel_pct": 0.04790050327325435,
+          "mean_rel_pct": 0.060326923798585404
+        },
+        "median_p_value": 0.001953125,
+        "median_ratio_spread": 0.03304402126032763,
+        "unstable_trials": 0,
+        "reference_ms_median": 29.516974677486967,
+        "autocorr_lag1": {
+          "median_of_trial_medians": -0.08246516290398372,
+          "p05": -0.2616306360627463,
+          "p95": 0.0652885305976709,
+          "min_over_processes": -0.8610040323336708,
+          "max_over_processes": 0.6753068158749291,
+          "share_trials_median_positive": 0.24
+        },
+        "rule_outcomes": {
+          "accepted as faster": 50
+        }
+      },
+      "combined": {
+        "attempted": 100,
+        "valid": 100,
+        "invalid": 0,
+        "single": {
+          "k": 99,
+          "n": 100,
+          "rate": 0.99,
+          "clopper_pearson_95": [
+            0.9455406146079193,
+            0.9997468539670227
+          ],
+          "wilson_95": [
+            0.9455138032509935,
+            0.9982325679553905
+          ]
+        },
+        "two_stage": {
+          "k": 49,
+          "n": 50,
+          "rate": 0.98,
+          "clopper_pearson_95": [
+            0.8935304542885001,
+            0.9994937720169592
+          ],
+          "wilson_95": [
+            0.8950455630610349,
+            0.9964607407674954
+          ],
+          "dropped_pairs": 0,
+          "median_kept_ratio_of_accepted": 0.9550603572103998
+        },
+        "true_ratio": 0.95235,
+        "reported_ratio": {
+          "median": 0.9537968299359321,
+          "mean": 0.9533562955009297,
+          "sd": 0.003687131012182783,
+          "min": 0.945495275930446,
+          "max": 0.9639762110289474,
+          "p05": 0.9464525350059388,
+          "p95": 0.9587937680254993
+        },
+        "bias": {
+          "median_abs": 0.001446829935932037,
+          "mean_abs": 0.001006295500929677,
+          "median_rel_pct": 0.15192208074048794,
+          "mean_rel_pct": 0.10566446169262109
+        },
+        "median_p_value": 0.001953125,
+        "median_ratio_spread": 0.03253706007610119,
+        "unstable_trials": 1,
+        "reference_ms_median": 29.622367156359054,
+        "autocorr_lag1": {
+          "median_of_trial_medians": -0.10477183752317457,
+          "p05": -0.2944499471754298,
+          "p95": 0.05716289691052503,
+          "min_over_processes": -0.8610040323336708,
+          "max_over_processes": 0.6753068158749291,
+          "share_trials_median_positive": 0.2
+        },
+        "rule_outcomes": {
+          "accepted as faster": 99,
+          "sign-flip p not below alpha": 1
+        }
+      },
+      "batch_comparison": {
+        "acceptance_fisher_p": 1.0,
+        "median_ratio_diff": -0.001383947666246499,
+        "median_ratio_permutation_p": 0.15379231038448077,
+        "reference_ms_median": [
+          29.64503807015717,
+          29.516974677486967
+        ]
+      }
+    },
+    "faster-10-percent": {
+      "true_ratio": 0.90905,
+      "batch1": {
+        "attempted": 50,
+        "valid": 50,
+        "invalid": 0,
+        "single": {
+          "k": 50,
+          "n": 50,
+          "rate": 1.0,
+          "clopper_pearson_95": [
+            0.9288782635358024,
+            1.0
+          ],
+          "wilson_95": [
+            0.9286523998213857,
+            0.9999999999999999
+          ]
+        },
+        "two_stage": {
+          "k": 25,
+          "n": 25,
+          "rate": 1.0,
+          "clopper_pearson_95": [
+            0.8628148284692874,
+            1.0
+          ],
+          "wilson_95": [
+            0.866807747239609,
+            1.0
+          ],
+          "dropped_pairs": 0,
+          "median_kept_ratio_of_accepted": 0.9107332594719346
+        },
+        "true_ratio": 0.90905,
+        "reported_ratio": {
+          "median": 0.9091189957594026,
+          "mean": 0.9094008957523158,
+          "sd": 0.0023616591700849647,
+          "min": 0.9034146964507596,
+          "max": 0.9146964600635713,
+          "p05": 0.9060430467356998,
+          "p95": 0.9132465035473258
+        },
+        "bias": {
+          "median_abs": 6.899575940255698e-05,
+          "mean_abs": 0.00035089575231572745,
+          "median_rel_pct": 0.007589875078659807,
+          "mean_rel_pct": 0.038600269766869526
+        },
+        "median_p_value": 0.001953125,
+        "median_ratio_spread": 0.026931791340408184,
+        "unstable_trials": 0,
+        "reference_ms_median": 29.690480577604223,
+        "autocorr_lag1": {
+          "median_of_trial_medians": -0.11074500018994207,
+          "p05": -0.22578923637548654,
+          "p95": 0.09160433205294749,
+          "min_over_processes": -0.9155713918225519,
+          "max_over_processes": 0.6866701324591007,
+          "share_trials_median_positive": 0.18
+        },
+        "rule_outcomes": {
+          "accepted as faster": 50
+        }
+      },
+      "batch2": {
+        "attempted": 50,
+        "valid": 50,
+        "invalid": 0,
+        "single": {
+          "k": 50,
+          "n": 50,
+          "rate": 1.0,
+          "clopper_pearson_95": [
+            0.9288782635358024,
+            1.0
+          ],
+          "wilson_95": [
+            0.9286523998213857,
+            0.9999999999999999
+          ]
+        },
+        "two_stage": {
+          "k": 25,
+          "n": 25,
+          "rate": 1.0,
+          "clopper_pearson_95": [
+            0.8628148284692874,
+            1.0
+          ],
+          "wilson_95": [
+            0.866807747239609,
+            1.0
+          ],
+          "dropped_pairs": 0,
+          "median_kept_ratio_of_accepted": 0.9104274846627824
+        },
+        "true_ratio": 0.90905,
+        "reported_ratio": {
+          "median": 0.9093711804958882,
+          "mean": 0.9088483188819396,
+          "sd": 0.003867173387181547,
+          "min": 0.8974471213021948,
+          "max": 0.9167190828550105,
+          "p05": 0.9006293568154985,
+          "p95": 0.9141514968431199
+        },
+        "bias": {
+          "median_abs": 0.00032118049588814035,
+          "mean_abs": -0.0002016811180604039,
+          "median_rel_pct": 0.03533144446269626,
+          "mean_rel_pct": -0.022185921353105317
+        },
+        "median_p_value": 0.001953125,
+        "median_ratio_spread": 0.033553495224509955,
+        "unstable_trials": 0,
+        "reference_ms_median": 29.550292354542762,
+        "autocorr_lag1": {
+          "median_of_trial_medians": -0.10554262027756171,
+          "p05": -0.3301890024471256,
+          "p95": 0.020000406702932357,
+          "min_over_processes": -0.9071343278007051,
+          "max_over_processes": 0.6879188891565544,
+          "share_trials_median_positive": 0.1
+        },
+        "rule_outcomes": {
+          "accepted as faster": 50
+        }
+      },
+      "combined": {
+        "attempted": 100,
+        "valid": 100,
+        "invalid": 0,
+        "single": {
+          "k": 100,
+          "n": 100,
+          "rate": 1.0,
+          "clopper_pearson_95": [
+            0.9637833073548236,
+            1.0
+          ],
+          "wilson_95": [
+            0.9630065012310038,
+            1.0
+          ]
+        },
+        "two_stage": {
+          "k": 50,
+          "n": 50,
+          "rate": 1.0,
+          "clopper_pearson_95": [
+            0.9288782635358024,
+            1.0
+          ],
+          "wilson_95": [
+            0.9286523998213857,
+            0.9999999999999999
+          ],
+          "dropped_pairs": 0,
+          "median_kept_ratio_of_accepted": 0.9107269453384452
+        },
+        "true_ratio": 0.90905,
+        "reported_ratio": {
+          "median": 0.9092582981631396,
+          "mean": 0.9091246073171277,
+          "sd": 0.0032159862127354466,
+          "min": 0.8974471213021948,
+          "max": 0.9167190828550105,
+          "p05": 0.9035638863420903,
+          "p95": 0.913817409762449
+        },
+        "bias": {
+          "median_abs": 0.00020829816313960858,
+          "mean_abs": 7.460731712771729e-05,
+          "median_rel_pct": 0.02291382906766499,
+          "mean_rel_pct": 0.00820717420688821
+        },
+        "median_p_value": 0.001953125,
+        "median_ratio_spread": 0.03055462938167408,
+        "unstable_trials": 0,
+        "reference_ms_median": 29.634978563990444,
+        "autocorr_lag1": {
+          "median_of_trial_medians": -0.10874859692628089,
+          "p05": -0.3267989587027713,
+          "p95": 0.07379392368206959,
+          "min_over_processes": -0.9155713918225519,
+          "max_over_processes": 0.6879188891565544,
+          "share_trials_median_positive": 0.14
+        },
+        "rule_outcomes": {
+          "accepted as faster": 100
+        }
+      },
+      "batch_comparison": {
+        "acceptance_fisher_p": 1.0,
+        "median_ratio_diff": 0.00025218473648558337,
+        "median_ratio_permutation_p": 0.7532123393830309,
+        "reference_ms_median": [
+          29.690480577604223,
+          29.550292354542762
+        ]
+      }
+    },
+    "slower-10-percent": {
+      "true_ratio": 1.1,
+      "batch1": {
+        "attempted": 50,
+        "valid": 50,
+        "invalid": 0,
+        "single": {
+          "k": 0,
+          "n": 50,
+          "rate": 0.0,
+          "clopper_pearson_95": [
+            0.0,
+            0.07112173646419767
+          ],
+          "wilson_95": [
+            0.0,
+            0.07134760017861413
+          ]
+        },
+        "two_stage": {
+          "k": 0,
+          "n": 25,
+          "rate": 0.0,
+          "clopper_pearson_95": [
+            0.0,
+            0.13718517153071258
+          ],
+          "wilson_95": [
+            0.0,
+            0.13319225276039096
+          ],
+          "dropped_pairs": 0,
+          "median_kept_ratio_of_accepted": null
+        },
+        "true_ratio": 1.1,
+        "reported_ratio": {
+          "median": 1.0999914004868612,
+          "mean": 1.1003872078341943,
+          "sd": 0.0037402072828287575,
+          "min": 1.094266313201429,
+          "max": 1.108662838491183,
+          "p05": 1.0955552578145376,
+          "p95": 1.1075404269217746
+        },
+        "bias": {
+          "median_abs": -8.599513138918269e-06,
+          "mean_abs": 0.00038720783419421423,
+          "median_rel_pct": -0.0007817739217198425,
+          "mean_rel_pct": 0.035200712199474016
+        },
+        "median_p_value": 0.001953125,
+        "median_ratio_spread": 0.03536929527544597,
+        "unstable_trials": 0,
+        "reference_ms_median": 29.707857834485672,
+        "autocorr_lag1": {
+          "median_of_trial_medians": -0.09735058979385683,
+          "p05": -0.250169982881006,
+          "p95": 0.08550307639090554,
+          "min_over_processes": -0.814087424406391,
+          "max_over_processes": 0.633307484561629,
+          "share_trials_median_positive": 0.18
+        },
+        "rule_outcomes": {
+          "mean log-ratio not below zero": 50
+        }
+      },
+      "batch2": {
+        "attempted": 50,
+        "valid": 50,
+        "invalid": 0,
+        "single": {
+          "k": 0,
+          "n": 50,
+          "rate": 0.0,
+          "clopper_pearson_95": [
+            0.0,
+            0.07112173646419767
+          ],
+          "wilson_95": [
+            0.0,
+            0.07134760017861413
+          ]
+        },
+        "two_stage": {
+          "k": 0,
+          "n": 25,
+          "rate": 0.0,
+          "clopper_pearson_95": [
+            0.0,
+            0.13718517153071258
+          ],
+          "wilson_95": [
+            0.0,
+            0.13319225276039096
+          ],
+          "dropped_pairs": 0,
+          "median_kept_ratio_of_accepted": null
+        },
+        "true_ratio": 1.1,
+        "reported_ratio": {
+          "median": 1.1025322231075334,
+          "mean": 1.1021569897115016,
+          "sd": 0.004698196179263889,
+          "min": 1.0903690569667228,
+          "max": 1.1121398745602495,
+          "p05": 1.0935704097370926,
+          "p95": 1.1103482451021762
+        },
+        "bias": {
+          "median_abs": 0.0025322231075333157,
+          "mean_abs": 0.002156989711501467,
+          "median_rel_pct": 0.23020210068484687,
+          "mean_rel_pct": 0.1960899737728606
+        },
+        "median_p_value": 0.001953125,
+        "median_ratio_spread": 0.033485799583428455,
+        "unstable_trials": 0,
+        "reference_ms_median": 29.54443400570502,
+        "autocorr_lag1": {
+          "median_of_trial_medians": -0.10672956311580095,
+          "p05": -0.24400670584541434,
+          "p95": 0.10429006217693293,
+          "min_over_processes": -0.7729899361276353,
+          "max_over_processes": 0.6918256892392126,
+          "share_trials_median_positive": 0.22
+        },
+        "rule_outcomes": {
+          "mean log-ratio not below zero": 50
+        }
+      },
+      "combined": {
+        "attempted": 100,
+        "valid": 100,
+        "invalid": 0,
+        "single": {
+          "k": 0,
+          "n": 100,
+          "rate": 0.0,
+          "clopper_pearson_95": [
+            0.0,
+            0.03621669264517641
+          ],
+          "wilson_95": [
+            0.0,
+            0.03699349876899627
+          ]
+        },
+        "two_stage": {
+          "k": 0,
+          "n": 50,
+          "rate": 0.0,
+          "clopper_pearson_95": [
+            0.0,
+            0.07112173646419767
+          ],
+          "wilson_95": [
+            0.0,
+            0.07134760017861413
+          ],
+          "dropped_pairs": 0,
+          "median_kept_ratio_of_accepted": null
+        },
+        "true_ratio": 1.1,
+        "reported_ratio": {
+          "median": 1.10090200946905,
+          "mean": 1.101272098772848,
+          "sd": 0.004337525896406715,
+          "min": 1.0903690569667228,
+          "max": 1.1121398745602495,
+          "p05": 1.0954035261767554,
+          "p95": 1.1086644006635507
+        },
+        "bias": {
+          "median_abs": 0.0009020094690499469,
+          "mean_abs": 0.0012720987728478406,
+          "median_rel_pct": 0.08200086082272244,
+          "mean_rel_pct": 0.11564534298616731
+        },
+        "median_p_value": 0.001953125,
+        "median_ratio_spread": 0.03436799747851016,
+        "unstable_trials": 0,
+        "reference_ms_median": 29.62751218971486,
+        "autocorr_lag1": {
+          "median_of_trial_medians": -0.10225799211797526,
+          "p05": -0.2504274784042471,
+          "p95": 0.09514992057525574,
+          "min_over_processes": -0.814087424406391,
+          "max_over_processes": 0.6918256892392126,
+          "share_trials_median_positive": 0.2
+        },
+        "rule_outcomes": {
+          "mean log-ratio not below zero": 100
+        }
+      },
+      "batch_comparison": {
+        "acceptance_fisher_p": 1.0,
+        "median_ratio_diff": 0.002540822620672234,
+        "median_ratio_permutation_p": 0.013549322533873306,
+        "reference_ms_median": [
+          29.707857834485672,
+          29.54443400570502
+        ]
+      }
+    },
+    "sweep-105": {
+      "true_ratio": 1.05,
+      "batch1": {
+        "attempted": 20,
+        "valid": 20,
+        "invalid": 0,
+        "single": {
+          "k": 0,
+          "n": 20,
+          "rate": 0.0,
+          "clopper_pearson_95": [
+            0.0,
+            0.1684334709830853
+          ],
+          "wilson_95": [
+            0.0,
+            0.16112516018512965
+          ]
+        },
+        "two_stage": {
+          "k": 0,
+          "n": 10,
+          "rate": 0.0,
+          "clopper_pearson_95": [
+            0.0,
+            0.3084971078187607
+          ],
+          "wilson_95": [
+            0.0,
+            0.2775328030260577
+          ],
+          "dropped_pairs": 0,
+          "median_kept_ratio_of_accepted": null
+        },
+        "true_ratio": 1.05,
+        "reported_ratio": {
+          "median": 1.0520007522237536,
+          "mean": 1.052049770393595,
+          "sd": 0.003869832700127841,
+          "min": 1.0446350055456817,
+          "max": 1.0591670938140008,
+          "p05": 1.0461132356735987,
+          "p95": 1.0581113599508958
+        },
+        "bias": {
+          "median_abs": 0.0020007522237535103,
+          "mean_abs": 0.0020497703935948852,
+          "median_rel_pct": 0.19054783083366764,
+          "mean_rel_pct": 0.19521622796141763
+        },
+        "median_p_value": 0.001953125,
+        "median_ratio_spread": 0.03397510806383375,
+        "unstable_trials": 0,
+        "reference_ms_median": 29.673795759057004,
+        "autocorr_lag1": {
+          "median_of_trial_medians": -0.08829709072513196,
+          "p05": -0.1805007995361761,
+          "p95": 0.10793482783057451,
+          "min_over_processes": -0.711005571139574,
+          "max_over_processes": 0.6561445787757096,
+          "share_trials_median_positive": 0.15
+        },
+        "rule_outcomes": {
+          "mean log-ratio not below zero": 20
+        }
+      },
+      "combined": {
+        "attempted": 20,
+        "valid": 20,
+        "invalid": 0,
+        "single": {
+          "k": 0,
+          "n": 20,
+          "rate": 0.0,
+          "clopper_pearson_95": [
+            0.0,
+            0.1684334709830853
+          ],
+          "wilson_95": [
+            0.0,
+            0.16112516018512965
+          ]
+        },
+        "two_stage": {
+          "k": 0,
+          "n": 10,
+          "rate": 0.0,
+          "clopper_pearson_95": [
+            0.0,
+            0.3084971078187607
+          ],
+          "wilson_95": [
+            0.0,
+            0.2775328030260577
+          ],
+          "dropped_pairs": 0,
+          "median_kept_ratio_of_accepted": null
+        },
+        "true_ratio": 1.05,
+        "reported_ratio": {
+          "median": 1.0520007522237536,
+          "mean": 1.052049770393595,
+          "sd": 0.003869832700127841,
+          "min": 1.0446350055456817,
+          "max": 1.0591670938140008,
+          "p05": 1.0461132356735987,
+          "p95": 1.0581113599508958
+        },
+        "bias": {
+          "median_abs": 0.0020007522237535103,
+          "mean_abs": 0.0020497703935948852,
+          "median_rel_pct": 0.19054783083366764,
+          "mean_rel_pct": 0.19521622796141763
+        },
+        "median_p_value": 0.001953125,
+        "median_ratio_spread": 0.03397510806383375,
+        "unstable_trials": 0,
+        "reference_ms_median": 29.673795759057004,
+        "autocorr_lag1": {
+          "median_of_trial_medians": -0.08829709072513196,
+          "p05": -0.1805007995361761,
+          "p95": 0.10793482783057451,
+          "min_over_processes": -0.711005571139574,
+          "max_over_processes": 0.6561445787757096,
+          "share_trials_median_positive": 0.15
+        },
+        "rule_outcomes": {
+          "mean log-ratio not below zero": 20
+        }
+      }
+    },
+    "sweep-110": {
+      "true_ratio": 1.1,
+      "batch1": {
+        "attempted": 20,
+        "valid": 20,
+        "invalid": 0,
+        "single": {
+          "k": 0,
+          "n": 20,
+          "rate": 0.0,
+          "clopper_pearson_95": [
+            0.0,
+            0.1684334709830853
+          ],
+          "wilson_95": [
+            0.0,
+            0.16112516018512965
+          ]
+        },
+        "two_stage": {
+          "k": 0,
+          "n": 10,
+          "rate": 0.0,
+          "clopper_pearson_95": [
+            0.0,
+            0.3084971078187607
+          ],
+          "wilson_95": [
+            0.0,
+            0.2775328030260577
+          ],
+          "dropped_pairs": 0,
+          "median_kept_ratio_of_accepted": null
+        },
+        "true_ratio": 1.1,
+        "reported_ratio": {
+          "median": 1.1004761863826962,
+          "mean": 1.1002477945291023,
+          "sd": 0.004261541567061849,
+          "min": 1.0927338626199137,
+          "max": 1.1081920524170754,
+          "p05": 1.0942915991357327,
+          "p95": 1.1070824857941888
+        },
+        "bias": {
+          "median_abs": 0.0004761863826960866,
+          "mean_abs": 0.00024779452910217437,
+          "median_rel_pct": 0.043289671154189684,
+          "mean_rel_pct": 0.02252677537292494
+        },
+        "median_p_value": 0.001953125,
+        "median_ratio_spread": 0.03261511978851406,
+        "unstable_trials": 0,
+        "reference_ms_median": 29.718806753711156,
+        "autocorr_lag1": {
+          "median_of_trial_medians": -0.06951364059496486,
+          "p05": -0.2545424388853898,
+          "p95": 0.034683385303246335,
+          "min_over_processes": -0.7494423021167306,
+          "max_over_processes": 0.5470619006283872,
+          "share_trials_median_positive": 0.15
+        },
+        "rule_outcomes": {
+          "mean log-ratio not below zero": 20
+        }
+      },
+      "combined": {
+        "attempted": 20,
+        "valid": 20,
+        "invalid": 0,
+        "single": {
+          "k": 0,
+          "n": 20,
+          "rate": 0.0,
+          "clopper_pearson_95": [
+            0.0,
+            0.1684334709830853
+          ],
+          "wilson_95": [
+            0.0,
+            0.16112516018512965
+          ]
+        },
+        "two_stage": {
+          "k": 0,
+          "n": 10,
+          "rate": 0.0,
+          "clopper_pearson_95": [
+            0.0,
+            0.3084971078187607
+          ],
+          "wilson_95": [
+            0.0,
+            0.2775328030260577
+          ],
+          "dropped_pairs": 0,
+          "median_kept_ratio_of_accepted": null
+        },
+        "true_ratio": 1.1,
+        "reported_ratio": {
+          "median": 1.1004761863826962,
+          "mean": 1.1002477945291023,
+          "sd": 0.004261541567061849,
+          "min": 1.0927338626199137,
+          "max": 1.1081920524170754,
+          "p05": 1.0942915991357327,
+          "p95": 1.1070824857941888
+        },
+        "bias": {
+          "median_abs": 0.0004761863826960866,
+          "mean_abs": 0.00024779452910217437,
+          "median_rel_pct": 0.043289671154189684,
+          "mean_rel_pct": 0.02252677537292494
+        },
+        "median_p_value": 0.001953125,
+        "median_ratio_spread": 0.03261511978851406,
+        "unstable_trials": 0,
+        "reference_ms_median": 29.718806753711156,
+        "autocorr_lag1": {
+          "median_of_trial_medians": -0.06951364059496486,
+          "p05": -0.2545424388853898,
+          "p95": 0.034683385303246335,
+          "min_over_processes": -0.7494423021167306,
+          "max_over_processes": 0.5470619006283872,
+          "share_trials_median_positive": 0.15
+        },
+        "rule_outcomes": {
+          "mean log-ratio not below zero": 20
+        }
+      }
+    },
+    "sweep-200": {
+      "true_ratio": 2.0,
+      "batch1": {
+        "attempted": 20,
+        "valid": 20,
+        "invalid": 0,
+        "single": {
+          "k": 0,
+          "n": 20,
+          "rate": 0.0,
+          "clopper_pearson_95": [
+            0.0,
+            0.1684334709830853
+          ],
+          "wilson_95": [
+            0.0,
+            0.16112516018512965
+          ]
+        },
+        "two_stage": {
+          "k": 0,
+          "n": 10,
+          "rate": 0.0,
+          "clopper_pearson_95": [
+            0.0,
+            0.3084971078187607
+          ],
+          "wilson_95": [
+            0.0,
+            0.2775328030260577
+          ],
+          "dropped_pairs": 0,
+          "median_kept_ratio_of_accepted": null
+        },
+        "true_ratio": 2.0,
+        "reported_ratio": {
+          "median": 2.00758561032965,
+          "mean": 2.0081817726917843,
+          "sd": 0.005952176983594796,
+          "min": 1.9996108684212928,
+          "max": 2.020781177603687,
+          "p05": 1.9999722422911204,
+          "p95": 2.0162420890928545
+        },
+        "bias": {
+          "median_abs": 0.007585610329650105,
+          "mean_abs": 0.008181772691784328,
+          "median_rel_pct": 0.37928051648250527,
+          "mean_rel_pct": 0.4090886345892164
+        },
+        "median_p_value": 0.001953125,
+        "median_ratio_spread": 0.049718144953822985,
+        "unstable_trials": 0,
+        "reference_ms_median": 29.539349294888478,
+        "autocorr_lag1": {
+          "median_of_trial_medians": -0.12629304655067708,
+          "p05": -0.3129221313602849,
+          "p95": 0.09795256991569273,
+          "min_over_processes": -0.8161880288993302,
+          "max_over_processes": 0.6747883995474285,
+          "share_trials_median_positive": 0.35
+        },
+        "rule_outcomes": {
+          "mean log-ratio not below zero": 20
+        }
+      },
+      "combined": {
+        "attempted": 20,
+        "valid": 20,
+        "invalid": 0,
+        "single": {
+          "k": 0,
+          "n": 20,
+          "rate": 0.0,
+          "clopper_pearson_95": [
+            0.0,
+            0.1684334709830853
+          ],
+          "wilson_95": [
+            0.0,
+            0.16112516018512965
+          ]
+        },
+        "two_stage": {
+          "k": 0,
+          "n": 10,
+          "rate": 0.0,
+          "clopper_pearson_95": [
+            0.0,
+            0.3084971078187607
+          ],
+          "wilson_95": [
+            0.0,
+            0.2775328030260577
+          ],
+          "dropped_pairs": 0,
+          "median_kept_ratio_of_accepted": null
+        },
+        "true_ratio": 2.0,
+        "reported_ratio": {
+          "median": 2.00758561032965,
+          "mean": 2.0081817726917843,
+          "sd": 0.005952176983594796,
+          "min": 1.9996108684212928,
+          "max": 2.020781177603687,
+          "p05": 1.9999722422911204,
+          "p95": 2.0162420890928545
+        },
+        "bias": {
+          "median_abs": 0.007585610329650105,
+          "mean_abs": 0.008181772691784328,
+          "median_rel_pct": 0.37928051648250527,
+          "mean_rel_pct": 0.4090886345892164
+        },
+        "median_p_value": 0.001953125,
+        "median_ratio_spread": 0.049718144953822985,
+        "unstable_trials": 0,
+        "reference_ms_median": 29.539349294888478,
+        "autocorr_lag1": {
+          "median_of_trial_medians": -0.12629304655067708,
+          "p05": -0.3129221313602849,
+          "p95": 0.09795256991569273,
+          "min_over_processes": -0.8161880288993302,
+          "max_over_processes": 0.6747883995474285,
+          "share_trials_median_positive": 0.35
+        },
+        "rule_outcomes": {
+          "mean log-ratio not below zero": 20
+        }
+      }
+    },
+    "sweep-400": {
+      "true_ratio": 4.0,
+      "batch1": {
+        "attempted": 20,
+        "valid": 20,
+        "invalid": 0,
+        "single": {
+          "k": 0,
+          "n": 20,
+          "rate": 0.0,
+          "clopper_pearson_95": [
+            0.0,
+            0.1684334709830853
+          ],
+          "wilson_95": [
+            0.0,
+            0.16112516018512965
+          ]
+        },
+        "two_stage": {
+          "k": 0,
+          "n": 10,
+          "rate": 0.0,
+          "clopper_pearson_95": [
+            0.0,
+            0.3084971078187607
+          ],
+          "wilson_95": [
+            0.0,
+            0.2775328030260577
+          ],
+          "dropped_pairs": 0,
+          "median_kept_ratio_of_accepted": null
+        },
+        "true_ratio": 4.0,
+        "reported_ratio": {
+          "median": 4.025551119375536,
+          "mean": 4.02177435675823,
+          "sd": 0.013709985975866507,
+          "min": 3.999589534527143,
+          "max": 4.045888599931146,
+          "p05": 4.000779521901621,
+          "p95": 4.045809128413317
+        },
+        "bias": {
+          "median_abs": 0.025551119375536224,
+          "mean_abs": 0.021774356758229807,
+          "median_rel_pct": 0.6387779843884056,
+          "mean_rel_pct": 0.5443589189557452
+        },
+        "median_p_value": 0.001953125,
+        "median_ratio_spread": 0.0925538218401134,
+        "unstable_trials": 0,
+        "reference_ms_median": 29.47807032085786,
+        "autocorr_lag1": {
+          "median_of_trial_medians": -0.15057772113922663,
+          "p05": -0.3071803316817221,
+          "p95": -0.04156997519189626,
+          "min_over_processes": -0.833402690063694,
+          "max_over_processes": 0.5203954603454735,
+          "share_trials_median_positive": 0.05
+        },
+        "rule_outcomes": {
+          "mean log-ratio not below zero": 20
+        }
+      },
+      "combined": {
+        "attempted": 20,
+        "valid": 20,
+        "invalid": 0,
+        "single": {
+          "k": 0,
+          "n": 20,
+          "rate": 0.0,
+          "clopper_pearson_95": [
+            0.0,
+            0.1684334709830853
+          ],
+          "wilson_95": [
+            0.0,
+            0.16112516018512965
+          ]
+        },
+        "two_stage": {
+          "k": 0,
+          "n": 10,
+          "rate": 0.0,
+          "clopper_pearson_95": [
+            0.0,
+            0.3084971078187607
+          ],
+          "wilson_95": [
+            0.0,
+            0.2775328030260577
+          ],
+          "dropped_pairs": 0,
+          "median_kept_ratio_of_accepted": null
+        },
+        "true_ratio": 4.0,
+        "reported_ratio": {
+          "median": 4.025551119375536,
+          "mean": 4.02177435675823,
+          "sd": 0.013709985975866507,
+          "min": 3.999589534527143,
+          "max": 4.045888599931146,
+          "p05": 4.000779521901621,
+          "p95": 4.045809128413317
+        },
+        "bias": {
+          "median_abs": 0.025551119375536224,
+          "mean_abs": 0.021774356758229807,
+          "median_rel_pct": 0.6387779843884056,
+          "mean_rel_pct": 0.5443589189557452
+        },
+        "median_p_value": 0.001953125,
+        "median_ratio_spread": 0.0925538218401134,
+        "unstable_trials": 0,
+        "reference_ms_median": 29.47807032085786,
+        "autocorr_lag1": {
+          "median_of_trial_medians": -0.15057772113922663,
+          "p05": -0.3071803316817221,
+          "p95": -0.04156997519189626,
+          "min_over_processes": -0.833402690063694,
+          "max_over_processes": 0.5203954603454735,
+          "share_trials_median_positive": 0.05
+        },
+        "rule_outcomes": {
+          "mean log-ratio not below zero": 20
+        }
+      }
+    }
+  },
+  "empirical_detection_threshold_90pct": {
+    "single": {
+      "pair": "faster-5-percent",
+      "true_ratio": 0.95235,
+      "rate": 0.99,
+      "cp_lower": 0.9455406146079193
+    },
+    "two_stage": {
+      "pair": "faster-5-percent",
+      "true_ratio": 0.95235,
+      "rate": 0.98,
+      "cp_lower": 0.8935304542885001
+    }
+  },
+  "threshold_definition": "weakest tested effect whose acceptance rate, and that of every stronger tested effect, is >= 90%; only the tested points 1%, 2%, 5%, 10% faster can be named"
+}

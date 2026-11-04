@@ -1,0 +1,41 @@
+File: src/fit_profile.cpp
+Function: Profile::GetMesg (10 lines)
+One full decode of the four files takes about 479.2 ms in the stock build.
+Time of the current version of the whole library relative to stock: 0.976 (below 1.0 is faster). Best measured so far: 0.976.
+
+Your previous attempt failed:
+Stage 'correctness' rejected it: checksum 75fdad49146180ad does not match the reference 92bebfd7f8978fc8; the decoder produced different values
+The rejected replacement was:
+```cpp
+
+const Profile::MESG* Profile::GetMesg(const FIT_UINT16 num)
+{
+    // Profile::MESG array is sorted by num in release 21.201.0 (verified by inspecting profile data initialization)
+    // Binary search reduces lookup from O(n) to O(log n), significantly faster for ~150 message types
+    const Profile::MESG* first = mesgs;
+    const Profile::MESG* last = mesgs + MESGS;
+    const Profile::MESG* it = std::lower_bound(first, last, num,
+        [](const Profile::MESG& mesg, FIT_UINT16 value) { return mesg.num < value; });
+    
+    if (it != last && it->num == num)
+        return it;
+    return NULL;
+}
+
+```
+
+Current text of the function:
+```cpp
+const Profile::MESG* Profile::GetMesg(const FIT_UINT16 num)
+{
+    for (int i = 0; i < MESGS; i++)
+    {
+        if (mesgs[i].num == num)
+            return &mesgs[i];
+    }
+
+    return NULL;
+}
+
+```
+Return the faster replacement now.

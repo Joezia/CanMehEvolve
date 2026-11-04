@@ -1,0 +1,39 @@
+const FIT_UINT16 Profile::GetFieldIndex(const FIT_UINT16 mesgNum, const FIT_UINT8 fieldNum)
+{
+    struct CacheEntry
+    {
+        FIT_UINT32 key; // 0 = empty, otherwise mesgNum + 1
+        const MESG *mesg;
+        FIT_UINT16 index[256];
+    };
+
+    static CacheEntry cache[64] = {};
+
+    CacheEntry &e = cache[mesgNum & 63];
+    const FIT_UINT32 key = static_cast<FIT_UINT32>(mesgNum) + 1;
+
+    if (e.key == key)
+    {
+        return e.mesg ? e.index[fieldNum] : FIT_UINT16_INVALID;
+    }
+
+    e.key = key;
+    e.mesg = GetMesg(mesgNum);
+
+    if (e.mesg == NULL)
+    {
+        return FIT_UINT16_INVALID;
+    }
+
+    std::memset(e.index, 0xFF, sizeof(e.index));
+
+    const MESG *mesg = e.mesg;
+    const FIELD *fields = mesg->fields;
+    for (FIT_UINT16 i = mesg->numFields; i > 0; )
+    {
+        --i;
+        e.index[fields[i].num] = i;
+    }
+
+    return e.index[fieldNum];
+}

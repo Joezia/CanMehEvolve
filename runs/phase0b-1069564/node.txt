@@ -1,0 +1,22 @@
+batch1_host=xcnc2
+batch2_host=xcnc2
+same_node=yes
+batch1_job=1068829
+batch2_job=1069564
+start=2026-11-03T23:59:45+08:00
+target_per_pair=100
+binary sha256: d308a584771ed50fff7eecaa8f68c2cc08f4d1d1db9983b227cad22371627135 build/CanMehHarness
+null batch1_valid=50 min_time=0.0611s
+faster-1-percent batch1_valid=50 min_time=0.0609s
+faster-2-percent batch1_valid=50 min_time=0.0614s
+faster-5-percent batch1_valid=50 min_time=0.0618s
+faster-10-percent batch1_valid=50 min_time=0.0610s
+slower-10-percent batch1_valid=50 min_time=0.0671s
+measure_end=2026-11-04T01:38:43+08:00
+null final_index=100
+faster-1-percent final_index=100
+faster-2-percent final_index=100
+faster-5-percent final_index=100
+faster-10-percent final_index=100
+slower-10-percent final_index=100
+final_exit=0 end=2026-11-04T01:38:48+08:00

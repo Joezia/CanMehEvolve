@@ -1,0 +1,38 @@
+Cache the message pointer per message number and lazily build a 256-entry field-index table for each valid message, making repeated lookups O(1) instead of repeating `GetMesg` and the linear field scan.
+
+```cpp
+const FIT_UINT16 Profile::GetFieldIndex(const FIT_UINT16 mesgNum, const FIT_UINT8 fieldNum)
+{
+    static const MESG *mesgCache[65536];
+    static unsigned char mesgValid[65536];
+    static FIT_UINT16 fieldTable[65536][256];
+    static unsigned char fieldTableValid[65536];
+
+    if (!mesgValid[mesgNum])
+    {
+        mesgCache[mesgNum] = GetMesg(mesgNum);
+        mesgValid[mesgNum] = 1;
+    }
+
+    const MESG *mesg = mesgCache[mesgNum];
+    if (mesg == NULL)
+        return FIT_UINT16_INVALID;
+
+    if (!fieldTableValid[mesgNum])
+    {
+        FIT_UINT16 *table = fieldTable[mesgNum];
+        for (FIT_UINT16 i = 0; i < 256; i++)
+            table[i] = FIT_UINT16_INVALID;
+
+        for (FIT_UINT16 i = 0; i < mesg->numFields; i++)
+        {
+            const FIT_UINT8 num = mesg->fields[i].num;
+            if (table[num] == FIT_UINT16_INVALID)
+                table[num] = i;
+        }
+        fieldTableValid[mesgNum] = 1;
+    }
+
+    return fieldTable[mesgNum][fieldNum];
+}
+```

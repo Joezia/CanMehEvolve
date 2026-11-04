@@ -1,0 +1,15 @@
+{
+  "baseline_ms": 433.1427158322185,
+  "bench": "/home/z/zhouzia/Workspace/CanMehEvolve/build/CanMehBench",
+  "cxx": "/home/z/zhouzia/Workspace/CanMehEvolve/scripts/cxx-march-native.sh",
+  "cxxstd": "-std=c++17",
+  "data": "/home/z/zhouzia/Workspace/CanMehEvolve/build/data",
+  "min_time": "0.25s",
+  "null_p": 0.51171875,
+  "null_ratio": 1.0021854611287642,
+  "opt": "-O3",
+  "reference_cv": 0.021801349707429564,
+  "repeat": 10,
+  "repetitions": 9,
+  "sdk": "/home/z/zhouzia/Workspace/CanMehEvolve/build/FITSDK-prefix/src/FITSDK"
+}

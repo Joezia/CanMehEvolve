@@ -1,0 +1,14 @@
+I collapsed the profile/index validation into one likely-success branch and added branch-prediction hints, keeping the cached-type fast path unchanged so the common case stays a single compare and return.
+
+```cpp
+FIT_UINT8 Field::GetType() const
+{
+    if (__builtin_expect(type != FIT_UINT8_INVALID, 1))
+        return type;
+
+    if (__builtin_expect(profile != NULL && profileIndex < profile->numFields, 1))
+        return profile->fields[profileIndex].type;
+
+    return FIT_UINT8_INVALID;
+}
+```

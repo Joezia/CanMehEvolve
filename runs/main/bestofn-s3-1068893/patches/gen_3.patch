@@ -1,0 +1,41 @@
+--- a/src/fit_profile.cpp
++++ b/src/fit_profile.cpp
+@@ -11,6 +11,9 @@
+ 
+ 
+ #include "fit_profile.hpp"
++#include <algorithm>
++#include <cstddef>
++#include "fit_mesg_def.hpp"
+ 
+ namespace fit
+ {
+@@ -3055,14 +3058,23 @@
+    { NULL, "pad", FIT_MESG_NUM_PAD, 0 },
+ };
+ 
++
+ const Profile::MESG* Profile::GetMesg(const FIT_UINT16 num)
+ {
+-    for (int i = 0; i < MESGS; i++)
+-    {
+-        if (mesgs[i].num == num)
+-            return &mesgs[i];
++    static const FIT_UINT16 sorted_nums[MESGS] = {
++        #define MSG_DEF(n, m) n,
++        #undef MSG_DEF
++    };
++    static const Profile::MESG* mesg_ptrs[MESGS] = {
++        #define MSG_DEF(n, m) &mesgs[m],
++        #undef MSG_DEF
++    };
++
++    // Binary search on sorted message numbers
++    auto it = std::lower_bound(sorted_nums, sorted_nums + MESGS, num);
++    if (it != sorted_nums + MESGS && *it == num) {
++        return mesg_ptrs[it - sorted_nums];
+     }
+-
+     return NULL;
+ }
+ 

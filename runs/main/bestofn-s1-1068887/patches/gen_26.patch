@@ -1,0 +1,24 @@
+--- a/src/fit_field_base.cpp
++++ b/src/fit_field_base.cpp
+@@ -16,6 +16,7 @@
+ #include "fit_field_base.hpp"
+ #include "fit_mesg.hpp"
+ #include "fit_unicode.hpp"
++#include <cstring>
+ 
+ namespace fit
+ {
+@@ -883,9 +884,12 @@
+     }
+ }
+ 
++
+ void FieldBase::SetUINT64ZValue(const FIT_UINT64Z value, const FIT_UINT8 fieldArrayIndex)
+ {
+-    SetUINT64Value(value, fieldArrayIndex);
++    // Directly store the value in the underlying buffer without function call overhead
++    // Assuming FIT_UINT64Z is typedef'd to FIT_UINT64 and storage is already allocated
++    std::memcpy(&data_[fieldArrayIndex * sizeof(FIT_UINT64)], &value, sizeof(FIT_UINT64));
+ }
+ 
+ void FieldBase::SetFLOAT32Value(const FIT_FLOAT32 value, const FIT_UINT8 fieldArrayIndex, const FIT_UINT16 subFieldIndex)

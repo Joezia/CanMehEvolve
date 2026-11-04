@@ -1,0 +1,13 @@
+--- a/src/fit_field_base.cpp
++++ b/src/fit_field_base.cpp
+@@ -26,8 +26,8 @@
+ 
+ FieldBase::FieldBase(const FieldBase &field)
+ {
+-    values = field.values;
+-    stringIndexes = field.stringIndexes;
++    values = std::move(field.values);
++    stringIndexes = std::move(field.stringIndexes);
+ }
+ 
+ FieldBase::~FieldBase()

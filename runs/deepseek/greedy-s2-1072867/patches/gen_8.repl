@@ -1,0 +1,16 @@
+I inlined the `GetField` duplicate scan directly into `AddField` (avoiding a potential non-inlined call and pointer indirection) and pre-reserve a small capacity on the first insertion, eliminating the repeated geometric reallocations/copies that occur while fields are added one-by-one per message.
+
+```cpp
+void Mesg::AddField(const Field& field)
+{
+    const auto num = field.GetNum();
+    for (const Field& f : fields)
+    {
+        if (f.GetNum() == num)
+            return;
+    }
+    if (fields.empty())
+        fields.reserve(16);
+    fields.push_back(field);
+}
+```

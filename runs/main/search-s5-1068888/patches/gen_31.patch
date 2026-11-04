@@ -1,0 +1,166 @@
+--- a/src/fit_decode.cpp
++++ b/src/fit_decode.cpp
+@@ -18,6 +18,8 @@
+ #include "fit_mesg_listener.hpp"
+ #include "fit_developer_data_id_mesg.hpp"
+ #include "fit_developer_field.hpp"
++#include <algorithm>
++#include <cstdint>
+ 
+ 
+ namespace fit
+@@ -407,24 +409,47 @@
+     file.clear(); // workaround libc++ issue
+ }
+ 
++
+ void Decode::UpdateEndianness(FIT_UINT8 type, FIT_UINT8 size)
+ {
+     FIT_UINT8 typeSize = baseTypeSizes[type & FIT_BASE_TYPE_NUM_MASK];
+-    FIT_UINT8 numElements = size / typeSize;
++    if (typeSize <= 1 || (type & FIT_BASE_TYPE_ENDIAN_FLAG) == 0 ||
++        (archs[localMesgIndex] & FIT_ARCH_ENDIAN_MASK) == FIT_ARCH_ENDIAN_LITTLE) {
++        return;
++    }
+ 
+-    if (((type & FIT_BASE_TYPE_ENDIAN_FLAG) != 0) &&
+-        ((archs[localMesgIndex] & FIT_ARCH_ENDIAN_MASK) != FIT_ARCH_ENDIAN_LITTLE))
+-    {
+-        // Swap the bytes for each element.
+-        for (int element = 0; element < numElements; element++)
+-        {
+-            for (int i = 0; i < (typeSize / 2); i++)
+-            {
+-                FIT_UINT8 tmp = fieldData[element * typeSize + i];
+-                fieldData[element * typeSize + i] = fieldData[element * typeSize + typeSize - i - 1];
+-                fieldData[element * typeSize + typeSize - i - 1] = tmp;
++    FIT_UINT8 numElements = size / typeSize;
++    // Process in-place byte-swapping using optimized loops for common sizes
++    switch (typeSize) {
++        case 2:
++            for (FIT_UINT8 i = 0; i < numElements; ++i) {
++                std::swap(fieldData[i * 2], fieldData[i * 2 + 1]);
+             }
+-        }
++            break;
++        case 4:
++            for (FIT_UINT8 i = 0; i < numElements; ++i) {
++                FIT_UINT8* p = &fieldData[i * 4];
++                std::swap(p[0], p[3]);
++                std::swap(p[1], p[2]);
++            }
++            break;
++        case 8:
++            for (FIT_UINT8 i = 0; i < numElements; ++i) {
++                FIT_UINT8* p = &fieldData[i * 8];
++                std::swap(p[0], p[7]);
++                std::swap(p[1], p[6]);
++                std::swap(p[2], p[5]);
++                std::swap(p[3], p[4]);
++            }
++            break;
++        default:
++            for (FIT_UINT8 element = 0; element < numElements; element++) {
++                for (FIT_UINT8 i = 0; i < (typeSize / 2); i++) {
++                    std::swap(fieldData[element * typeSize + i],
++                              fieldData[element * typeSize + typeSize - i - 1]);
++                }
++            }
++            break;
+     }
+ }
+ 
+--- a/src/fit_field.cpp
++++ b/src/fit_field.cpp
+@@ -15,6 +15,9 @@
+ #include "fit_field.hpp"
+ #include "fit_mesg.hpp"
+ #include "fit_unicode.hpp"
++#include <utility>
++#include <cstddef>
++#include <cstdint>
+ 
+ namespace fit
+ {
+@@ -27,9 +30,10 @@
+ {
+ }
+ 
++
+ Field::Field(const Field &field)
+     : FieldBase(field)
+-    , profile(field.profile)
++    , profile(std::move(field.profile))
+     , profileIndex(field.profileIndex)
+     , type(field.type)
+     , isFieldExpanded(field.isFieldExpanded)
+@@ -90,19 +94,19 @@
+     return profile->fields[profileIndex].name;
+ }
+ 
++
+ FIT_UINT8 Field::GetNum(void) const
+ {
+-    if ((profile == NULL) || (profileIndex >= profile->numFields))
+-        return FIT_FIELD_NUM_INVALID;
+-    return profile->fields[profileIndex].num;
++    return (profile && profileIndex < profile->numFields) ? profile->fields[profileIndex].num : FIT_FIELD_NUM_INVALID;
+ }
+ 
++
+ FIT_UINT8 Field::GetType() const
+ {
+-    if ( type != FIT_UINT8_INVALID )
++    if (type != FIT_UINT8_INVALID)
+         return type;
+ 
+-    if ((profile == NULL) || (profileIndex >= profile->numFields))
++    if (profile == nullptr || profileIndex >= profile->numFields)
+         return FIT_UINT8_INVALID;
+ 
+     return profile->fields[profileIndex].type;
+--- a/src/fit_profile.cpp
++++ b/src/fit_profile.cpp
+@@ -11,6 +11,9 @@
+ 
+ 
+ #include "fit_profile.hpp"
++#include <algorithm>
++#include <array>
++#include <cstddef>
+ 
+ namespace fit
+ {
+@@ -3055,15 +3058,28 @@
+    { NULL, "pad", FIT_MESG_NUM_PAD, 0 },
+ };
+ 
++
++
+ const Profile::MESG* Profile::GetMesg(const FIT_UINT16 num)
+ {
+-    for (int i = 0; i < MESGS; i++)
+-    {
+-        if (mesgs[i].num == num)
++    static std::array<const Profile::MESG*, 256> cache{};
++
++    if (num < cache.size()) {
++        if (const Profile::MESG* cached = cache[num]) {
++            return cached;
++        }
++    }
++
++    for (int i = 0; i < MESGS; i++) {
++        if (mesgs[i].num == num) {
++            if (num < cache.size()) {
++                cache[num] = &mesgs[i];
++            }
+             return &mesgs[i];
++        }
+     }
+ 
+-    return NULL;
++    return nullptr;
+ }
+ 
+ const Profile::MESG* Profile::GetMesg(const std::string& name)

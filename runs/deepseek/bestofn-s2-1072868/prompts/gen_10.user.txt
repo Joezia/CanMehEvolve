@@ -1,0 +1,38 @@
+File: src/fit_mesg.cpp
+Function: Mesg::GetActiveSubFieldIndexByFieldIndex (28 lines)
+One full decode of the four files takes about 358.3 ms in the stock build.
+Time of the current version of the whole library relative to stock: 1.000 (below 1.0 is faster). Best measured so far: 1.000.
+
+Current text of the function:
+```cpp
+FIT_UINT16 Mesg::GetActiveSubFieldIndexByFieldIndex(const FIT_UINT16 fieldIndex) const
+{
+    if ((int) fieldIndex >= GetNumFields())
+        return FIT_SUBFIELD_INDEX_MAIN_FIELD;
+
+    for (FIT_UINT16 i = 0; i < fields[fieldIndex].GetNumSubFields(); i++)
+    {
+        const Profile::SUBFIELD* subField = fields[fieldIndex].GetSubField(i);
+
+        if (subField != FIT_NULL)
+        {
+            for (int j = 0; j < (int) subField->numMaps; j++)
+            {
+                const Field* refField = GetField(subField->maps[j].refFieldNum);
+
+                if (refField != FIT_NULL)
+                {
+                    FIT_FLOAT64 refValue = refField->GetFLOAT64Value(0, FIT_SUBFIELD_INDEX_MAIN_FIELD);
+                    refValue += ((refValue >= 0.0) ? (0.5) : (-0.5));
+                    if ((FIT_SINT32)refValue == subField->maps[j].refFieldValue)
+                        return ((FIT_UINT16) i);
+                }
+            }
+        }
+    }
+
+    return FIT_SUBFIELD_INDEX_MAIN_FIELD;
+}
+
+```
+Return the faster replacement now.

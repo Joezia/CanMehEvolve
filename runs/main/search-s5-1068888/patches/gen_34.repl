@@ -1,0 +1,64 @@
+```cpp
+#include <cstring>
+#include <algorithm>
+
+FIT_BOOL FieldBase::Read(const void *data, const FIT_UINT8 size)
+{
+    FIT_UINT8 bytesLeft = size;
+    FIT_UINT8 typeIdx = GetType() & FIT_BASE_TYPE_NUM_MASK;
+    FIT_UINT8 typeSize = baseTypeSizes[typeIdx];
+    const FIT_BYTE* byteData = static_cast<const FIT_BYTE*>(data);
+
+    values.clear();
+    stringIndexes.clear();
+
+    if (GetType() == FIT_BASE_TYPE_STRING)
+    {
+        // Find first non-zero byte to determine if string has data
+        const FIT_BYTE* end = byteData + bytesLeft;
+        const FIT_BYTE* firstNonZero = std::find_if(byteData, end, [](FIT_BYTE b) { return b != 0; });
+        
+        if (firstNonZero == end)
+            return FIT_TRUE; // Empty string, nothing to do
+        
+        stringIndexes.push_back(0);
+        
+        // Process bytes until we've exhausted bytesLeft or found null terminators
+        for (const FIT_BYTE* p = byteData; p < end; ++p)
+        {
+            values.push_back(*p);
+            
+            if (*p == 0 && (p - byteData + 1) < size)
+                stringIndexes.push_back(static_cast<FIT_UINT8>(p - byteData + 1));
+        }
+        
+        // Ensure null termination
+        if (values.empty() || values.back() != 0)
+            values.push_back(0);
+    }
+    else
+    {
+        // Skip all invalid values at the beginning
+        const FIT_BYTE* invalid = baseTypeInvalids[typeIdx];
+        const FIT_BYTE* p = byteData;
+        FIT_UINT8 remaining = bytesLeft;
+        
+        // Process in chunks for efficiency
+        while (remaining >= typeSize)
+        {
+            if (memcmp(p, invalid, typeSize) != 0)
+                break;
+            p += typeSize;
+            remaining -= typeSize;
+        }
+        
+        // If we found valid data, copy everything from first valid position to end
+        if (remaining > 0)
+        {
+            values.insert(values.end(), p, byteData + bytesLeft);
+        }
+    }
+    
+    return FIT_TRUE;
+}
+```

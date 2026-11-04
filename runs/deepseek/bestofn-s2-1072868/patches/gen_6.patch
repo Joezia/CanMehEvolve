@@ -1,0 +1,20 @@
+--- a/src/fit_field_base.cpp
++++ b/src/fit_field_base.cpp
+@@ -72,11 +72,13 @@
+ 
+ FIT_FLOAT64 FieldBase::GetOffset(const FIT_UINT16 subFieldIndex) const
+ {
+-    if (subFieldIndex >= GetNumSubFields())
+-        return GetOffset();
++    if (subFieldIndex < numSubFields)
++    {
++        const SubFieldBase* subfield = subFields[subFieldIndex];
++        return NULL != subfield ? subfield->offset : 0.0;
++    }
+ 
+-    auto subfield = GetSubField(subFieldIndex);
+-    return NULL != subfield ? subfield->offset : 0.0;
++    return offset;
+ }
+ 
+ FIT_BOOL FieldBase::IsSignedInteger(const FIT_UINT16 subFieldIndex) const

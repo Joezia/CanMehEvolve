@@ -1,0 +1,89 @@
+--- a/src/fit_field.cpp
++++ b/src/fit_field.cpp
+@@ -15,6 +15,8 @@
+ #include "fit_field.hpp"
+ #include "fit_mesg.hpp"
+ #include "fit_unicode.hpp"
++#include <utility>
++#include <cstddef>
+ 
+ namespace fit
+ {
+@@ -27,9 +29,10 @@
+ {
+ }
+ 
++
+ Field::Field(const Field &field)
+     : FieldBase(field)
+-    , profile(field.profile)
++    , profile(std::move(field.profile))
+     , profileIndex(field.profileIndex)
+     , type(field.type)
+     , isFieldExpanded(field.isFieldExpanded)
+@@ -97,12 +100,13 @@
+     return profile->fields[profileIndex].num;
+ }
+ 
++
+ FIT_UINT8 Field::GetType() const
+ {
+-    if ( type != FIT_UINT8_INVALID )
++    if (type != FIT_UINT8_INVALID)
+         return type;
+ 
+-    if ((profile == NULL) || (profileIndex >= profile->numFields))
++    if (profile == nullptr || profileIndex >= profile->numFields)
+         return FIT_UINT8_INVALID;
+ 
+     return profile->fields[profileIndex].type;
+--- a/src/fit_profile.cpp
++++ b/src/fit_profile.cpp
+@@ -11,6 +11,10 @@
+ 
+ 
+ #include "fit_profile.hpp"
++#include <algorithm>
++#include <array>
++#include <cstddef>
++#include <cstdint>
+ 
+ namespace fit
+ {
+@@ -3055,15 +3059,31 @@
+    { NULL, "pad", FIT_MESG_NUM_PAD, 0 },
+ };
+ 
++
++
++
+ const Profile::MESG* Profile::GetMesg(const FIT_UINT16 num)
+ {
+-    for (int i = 0; i < MESGS; i++)
+-    {
+-        if (mesgs[i].num == num)
+-            return &mesgs[i];
++    static std::array<const Profile::MESG*, 256> cache{};
++
++    if (num < cache.size()) {
++        if (const Profile::MESG* cached = cache[num]) {
++            return cached;
++        }
++    }
++
++    // Use pointer arithmetic instead of array indexing to avoid bounds checks
++    const Profile::MESG* end = mesgs + MESGS;
++    for (const Profile::MESG* p = mesgs; p < end; ++p) {
++        if (p->num == num) {
++            if (num < cache.size()) {
++                cache[num] = p;
++            }
++            return p;
++        }
+     }
+ 
+-    return NULL;
++    return nullptr;
+ }
+ 
+ const Profile::MESG* Profile::GetMesg(const std::string& name)

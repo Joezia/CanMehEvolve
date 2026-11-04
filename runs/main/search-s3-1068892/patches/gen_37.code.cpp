@@ -1,0 +1,8 @@
+
+Mesg::Mesg(const Mesg &mesg)
+    : profile(mesg.profile)
+    , localNum(mesg.localNum)
+    , fields(std::begin(mesg.fields), std::end(mesg.fields))
+    , devFields(std::begin(mesg.devFields), std::end(mesg.devFields))
+{
+}

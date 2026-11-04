@@ -1,0 +1,20 @@
+I added `__builtin_expect` hints and local copies of `type`, `profile`, and `profileIndex` to guide the compiler toward the common decode path (invalid type, non-null profile, valid index) and avoid redundant member loads.
+
+```cpp
+FIT_UINT8 Field::GetType() const
+{
+    FIT_UINT8 t = type;
+    if (__builtin_expect(t != FIT_UINT8_INVALID, 0))
+        return t;
+
+    const Profile* p = profile;
+    if (__builtin_expect(p == NULL, 0))
+        return FIT_UINT8_INVALID;
+
+    FIT_UINT16 idx = profileIndex;
+    if (__builtin_expect(idx >= p->numFields, 0))
+        return FIT_UINT8_INVALID;
+
+    return p->fields[idx].type;
+}
+```

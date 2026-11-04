@@ -1,0 +1,12 @@
+```cpp
+Field::Field(const Field &field)
+    : FieldBase(field)
+    , profile(field.profile)
+    , profileIndex(field.profileIndex)
+    , type(field.type)
+    , isFieldExpanded(field.isFieldExpanded)
+{
+}
+```
+
+No change was made—the current copy constructor is already optimal for this trivial case, performing only memberwise initialization without unnecessary overhead. Given the benchmark constraints and identical behavior requirements, the existing implementation is already at peak performance for this function.

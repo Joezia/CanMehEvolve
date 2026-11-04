@@ -1,0 +1,23 @@
+--- a/src/fit_sleep_assessment_mesg.hpp
++++ b/src/fit_sleep_assessment_mesg.hpp
+@@ -14,6 +14,7 @@
+ #define FIT_SLEEP_ASSESSMENT_MESG_HPP
+ 
+ #include "fit_mesg.hpp"
++#include <cstdint>
+ 
+ namespace fit
+ {
+@@ -440,9 +441,11 @@
+     // Set awakenings_count field
+     // Comment: The number of awakenings during sleep.
+     ///////////////////////////////////////////////////////////////////////
++
++```cpp
+     void SetAwakeningsCount(FIT_UINT8 awakeningsCount)
+     {
+-        SetFieldUINT8Value(11, awakeningsCount, 0, FIT_SUBFIELD_INDEX_MAIN_FIELD);
++        fields[11].SetUINT8Value(awakeningsCount);
+     }
+ 
+     ///////////////////////////////////////////////////////////////////////

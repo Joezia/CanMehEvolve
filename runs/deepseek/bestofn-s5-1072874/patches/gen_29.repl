@@ -1,0 +1,18 @@
+Replaced the linear scan with a one-time-built 65536-entry pointer table keyed by message number, preserving the first match for duplicates and NULL for misses. This makes each lookup O(1) instead of O(MESGS).
+
+```cpp
+const Profile::MESG* Profile::GetMesg(const FIT_UINT16 num)
+{
+    static const MESG* table[65536] = {};
+    static const bool initialized = []() {
+        for (int i = 0; i < MESGS; ++i)
+        {
+            if (table[mesgs[i].num] == NULL)
+                table[mesgs[i].num] = &mesgs[i];
+        }
+        return true;
+    }();
+    (void)initialized;
+    return table[num];
+}
+```

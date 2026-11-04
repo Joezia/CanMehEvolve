@@ -1,0 +1,11 @@
+This function is already minimal; the only tweak is to fold the bounds check into a single branchless conditional expression using `data()`/`size()` locals, which lets the compiler emit one compare plus a conditional move instead of a branch-and-return pair.
+
+```cpp
+FieldDefinition* MesgDefinition::GetFieldByIndex(const FIT_UINT16 index)
+{
+    FieldDefinition* const base = fields.data();
+    const size_t count = fields.size();
+
+    return (static_cast<size_t>(index) < count) ? (base + index) : FIT_NULL;
+}
+```

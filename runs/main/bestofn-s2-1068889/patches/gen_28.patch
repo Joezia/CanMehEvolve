@@ -1,0 +1,27 @@
+--- a/src/fit_field.cpp
++++ b/src/fit_field.cpp
+@@ -15,6 +15,7 @@
+ #include "fit_field.hpp"
+ #include "fit_mesg.hpp"
+ #include "fit_unicode.hpp"
++#include <cstddef>
+ 
+ namespace fit
+ {
+@@ -90,11 +91,13 @@
+     return profile->fields[profileIndex].name;
+ }
+ 
++
+ FIT_UINT8 Field::GetNum(void) const
+ {
+-    if ((profile == NULL) || (profileIndex >= profile->numFields))
+-        return FIT_FIELD_NUM_INVALID;
+-    return profile->fields[profileIndex].num;
++    // Early exit for NULL profile avoids bounds check overhead
++    if (profile == NULL) return FIT_FIELD_NUM_INVALID;
++    // Inline bounds check with direct access after validation
++    return (profileIndex < profile->numFields) ? profile->fields[profileIndex].num : FIT_FIELD_NUM_INVALID;
+ }
+ 
+ FIT_UINT8 Field::GetType() const

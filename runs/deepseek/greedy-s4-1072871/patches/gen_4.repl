@@ -1,0 +1,23 @@
+Replaced the second profile lookup with an inline scan of the already-fetched message descriptor, eliminating the duplicate `GetMesg` call inside `GetFieldIndex`. The constructor now performs one profile lookup and one linear field scan, preserving the original first-match semantics.
+
+```cpp
+Field::Field(const FIT_UINT16 mesgNum, const FIT_UINT8 fieldNum)
+    : FieldBase()
+    , profile(Profile::GetMesg(mesgNum))
+    , profileIndex(FIT_UINT8_INVALID)
+    , type(FIT_UINT8_INVALID)
+    , isFieldExpanded(FIT_FALSE)
+{
+    if (profile)
+    {
+        for (FIT_UINT8 i = 0; i < profile->numFields; ++i)
+        {
+            if (profile->fields[i].num == fieldNum)
+            {
+                profileIndex = i;
+                break;
+            }
+        }
+    }
+}
+```

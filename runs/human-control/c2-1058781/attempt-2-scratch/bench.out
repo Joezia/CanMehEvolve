@@ -1,0 +1,29 @@
+-------------------------------------------------------------------------------------
+Benchmark                           Time             CPU   Iterations UserCounters...
+-------------------------------------------------------------------------------------
+reference/real_time         363911146 ns    363901311 ns            1 bytes_per_second=2.37692Mi/s
+reference/real_time         362614414 ns    362617550 ns            1 bytes_per_second=2.38542Mi/s
+reference/real_time         361546078 ns    361533806 ns            1 bytes_per_second=2.39247Mi/s
+reference/real_time         362384613 ns    362387790 ns            1 bytes_per_second=2.38694Mi/s
+reference/real_time         362865734 ns    362848306 ns            1 bytes_per_second=2.38377Mi/s
+reference/real_time         363167218 ns    363162912 ns            1 bytes_per_second=2.38179Mi/s
+reference/real_time         362692771 ns    362672103 ns            1 bytes_per_second=2.38491Mi/s
+reference/real_time         362397123 ns    362395248 ns            1 bytes_per_second=2.38685Mi/s
+reference/real_time         362449021 ns    362439612 ns            1 bytes_per_second=2.38651Mi/s
+reference/real_time_mean    362669791 ns    362662071 ns            9 bytes_per_second=2.38507Mi/s
+reference/real_time_median  362614414 ns    362617550 ns            9 bytes_per_second=2.38542Mi/s
+reference/real_time_stddev     642021 ns       641504 ns            9 bytes_per_second=4.32151Ki/s
+reference/real_time_cv           0.18 %          0.18 %             9 bytes_per_second=0.18%
+candidate/real_time         335123824 ns    335126670 ns            1 bytes_per_second=2.5811Mi/s
+candidate/real_time         335338687 ns    335341636 ns            1 bytes_per_second=2.57945Mi/s
+candidate/real_time         336491900 ns    336488463 ns            1 bytes_per_second=2.57061Mi/s
+candidate/real_time         336124061 ns    336112109 ns            1 bytes_per_second=2.57342Mi/s
+candidate/real_time         336213219 ns    336210073 ns            1 bytes_per_second=2.57274Mi/s
+candidate/real_time         334937690 ns    334940597 ns            1 bytes_per_second=2.58254Mi/s
+candidate/real_time         334750488 ns    334753288 ns            1 bytes_per_second=2.58398Mi/s
+candidate/real_time         335789860 ns    335792702 ns            1 bytes_per_second=2.57598Mi/s
+candidate/real_time         336220072 ns    336216316 ns            1 bytes_per_second=2.57269Mi/s
+candidate/real_time_mean    335665533 ns    335664650 ns            9 bytes_per_second=2.57695Mi/s
+candidate/real_time_median  335789860 ns    335792702 ns            9 bytes_per_second=2.57598Mi/s
+candidate/real_time_stddev     640644 ns       636956 ns            9 bytes_per_second=5.03795Ki/s
+candidate/real_time_cv           0.19 %          0.19 %             9 bytes_per_second=0.19%

@@ -1,0 +1,5 @@
+
+    void SetTimestamp(FIT_DATE_TIME timestamp)
+    {
+        fields[253].SetUINT32Value(timestamp, 0, FIT_SUBFIELD_INDEX_MAIN_FIELD);
+    }

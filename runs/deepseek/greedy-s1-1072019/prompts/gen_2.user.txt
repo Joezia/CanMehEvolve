@@ -1,0 +1,13 @@
+File: src/fit_ant_rx_mesg.hpp
+Function: AntRxMesg (3 lines)
+One full decode of the four files takes about 358.5 ms in the stock build.
+Time of the current version of the whole library relative to stock: 0.985 (below 1.0 is faster). Best measured so far: 0.985.
+
+Current text of the function:
+```cpp
+    AntRxMesg(const Mesg &mesg) : Mesg(mesg)
+    {
+    }
+
+```
+Return the faster replacement now.

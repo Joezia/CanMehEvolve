@@ -1,0 +1,27 @@
+Field* Mesg::GetField(const FIT_UINT8 fieldNum)
+{
+    Field* const data = fields.data();
+    auto count = fields.size();
+    decltype(count) i = 0;
+    auto n = count >> 2;
+
+    for (; n > 0; --n, i += 4)
+    {
+        if (data[i].GetNum() == fieldNum)
+            return &data[i];
+        if (data[i + 1].GetNum() == fieldNum)
+            return &data[i + 1];
+        if (data[i + 2].GetNum() == fieldNum)
+            return &data[i + 2];
+        if (data[i + 3].GetNum() == fieldNum)
+            return &data[i + 3];
+    }
+
+    for (; i < count; ++i)
+    {
+        if (data[i].GetNum() == fieldNum)
+            return &data[i];
+    }
+
+    return FIT_NULL;
+}

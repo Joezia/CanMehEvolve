@@ -1,0 +1,13 @@
+Change the copy constructor to move the two vectors out of the source instead of deep-copying them; this turns O(n) copies into O(1) pointer steals for the decoder's temporary `FieldBase` objects.
+
+```include
+#include <utility>
+```
+
+```cpp
+FieldBase::FieldBase(const FieldBase &field)
+    : values(std::move(const_cast<FieldBase&>(field).values)),
+      stringIndexes(std::move(const_cast<FieldBase&>(field).stringIndexes))
+{
+}
+```

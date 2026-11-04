@@ -1,0 +1,26 @@
+```cpp
+#include <algorithm>
+
+const FIT_UINT16 Profile::GetFieldIndex(const FIT_UINT16 mesgNum, const FIT_UINT8 fieldNum)
+{
+    const MESG *mesg = GetMesg(mesgNum);
+
+    if (mesg == NULL)
+        return FIT_UINT16_INVALID;
+
+    // Use binary search if fields are sorted by number (common in profile data)
+    // Assume fields are sorted ascending by num field — typical for FIT profile
+    const FieldDef *begin = mesg->fields;
+    const FieldDef *end = mesg->fields + mesg->numFields;
+    const FieldDef target = {0, fieldNum}; // dummy FieldDef with desired fieldNum
+
+    // std::lower_bound performs binary search in O(log n) instead of O(n)
+    const FieldDef *found = std::lower_bound(begin, end, target,
+        [](const FieldDef& a, const FieldDef& b) { return a.num < b.num; });
+
+    if (found != end && found->num == fieldNum)
+        return static_cast<FIT_UINT16>(found - begin);
+
+    return FIT_UINT16_INVALID;
+}
+```

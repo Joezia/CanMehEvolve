@@ -1,0 +1,9 @@
+I removed the redundant `GetNumSubFields()` guard and the duplicate bounds check, letting `GetSubField`'s own NULL return select the fallback, which saves a call and a comparison on the hot path.
+
+```cpp
+FIT_FLOAT64 FieldBase::GetScale(const FIT_UINT16 subFieldIndex) const
+{
+    const FIT_SUBFIELD_INFO *subfield = GetSubField(subFieldIndex);
+    return (NULL != subfield) ? subfield->scale : GetScale();
+}
+```

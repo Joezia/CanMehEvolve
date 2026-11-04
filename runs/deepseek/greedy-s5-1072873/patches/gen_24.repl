@@ -1,0 +1,10 @@
+Marked the invalid null/out-of-range case as unlikely so the compiler keeps the common valid return on the fall-through path. This preserves identical behavior while improving hot-path branch layout.
+
+```cpp
+FIT_UINT16 Field::GetNumSubFields(void) const
+{
+    if (__builtin_expect((profile == NULL) || (profileIndex >= profile->numFields), 0))
+        return 0;
+    return profile->fields[profileIndex].numSubFields;
+}
+```

@@ -1,0 +1,15 @@
+I replaced the out-of-line generic `GetFieldUINT32ZValue` wrapper with a direct `GetField(23)` lookup and an inlined `Field::GetValue` call, eliminating one function call and the redundant subfield-dispatch machinery in the hot path.
+
+```cpp
+    FIT_CONNECTIVITY_CAPABILITIES GetConnectivitySupported(void) const
+    {
+        const Field* field = GetField(23);
+        if (field != FIT_NULL)
+        {
+            FIT_UINT32 value = 0;
+            field->GetValue(value, 0, FIT_SUBFIELD_INDEX_MAIN_FIELD);
+            return value;
+        }
+        return 0;
+    }
+```

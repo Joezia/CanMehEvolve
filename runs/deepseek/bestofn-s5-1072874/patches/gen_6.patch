@@ -1,0 +1,60 @@
+--- a/src/fit_profile.cpp
++++ b/src/fit_profile.cpp
+@@ -3079,18 +3079,50 @@
+ 
+ const FIT_UINT16 Profile::GetFieldIndex(const FIT_UINT16 mesgNum, const FIT_UINT8 fieldNum)
+ {
+-    const MESG *mesg = GetMesg(mesgNum);
++    static FIT_UINT32 mesgKeys[64] = {0};
++    static FIT_UINT16 fieldIndices[64][256];
++    static FIT_UINT32 lastKey = 0;
++    static FIT_UINT16 *lastMap = NULL;
+ 
+-    if (mesg == NULL)
+-        return FIT_UINT16_INVALID;
++    const FIT_UINT32 key = static_cast<FIT_UINT32>(mesgNum) + 1;
+ 
+-    for (FIT_UINT16 i = 0; i < mesg->numFields; i++)
++    if (lastKey == key)
++        return lastMap[fieldNum];
++
++    const FIT_UINT32 slot = (static_cast<FIT_UINT32>(mesgNum) * 2654435761u) >> 26;
++    FIT_UINT16 *map;
++
++    if (mesgKeys[slot] == key)
++    {
++        map = fieldIndices[slot];
++    }
++    else
+     {
+-        if (mesg->fields[i].num == fieldNum)
+-            return i;
++        map = fieldIndices[slot];
++
++        for (FIT_UINT16 i = 0; i < 256; i++)
++            map[i] = FIT_UINT16_INVALID;
++
++        const MESG *mesg = GetMesg(mesgNum);
++        if (mesg != NULL)
++        {
++            const FIELD *fields = mesg->fields;
++            const FIT_UINT16 numFields = mesg->numFields;
++
++            for (FIT_UINT16 i = 0; i < numFields; i++)
++            {
++                const FIT_UINT8 num = fields[i].num;
++                if (map[num] == FIT_UINT16_INVALID)
++                    map[num] = i;
++            }
++        }
++
++        mesgKeys[slot] = key;
+     }
+ 
+-    return FIT_UINT16_INVALID;
++    lastKey = key;
++    lastMap = map;
++    return map[fieldNum];
+ }
+ 
+ const FIT_UINT16 Profile::GetFieldIndex(const std::string& mesgName, const std::string& fieldName)

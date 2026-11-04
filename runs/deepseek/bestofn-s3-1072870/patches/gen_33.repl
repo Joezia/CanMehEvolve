@@ -1,0 +1,7 @@
+The destructor is already an empty out-of-line definition, so there is no work to remove; I keep the body empty (and mark it `noexcept`-compatible via `= default`-equivalent empty body) to avoid any behavioral change while ensuring the compiler emits the minimal trivial body.
+
+```cpp
+FieldBase::~FieldBase()
+{
+}
+```

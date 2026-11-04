@@ -1,0 +1,136 @@
+--- a/src/fit_field.cpp
++++ b/src/fit_field.cpp
+@@ -102,10 +102,11 @@
+     if ( type != FIT_UINT8_INVALID )
+         return type;
+ 
+-    if ((profile == NULL) || (profileIndex >= profile->numFields))
+-        return FIT_UINT8_INVALID;
++    const Profile* const p = profile;
++    if ( p != NULL && profileIndex < p->numFields )
++        return p->fields[profileIndex].type;
+ 
+-    return profile->fields[profileIndex].type;
++    return type;
+ }
+ 
+ std::string Field::GetUnits() const
+--- a/src/fit_field_base.cpp
++++ b/src/fit_field_base.cpp
+@@ -16,6 +16,7 @@
+ #include "fit_field_base.hpp"
+ #include "fit_mesg.hpp"
+ #include "fit_unicode.hpp"
++#include <cstring>
+ 
+ namespace fit
+ {
+@@ -25,9 +26,8 @@
+ }
+ 
+ FieldBase::FieldBase(const FieldBase &field)
++    : values(field.values), stringIndexes(field.stringIndexes)
+ {
+-    values = field.values;
+-    stringIndexes = field.stringIndexes;
+ }
+ 
+ FieldBase::~FieldBase()
+@@ -1131,20 +1131,40 @@
+ template <typename T>
+ T FieldBase::GetValue(const FIT_UINT8 fieldArrayIndex) const
+ {
+-    FIT_UINT8 size = baseTypeSizes[GetType() & FIT_BASE_TYPE_NUM_MASK];
+-    if (fieldArrayIndex >= (FIT_UINT8)values.size())
++    const FIT_UINT8 type = GetType() & FIT_BASE_TYPE_NUM_MASK;
++
++    if (fieldArrayIndex >= static_cast<FIT_UINT8>(values.size()))
+     {
+-        return *reinterpret_cast<const T*>(baseTypeInvalids[GetType() & FIT_BASE_TYPE_NUM_MASK]);
++        return *reinterpret_cast<const T*>(baseTypeInvalids[type]);
+     }
+ 
+-    T rv = 0;
++    const FIT_UINT8 size = baseTypeSizes[type];
++    const FIT_UINT8* p = values.data() + (fieldArrayIndex * size);
++    FIT_UINT64 rv = 0;
+ 
+-    for (int i = 0; i < size; i++)
++    switch (size)
+     {
+-        rv |= static_cast<T>(values[(fieldArrayIndex * size) + i]) << (i * 8);
++    case 1:
++        rv = p[0];
++        break;
++    case 2:
++        std::memcpy(&rv, p, 2);
++        break;
++    case 4:
++        std::memcpy(&rv, p, 4);
++        break;
++    case 8:
++        std::memcpy(&rv, p, 8);
++        break;
++    default:
++        for (int i = 0; i < size; ++i)
++        {
++            rv |= static_cast<FIT_UINT64>(p[i]) << (i * 8);
++        }
++        break;
+     }
+ 
+-    return rv;
++    return static_cast<T>(rv);
+ }
+ 
+ 
+--- a/src/fit_mesg.cpp
++++ b/src/fit_mesg.cpp
+@@ -174,10 +174,15 @@
+ 
+ void Mesg::AddField(const Field& field)
+ {
+-    Field *existingField = GetField(field.GetNum());
+-
+-    if (existingField == FIT_NULL)
+-        fields.push_back(field);
++    const auto num = field.GetNum();
++    for (const Field& f : fields)
++    {
++        if (f.GetNum() == num)
++            return;
++    }
++    if (fields.empty())
++        fields.reserve(16);
++    fields.push_back(field);
+ }
+ 
+ Field* Mesg::AddField(const FIT_UINT8 fieldNum)
+--- a/src/fit_profile.cpp
++++ b/src/fit_profile.cpp
+@@ -3057,13 +3057,21 @@
+ 
+ const Profile::MESG* Profile::GetMesg(const FIT_UINT16 num)
+ {
+-    for (int i = 0; i < MESGS; i++)
++    static const Profile::MESG* lookup[65536] = {};
++    static bool initialized = false;
++
++    if (!initialized)
+     {
+-        if (mesgs[i].num == num)
+-            return &mesgs[i];
++        for (int i = 0; i < MESGS; i++)
++        {
++            const FIT_UINT16 n = mesgs[i].num;
++            if (lookup[n] == NULL)
++                lookup[n] = &mesgs[i];
++        }
++        initialized = true;
+     }
+ 
+-    return NULL;
++    return lookup[num];
+ }
+ 
+ const Profile::MESG* Profile::GetMesg(const std::string& name)

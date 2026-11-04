@@ -1,0 +1,8 @@
+
+FIT_BOOL Mesg::HasField(const int fieldNum) const
+{
+    auto it = std::find_if(fields.begin(), fields.end(), [fieldNum](const Field& f) {
+        return f.GetNum() == fieldNum;
+    });
+    return (it != fields.end()) ? FIT_TRUE : FIT_FALSE;
+}

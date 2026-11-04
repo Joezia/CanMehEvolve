@@ -1,0 +1,15 @@
+
+FIT_UINT8 FieldBase::GetNumValues(void) const
+{
+    if (!IsValid())
+        return 0;
+
+    const FIT_BASE_TYPE type = GetType();
+    if (type != FIT_BASE_TYPE_STRING)
+    {
+        const FIT_UINT8 baseSize = baseTypeSizes[type & FIT_BASE_TYPE_NUM_MASK];
+        return (FIT_UINT8)(values.size() / baseSize);
+    }
+
+    return (FIT_UINT8)stringIndexes.size();
+}

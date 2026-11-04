@@ -1,0 +1,14 @@
+File: src/fit_session_mesg.hpp
+Function: SetTimestamp (4 lines)
+One full decode of the four files takes about 479.0 ms in the stock build.
+Time of the current version of the whole library relative to stock: 1.000 (below 1.0 is faster). Best measured so far: 1.000.
+
+Current text of the function:
+```cpp
+    void SetTimestamp(FIT_DATE_TIME timestamp)
+    {
+        SetFieldUINT32Value(253, timestamp, 0, FIT_SUBFIELD_INDEX_MAIN_FIELD);
+    }
+
+```
+Return the faster replacement now.

@@ -1,0 +1,28 @@
+
+FIT_UINT16 Mesg::GetActiveSubFieldIndexByFieldIndex(const FIT_UINT16 fieldIndex) const
+{
+    if (fieldIndex >= GetNumFields())
+        return FIT_SUBFIELD_INDEX_MAIN_FIELD;
+
+    const Field& mainField = fields[fieldIndex];
+    const FIT_UINT16 numSubFields = mainField.GetNumSubFields();
+
+    for (FIT_UINT16 i = 0; i < numSubFields; i++)
+    {
+        const Profile::SUBFIELD* subField = mainField.GetSubField(i);
+        if (subField == FIT_NULL) continue;
+
+        for (FIT_UINT16 j = 0; j < subField->numMaps; j++)
+        {
+            const Field* refField = GetField(subField->maps[j].refFieldNum);
+            if (refField == FIT_NULL) continue;
+
+            FIT_FLOAT64 refValue = refField->GetFLOAT64Value(0, FIT_SUBFIELD_INDEX_MAIN_FIELD);
+            // Faster rounding to nearest integer using std::lround instead of manual add+cast
+            if (std::lround(refValue) == subField->maps[j].refFieldValue)
+                return i;
+        }
+    }
+
+    return FIT_SUBFIELD_INDEX_MAIN_FIELD;
+}

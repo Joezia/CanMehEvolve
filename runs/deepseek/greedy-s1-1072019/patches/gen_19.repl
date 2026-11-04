@@ -1,0 +1,13 @@
+I load the profile pointer once and add GCC branch hints so the common valid path stays straight-line. This reduces redundant loads and improves branch layout without changing behavior.
+
+```cpp
+FIT_UINT8 Field::GetNum(void) const
+{
+    auto p = profile;
+    if (__builtin_expect(p == NULL, 0))
+        return FIT_FIELD_NUM_INVALID;
+    if (__builtin_expect(profileIndex < p->numFields, 1))
+        return p->fields[profileIndex].num;
+    return FIT_FIELD_NUM_INVALID;
+}
+```

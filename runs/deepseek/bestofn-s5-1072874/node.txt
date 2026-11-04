@@ -1,0 +1,17 @@
+host=xcnd6
+job=1072874
+nodelist=xcnd6
+start=2026-11-04T15:17:11+08:00
+cxx=c++ (Ubuntu 13.3.0-6ubuntu2~24.04.1) 13.3.0
+commit=0bce2476eee226fd5dc28cf093a57c8ae0d94c1b
+mode=bestofn seed=5 gens=40 deadline=9300
+model=deepseek-v4.1-flash expect=deepseek-v4.1-flash-1017 max_tokens=32768 timeout=600
+search_cpp_sha256=67935a2f31355932a25f305e6e46fcb78d76105dcb99526d9fe80d42e2eb54ea
+binary_sha256=5fa92919f823c4eff33d422d18a9eb37fc12854ecc2da787c6e1071b83f8bfb2
+TimeLimit=03:00:00
+StartTime=2026-11-04T15:17:11
+Partition=normal
+NodeList=xcnd6
+Features=xcnc|xcnd
+search_exit=0
+end=2026-11-04T17:48:41+08:00

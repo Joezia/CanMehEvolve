@@ -1,0 +1,10 @@
+The function is already minimal, so the only gain is steering the compiler's branch layout: I combined the two guards into a single unlikely-hinted branch so the common valid path stays fall-through and the invalid path is moved out of line.
+
+```cpp
+FIT_UINT8 Field::GetNum(void) const
+{
+    if (__builtin_expect((profile == NULL) || (profileIndex >= profile->numFields), 0))
+        return FIT_FIELD_NUM_INVALID;
+    return profile->fields[profileIndex].num;
+}
+```

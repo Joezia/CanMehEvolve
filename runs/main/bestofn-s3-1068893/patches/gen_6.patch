@@ -1,0 +1,20 @@
+--- a/src/fit_mesg_broadcaster.cpp
++++ b/src/fit_mesg_broadcaster.cpp
+@@ -1530,11 +1530,14 @@
+    hrvValueMesgListeners.push_back(&hrvValueMesgListener);
+ }
+ 
++
+ void MesgBroadcaster::RemoveListener(HrvValueMesgListener& hrvValueMesgListener)
+ {
+-    std::vector<HrvValueMesgListener *>::iterator it = std::find(hrvValueMesgListeners.begin(), hrvValueMesgListeners.end(), &hrvValueMesgListener);
+-    if (hrvValueMesgListeners.end() != it)
+-    hrvValueMesgListeners.erase(it);
++    auto it = std::find(hrvValueMesgListeners.begin(), hrvValueMesgListeners.end(), &hrvValueMesgListener);
++    if (it != hrvValueMesgListeners.end()) {
++        *it = hrvValueMesgListeners.back();
++        hrvValueMesgListeners.pop_back();
++    }
+ }
+ 
+ 

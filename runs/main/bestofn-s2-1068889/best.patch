@@ -1,0 +1,15 @@
+--- a/src/fit_field_base.cpp
++++ b/src/fit_field_base.cpp
+@@ -24,11 +24,7 @@
+ {
+ }
+ 
+-FieldBase::FieldBase(const FieldBase &field)
+-{
+-    values = field.values;
+-    stringIndexes = field.stringIndexes;
+-}
++FieldBase::FieldBase(const FieldBase &field) : values(field.values), stringIndexes(field.stringIndexes) {}
+ 
+ FieldBase::~FieldBase()
+ {

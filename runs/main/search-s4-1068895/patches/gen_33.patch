@@ -1,0 +1,126 @@
+--- a/src/fit_field.cpp
++++ b/src/fit_field.cpp
+@@ -15,6 +15,8 @@
+ #include "fit_field.hpp"
+ #include "fit_mesg.hpp"
+ #include "fit_unicode.hpp"
++#include <cstdint>
++#include <cstddef>
+ 
+ namespace fit
+ {
+@@ -97,12 +99,13 @@
+     return profile->fields[profileIndex].num;
+ }
+ 
++
+ FIT_UINT8 Field::GetType() const
+ {
+-    if ( type != FIT_UINT8_INVALID )
++    if (type != FIT_UINT8_INVALID)
+         return type;
+ 
+-    if ((profile == NULL) || (profileIndex >= profile->numFields))
++    if (!profile || profileIndex >= profile->numFields)
+         return FIT_UINT8_INVALID;
+ 
+     return profile->fields[profileIndex].type;
+@@ -129,11 +132,12 @@
+     return profile->fields[profileIndex].offset;
+ }
+ 
++
+ FIT_UINT16 Field::GetNumComponents(void) const
+ {
+-    if ((profile == NULL) || (profileIndex >= profile->numFields))
+-        return 0;
+-    return profile->fields[profileIndex].numComponents;
++    return (profile && profileIndex < profile->numFields)
++        ? profile->fields[profileIndex].numComponents
++        : 0;
+ }
+ 
+ FIT_UINT16 Field::GetNumSubFields(void) const
+--- a/src/fit_field_base.cpp
++++ b/src/fit_field_base.cpp
+@@ -16,6 +16,8 @@
+ #include "fit_field_base.hpp"
+ #include "fit_mesg.hpp"
+ #include "fit_unicode.hpp"
++#include <cstring>
++#include <cstdint>
+ 
+ namespace fit
+ {
+@@ -26,8 +28,8 @@
+ 
+ FieldBase::FieldBase(const FieldBase &field)
+ {
+-    values = field.values;
+-    stringIndexes = field.stringIndexes;
++    values = std::move(field.values);
++    stringIndexes = std::move(field.stringIndexes);
+ }
+ 
+ FieldBase::~FieldBase()
+@@ -1128,22 +1130,21 @@
+     return (value > 0.0) ? floor(value + 0.5) : ceil(value - 0.5);
+ }
+ 
++
+ template <typename T>
+ T FieldBase::GetValue(const FIT_UINT8 fieldArrayIndex) const
+ {
+-    FIT_UINT8 size = baseTypeSizes[GetType() & FIT_BASE_TYPE_NUM_MASK];
++    FIT_UINT8 type = GetType() & FIT_BASE_TYPE_NUM_MASK;
++    FIT_UINT8 size = baseTypeSizes[type];
++    
+     if (fieldArrayIndex >= (FIT_UINT8)values.size())
+     {
+-        return *reinterpret_cast<const T*>(baseTypeInvalids[GetType() & FIT_BASE_TYPE_NUM_MASK]);
++        return *reinterpret_cast<const T*>(baseTypeInvalids[type]);
+     }
+ 
++    const FIT_UINT8* data = &values[(fieldArrayIndex * size)];
+     T rv = 0;
+-
+-    for (int i = 0; i < size; i++)
+-    {
+-        rv |= static_cast<T>(values[(fieldArrayIndex * size) + i]) << (i * 8);
+-    }
+-
++    std::memcpy(&rv, data, size);
+     return rv;
+ }
+ 
+--- a/src/fit_profile.cpp
++++ b/src/fit_profile.cpp
+@@ -11,6 +11,8 @@
+ 
+ 
+ #include "fit_profile.hpp"
++#include <algorithm>
++#include <iterator>
+ 
+ namespace fit
+ {
+@@ -3055,15 +3057,12 @@
+    { NULL, "pad", FIT_MESG_NUM_PAD, 0 },
+ };
+ 
++
+ const Profile::MESG* Profile::GetMesg(const FIT_UINT16 num)
+ {
+-    for (int i = 0; i < MESGS; i++)
+-    {
+-        if (mesgs[i].num == num)
+-            return &mesgs[i];
+-    }
+-
+-    return NULL;
++    const auto* end = mesgs + MESGS;
++    const auto* it = std::find_if(mesgs, end, [num](const Profile::MESG& m) { return m.num == num; });
++    return (it != end) ? it : NULL;
+ }
+ 
+ const Profile::MESG* Profile::GetMesg(const std::string& name)

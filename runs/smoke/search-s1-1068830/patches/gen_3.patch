@@ -1,0 +1,38 @@
+--- a/src/fit_session_mesg.hpp
++++ b/src/fit_session_mesg.hpp
+@@ -15,6 +15,7 @@
+ 
+ #include "fit_mesg.hpp"
+ #include "fit_mesg_with_event.hpp"
++#include <cstdint>
+ 
+ namespace fit
+ {
+@@ -254,9 +255,10 @@
+     // Set timestamp field
+     // Units: s
+     ///////////////////////////////////////////////////////////////////////
++
+     void SetTimestamp(FIT_DATE_TIME timestamp)
+     {
+-        SetFieldUINT32Value(253, timestamp, 0, FIT_SUBFIELD_INDEX_MAIN_FIELD);
++        SetFieldUINT32Value(253, static_cast<uint32_t>(timestamp), 0, FIT_SUBFIELD_INDEX_MAIN_FIELD);
+     }
+ 
+     ///////////////////////////////////////////////////////////////////////
+--- a/src/fit_zones_target_mesg.hpp
++++ b/src/fit_zones_target_mesg.hpp
+@@ -140,12 +140,7 @@
+     FIT_BOOL IsHrCalcTypeValid() const
+     {
+         const Field* field = GetField(5);
+-        if( FIT_NULL == field )
+-        {
+-            return FIT_FALSE;
+-        }
+-
+-        return field->IsValueValid();
++        return (field != FIT_NULL) && field->IsValueValid();
+     }
+ 
+     ///////////////////////////////////////////////////////////////////////

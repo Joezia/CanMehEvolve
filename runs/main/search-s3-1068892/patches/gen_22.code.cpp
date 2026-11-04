@@ -1,0 +1,41 @@
+
+const Profile::MESG* Profile::GetMesg(const FIT_UINT16 num)
+{
+    #define UNROLL_CHECK(i) if (mesgs[i].num == num) return &mesgs[i];
+    #if MESGS <= 8
+        UNROLL_CHECK(0) if (__builtin_expect(mesgs[0].num == num, 0)) {}
+        UNROLL_CHECK(1) if (__builtin_expect(mesgs[1].num == num, 0)) {}
+        UNROLL_CHECK(2) if (__builtin_expect(mesgs[2].num == num, 0)) {}
+        UNROLL_CHECK(3) if (__builtin_expect(mesgs[3].num == num, 0)) {}
+        UNROLL_CHECK(4) if (__builtin_expect(mesgs[4].num == num, 0)) {}
+        UNROLL_CHECK(5) if (__builtin_expect(mesgs[5].num == num, 0)) {}
+        UNROLL_CHECK(6) if (__builtin_expect(mesgs[6].num == num, 0)) {}
+        UNROLL_CHECK(7) if (__builtin_expect(mesgs[7].num == num, 0)) {}
+    #elif MESGS <= 16
+        UNROLL_CHECK(0) if (__builtin_expect(mesgs[0].num == num, 0)) {}
+        UNROLL_CHECK(1) if (__builtin_expect(mesgs[1].num == num, 0)) {}
+        UNROLL_CHECK(2) if (__builtin_expect(mesgs[2].num == num, 0)) {}
+        UNROLL_CHECK(3) if (__builtin_expect(mesgs[3].num == num, 0)) {}
+        UNROLL_CHECK(4) if (__builtin_expect(mesgs[4].num == num, 0)) {}
+        UNROLL_CHECK(5) if (__builtin_expect(mesgs[5].num == num, 0)) {}
+        UNROLL_CHECK(6) if (__builtin_expect(mesgs[6].num == num, 0)) {}
+        UNROLL_CHECK(7) if (__builtin_expect(mesgs[7].num == num, 0)) {}
+        UNROLL_CHECK(8) if (__builtin_expect(mesgs[8].num == num, 0)) {}
+        UNROLL_CHECK(9) if (__builtin_expect(mesgs[9].num == num, 0)) {}
+        UNROLL_CHECK(10) if (__builtin_expect(mesgs[10].num == num, 0)) {}
+        UNROLL_CHECK(11) if (__builtin_expect(mesgs[11].num == num, 0)) {}
+        UNROLL_CHECK(12) if (__builtin_expect(mesgs[12].num == num, 0)) {}
+        UNROLL_CHECK(13) if (__builtin_expect(mesgs[13].num == num, 0)) {}
+        UNROLL_CHECK(14) if (__builtin_expect(mesgs[14].num == num, 0)) {}
+        UNROLL_CHECK(15) if (__builtin_expect(mesgs[15].num == num, 0)) {}
+    #else
+        for (int i = 0; i < MESGS; i++)
+        {
+            if (mesgs[i].num == num)
+                return &mesgs[i];
+        }
+    #endif
+    #undef UNROLL_CHECK
+
+    return NULL;
+}

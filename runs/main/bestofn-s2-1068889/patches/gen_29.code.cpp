@@ -1,0 +1,7 @@
+
+FIT_FLOAT64 Field::GetOffset() const
+{
+    if (!profile || profileIndex >= profile->numFields)
+        return 0;
+    return profile->fields[profileIndex].offset;
+}

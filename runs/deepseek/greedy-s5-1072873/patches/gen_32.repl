@@ -1,0 +1,11 @@
+Hoisting the `profile` pointer into a local and marking the invalid-range branch as unlikely lets the compiler keep the common path branch-free-ish and avoid a redundant load.
+
+```cpp
+FIT_UINT8 Field::GetNum(void) const
+{
+    const auto* p = profile;
+    if (__builtin_expect((p == NULL) || (profileIndex >= p->numFields), 0))
+        return FIT_FIELD_NUM_INVALID;
+    return p->fields[profileIndex].num;
+}
+```

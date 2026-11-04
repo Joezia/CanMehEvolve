@@ -1,0 +1,128 @@
+{
+  "113": {
+    "accepted": 0,
+    "attempts": 1,
+    "best_gain": 0.0,
+    "file": "src/fit_field.cpp",
+    "label": "Field::Field"
+  },
+  "122": {
+    "accepted": 2,
+    "attempts": 3,
+    "best_gain": 0.0007471537108748594,
+    "file": "src/fit_field.cpp",
+    "label": "Field::GetNum"
+  },
+  "123": {
+    "accepted": 0,
+    "attempts": 4,
+    "best_gain": 0.0,
+    "file": "src/fit_field.cpp",
+    "label": "Field::GetType"
+  },
+  "127": {
+    "accepted": 0,
+    "attempts": 1,
+    "best_gain": 0.0,
+    "file": "src/fit_field.cpp",
+    "label": "Field::GetNumComponents"
+  },
+  "128": {
+    "accepted": 1,
+    "attempts": 2,
+    "best_gain": 0.00043636265936275453,
+    "file": "src/fit_field.cpp",
+    "label": "Field::GetNumSubFields"
+  },
+  "134": {
+    "accepted": 1,
+    "attempts": 3,
+    "best_gain": 0.0010748669458434668,
+    "file": "src/fit_field_base.cpp",
+    "label": "FieldBase::FieldBase"
+  },
+  "141": {
+    "accepted": 0,
+    "attempts": 2,
+    "best_gain": 0.0,
+    "file": "src/fit_field_base.cpp",
+    "label": "FieldBase::IsSignedInteger"
+  },
+  "143": {
+    "accepted": 0,
+    "attempts": 2,
+    "best_gain": 0.0,
+    "file": "src/fit_field_base.cpp",
+    "label": "FieldBase::GetNumValues"
+  },
+  "166": {
+    "accepted": 0,
+    "attempts": 2,
+    "best_gain": 0.0,
+    "file": "src/fit_field_base.cpp",
+    "label": "FieldBase::GetFLOAT64Value"
+  },
+  "192": {
+    "accepted": 0,
+    "attempts": 3,
+    "best_gain": 0.0,
+    "file": "src/fit_field_base.cpp",
+    "label": "FieldBase::Read"
+  },
+  "196": {
+    "accepted": 0,
+    "attempts": 1,
+    "best_gain": 0.0,
+    "file": "src/fit_field_base.cpp",
+    "label": "FieldBase::GetValue"
+  },
+  "222": {
+    "accepted": 0,
+    "attempts": 1,
+    "best_gain": 0.0,
+    "file": "src/fit_mesg.cpp",
+    "label": "Mesg::GetNum"
+  },
+  "226": {
+    "accepted": 1,
+    "attempts": 1,
+    "best_gain": 0.00857844871266189,
+    "file": "src/fit_mesg.cpp",
+    "label": "Mesg::AddField"
+  },
+  "234": {
+    "accepted": 0,
+    "attempts": 1,
+    "best_gain": 0.0,
+    "file": "src/fit_mesg.cpp",
+    "label": "Mesg::GetField"
+  },
+  "243": {
+    "accepted": 1,
+    "attempts": 1,
+    "best_gain": 0.00726376618707214,
+    "file": "src/fit_mesg.cpp",
+    "label": "Mesg::GetActiveSubFieldIndex"
+  },
+  "4116": {
+    "accepted": 0,
+    "attempts": 2,
+    "best_gain": 0.0,
+    "file": "src/fit_session_mesg.hpp",
+    "label": "IsPoolLengthUnitValid"
+  },
+  "574": {
+    "accepted": 3,
+    "attempts": 8,
+    "best_gain": 0.0577633998498589,
+    "file": "src/fit_profile.cpp",
+    "label": "Profile::GetMesg"
+  },
+  "576": {
+    "accepted": 0,
+    "attempts": 2,
+    "best_gain": 0.0,
+    "file": "src/fit_profile.cpp",
+    "label": "Profile::GetFieldIndex"
+  }
+}

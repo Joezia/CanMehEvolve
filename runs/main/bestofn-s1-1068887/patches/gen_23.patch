@@ -1,0 +1,24 @@
+--- a/src/fit_mesg.cpp
++++ b/src/fit_mesg.cpp
+@@ -248,14 +248,15 @@
+     return FIT_NULL;
+ }
+ 
++
+ Field* Mesg::GetField(const FIT_UINT8 fieldNum)
+ {
+-    for (int i = 0; i < (int)fields.size(); i++)
+-    {
+-        if (fields[i].GetNum() == fieldNum)
+-            return &fields[i];
+-    }
+-
++    auto it = std::lower_bound(fields.begin(), fields.end(), fieldNum,
++        [](const Field& field, FIT_UINT8 num) { return field.GetNum() < num; });
++    
++    if (it != fields.end() && it->GetNum() == fieldNum)
++        return &*it;
++    
+     return FIT_NULL;
+ }
+ 

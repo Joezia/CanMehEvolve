@@ -1,0 +1,62 @@
+File: src/fit_profile.cpp
+Function: Profile::GetFieldIndex (15 lines)
+One full decode of the four files takes about 359.2 ms in the stock build.
+Time of the current version of the whole library relative to stock: 1.000 (below 1.0 is faster). Best measured so far: 1.000.
+
+Your previous attempt failed:
+Stage 'compile' rejected it: /home/z/zhouzia/Workspace/CanMehEvolve/build/work-1068895/tree/src/fit_profile.cpp:3082:1: error: stray ‘`’ in program
+ 3082 | ```cpp
+      | ^
+/home/z/zhouzia/Workspace/CanMehEvolve/build/work-1068895/tree/src/fit_profile.cpp:3082:2: error: stray ‘`’ in program
+ 3082 | ```cpp
+      |  ^
+/home/z/zhouzia/Workspace/CanMehEvolve/build/work-1068895/tree/src/fit_profile.cpp:3082:3: error: stray ‘`’ in program
+ 3082 | ```cpp
+      |   ^
+/home/z/zhouzia/Workspace/CanMehEvolve/build/work-1068895/tree/src/fit_profile.cpp:3082:4: error: ‘cpp’ does not name a type
+ 3082 | ```cpp
+      |    ^~~
+
+The rejected replacement was:
+```cpp
+
+```cpp
+const FIT_UINT16 Profile::GetFieldIndex(const FIT_UINT16 mesgNum, const FIT_UINT8 fieldNum)
+{
+    const MESG *mesg = GetMesg(mesgNum);
+
+    if (mesg == NULL)
+        return FIT_UINT16_INVALID;
+
+    // Binary search since fields are guaranteed to be sorted by num (per FIT spec)
+    const FIT_UINT8 *fields = &mesg->fields[0].num;
+    auto it = std::lower_bound(fields, fields + mesg->numFields, fieldNum);
+    
+    if (it != fields + mesg->numFields && *it == fieldNum)
+        return static_cast<FIT_UINT16>(it - fields);
+    
+    return FIT_UINT16_INVALID;
+}
+
+```
+
+Current text of the function:
+```cpp
+const FIT_UINT16 Profile::GetFieldIndex(const FIT_UINT16 mesgNum, const FIT_UINT8 fieldNum)
+{
+    const MESG *mesg = GetMesg(mesgNum);
+
+    if (mesg == NULL)
+        return FIT_UINT16_INVALID;
+
+    for (FIT_UINT16 i = 0; i < mesg->numFields; i++)
+    {
+        if (mesg->fields[i].num == fieldNum)
+            return i;
+    }
+
+    return FIT_UINT16_INVALID;
+}
+
+```
+Return the faster replacement now.

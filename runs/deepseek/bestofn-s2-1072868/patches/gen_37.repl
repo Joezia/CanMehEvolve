@@ -1,0 +1,182 @@
+I hoisted the byte index/offset and buffer length into locals so the per-byte loop no longer reloads/stores members around every `ReadByte` call, and moved the `pause` check to only the callback paths where it can change. I also cached the message number and replaced the throwing `descriptions.at()` lookup with a `find` check.
+
+```cpp
+FIT_BOOL Decode::Resume(void)
+{
+    pause = FIT_FALSE;
+    RETURN decodeReturn = RETURN_CONTINUE;
+
+    FIT_UINT32 idx = currentByteIndex;
+    FIT_UINT32 off = currentByteOffset;
+    FIT_UINT32 end = bytesRead;
+
+    try
+    {
+        do
+        {
+            if ( idx == 0 )
+            {
+                file->read(buffer, BufferSize);
+                bytesRead = (FIT_UINT32)file->gcount();
+                end = bytesRead;
+            }
+
+            for (; idx < end; )
+            {
+                decodeReturn = ReadByte((FIT_UINT8)buffer[idx]);
+
+                if ( decodeReturn != RETURN_CONTINUE )
+                {
+                    if ( decodeReturn == RETURN_MESG )
+                    {
+                        auto mesgNum = mesg.GetNum();
+
+                        if ( mesgNum == FIT_MESG_NUM_DEVELOPER_DATA_ID )
+                        {
+                            DeveloperDataIdMesg devIdMesg(mesg);
+
+                            if (!devIdMesg.IsDeveloperDataIndexValid()) {
+                                throw fit::RuntimeException("Invalid developer data index in DeveloperDataIdMesg");
+                            }
+
+                            FIT_UINT8 index = devIdMesg.GetDeveloperDataIndex();
+                            developers[index] = devIdMesg;
+                            descriptions[index].clear();
+                        }
+                        else if ( mesgNum == FIT_MESG_NUM_FIELD_DESCRIPTION )
+                        {
+                            FieldDescriptionMesg descMesg(mesg);
+
+                            if (!descMesg.IsDeveloperDataIndexValid()) {
+                                throw fit::RuntimeException("Invalid developer data index in FieldDescriptionMesg");
+                            }
+
+                            if (!descMesg.IsFieldDefinitionNumberValid())
+                            {
+                                throw fit::RuntimeException("Invalid developer field definition number in FieldDescriptionMesg");
+                            }
+
+                            FIT_UINT8 index = descMesg.GetDeveloperDataIndex();
+                            FIT_UINT8 fldNum = descMesg.GetFieldDefinitionNumber();
+
+                            auto it = descriptions.find(index);
+                            if ( it != descriptions.end() )
+                            {
+                                try
+                                {
+                                    it->second[fldNum] = descMesg;
+
+                                    if (descriptionListener)
+                                    {
+                                        descriptionListener->OnDeveloperFieldDescription(DeveloperFieldDescription(descMesg, developers[index]));
+                                    }
+                                }
+                                catch (std::out_of_range)
+                                {
+                                    // Description without a Developer Data Id Message
+                                }
+                            }
+                        }
+
+                        if (mesgListener)
+                            mesgListener->OnMesg(mesg);
+
+                        if (pause)
+                        {
+                            currentByteIndex = idx + 1;
+                            currentByteOffset = off + 1;
+                            return FIT_FALSE;
+                        }
+                    }
+                    else if ( decodeReturn == RETURN_MESG_DEF )
+                    {
+                        if (mesgDefinitionListener)
+                        {
+                            mesgDefinitionListener->OnMesgDefinition(localMesgDefs[localMesgIndex]);
+                        }
+
+                        if (pause)
+                        {
+                            currentByteIndex = idx + 1;
+                            currentByteOffset = off + 1;
+                            return FIT_FALSE;
+                        }
+                    }
+                    else if ( decodeReturn == RETURN_END_OF_FILE )
+                    {
+                        currentByteIndex = idx + 1;
+                        currentByteOffset = off + 1;
+                        return FIT_TRUE;
+                    }
+                    else
+                    {
+                        currentByteIndex = idx;
+                        currentByteOffset = off + 1;
+                        return FIT_TRUE;
+                    }
+                }
+
+                ++off;
+                ++idx;
+            }
+
+            idx = 0;
+            currentByteIndex = 0;
+            currentByteOffset = off;
+        } while ( file->good() );
+    }
+    catch (...)
+    {
+        currentByteIndex = idx;
+        currentByteOffset = off;
+        throw;
+    }
+
+    if ((streamIsComplete == FIT_TRUE) && (skipHeader == FIT_FALSE))
+    {
+        // When decoding a complete file we should exit via RETURN_END_OF_FILE state only.
+        std::ostringstream message;
+        message << "FIT decode error: Unexpected end of input stream at byte: " << currentByteOffset;
+        throw RuntimeException(message.str());
+    }
+    if (streamIsComplete == FIT_FALSE)
+    {
+        // If stream is not yet complete caller can resume() when there is more data
+        // or decide there was an error.
+        if ((decodeReturn == RETURN_MESG) || (decodeReturn == RETURN_MESG_DEF))
+        {
+            // Our stream ended on a complete message, maybe we are done decoding.
+            return FIT_TRUE;
+        }
+        else
+        {
+            // EOF was encountered mid message. Caller may want to resume once
+            // more bytes are available.
+            return FIT_FALSE;
+        }
+    }
+    // if Decoding Records section only, file should end on a complete message
+    // (unless incomplete stream option above was also used)
+    else
+    {
+        if ((decodeReturn == RETURN_MESG) || (decodeReturn == RETURN_MESG_DEF))
+        {
+            // Our stream ended on a complete message, we are done decoding.
+            return FIT_TRUE;
+        }
+        else
+        {
+            if (invalidDataSize == FIT_FALSE)
+            {
+                std::ostringstream message;
+                message << "FIT decode error: Unexpected end of input stream at byte: " << currentByteOffset;
+                throw RuntimeException(message.str());
+            }
+            else
+            {
+                return FIT_TRUE;
+            }
+        }
+    }
+}
+```

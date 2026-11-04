@@ -1,0 +1,70 @@
+--- a/src/fit_field_base.cpp
++++ b/src/fit_field_base.cpp
+@@ -344,12 +344,13 @@
+ 
+ FIT_FLOAT64 FieldBase::GetFLOAT64Value(const FIT_UINT8 fieldArrayIndex, const FIT_UINT16 subFieldIndex) const
+ {
+-    FIT_FLOAT64 float64Value;
+-
+     if (!IsValid())
+         return FIT_FLOAT64_INVALID;
+ 
+-    switch (GetType()) { // Note: This checks the type of the MAIN field since data is aligned according to that type
++    FIT_FLOAT64 float64Value;
++    FIT_UINT8 type = GetType();
++
++    switch (type) { // Note: This checks the type of the MAIN field since data is aligned according to that type
+         case FIT_BASE_TYPE_BYTE:
+         {
+             float64Value =
+@@ -411,14 +412,32 @@
+ 
+         case FIT_BASE_TYPE_FLOAT32:
+         {
+-            FIT_FLOAT32 val = GetFLOAT32Value(fieldArrayIndex, subFieldIndex);
++            FIT_UINT32 uint32Value = GetValue<FIT_UINT32>(fieldArrayIndex);
++            FIT_FLOAT32 val;
++            memcpy(&val, &uint32Value, sizeof(FIT_FLOAT32));
+ 
+-            if (FIT_FLOAT32_INVALID == val)
++            if (memcmp(&val, baseTypeInvalids[FIT_BASE_TYPE_FLOAT32 & FIT_BASE_TYPE_NUM_MASK], sizeof(FIT_FLOAT32)) == 0)
+             {
+                 return FIT_FLOAT64_INVALID;
+             }
+ 
+-            return static_cast<FIT_FLOAT64>(val);
++            FIT_FLOAT64 scale = GetScale(subFieldIndex);
++            FIT_FLOAT64 offset = GetOffset(subFieldIndex);
++            FIT_FLOAT32 scaled;
++            if (scale == 1.0 && offset == 0.0 && val == val)
++            {
++                scaled = val;
++            }
++            else
++            {
++                scaled = static_cast<FIT_FLOAT32>(val / scale - offset);
++            }
++
++            if (scaled == FIT_FLOAT32_INVALID)
++            {
++                return FIT_FLOAT64_INVALID;
++            }
++            return static_cast<FIT_FLOAT64>(scaled);
+         }
+ 
+         case FIT_BASE_TYPE_FLOAT64:
+@@ -437,7 +456,13 @@
+         return float64Value;
+     }
+ 
+-    return float64Value / GetScale(subFieldIndex) - GetOffset(subFieldIndex);
++    FIT_FLOAT64 scale = GetScale(subFieldIndex);
++    FIT_FLOAT64 offset = GetOffset(subFieldIndex);
++    if (scale == 1.0 && offset == 0.0 && float64Value == float64Value)
++    {
++        return float64Value;
++    }
++    return float64Value / scale - offset;
+ }
+ 
+ FIT_WSTRING FieldBase::GetSTRINGValue(const FIT_UINT8 fieldArrayIndex, const FIT_UINT16 subFieldIndex) const

@@ -1,0 +1,80 @@
+--- a/src/fit_field.cpp
++++ b/src/fit_field.cpp
+@@ -15,6 +15,8 @@
+ #include "fit_field.hpp"
+ #include "fit_mesg.hpp"
+ #include "fit_unicode.hpp"
++#include <cstdint>
++#include <cstddef>
+ 
+ namespace fit
+ {
+@@ -97,15 +99,12 @@
+     return profile->fields[profileIndex].num;
+ }
+ 
++
+ FIT_UINT8 Field::GetType() const
+ {
+-    if ( type != FIT_UINT8_INVALID )
+-        return type;
+-
+-    if ((profile == NULL) || (profileIndex >= profile->numFields))
+-        return FIT_UINT8_INVALID;
+-
+-    return profile->fields[profileIndex].type;
++    return (type != FIT_UINT8_INVALID) ? type : 
++           (profile && profileIndex < profile->numFields) ? profile->fields[profileIndex].type : 
++           FIT_UINT8_INVALID;
+ }
+ 
+ std::string Field::GetUnits() const
+@@ -136,11 +135,10 @@
+     return profile->fields[profileIndex].numComponents;
+ }
+ 
++
+ FIT_UINT16 Field::GetNumSubFields(void) const
+ {
+-    if ((profile == NULL) || (profileIndex >= profile->numFields))
+-        return 0;
+-    return profile->fields[profileIndex].numSubFields;
++    return (profile && profileIndex < profile->numFields) ? profile->fields[profileIndex].numSubFields : 0;
+ }
+ 
+ FIT_BOOL Field::GetIsExpanded(void) const
+--- a/src/fit_profile.cpp
++++ b/src/fit_profile.cpp
+@@ -11,6 +11,8 @@
+ 
+ 
+ #include "fit_profile.hpp"
++#include <algorithm>
++#include <vector>
+ 
+ namespace fit
+ {
+@@ -3055,15 +3057,17 @@
+    { NULL, "pad", FIT_MESG_NUM_PAD, 0 },
+ };
+ 
++
+ const Profile::MESG* Profile::GetMesg(const FIT_UINT16 num)
+ {
+-    for (int i = 0; i < MESGS; i++)
+-    {
+-        if (mesgs[i].num == num)
+-            return &mesgs[i];
++    static std::vector<const Profile::MESG*> index;
++    if (index.empty()) {
++        index.resize(65536, nullptr);
++        for (int i = 0; i < MESGS; i++) {
++            index[mesgs[i].num] = &mesgs[i];
++        }
+     }
+-
+-    return NULL;
++    return (num < 65536) ? index[num] : nullptr;
+ }
+ 
+ const Profile::MESG* Profile::GetMesg(const std::string& name)

@@ -1,0 +1,264 @@
+--- a/src/fit_field.cpp
++++ b/src/fit_field.cpp
+@@ -15,6 +15,8 @@
+ #include "fit_field.hpp"
+ #include "fit_mesg.hpp"
+ #include "fit_unicode.hpp"
++#include <cstdint>
++#include <cstddef>
+ 
+ namespace fit
+ {
+@@ -90,22 +92,18 @@
+     return profile->fields[profileIndex].name;
+ }
+ 
++
+ FIT_UINT8 Field::GetNum(void) const
+ {
+-    if ((profile == NULL) || (profileIndex >= profile->numFields))
+-        return FIT_FIELD_NUM_INVALID;
+-    return profile->fields[profileIndex].num;
++    return (profile && profileIndex < profile->numFields) ? profile->fields[profileIndex].num : FIT_FIELD_NUM_INVALID;
+ }
+ 
++
+ FIT_UINT8 Field::GetType() const
+ {
+-    if ( type != FIT_UINT8_INVALID )
+-        return type;
+-
+-    if ((profile == NULL) || (profileIndex >= profile->numFields))
+-        return FIT_UINT8_INVALID;
+-
+-    return profile->fields[profileIndex].type;
++    return (type != FIT_UINT8_INVALID) ? type : 
++           (profile && profileIndex < profile->numFields) ? profile->fields[profileIndex].type : 
++           FIT_UINT8_INVALID;
+ }
+ 
+ std::string Field::GetUnits() const
+--- a/src/fit_field_base.cpp
++++ b/src/fit_field_base.cpp
+@@ -16,6 +16,8 @@
+ #include "fit_field_base.hpp"
+ #include "fit_mesg.hpp"
+ #include "fit_unicode.hpp"
++#include <cstring>
++#include <algorithm>
+ 
+ namespace fit
+ {
+@@ -1005,75 +1007,61 @@
+     values[idx + i] = 0; // null terminate
+ }
+ 
++
+ FIT_BOOL FieldBase::Read(const void *data, const FIT_UINT8 size)
+ {
+     FIT_UINT8 bytesLeft = size;
+-    FIT_UINT8 typeSize = baseTypeSizes[GetType() & FIT_BASE_TYPE_NUM_MASK];
+-    FIT_BYTE *byteData = (FIT_BYTE *) data;
++    FIT_UINT8 typeIndex = GetType() & FIT_BASE_TYPE_NUM_MASK;
++    FIT_UINT8 typeSize = baseTypeSizes[typeIndex];
++    const FIT_BYTE* byteData = static_cast<const FIT_BYTE*>(data);
+ 
+     values.clear();
++    stringIndexes.clear();
+ 
+-    switch (GetType())
++    if (GetType() == FIT_BASE_TYPE_STRING)
+     {
+-        case FIT_BASE_TYPE_STRING:
+-        {
+-            FIT_BOOL hasData = FIT_FALSE;
+-            FIT_UINT8 stringPos = 0;
+-            FIT_UINT8 index = 0;
+-
+-            // Check if the string is empty
+-            while (index < bytesLeft)
+-            {
+-                if (byteData[index] != 0)
+-                {
+-                    hasData = FIT_TRUE;
+-                    break;
+-                }
+-                index++;
+-            }
+-
+-            if (!hasData)
+-                break;
++        // Fast path: scan for first non-zero byte
++        const FIT_BYTE* end = byteData + bytesLeft;
++        const FIT_BYTE* firstNonZero = std::find_if(byteData, end, [](FIT_BYTE b) { return b != 0; });
+ 
+-            stringIndexes.push_back(stringPos);
+-
+-            while (bytesLeft-- > 0)
+-            {
+-                FIT_BYTE byte = *byteData++;
+-                values.push_back(byte);
+-                stringPos++;
+-
+-                if ( ( byte == 0 ) && ( stringPos + 1 < size ) )
+-                {
+-                    stringIndexes.push_back(stringPos);
+-                }
+-            }
++        if (firstNonZero == end)
++            return FIT_TRUE;
+ 
+-            // Null terminate if not already null terminated
+-            if ( values.back() != 0 )
+-            {
+-                values.push_back(0);
+-            }
++        values.reserve(bytesLeft + 1); // Pre-allocate to avoid reallocations
++        values.insert(values.end(), byteData, end);
++        
++        // Record string index for first non-zero string
++        FIT_UINT8 stringPos = static_cast<FIT_UINT8>(firstNonZero - byteData);
++        stringIndexes.push_back(stringPos);
++
++        // Scan for null terminators to record subsequent string positions
++        for (const FIT_BYTE* p = firstNonZero; p < end; ++p)
++        {
++            if (*p == 0 && (p - byteData + 1 < size))
++                stringIndexes.push_back(static_cast<FIT_UINT8>(p - byteData + 1));
+         }
+-            break;
+ 
+-        default:
+-        {
+-            int bytes = bytesLeft;
+-            FIT_BYTE *point = byteData;
++        // Ensure null termination
++        if (values.empty() || values.back() != 0)
++            values.push_back(0);
++    }
++    else
++    {
++        // For non-string types: skip leading invalid-value chunks
++        const FIT_BYTE* invalidVal = baseTypeInvalids[typeIndex];
++        const FIT_BYTE* p = byteData;
++        FIT_UINT8 remaining = bytesLeft;
+ 
+-            while (bytes > 0)
+-            {
+-                if (memcmp(point, baseTypeInvalids[GetType() & FIT_BASE_TYPE_NUM_MASK], typeSize) != 0)
+-                {
+-                    values.insert(values.end(), byteData, byteData + bytesLeft);
+-                    break;
+-                }
+-                point += typeSize;
+-                bytes -= typeSize;
+-            }
++        while (remaining >= typeSize)
++        {
++            if (std::memcmp(p, invalidVal, typeSize) != 0)
++                break;
++            p += typeSize;
++            remaining -= typeSize;
+         }
+-            break;
++
++        if (remaining > 0)
++            values.insert(values.end(), p, p + remaining);
+     }
+ 
+     return FIT_TRUE;
+--- a/src/fit_mesg.cpp
++++ b/src/fit_mesg.cpp
+@@ -14,6 +14,7 @@
+ #include <algorithm>
+ #include "fit_mesg.hpp"
+ #include "fit_mesg_definition.hpp"
++#include <cmath>
+ 
+ namespace fit
+ {
+@@ -401,6 +402,7 @@
+     return FIT_SUBFIELD_INDEX_MAIN_FIELD;
+ }
+ 
++
+ FIT_UINT16 Mesg::GetActiveSubFieldIndex(const FIT_UINT8 fieldNum) const
+ {
+     const Profile::FIELD* field = Profile::GetField(GetNum(), fieldNum);
+@@ -408,22 +410,33 @@
+     if (field == FIT_NULL)
+         return FIT_SUBFIELD_INDEX_MAIN_FIELD;
+ 
+-    for (int i = 0; i < (int) field->numSubFields; i++)
++    const FIT_UINT8 numSubFields = field->numSubFields;
++    for (FIT_UINT8 i = 0; i < numSubFields; i++)
+     {
+         const Profile::SUBFIELD& subField = field->subFields[i];
++        const FIT_UINT8 numMaps = subField.numMaps;
+ 
+-        for (int j = 0; j < (int) subField.numMaps; j++)
++        bool allMapsMatch = true;
++        for (FIT_UINT8 j = 0; j < numMaps; j++)
+         {
+             const Field* refField = GetField(subField.maps[j].refFieldNum);
+-
+-            if (refField != FIT_NULL)
++            if (refField == FIT_NULL)
++            {
++                allMapsMatch = false;
++                break;
++            }
++            FIT_FLOAT64 refValue = refField->GetFLOAT64Value(0, FIT_SUBFIELD_INDEX_MAIN_FIELD);
++            // Round to nearest integer (handles both positive and negative correctly)
++            FIT_SINT32 rounded = static_cast<FIT_SINT32>(std::floor(refValue + (refValue >= 0.0 ? 0.5 : -0.5)));
++            if (rounded != subField.maps[j].refFieldValue)
+             {
+-                FIT_FLOAT64 refValue = refField->GetFLOAT64Value(0, FIT_SUBFIELD_INDEX_MAIN_FIELD);
+-                refValue += ((refValue >= 0.0) ? (0.5) : (-0.5));
+-                if ((FIT_SINT32)refValue == subField.maps[j].refFieldValue)
+-                    return ((FIT_UINT16) i);
++                allMapsMatch = false;
++                break;
+             }
+         }
++
++        if (allMapsMatch)
++            return static_cast<FIT_UINT16>(i);
+     }
+ 
+     return FIT_SUBFIELD_INDEX_MAIN_FIELD;
+--- a/src/fit_profile.cpp
++++ b/src/fit_profile.cpp
+@@ -11,6 +11,8 @@
+ 
+ 
+ #include "fit_profile.hpp"
++#include <algorithm>
++#include <vector>
+ 
+ namespace fit
+ {
+@@ -3055,15 +3057,17 @@
+    { NULL, "pad", FIT_MESG_NUM_PAD, 0 },
+ };
+ 
++
+ const Profile::MESG* Profile::GetMesg(const FIT_UINT16 num)
+ {
+-    for (int i = 0; i < MESGS; i++)
+-    {
+-        if (mesgs[i].num == num)
+-            return &mesgs[i];
++    static std::vector<const Profile::MESG*> index;
++    if (index.empty()) {
++        index.resize(65536, nullptr);
++        for (int i = 0; i < MESGS; i++) {
++            index[mesgs[i].num] = &mesgs[i];
++        }
+     }
+-
+-    return NULL;
++    return (num < 65536) ? index[num] : nullptr;
+ }
+ 
+ const Profile::MESG* Profile::GetMesg(const std::string& name)

@@ -1,0 +1,8 @@
+The copy constructor already uses the minimal direct member-initializer copies of the two vectors, which is the fastest correct implementation. Any alternative would either add a default-construction/assignment round trip or require moving from the const source and changing behavior.
+
+```cpp
+FieldBase::FieldBase(const FieldBase &field)
+    : values(field.values), stringIndexes(field.stringIndexes)
+{
+}
+```

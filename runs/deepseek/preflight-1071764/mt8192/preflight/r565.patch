@@ -1,0 +1,66 @@
+--- a/src/fit_mesg_definition.cpp
++++ b/src/fit_mesg_definition.cpp
+@@ -196,29 +196,47 @@
+     if (localNum != mesgDef.localNum)
+         return FIT_FALSE;
+ 
+-    for (int i=0; i<(int)mesgDef.fields.size(); i++)
++    for (const FieldDefinition& field : mesgDef.fields)
+     {
+-        const FieldDefinition* supportedFieldDef = GetField(mesgDef.fields[i].GetNum());
++        const FIT_UINT8 fieldNum = field.GetNum();
++        const FIT_UINT8 fieldSize = field.GetSize();
++        bool found = false;
++
++        for (const FieldDefinition& supportedField : fields)
++        {
++            if (supportedField.GetNum() == fieldNum)
++            {
++                if (fieldSize > supportedField.GetSize())
++                    return FIT_FALSE;
++                found = true;
++                break;
++            }
++        }
+ 
+-        if (supportedFieldDef == FIT_NULL)  // Could not find field with matching number.
+-            return FIT_FALSE;
+-
+-        if (mesgDef.fields[i].GetSize() > supportedFieldDef->GetSize())   // Other field definition is larger than this field definition.
++        if (!found)
+             return FIT_FALSE;
+     }
+ 
+-    // Check to make sure that all field developer fields are defined
+-    for (int i=0; i<(int)mesgDef.devFields.size(); i++)
++    for (const DeveloperFieldDefinition& fieldDef : mesgDef.devFields)
+     {
+-        const DeveloperFieldDefinition fieldDef = mesgDef.devFields[i];
+-        const DeveloperFieldDefinition* supportedDef = GetDevField(fieldDef.GetDeveloperDataIndex(), fieldDef.GetNum());
+-
+-        // There is a Field Definition that we don't have a description for
+-        if (supportedDef == FIT_NULL)
+-            return FIT_FALSE;
++        const FIT_UINT8 devDataIndex = fieldDef.GetDeveloperDataIndex();
++        const FIT_UINT8 fieldNum = fieldDef.GetNum();
++        const FIT_UINT8 fieldSize = fieldDef.GetSize();
++        bool found = false;
++
++        for (const DeveloperFieldDefinition& supportedDef : devFields)
++        {
++            if (supportedDef.GetDeveloperDataIndex() == devDataIndex &&
++                supportedDef.GetNum() == fieldNum)
++            {
++                if (fieldSize > supportedDef.GetSize())
++                    return FIT_FALSE;
++                found = true;
++                break;
++            }
++        }
+ 
+-        // The definition is a larger size that we dont support
+-        if (fieldDef.GetSize() > supportedDef->GetSize())
++        if (!found)
+             return FIT_FALSE;
+     }
+ 

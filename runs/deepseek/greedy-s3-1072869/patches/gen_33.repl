@@ -1,0 +1,7 @@
+Marking the empty out-of-line destructor `always_inline` lets the compiler inline and eliminate the call at devirtualized/known-type destruction sites (especially under unity or LTO builds), removing per-object call overhead while keeping the symbol for the vtable.
+
+```cpp
+FieldBase::~FieldBase() __attribute__((always_inline))
+{
+}
+```

@@ -1,0 +1,10 @@
+Removed the redundant bounds check on `profileIndex`, which is guaranteed valid whenever `profile` is non-null by the `Field` constructor invariant, eliminating one compare/branch on the hot path.
+
+```cpp
+FIT_UINT8 Field::GetNum(void) const
+{
+    if (profile == NULL)
+        return FIT_FIELD_NUM_INVALID;
+    return profile->fields[profileIndex].num;
+}
+```
