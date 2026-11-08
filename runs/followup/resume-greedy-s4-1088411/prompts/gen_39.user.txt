@@ -1,0 +1,25 @@
+File: src/fit_profile.cpp
+Function: Profile::GetMesg (10 lines)
+One full decode of the four files takes about 480.4 ms in the stock build.
+Time of the current version of the whole library relative to stock: 0.840 (below 1.0 is faster). Best measured so far: 0.840.
+
+Current text of the function:
+```cpp
+const Profile::MESG* Profile::GetMesg(const FIT_UINT16 num)
+{
+    static FIT_UINT16 slot[65536] = {};
+    static const bool initialized = [] {
+        for (int i = static_cast<int>(MESGS) - 1; i >= 0; --i)
+        {
+            slot[mesgs[i].num] = static_cast<FIT_UINT16>(i + 1);
+        }
+        return true;
+    }();
+    (void)initialized;
+
+    const FIT_UINT16 s = slot[num];
+    return (s != 0) ? &mesgs[s - 1] : NULL;
+}
+
+```
+Return the faster replacement now.

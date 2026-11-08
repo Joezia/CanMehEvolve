@@ -1,0 +1,37 @@
+[step 1] region IsTimeCreatedValid ratio=1.00099 record=1.00000 updates=0
+[step 2] region GetHrZoneHighBoundary ratio=1.00007 record=1.00000 updates=0
+[step 3] region GetTotalFractionalDescent ratio=1.00066 record=1.00000 updates=0
+[step 4] region SetBluetoothEnabled ratio=0.99968 r2=1.00031 record=1.00000 updates=0
+[step 5] region SetCycles16 ratio=0.99993 r2=0.99965 record=0.99993 updates=1
+[step 6] region GetType ratio=0.99837 r2=1.00007 record=0.99993 updates=1
+[step 7] region GetNumMaxCadencePosition ratio=1.00087 record=0.99993 updates=1
+[step 8] region GetDuration ratio=0.99920 r2=1.00068 record=0.99993 updates=1
+[step 9] region StressLevelMesg ratio=1.00042 record=0.99993 updates=1
+[step 10] region MesgBroadcaster::AddListener ratio=1.00050 record=0.99993 updates=1
+[step 11] region IsSerialNumberValid ratio=0.99933 r2=0.99953 record=0.99953 updates=2
+[step 12] region Encode::Write ratio=0.99983 record=0.99953 updates=2
+[step 13] region IsTimeStandingValid ratio=0.99921 r2=0.99961 record=0.99953 updates=2
+[step 14] region IsTimestampValid ratio=0.99954 record=0.99953 updates=2
+[step 15] region GetLocalTimestamp ratio=0.99959 record=0.99953 updates=2
+[step 16] region GetMaxSize ratio=1.00040 record=0.99953 updates=2
+[step 17] region SetSurfaceInterval ratio=1.00137 record=0.99953 updates=2
+[step 18] region IsAvgRightPcoValid ratio=1.00108 record=0.99953 updates=2
+[step 19] region GetAvgFlow ratio=1.00095 record=0.99953 updates=2
+[step 20] region SetMessageIndex ratio=1.00044 record=0.99953 updates=2
+[step 21] region IsTotalFractionalAscentValid ratio=1.00036 record=0.99953 updates=2
+[step 22] region IsSpeedValid ratio=1.00018 record=0.99953 updates=2
+[step 23] region SetPercentFat ratio=1.00019 record=0.99953 updates=2
+[step 24] region SetBatteryStatus ratio=0.99984 record=0.99953 updates=2
+[step 25] region GetNativeFieldNum ratio=0.99974 record=0.99953 updates=2
+[step 26] region SetTemperatureFeelsLike ratio=1.00166 record=0.99953 updates=2
+[step 27] region SetAntTransmissionType ratio=1.00031 record=0.99953 updates=2
+[step 28] region GetTimeStanding ratio=1.00017 record=0.99953 updates=2
+[step 29] region PadMesg ratio=1.00011 record=0.99953 updates=2
+[step 30] region Field::GetUnits ratio=0.99926 r2=0.99940 record=0.99940 updates=3
+[step 31] region GetMaxHeartRate ratio=0.99897 r2=0.99938 record=0.99938 updates=4
+[step 32] region MesgBroadcaster::AddListener ratio=0.99940 record=0.99938 updates=4
+[step 33] region GetDefaultPage ratio=1.00136 record=0.99938 updates=4
+[step 34] region GetTimeInSpeedZone ratio=1.00020 record=0.99938 updates=4
+[step 35] region MesgBroadcaster::AddListener ratio=0.99943 record=0.99938 updates=4
+[step 36] region GetLeftRightBalance ratio=0.99976 record=0.99938 updates=4
+{"seed": 3, "steps_measured": 36, "attempts": 36, "updates": 4, "final_record": 0.9993801938333355, "final_record_speedup": 1.0006201905646008, "measurements": 44, "rule_faster_count": 0, "elapsed_s": 6100.9, "ended_because": "steps"}

@@ -1,0 +1,24 @@
+--- a/src/fit_ant_tx_mesg.hpp
++++ b/src/fit_ant_tx_mesg.hpp
+@@ -144,7 +144,8 @@
+     FIT_UINT8 GetNumMesgData(void) const
+     {
+         return GetFieldNumValues(2, FIT_SUBFIELD_INDEX_MAIN_FIELD);
+-    }
++    // noop-4-7
++}
+ 
+     ///////////////////////////////////////////////////////////////////////
+     // Checks the validity of mesg_data field
+--- a/src/fit_lap_mesg.hpp
++++ b/src/fit_lap_mesg.hpp
+@@ -1539,7 +1539,8 @@
+         }
+ 
+         return field->IsValueValid();
+-    }
++    // noop-4-2
++}
+ 
+     ///////////////////////////////////////////////////////////////////////
+     // Returns total_work field

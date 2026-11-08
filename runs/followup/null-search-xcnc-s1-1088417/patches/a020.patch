@@ -1,0 +1,24 @@
+--- a/src/fit_hsa_accelerometer_data_mesg.hpp
++++ b/src/fit_hsa_accelerometer_data_mesg.hpp
+@@ -305,7 +305,8 @@
+     void SetTimestamp32k(FIT_UINT32 timestamp32k)
+     {
+         SetFieldUINT32Value(5, timestamp32k, 0, FIT_SUBFIELD_INDEX_MAIN_FIELD);
+-    }
++    // noop-1-20
++}
+ 
+ };
+ 
+--- a/src/fit_split_mesg.hpp
++++ b/src/fit_split_mesg.hpp
+@@ -391,7 +391,8 @@
+         }
+ 
+         return field->IsValueValid();
+-    }
++    // noop-1-2
++}
+ 
+     ///////////////////////////////////////////////////////////////////////
+     // Returns start_position_long field

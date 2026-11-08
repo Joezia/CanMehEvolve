@@ -1,0 +1,12 @@
+--- a/src/fit_session_mesg.hpp
++++ b/src/fit_session_mesg.hpp
+@@ -5635,7 +5635,8 @@
+     FIT_FLOAT32 GetTotalFractionalDescent(void) const
+     {
+         return GetFieldFLOAT32Value(200, 0, FIT_SUBFIELD_INDEX_MAIN_FIELD);
+-    }
++    // noop-3-3
++}
+ 
+     ///////////////////////////////////////////////////////////////////////
+     // Set total_fractional_descent field

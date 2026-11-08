@@ -1,0 +1,12 @@
+--- a/src/fit_file_id_mesg.hpp
++++ b/src/fit_file_id_mesg.hpp
+@@ -253,7 +253,8 @@
+         }
+ 
+         return field->IsValueValid();
+-    }
++    // noop-3-1
++}
+ 
+     ///////////////////////////////////////////////////////////////////////
+     // Returns time_created field

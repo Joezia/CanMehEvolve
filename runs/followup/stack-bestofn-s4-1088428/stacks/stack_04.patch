@@ -1,0 +1,295 @@
+diff --git a/src/fit_field_base.cpp b/src/fit_field_base.cpp
+index 2f8212c..564ef2a 100644
+--- a/src/fit_field_base.cpp
++++ b/src/fit_field_base.cpp
+@@ -25,9 +25,9 @@ FieldBase::FieldBase(void)
+ }
+ 
+ FieldBase::FieldBase(const FieldBase &field)
++    : values(field.values)
++    , stringIndexes(field.stringIndexes)
+ {
+-    values = field.values;
+-    stringIndexes = field.stringIndexes;
+ }
+ 
+ FieldBase::~FieldBase()
+@@ -1007,73 +1007,144 @@ void FieldBase::SetSTRINGValue(const FIT_WSTRING& value, const FIT_UINT8 fieldAr
+ 
+ FIT_BOOL FieldBase::Read(const void *data, const FIT_UINT8 size)
+ {
+-    FIT_UINT8 bytesLeft = size;
+-    FIT_UINT8 typeSize = baseTypeSizes[GetType() & FIT_BASE_TYPE_NUM_MASK];
++    const FIT_UINT8 type = GetType();
++    const FIT_UINT8 typeSize = baseTypeSizes[type & FIT_BASE_TYPE_NUM_MASK];
+     FIT_BYTE *byteData = (FIT_BYTE *) data;
+ 
+     values.clear();
+ 
+-    switch (GetType())
++    if (type == FIT_BASE_TYPE_STRING)
+     {
+-        case FIT_BASE_TYPE_STRING:
++        FIT_BOOL hasData = FIT_FALSE;
++        for (FIT_UINT8 i = 0; i < size; ++i)
+         {
+-            FIT_BOOL hasData = FIT_FALSE;
+-            FIT_UINT8 stringPos = 0;
+-            FIT_UINT8 index = 0;
+-
+-            // Check if the string is empty
+-            while (index < bytesLeft)
++            if (byteData[i] != 0)
+             {
+-                if (byteData[index] != 0)
+-                {
+-                    hasData = FIT_TRUE;
+-                    break;
+-                }
+-                index++;
+-            }
+-
+-            if (!hasData)
++                hasData = FIT_TRUE;
+                 break;
++            }
++        }
+ 
+-            stringIndexes.push_back(stringPos);
+-
+-            while (bytesLeft-- > 0)
+-            {
+-                FIT_BYTE byte = *byteData++;
+-                values.push_back(byte);
+-                stringPos++;
++        if (!hasData)
++            return FIT_TRUE;
+ 
+-                if ( ( byte == 0 ) && ( stringPos + 1 < size ) )
+-                {
+-                    stringIndexes.push_back(stringPos);
+-                }
+-            }
++        stringIndexes.push_back(0);
++        values.assign(byteData, byteData + size);
+ 
+-            // Null terminate if not already null terminated
+-            if ( values.back() != 0 )
++        for (FIT_UINT8 i = 0; i < size; ++i)
++        {
++            if (byteData[i] == 0 && (i + 2 < size))
+             {
+-                values.push_back(0);
++                stringIndexes.push_back(i + 1);
+             }
+         }
+-            break;
+ 
+-        default:
++        if (values.back() != 0)
+         {
+-            int bytes = bytesLeft;
+-            FIT_BYTE *point = byteData;
++            values.push_back(0);
++        }
++    }
++    else
++    {
++        if (size > 0)
++        {
++            const FIT_BYTE *invalid = baseTypeInvalids[type & FIT_BASE_TYPE_NUM_MASK];
++            int bytes = size;
++            const FIT_BYTE *point = byteData;
++            bool allInvalid = true;
+ 
+-            while (bytes > 0)
++            switch (typeSize)
+             {
+-                if (memcmp(point, baseTypeInvalids[GetType() & FIT_BASE_TYPE_NUM_MASK], typeSize) != 0)
++                case 1:
++                {
++                    const FIT_BYTE inv = invalid[0];
++                    while (bytes > 0)
++                    {
++                        if (*point != inv)
++                        {
++                            allInvalid = false;
++                            break;
++                        }
++                        ++point;
++                        --bytes;
++                    }
++                    break;
++                }
++                case 2:
+                 {
+-                    values.insert(values.end(), byteData, byteData + bytesLeft);
++                    FIT_UINT16 inv;
++                    memcpy(&inv, invalid, 2);
++                    while (bytes > 0)
++                    {
++                        FIT_UINT16 val;
++                        memcpy(&val, point, 2);
++                        if (val != inv)
++                        {
++                            allInvalid = false;
++                            break;
++                        }
++                        point += 2;
++                        bytes -= 2;
++                    }
++                    break;
++                }
++                case 4:
++                {
++                    FIT_UINT32 inv;
++                    memcpy(&inv, invalid, 4);
++                    while (bytes > 0)
++                    {
++                        FIT_UINT32 val;
++                        memcpy(&val, point, 4);
++                        if (val != inv)
++                        {
++                            allInvalid = false;
++                            break;
++                        }
++                        point += 4;
++                        bytes -= 4;
++                    }
++                    break;
++                }
++                case 8:
++                {
++                    FIT_UINT64 inv;
++                    memcpy(&inv, invalid, 8);
++                    while (bytes > 0)
++                    {
++                        FIT_UINT64 val;
++                        memcpy(&val, point, 8);
++                        if (val != inv)
++                        {
++                            allInvalid = false;
++                            break;
++                        }
++                        point += 8;
++                        bytes -= 8;
++                    }
++                    break;
++                }
++                default:
++                {
++                    while (bytes > 0)
++                    {
++                        if (memcmp(point, invalid, typeSize) != 0)
++                        {
++                            allInvalid = false;
++                            break;
++                        }
++                        point += typeSize;
++                        bytes -= typeSize;
++                    }
+                     break;
+                 }
+-                point += typeSize;
+-                bytes -= typeSize;
++            }
++
++            if (!allInvalid)
++            {
++                values.assign(byteData, byteData + size);
+             }
+         }
+-            break;
+     }
+ 
+     return FIT_TRUE;
+diff --git a/src/fit_profile.cpp b/src/fit_profile.cpp
+index d7551dd..5837e7f 100644
+--- a/src/fit_profile.cpp
++++ b/src/fit_profile.cpp
+@@ -3057,13 +3057,20 @@ const Profile::MESG Profile::mesgs[MESGS] =
+ 
+ const Profile::MESG* Profile::GetMesg(const FIT_UINT16 num)
+ {
+-    for (int i = 0; i < MESGS; i++)
++    static const Profile::MESG* table[65536];
++    static bool init = false;
++
++    if (!init)
+     {
+-        if (mesgs[i].num == num)
+-            return &mesgs[i];
++        for (int i = 0; i < MESGS; i++)
++        {
++            if (table[mesgs[i].num] == NULL)
++                table[mesgs[i].num] = &mesgs[i];
++        }
++        init = true;
+     }
+ 
+-    return NULL;
++    return table[num];
+ }
+ 
+ const Profile::MESG* Profile::GetMesg(const std::string& name)
+@@ -3079,18 +3086,52 @@ const Profile::MESG* Profile::GetMesg(const std::string& name)
+ 
+ const FIT_UINT16 Profile::GetFieldIndex(const FIT_UINT16 mesgNum, const FIT_UINT8 fieldNum)
+ {
+-    const MESG *mesg = GetMesg(mesgNum);
+-
+-    if (mesg == NULL)
+-        return FIT_UINT16_INVALID;
++    struct CacheEntry
++    {
++        FIT_UINT32 keyPlusOne;
++        FIT_UINT16 index;
++    };
++    static CacheEntry cache[1024] = {};
++    static FIT_UINT16 lastMesgNum = 0;
++    static const MESG *lastMesg = NULL;
++    static bool lastMesgValid = false;
++
++    const FIT_UINT32 key = (static_cast<FIT_UINT32>(mesgNum) << 8) | fieldNum;
++    const FIT_UINT32 keyPlusOne = key + 1;
++    const FIT_UINT32 slot = (key * 2654435761u) >> 22;
++    CacheEntry &entry = cache[slot];
++    if (entry.keyPlusOne == keyPlusOne)
++        return entry.index;
++
++    const MESG *mesg;
++    if (lastMesgValid && mesgNum == lastMesgNum)
++    {
++        mesg = lastMesg;
++    }
++    else
++    {
++        mesg = GetMesg(mesgNum);
++        lastMesgNum = mesgNum;
++        lastMesg = mesg;
++        lastMesgValid = true;
++    }
+ 
+-    for (FIT_UINT16 i = 0; i < mesg->numFields; i++)
++    FIT_UINT16 index = FIT_UINT16_INVALID;
++    if (mesg != NULL)
+     {
+-        if (mesg->fields[i].num == fieldNum)
+-            return i;
++        for (FIT_UINT16 i = 0; i < mesg->numFields; i++)
++        {
++            if (mesg->fields[i].num == fieldNum)
++            {
++                index = i;
++                break;
++            }
++        }
+     }
+ 
+-    return FIT_UINT16_INVALID;
++    entry.keyPlusOne = keyPlusOne;
++    entry.index = index;
++    return index;
+ }
+ 
+ const FIT_UINT16 Profile::GetFieldIndex(const std::string& mesgName, const std::string& fieldName)

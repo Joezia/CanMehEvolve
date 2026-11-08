@@ -1,0 +1,12 @@
+{
+  "seed": 4,
+  "steps_measured": 36,
+  "attempts": 36,
+  "updates": 4,
+  "final_record": 0.9992568201847094,
+  "final_record_speedup": 1.000743732542304,
+  "measurements": 48,
+  "rule_faster_count": 0,
+  "elapsed_s": 5051.8,
+  "ended_because": "steps"
+}

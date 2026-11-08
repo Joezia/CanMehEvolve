@@ -1,0 +1,138 @@
+[evaluate best #1] stage='' ratio=0.850481 p=0.00195312 faster=1
+[evaluate best #2] stage='' ratio=0.850604 p=0.00195312 faster=1
+[evaluate best #3] stage='' ratio=0.849828 p=0.00195312 faster=1
+{
+  "all_pass": true,
+  "alpha": 0.01,
+  "best_ratio": 0.8498284222127016,
+  "measurements": [
+    {
+      "analysis": {
+        "autocorr_lag1_max": 0.4787482460076862,
+        "autocorr_lag1_median": 0.05662558612580712,
+        "autocorr_lag1_min": -0.3185116341755099,
+        "candidate_cv": 0.0022159710222929784,
+        "candidate_ms": 407.3701110901311,
+        "error": "",
+        "faster": true,
+        "faster_processes": 10,
+        "geomean_ratio": 0.8505453862108351,
+        "p_value": 0.001953125,
+        "process_ratios": [
+          0.8519018686631243,
+          0.8493315883582053,
+          0.8508012583958235,
+          0.8485051501621527,
+          0.8463067010584433,
+          0.8515362746392412,
+          0.8501598242511658,
+          0.8498058340900118,
+          0.8542210401512829,
+          0.8529115465749714
+        ],
+        "processes": 10,
+        "ratio": 0.8504805413234946,
+        "ratio_spread": 0.007914339092839562,
+        "reason": "",
+        "reference_ms": 479.2217060457915,
+        "repetitions": 9,
+        "swapped_processes": 5,
+        "unstable": false,
+        "valid": true
+      },
+      "error": "",
+      "harness_ok": true,
+      "index": 1,
+      "seconds": 142.198754298,
+      "stage": ""
+    },
+    {
+      "analysis": {
+        "autocorr_lag1_max": 0.6787804082670607,
+        "autocorr_lag1_median": 0.18532240383044124,
+        "autocorr_lag1_min": -0.3321113111332119,
+        "candidate_cv": 0.002212391741547875,
+        "candidate_ms": 407.19242801424116,
+        "error": "",
+        "faster": true,
+        "faster_processes": 10,
+        "geomean_ratio": 0.847645807818775,
+        "p_value": 0.001953125,
+        "process_ratios": [
+          0.8189198378376736,
+          0.8529302604072314,
+          0.8544642503023325,
+          0.8514165502500768,
+          0.8504933218906522,
+          0.8473365781083908,
+          0.8507151328365662,
+          0.8495284393927959,
+          0.848326799181977,
+          0.8529059724602981
+        ],
+        "processes": 10,
+        "ratio": 0.8506042273636092,
+        "ratio_spread": 0.03554441246465889,
+        "reason": "",
+        "reference_ms": 479.0710334200412,
+        "repetitions": 9,
+        "swapped_processes": 5,
+        "unstable": false,
+        "valid": true
+      },
+      "error": "",
+      "harness_ok": true,
+      "index": 2,
+      "seconds": 142.500064177,
+      "stage": ""
+    },
+    {
+      "analysis": {
+        "autocorr_lag1_max": 0.5187235585651032,
+        "autocorr_lag1_median": 0.17847378767780245,
+        "autocorr_lag1_min": -0.07011120457145846,
+        "candidate_cv": 0.006312791897144956,
+        "candidate_ms": 407.9847685061395,
+        "error": "",
+        "faster": true,
+        "faster_processes": 10,
+        "geomean_ratio": 0.8481562887472718,
+        "p_value": 0.001953125,
+        "process_ratios": [
+          0.8321666015191228,
+          0.8467416064952606,
+          0.8488427636827969,
+          0.8497350397899729,
+          0.8513246089268738,
+          0.8501525318493935,
+          0.8488795403083756,
+          0.8523261568466268,
+          0.8499218046354303,
+          0.8516556098427911
+        ],
+        "processes": 10,
+        "ratio": 0.8498284222127016,
+        "ratio_spread": 0.02015955532750402,
+        "reason": "",
+        "reference_ms": 479.6124405693263,
+        "repetitions": 9,
+        "swapped_processes": 5,
+        "unstable": false,
+        "valid": true
+      },
+      "error": "",
+      "harness_ok": true,
+      "index": 3,
+      "seconds": 142.298247815,
+      "stage": ""
+    }
+  ],
+  "measurements_passing_rule": 3,
+  "median_ratio_over_measurements": 0.8504805413234946,
+  "median_speedup": 1.1758058549391703,
+  "min_effect": 0.02,
+  "patch": "/home/z/zhouzia/Workspace/CanMehEvolve/runs/followup/resume-greedy-s3-1088410/best.patch",
+  "started_utc": "2026-11-07T10:10:06+0800",
+  "valid_measurements": 3,
+  "worst_ratio": 0.8506042273636092
+}

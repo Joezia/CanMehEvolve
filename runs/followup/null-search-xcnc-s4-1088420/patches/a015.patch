@@ -1,0 +1,36 @@
+--- a/src/fit_segment_leaderboard_entry_mesg.hpp
++++ b/src/fit_segment_leaderboard_entry_mesg.hpp
+@@ -86,7 +86,8 @@
+         }
+ 
+         return field->IsValueValid();
+-    }
++    // noop-4-5
++}
+ 
+     ///////////////////////////////////////////////////////////////////////
+     // Returns name field
+--- a/src/fit_session_mesg.hpp
++++ b/src/fit_session_mesg.hpp
+@@ -3464,7 +3464,8 @@
+     void SetMaxSaturatedHemoglobinPercent(FIT_UINT8 index, FIT_FLOAT32 maxSaturatedHemoglobinPercent)
+     {
+         SetFieldFLOAT32Value(100, maxSaturatedHemoglobinPercent, index, FIT_SUBFIELD_INDEX_MAIN_FIELD);
+-    }
++    // noop-4-15
++}
+ 
+     ///////////////////////////////////////////////////////////////////////
+     // Checks the validity of avg_left_torque_effectiveness field
+--- a/src/fit_set_mesg.hpp
++++ b/src/fit_set_mesg.hpp
+@@ -368,7 +368,8 @@
+         }
+ 
+         return field->IsValueValid();
+-    }
++    // noop-4-11
++}
+ 
+     ///////////////////////////////////////////////////////////////////////
+     // Returns message_index field

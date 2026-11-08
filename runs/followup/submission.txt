@@ -1,0 +1,36 @@
+submitted: 2026-11-07T09:51:35+08:00
+binary_sha256 (CanMehSearch): 5fa92919f823c4eff33d422d18a9eb37fc12854ecc2da787c6e1071b83f8bfb2
+binary_sha256 (CanMehSearch-resume): 47198c3e7514ec18e27eb826366e63a656fb87c6fe29df2ef85294c912f33959
+task1 resume greedy seed 3 from runs/deepseek/greedy-s3-1072869 job 1088410
+task1 resume greedy seed 4 from runs/deepseek/greedy-s4-1072871 job 1088411
+task1 resume greedy seed 5 from runs/deepseek/greedy-s5-1072873 job 1088412
+task2 sdk inert xcnc-a N=60 job 1088413
+task2 sdk inert xcnc-b N=60 job 1088414
+task2 sdk inert xcnd-a N=60 job 1088415
+task2 sdk inert xcnd-b N=60 job 1088416
+task3 null search xcnc seed 1 steps 36 job 1088417
+task3 null search xcnc seed 2 steps 36 job 1088418
+task3 null search xcnc seed 3 steps 36 job 1088419
+task3 null search xcnc seed 4 steps 36 job 1088420
+task3 null search xcnd seed 1 steps 36 job 1088421
+task3 null search xcnd seed 2 steps 36 job 1088422
+task3 null search xcnd seed 3 steps 36 job 1088423
+task3 null search xcnd seed 4 steps 36 job 1088424
+task6 stack bestofn seed 1 job 1088425
+task6 stack bestofn seed 2 job 1088426
+task6 stack bestofn seed 3 job 1088427
+task6 stack bestofn seed 4 job 1088428
+task6 stack bestofn seed 5 job 1088429
+task4a differential test shard 0/2 job 1088519
+task4a differential test shard 1/2 job 1088520
+task4b sanitizers job 1088521
+aggregate job 1088523
+--- 2026-11-07 afternoon: differential test jobs 1088519/1088520 failed with UnicodeDecodeError (child stderr not UTF-8); fixed (errors=replace) and resubmitted; old outputs kept as failed-unicode-*
+task4a differential test (rerun) shard 0/2 job 1089571
+task4a differential test (rerun) shard 1/2 job 1089572
+aggregate job (after rerun of 4a) 1089578
+--- 2026-11-07T20:57:41+08:00: correctness tests for the two human C2 patches (SET=human)
+human differential shard 0/2 job 1091675
+human differential shard 1/2 job 1091676
+human sanitizers job 1091677
+aggregate job after human correctness: 1091678

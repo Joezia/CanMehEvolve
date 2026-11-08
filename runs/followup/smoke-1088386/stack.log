@@ -1,0 +1,4 @@
+candidates (best per function, ratio < 1): 12
+K=1 +Profile::GetMesg -> median speedup 1.0725501368390713 (valid 3, pass 3)
+done
+stack_exit=0

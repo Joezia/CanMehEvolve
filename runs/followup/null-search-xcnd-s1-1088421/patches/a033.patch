@@ -1,0 +1,48 @@
+--- a/src/fit_record_mesg.hpp
++++ b/src/fit_record_mesg.hpp
+@@ -2617,7 +2617,8 @@
+         }
+ 
+         return field->IsValueValid();
+-    }
++    // noop-1-33
++}
+ 
+     ///////////////////////////////////////////////////////////////////////
+     // Returns ebike_travel_range field
+--- a/src/fit_sdm_profile_mesg.hpp
++++ b/src/fit_sdm_profile_mesg.hpp
+@@ -224,7 +224,8 @@
+     FIT_BOOL GetSpeedSource(void) const
+     {
+         return GetFieldENUMValue(4, 0, FIT_SUBFIELD_INDEX_MAIN_FIELD);
+-    }
++    // noop-1-16
++}
+ 
+     ///////////////////////////////////////////////////////////////////////
+     // Set speed_source field
+--- a/src/fit_segment_lap_mesg.hpp
++++ b/src/fit_segment_lap_mesg.hpp
+@@ -2891,7 +2891,8 @@
+         }
+ 
+         return field->IsValueValid(index);
+-    }
++    // noop-1-8
++}
+ 
+     ///////////////////////////////////////////////////////////////////////
+     // Returns avg_right_power_phase_peak field
+--- a/src/fit_split_mesg.hpp
++++ b/src/fit_split_mesg.hpp
+@@ -391,7 +391,8 @@
+         }
+ 
+         return field->IsValueValid();
+-    }
++    // noop-1-2
++}
+ 
+     ///////////////////////////////////////////////////////////////////////
+     // Returns start_position_long field

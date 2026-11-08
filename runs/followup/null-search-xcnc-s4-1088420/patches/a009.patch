@@ -1,0 +1,22 @@
+--- a/src/fit_field_base.cpp
++++ b/src/fit_field_base.cpp
+@@ -222,6 +222,7 @@
+ FIT_SINT64 FieldBase::GetSINT64Value(const FIT_UINT8 fieldArrayIndex) const
+ {
+     return GetValue<FIT_SINT64>(fieldArrayIndex);
++// noop-4-9
+ }
+ 
+ FIT_UINT64 FieldBase::GetUINT64Value(const FIT_UINT8 fieldArrayIndex) const
+--- a/src/fit_segment_leaderboard_entry_mesg.hpp
++++ b/src/fit_segment_leaderboard_entry_mesg.hpp
+@@ -86,7 +86,8 @@
+         }
+ 
+         return field->IsValueValid();
+-    }
++    // noop-4-5
++}
+ 
+     ///////////////////////////////////////////////////////////////////////
+     // Returns name field

@@ -1,0 +1,46 @@
+--- a/src/fit_dive_settings_mesg.hpp
++++ b/src/fit_dive_settings_mesg.hpp
+@@ -216,7 +216,8 @@
+     FIT_UINT8 GetGfLow(void) const
+     {
+         return GetFieldUINT8Value(2, 0, FIT_SUBFIELD_INDEX_MAIN_FIELD);
+-    }
++    // noop-2-34
++}
+ 
+     ///////////////////////////////////////////////////////////////////////
+     // Set gf_low field
+--- a/src/fit_mesg_broadcaster.cpp
++++ b/src/fit_mesg_broadcaster.cpp
+@@ -1197,6 +1197,7 @@
+     std::vector<StressLevelMesgListener *>::iterator it = std::find(stressLevelMesgListeners.begin(), stressLevelMesgListeners.end(), &stressLevelMesgListener);
+     if (stressLevelMesgListeners.end() != it)
+     stressLevelMesgListeners.erase(it);
++// noop-2-1
+ }
+ 
+ 
+--- a/src/fit_session_mesg.hpp
++++ b/src/fit_session_mesg.hpp
+@@ -3950,7 +3950,8 @@
+     FIT_FLOAT32 GetAvgRightPowerPhase(FIT_UINT8 index) const
+     {
+         return GetFieldFLOAT32Value(118, index, FIT_SUBFIELD_INDEX_MAIN_FIELD);
+-    }
++    // noop-2-31
++}
+ 
+     ///////////////////////////////////////////////////////////////////////
+     // Set avg_right_power_phase field
+--- a/src/fit_training_file_mesg.hpp
++++ b/src/fit_training_file_mesg.hpp
+@@ -268,7 +268,8 @@
+     void SetSerialNumber(FIT_UINT32Z serialNumber)
+     {
+         SetFieldUINT32ZValue(3, serialNumber, 0, FIT_SUBFIELD_INDEX_MAIN_FIELD);
+-    }
++    // noop-2-9
++}
+ 
+     ///////////////////////////////////////////////////////////////////////
+     // Checks the validity of time_created field

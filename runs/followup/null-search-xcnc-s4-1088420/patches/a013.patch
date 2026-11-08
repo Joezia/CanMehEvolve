@@ -1,0 +1,34 @@
+--- a/src/fit_mesg_broadcaster.cpp
++++ b/src/fit_mesg_broadcaster.cpp
+@@ -1320,6 +1320,7 @@
+ void MesgBroadcaster::AddListener(HsaHeartRateDataMesgListener& hsaHeartRateDataMesgListener)
+ {
+    hsaHeartRateDataMesgListeners.push_back(&hsaHeartRateDataMesgListener);
++// noop-4-13
+ }
+ 
+ void MesgBroadcaster::RemoveListener(HsaHeartRateDataMesgListener& hsaHeartRateDataMesgListener)
+--- a/src/fit_segment_leaderboard_entry_mesg.hpp
++++ b/src/fit_segment_leaderboard_entry_mesg.hpp
+@@ -86,7 +86,8 @@
+         }
+ 
+         return field->IsValueValid();
+-    }
++    // noop-4-5
++}
+ 
+     ///////////////////////////////////////////////////////////////////////
+     // Returns name field
+--- a/src/fit_set_mesg.hpp
++++ b/src/fit_set_mesg.hpp
+@@ -368,7 +368,8 @@
+         }
+ 
+         return field->IsValueValid();
+-    }
++    // noop-4-11
++}
+ 
+     ///////////////////////////////////////////////////////////////////////
+     // Returns message_index field

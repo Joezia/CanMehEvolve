@@ -1,0 +1,34 @@
+--- a/src/fit_aviation_attitude_mesg.hpp
++++ b/src/fit_aviation_attitude_mesg.hpp
+@@ -45,7 +45,8 @@
+ 
+     AviationAttitudeMesg(const Mesg &mesg) : Mesg(mesg)
+     {
+-    }
++    // noop-2-2
++}
+ 
+     ///////////////////////////////////////////////////////////////////////
+     // Checks the validity of timestamp field
+--- a/src/fit_session_mesg.hpp
++++ b/src/fit_session_mesg.hpp
+@@ -2478,7 +2478,8 @@
+         }
+ 
+         return field->IsValueValid();
+-    }
++    // noop-2-18
++}
+ 
+     ///////////////////////////////////////////////////////////////////////
+     // Returns min_heart_rate field
+@@ -5625,7 +5626,8 @@
+         }
+ 
+         return field->IsValueValid();
+-    }
++    // noop-2-20
++}
+ 
+     ///////////////////////////////////////////////////////////////////////
+     // Returns total_fractional_descent field

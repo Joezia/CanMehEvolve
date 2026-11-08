@@ -1,0 +1,12 @@
+candidates (best per function, ratio < 1): 10
+K=1 +Profile::GetMesg -> median speedup 1.0692326228712319 (valid 3, pass 3)
+K=2 +FieldBase::FieldBase -> median speedup 1.1217186690053307 (valid 3, pass 3)
+K=3 +Profile::GetFieldIndex -> median speedup 1.1357718199907665 (valid 3, pass 3)
+K=4 +FieldBase::GetNumValues -> median speedup 1.1777640549834314 (valid 3, pass 3)
+K=5 +FieldBase::GetValue -> median speedup 1.1922154169277175 (valid 3, pass 3)
+K=6 +Field::GetNum -> median speedup 1.197707039572273 (valid 3, pass 3)
+K=7 +Mesg::GetFieldByIndex -> median speedup 1.1960820466916056 (valid 3, pass 3)
+K=8 +Mesg::GetActiveSubFieldIndexByFieldIndex -> median speedup 1.1965071481564908 (valid 3, pass 3)
+K=9 +Field::GetNumSubFields -> median speedup 1.1965901792315927 (valid 3, pass 3)
+K=10 +Field::GetScale -> median speedup 1.1923632542473286 (valid 3, pass 3)
+done

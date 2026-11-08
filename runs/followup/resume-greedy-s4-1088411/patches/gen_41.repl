@@ -1,0 +1,15 @@
+Default-construct the vectors and only copy when the source is non-empty, avoiding redundant pointer copies for the common empty-field-definition case.
+
+```cpp
+FieldBase::FieldBase(const FieldBase &field)
+{
+    if (!field.values.empty())
+    {
+        values = field.values;
+    }
+    if (!field.stringIndexes.empty())
+    {
+        stringIndexes = field.stringIndexes;
+    }
+}
+```

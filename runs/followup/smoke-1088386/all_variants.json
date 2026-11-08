@@ -1,0 +1,86 @@
+[
+ {
+  "name": "final-bestofn-seed1",
+  "patch": "/home/z/zhouzia/Workspace/CanMehEvolve/experiments/patches/final-cumulative/bestofn-seed1.cumulative-vs-stock.patch"
+ },
+ {
+  "name": "final-bestofn-seed2",
+  "patch": "/home/z/zhouzia/Workspace/CanMehEvolve/experiments/patches/final-cumulative/bestofn-seed2.cumulative-vs-stock.patch"
+ },
+ {
+  "name": "final-bestofn-seed3",
+  "patch": "/home/z/zhouzia/Workspace/CanMehEvolve/experiments/patches/final-cumulative/bestofn-seed3.cumulative-vs-stock.patch"
+ },
+ {
+  "name": "final-bestofn-seed4",
+  "patch": "/home/z/zhouzia/Workspace/CanMehEvolve/experiments/patches/final-cumulative/bestofn-seed4.cumulative-vs-stock.patch"
+ },
+ {
+  "name": "final-bestofn-seed5",
+  "patch": "/home/z/zhouzia/Workspace/CanMehEvolve/experiments/patches/final-cumulative/bestofn-seed5.cumulative-vs-stock.patch"
+ },
+ {
+  "name": "final-greedy-seed1",
+  "patch": "/home/z/zhouzia/Workspace/CanMehEvolve/experiments/patches/final-cumulative/greedy-seed1.cumulative-vs-stock.patch"
+ },
+ {
+  "name": "final-greedy-seed2",
+  "patch": "/home/z/zhouzia/Workspace/CanMehEvolve/experiments/patches/final-cumulative/greedy-seed2.cumulative-vs-stock.patch"
+ },
+ {
+  "name": "final-greedy-seed3",
+  "patch": "/home/z/zhouzia/Workspace/CanMehEvolve/experiments/patches/final-cumulative/greedy-seed3.cumulative-vs-stock.patch"
+ },
+ {
+  "name": "final-greedy-seed4",
+  "patch": "/home/z/zhouzia/Workspace/CanMehEvolve/experiments/patches/final-cumulative/greedy-seed4.cumulative-vs-stock.patch"
+ },
+ {
+  "name": "final-greedy-seed5",
+  "patch": "/home/z/zhouzia/Workspace/CanMehEvolve/experiments/patches/final-cumulative/greedy-seed5.cumulative-vs-stock.patch"
+ },
+ {
+  "name": "s3-step01-gen6",
+  "patch": "/home/z/zhouzia/Workspace/CanMehEvolve/runs/deepseek/greedy-s3-1072869/patches/gen_6.patch"
+ },
+ {
+  "name": "s3-step02-gen11",
+  "patch": "/home/z/zhouzia/Workspace/CanMehEvolve/runs/deepseek/greedy-s3-1072869/patches/gen_11.patch"
+ },
+ {
+  "name": "s3-step03-gen12",
+  "patch": "/home/z/zhouzia/Workspace/CanMehEvolve/runs/deepseek/greedy-s3-1072869/patches/gen_12.patch"
+ },
+ {
+  "name": "s3-step04-gen13",
+  "patch": "/home/z/zhouzia/Workspace/CanMehEvolve/runs/deepseek/greedy-s3-1072869/patches/gen_13.patch"
+ },
+ {
+  "name": "s3-step05-gen17",
+  "patch": "/home/z/zhouzia/Workspace/CanMehEvolve/runs/deepseek/greedy-s3-1072869/patches/gen_17.patch"
+ },
+ {
+  "name": "s3-step06-gen18",
+  "patch": "/home/z/zhouzia/Workspace/CanMehEvolve/runs/deepseek/greedy-s3-1072869/patches/gen_18.patch"
+ },
+ {
+  "name": "s3-step07-gen20",
+  "patch": "/home/z/zhouzia/Workspace/CanMehEvolve/runs/deepseek/greedy-s3-1072869/patches/gen_20.patch"
+ },
+ {
+  "name": "s3-step08-gen21",
+  "patch": "/home/z/zhouzia/Workspace/CanMehEvolve/runs/deepseek/greedy-s3-1072869/patches/gen_21.patch"
+ },
+ {
+  "name": "s3-step09-gen28",
+  "patch": "/home/z/zhouzia/Workspace/CanMehEvolve/runs/deepseek/greedy-s3-1072869/patches/gen_28.patch"
+ },
+ {
+  "name": "s3-step10-gen31",
+  "patch": "/home/z/zhouzia/Workspace/CanMehEvolve/runs/deepseek/greedy-s3-1072869/patches/gen_31.patch"
+ },
+ {
+  "name": "s3-step11-gen34",
+  "patch": "/home/z/zhouzia/Workspace/CanMehEvolve/runs/deepseek/greedy-s3-1072869/patches/gen_34.patch"
+ }
+]

@@ -1,0 +1,22 @@
+--- a/src/fit_aviation_attitude_mesg.hpp
++++ b/src/fit_aviation_attitude_mesg.hpp
+@@ -45,7 +45,8 @@
+ 
+     AviationAttitudeMesg(const Mesg &mesg) : Mesg(mesg)
+     {
+-    }
++    // noop-2-2
++}
+ 
+     ///////////////////////////////////////////////////////////////////////
+     // Checks the validity of timestamp field
+--- a/src/fit_mesg_broadcaster.cpp
++++ b/src/fit_mesg_broadcaster.cpp
+@@ -85,6 +85,7 @@
+ void MesgBroadcaster::AddListener(FileIdMesgListener& fileIdMesgListener)
+ {
+    fileIdMesgListeners.push_back(&fileIdMesgListener);
++// noop-2-12
+ }
+ 
+ void MesgBroadcaster::RemoveListener(FileIdMesgListener& fileIdMesgListener)

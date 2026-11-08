@@ -1,0 +1,22 @@
+--- a/src/fit_mesg_broadcaster.cpp
++++ b/src/fit_mesg_broadcaster.cpp
+@@ -1671,6 +1671,7 @@
+ void MesgBroadcaster::AddListener(SkinTempOvernightMesgListener& skinTempOvernightMesgListener)
+ {
+    skinTempOvernightMesgListeners.push_back(&skinTempOvernightMesgListener);
++// noop-3-10
+ }
+ 
+ void MesgBroadcaster::RemoveListener(SkinTempOvernightMesgListener& skinTempOvernightMesgListener)
+--- a/src/fit_monitoring_mesg.hpp
++++ b/src/fit_monitoring_mesg.hpp
+@@ -505,7 +505,8 @@
+     void SetCycles16(FIT_UINT16 cycles16)
+     {
+         SetFieldUINT16Value(9, cycles16, 0, FIT_SUBFIELD_INDEX_MAIN_FIELD);
+-    }
++    // noop-3-5
++}
+ 
+     ///////////////////////////////////////////////////////////////////////
+     // Checks the validity of active_time_16 field

@@ -1,0 +1,12 @@
+--- a/src/fit_nmea_sentence_mesg.hpp
++++ b/src/fit_nmea_sentence_mesg.hpp
+@@ -36,7 +36,8 @@
+ 
+     NmeaSentenceMesg(const Mesg &mesg) : Mesg(mesg)
+     {
+-    }
++    // noop-99-2
++}
+ 
+     ///////////////////////////////////////////////////////////////////////
+     // Checks the validity of timestamp field

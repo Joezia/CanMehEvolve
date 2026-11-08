@@ -1,0 +1,37 @@
+[step 1] region MesgBroadcaster::RemoveListener ratio=0.99937 r2=0.99949 record=0.99949 updates=1
+[step 2] region AviationAttitudeMesg ratio=1.00033 record=0.99949 updates=1
+[step 3] region SetDeviceType ratio=0.99992 record=0.99949 updates=1
+[step 4] region MonitoringHrDataMesg ratio=0.99952 record=0.99949 updates=1
+[step 5] region GetDepth ratio=1.00055 record=0.99949 updates=1
+[step 6] region GetSecondaryCustomTargetSpeedHigh ratio=0.99987 record=0.99949 updates=1
+[step 7] region GetAvgNegVerticalSpeed ratio=0.99979 record=0.99949 updates=1
+[step 8] region SetCalibratedGyroY ratio=1.00076 record=0.99949 updates=1
+[step 9] region SetSerialNumber ratio=0.99889 r2=0.99932 record=0.99932 updates=2
+[step 10] region IsAutoActivityDetectStartTimestampValid ratio=1.00038 record=0.99932 updates=2
+[step 11] region GetTargetDistance ratio=1.00060 record=0.99932 updates=2
+[step 12] region MesgBroadcaster::AddListener ratio=1.00079 record=0.99932 updates=2
+[step 13] region GetStressLevelValue ratio=1.00037 record=0.99932 updates=2
+[step 14] region IsDisplayOrientationValid ratio=1.00078 record=0.99932 updates=2
+[step 15] region SdmProfileMesg ratio=1.00019 record=0.99932 updates=2
+[step 16] region IsWeightValid ratio=1.00040 record=0.99932 updates=2
+[step 17] region IsQualityValid ratio=1.00139 record=0.99932 updates=2
+[step 18] region IsMinHeartRateValid ratio=1.00150 record=0.99932 updates=2
+[step 19] region IsActivityTimeValid ratio=0.99939 record=0.99932 updates=2
+[step 20] region IsTotalFractionalDescentValid ratio=1.00126 record=0.99932 updates=2
+[step 21] region IsTotalElapsedTimeValid ratio=0.99987 record=0.99932 updates=2
+[step 22] region SetPoolLength ratio=1.00153 record=0.99932 updates=2
+[step 23] region SetCharged ratio=1.00208 record=0.99932 updates=2
+[step 24] region MesgBroadcaster::AddListener ratio=0.99835 r2=1.00037 record=0.99932 updates=2
+[step 25] region Mesg::SetLocalNum ratio=1.00114 record=0.99932 updates=2
+[step 26] region SetCyclesToDistance ratio=0.99968 record=0.99932 updates=2
+[step 27] region GetAvgLeftTorqueEffectiveness ratio=1.00010 record=0.99932 updates=2
+[step 28] region GetNumMinSaturatedHemoglobinPercent ratio=0.99970 record=0.99932 updates=2
+[step 29] region GetSource ratio=0.99990 record=0.99932 updates=2
+[step 30] region GetAirTimeRemaining ratio=0.99982 record=0.99932 updates=2
+[step 31] region GetAvgRightPowerPhase ratio=0.99864 r2=0.99923 record=0.99923 updates=3
+[step 32] region SetTime ratio=1.00256 record=0.99923 updates=3
+[step 33] region IsMessageIndexValid ratio=1.00081 record=0.99923 updates=3
+[step 34] region GetGfLow ratio=0.99984 record=0.99923 updates=3
+[step 35] region IsManufacturerValid ratio=1.00061 record=0.99923 updates=3
+[step 36] region IsAccumulateValid ratio=0.99941 record=0.99923 updates=3
+{"seed": 2, "steps_measured": 36, "attempts": 36, "updates": 3, "final_record": 0.9992267560775541, "final_record_speedup": 1.0007738422912946, "measurements": 40, "rule_faster_count": 0, "elapsed_s": 4204.0, "ended_because": "steps"}

@@ -1,0 +1,22 @@
+--- a/src/fit_ant_channel_id_mesg.hpp
++++ b/src/fit_ant_channel_id_mesg.hpp
+@@ -100,7 +100,8 @@
+     void SetDeviceType(FIT_UINT8Z deviceType)
+     {
+         SetFieldUINT8ZValue(1, deviceType, 0, FIT_SUBFIELD_INDEX_MAIN_FIELD);
+-    }
++    // noop-2-3
++}
+ 
+     ///////////////////////////////////////////////////////////////////////
+     // Checks the validity of device_number field
+--- a/src/fit_mesg_broadcaster.cpp
++++ b/src/fit_mesg_broadcaster.cpp
+@@ -1197,6 +1197,7 @@
+     std::vector<StressLevelMesgListener *>::iterator it = std::find(stressLevelMesgListeners.begin(), stressLevelMesgListeners.end(), &stressLevelMesgListener);
+     if (stressLevelMesgListeners.end() != it)
+     stressLevelMesgListeners.erase(it);
++// noop-2-1
+ }
+ 
+ 

@@ -1,0 +1,9 @@
+I replaced the element-wise vector copies with O(1) swaps that steal the source buffers, eliminating per-field heap allocations and FitValue copy-constructor calls during message construction and vector reallocation.
+
+```cpp
+FieldBase::FieldBase(const FieldBase &field)
+{
+    values.swap(const_cast<std::vector<FitValue> &>(field.values));
+    stringIndexes.swap(const_cast<std::vector<FIT_STRING_INDEX> &>(field.stringIndexes));
+}
+```

@@ -1,0 +1,22 @@
+--- a/src/fit_buffer_encode.cpp
++++ b/src/fit_buffer_encode.cpp
+@@ -104,6 +104,7 @@
+ void BufferEncode::OnMesg(Mesg &mesg)
+ {
+    Write(mesg);
++// noop-1-18
+ }
+ 
+ void BufferEncode::OnMesgDefinition(MesgDefinition& mesgDef)
+--- a/src/fit_split_mesg.hpp
++++ b/src/fit_split_mesg.hpp
+@@ -391,7 +391,8 @@
+         }
+ 
+         return field->IsValueValid();
+-    }
++    // noop-1-2
++}
+ 
+     ///////////////////////////////////////////////////////////////////////
+     // Returns start_position_long field

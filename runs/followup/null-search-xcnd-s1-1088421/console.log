@@ -1,0 +1,37 @@
+[step 1] region GetIncidentDetectionEnabled ratio=1.00037 record=1.00000 updates=0
+[step 2] region IsStartPositionLongValid ratio=0.99919 r2=0.99976 record=0.99976 updates=1
+[step 3] region MesgBroadcaster::AddListener ratio=0.99929 r2=1.00023 record=0.99976 updates=1
+[step 4] region HrZoneMesg ratio=1.00118 record=0.99976 updates=1
+[step 5] region IsHighValueValid ratio=1.00104 record=0.99976 updates=1
+[step 6] region SetFirstLapIndex ratio=0.99980 record=0.99976 updates=1
+[step 7] region SetMaxCadence ratio=1.00070 record=0.99976 updates=1
+[step 8] region IsAvgRightPowerPhasePeakValid ratio=0.99958 r2=0.99888 record=0.99958 updates=2
+[step 9] region SetDurationTime ratio=1.00025 record=0.99958 updates=2
+[step 10] region IsIsDeletedValid ratio=0.99969 record=0.99958 updates=2
+[step 11] region SetFrontGearNum ratio=0.99936 r2=1.00128 record=0.99958 updates=2
+[step 12] region SetRoll ratio=1.00004 record=0.99958 updates=2
+[step 13] region IsTotalTimerTimeValid ratio=1.00023 record=0.99958 updates=2
+[step 14] region Mesg::GetNumDevFields ratio=0.99794 r2=0.99994 record=0.99958 updates=2
+[step 15] region PadMesg ratio=1.00148 record=0.99958 updates=2
+[step 16] region GetSpeedSource ratio=0.99906 r2=0.99914 record=0.99914 updates=3
+[step 17] region GetTargetTime ratio=0.99953 record=0.99914 updates=3
+[step 18] region BufferEncode::OnMesg ratio=1.00128 record=0.99914 updates=3
+[step 19] region GetTotalTimerTime ratio=1.00000 record=0.99914 updates=3
+[step 20] region SetTimestamp32k ratio=1.00076 record=0.99914 updates=3
+[step 21] region GetComponents ratio=0.99887 r2=1.00005 record=0.99914 updates=3
+[step 22] region GetTimeInSpeedZone ratio=1.00055 record=0.99914 updates=3
+[step 23] region GetSubSport ratio=0.99942 record=0.99914 updates=3
+[step 24] region GetNumMaxTotalHemoglobinConc ratio=0.99938 record=0.99914 updates=3
+[step 25] region Mesg::GetFieldSINT16Value ratio=1.00166 record=0.99914 updates=3
+[step 26] region FieldBase::SetUINT16ZValue ratio=1.00037 record=0.99914 updates=3
+[step 27] region FieldDefinition::SetType ratio=0.99858 r2=1.00008 record=0.99914 updates=3
+[step 28] region WorkoutStepMesg ratio=1.00047 record=0.99914 updates=3
+[step 29] region SetWorkoutFeel ratio=1.00032 record=0.99914 updates=3
+[step 30] region DeveloperField::GetAppId ratio=0.99887 r2=1.00027 record=0.99914 updates=3
+[step 31] region SetTimestamp ratio=0.99940 record=0.99914 updates=3
+[step 32] region GetScaling ratio=1.00017 record=0.99914 updates=3
+[step 33] region IsEbikeTravelRangeValid ratio=0.99996 record=0.99914 updates=3
+[step 34] region Mesg::GetField ratio=0.99869 r2=1.00062 record=0.99914 updates=3
+[step 35] region GetAvgCadencePosition ratio=1.00013 record=0.99914 updates=3
+[step 36] region SetFieldCount ratio=1.00172 record=0.99914 updates=3
+{"seed": 1, "steps_measured": 36, "attempts": 36, "updates": 3, "final_record": 0.9991414945472783, "final_record_speedup": 1.0008592431176233, "measurements": 46, "rule_faster_count": 0, "elapsed_s": 6406.8, "ended_because": "steps"}

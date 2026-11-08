@@ -1,0 +1,8 @@
+host=xcnd6
+job=1088429
+start=2026-11-07T11:53:39+08:00
+source_run=/home/z/zhouzia/Workspace/CanMehEvolve/runs/deepseek/bestofn-s5-1072874
+kmax=12
+binary_sha256=5fa92919f823c4eff33d422d18a9eb37fc12854ecc2da787c6e1071b83f8bfb2
+stack_exit=0
+end=2026-11-07T13:05:23+08:00

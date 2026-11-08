@@ -1,0 +1,58 @@
+{
+ "stock|asan": {
+  "returncode": 0,
+  "asan_errors": 0,
+  "ubsan_runtime_errors": 0,
+  "tsan_warnings": 0
+ },
+ "final-bestofn-seed4|asan": {
+  "changed_units": [
+   "fit_profile"
+  ],
+  "returncode": 0,
+  "asan_errors": 0,
+  "ubsan_runtime_errors": 0,
+  "tsan_warnings": 0,
+  "files": 0,
+  "digest_differences_vs_stock": 0
+ },
+ "final-greedy-seed5|asan": {
+  "changed_units": [
+   "fit_field_base",
+   "fit_profile"
+  ],
+  "returncode": 0,
+  "asan_errors": 0,
+  "ubsan_runtime_errors": 0,
+  "tsan_warnings": 0,
+  "files": 0,
+  "digest_differences_vs_stock": 0
+ },
+ "stock|tsan": {
+  "returncode": -11,
+  "asan_errors": 0,
+  "ubsan_runtime_errors": 0,
+  "tsan_warnings": 0
+ },
+ "final-bestofn-seed4|tsan": {
+  "changed_units": [
+   "fit_profile"
+  ],
+  "returncode": 66,
+  "asan_errors": 0,
+  "ubsan_runtime_errors": 0,
+  "tsan_warnings": 0,
+  "output": ""
+ },
+ "final-greedy-seed5|tsan": {
+  "changed_units": [
+   "fit_field_base",
+   "fit_profile"
+  ],
+  "returncode": -11,
+  "asan_errors": 0,
+  "ubsan_runtime_errors": 0,
+  "tsan_warnings": 0,
+  "output": ""
+ }
+}

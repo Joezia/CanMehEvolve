@@ -1,0 +1,24 @@
+--- a/src/fit_aviation_attitude_mesg.hpp
++++ b/src/fit_aviation_attitude_mesg.hpp
+@@ -45,7 +45,8 @@
+ 
+     AviationAttitudeMesg(const Mesg &mesg) : Mesg(mesg)
+     {
+-    }
++    // noop-2-2
++}
+ 
+     ///////////////////////////////////////////////////////////////////////
+     // Checks the validity of timestamp field
+--- a/src/fit_monitoring_hr_data_mesg.hpp
++++ b/src/fit_monitoring_hr_data_mesg.hpp
+@@ -36,7 +36,8 @@
+ 
+     MonitoringHrDataMesg(const Mesg &mesg) : Mesg(mesg)
+     {
+-    }
++    // noop-2-4
++}
+ 
+     ///////////////////////////////////////////////////////////////////////
+     // Checks the validity of timestamp field

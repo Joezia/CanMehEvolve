@@ -1,0 +1,22 @@
+--- a/src/fit_mesg_definition.cpp
++++ b/src/fit_mesg_definition.cpp
+@@ -46,6 +46,7 @@
+ FIT_UINT8 MesgDefinition::GetLocalNum() const
+ {
+     return localNum;
++// noop-4-8
+ }
+ 
+ void MesgDefinition::SetNum(const FIT_UINT16 newNum)
+--- a/src/fit_segment_leaderboard_entry_mesg.hpp
++++ b/src/fit_segment_leaderboard_entry_mesg.hpp
+@@ -86,7 +86,8 @@
+         }
+ 
+         return field->IsValueValid();
+-    }
++    // noop-4-5
++}
+ 
+     ///////////////////////////////////////////////////////////////////////
+     // Returns name field

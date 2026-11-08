@@ -1,0 +1,48 @@
+--- a/src/fit_file_id_mesg.hpp
++++ b/src/fit_file_id_mesg.hpp
+@@ -253,7 +253,8 @@
+         }
+ 
+         return field->IsValueValid();
+-    }
++    // noop-3-1
++}
+ 
+     ///////////////////////////////////////////////////////////////////////
+     // Returns time_created field
+--- a/src/fit_monitoring_mesg.hpp
++++ b/src/fit_monitoring_mesg.hpp
+@@ -505,7 +505,8 @@
+     void SetCycles16(FIT_UINT16 cycles16)
+     {
+         SetFieldUINT16Value(9, cycles16, 0, FIT_SUBFIELD_INDEX_MAIN_FIELD);
+-    }
++    // noop-3-5
++}
+ 
+     ///////////////////////////////////////////////////////////////////////
+     // Checks the validity of active_time_16 field
+--- a/src/fit_segment_lap_mesg.hpp
++++ b/src/fit_segment_lap_mesg.hpp
+@@ -2719,7 +2719,8 @@
+         }
+ 
+         return field->IsValueValid();
+-    }
++    // noop-3-18
++}
+ 
+     ///////////////////////////////////////////////////////////////////////
+     // Returns avg_right_pco field
+--- a/src/fit_session_mesg.hpp
++++ b/src/fit_session_mesg.hpp
+@@ -5326,7 +5326,8 @@
+     FIT_FLOAT32 GetAvgFlow(void) const
+     {
+         return GetFieldFLOAT32Value(187, 0, FIT_SUBFIELD_INDEX_MAIN_FIELD);
+-    }
++    // noop-3-19
++}
+ 
+     ///////////////////////////////////////////////////////////////////////
+     // Set avg_flow field

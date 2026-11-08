@@ -1,0 +1,466 @@
+diff --git a/src/fit_decode.cpp b/src/fit_decode.cpp
+index de87b06..c7dcded 100644
+--- a/src/fit_decode.cpp
++++ b/src/fit_decode.cpp
+@@ -230,6 +230,8 @@ FIT_BOOL Decode::Resume(void)
+     pause = FIT_FALSE;
+     RETURN decodeReturn = RETURN_CONTINUE;
+ 
++    bool needPauseCheck = false;
++
+     do
+     {
+         if ( currentByteIndex == 0 )
+@@ -238,86 +240,100 @@ FIT_BOOL Decode::Resume(void)
+             bytesRead = (FIT_UINT32)file->gcount();
+         }
+ 
+-        for (; currentByteIndex < bytesRead; currentByteIndex++)
++        FIT_UINT32 idx = currentByteIndex;
++        const FIT_UINT32 bytes = bytesRead;
++
++        for (; idx < bytes; ++idx)
+         {
+-            if (pause)
+-                return FIT_FALSE;
++            if (needPauseCheck)
++            {
++                if (pause)
++                {
++                    currentByteIndex = idx;
++                    return FIT_FALSE;
++                }
++                needPauseCheck = false;
++            }
+ 
+-            decodeReturn = ReadByte((FIT_UINT8)buffer[currentByteIndex]);
++            decodeReturn = ReadByte((FIT_UINT8)buffer[idx]);
+ 
+-            switch (decodeReturn) {
+-                case RETURN_CONTINUE:
+-                    break;
++            if (decodeReturn == RETURN_CONTINUE)
++            {
++            }
++            else if (decodeReturn == RETURN_MESG)
++            {
++                FIT_MESG_NUM mesgNum = mesg.GetNum();
++                if (mesgNum == FIT_MESG_NUM_DEVELOPER_DATA_ID)
++                {
++                    DeveloperDataIdMesg devIdMesg(mesg);
+ 
+-                case RETURN_MESG:
+-                    if (mesg.GetNum() == FIT_MESG_NUM_DEVELOPER_DATA_ID)
+-                    {
+-                        DeveloperDataIdMesg devIdMesg(mesg);
++                    if (!devIdMesg.IsDeveloperDataIndexValid()) {
++                        throw fit::RuntimeException("Invalid developer data index in DeveloperDataIdMesg");
++                    }
+ 
+-                        if (!devIdMesg.IsDeveloperDataIndexValid()) {
+-							throw fit::RuntimeException("Invalid developer data index in DeveloperDataIdMesg");
+-						}
++                    FIT_UINT8 index = devIdMesg.GetDeveloperDataIndex();
++                    developers[index] = devIdMesg;
++                    descriptions[index] = std::unordered_map<FIT_UINT8, FieldDescriptionMesg>();
++                }
++                else if (mesgNum == FIT_MESG_NUM_FIELD_DESCRIPTION)
++                {
++                    FieldDescriptionMesg descMesg(mesg);
+ 
+-                        FIT_UINT8 index = devIdMesg.GetDeveloperDataIndex();
+-                        developers[index] = devIdMesg;
+-                        descriptions[index] = std::unordered_map<FIT_UINT8, FieldDescriptionMesg>();
++                    if (!descMesg.IsDeveloperDataIndexValid()) {
++                        throw fit::RuntimeException("Invalid developer data index in FieldDescriptionMesg");
+                     }
+-                    else if (mesg.GetNum() == FIT_MESG_NUM_FIELD_DESCRIPTION)
+-                    {
+-                        FieldDescriptionMesg descMesg(mesg);
+-
+-                        if (!descMesg.IsDeveloperDataIndexValid()) {
+-							throw fit::RuntimeException("Invalid developer data index in FieldDescriptionMesg");
+-						}
+ 
+-						if (!descMesg.IsFieldDefinitionNumberValid())
+-						{
+-							throw fit::RuntimeException("Invalid developer field definition number in FieldDescriptionMesg");
+-						}
++                    if (!descMesg.IsFieldDefinitionNumberValid())
++                    {
++                        throw fit::RuntimeException("Invalid developer field definition number in FieldDescriptionMesg");
++                    }
+ 
+-                        FIT_UINT8 index = descMesg.GetDeveloperDataIndex();
+-                        FIT_UINT8 fldNum = descMesg.GetFieldDefinitionNumber();
++                    FIT_UINT8 index = descMesg.GetDeveloperDataIndex();
++                    FIT_UINT8 fldNum = descMesg.GetFieldDefinitionNumber();
+ 
+-                        try
+-                        {
+-                            descriptions.at(index)[fldNum] = descMesg;
+-                            
++                    try
++                    {
++                        descriptions.at(index)[fldNum] = descMesg;
+ 
+-                            if (descriptionListener)
+-                            {
+-                                descriptionListener->OnDeveloperFieldDescription(DeveloperFieldDescription(descMesg, developers[index]));
+-                            }
+-                        }
+-                        catch (std::out_of_range)
++                        if (descriptionListener)
+                         {
+-                            // Description without a Developer Data Id Message
++                            descriptionListener->OnDeveloperFieldDescription(DeveloperFieldDescription(descMesg, developers[index]));
++                            needPauseCheck = true;
+                         }
+                     }
+-
+-                    
+-
+-                    if (mesgListener)
+-                        mesgListener->OnMesg(mesg);
+-                    break;
+-
+-                case RETURN_MESG_DEF:
+-                   
+-                    if (mesgDefinitionListener)
++                    catch (std::out_of_range)
+                     {
+-                        mesgDefinitionListener->OnMesgDefinition(localMesgDefs[localMesgIndex]);
++                        // Description without a Developer Data Id Message
+                     }
+-                    break;
+-
+-                case RETURN_END_OF_FILE:
+-                     // Increment so we do not read the same byte twice in the case of a chained file
+-                    currentByteIndex++;
+-                    currentByteOffset++;
+-                    return FIT_TRUE;
++                }
+ 
+-                default:
+-                    currentByteOffset++;
+-                    return FIT_TRUE;
++                if (mesgListener)
++                {
++                    mesgListener->OnMesg(mesg);
++                    needPauseCheck = true;
++                }
+             }
++            else if (decodeReturn == RETURN_MESG_DEF)
++            {
++                if (mesgDefinitionListener)
++                {
++                    mesgDefinitionListener->OnMesgDefinition(localMesgDefs[localMesgIndex]);
++                    needPauseCheck = true;
++                }
++            }
++            else if (decodeReturn == RETURN_END_OF_FILE)
++            {
++                currentByteIndex = idx + 1;
++                currentByteOffset++;
++                return FIT_TRUE;
++            }
++            else
++            {
++                currentByteIndex = idx;
++                currentByteOffset++;
++                return FIT_TRUE;
++            }
++
+             currentByteOffset++;
+         }
+         currentByteIndex = 0;
+diff --git a/src/fit_field.cpp b/src/fit_field.cpp
+index 1e4b215..78ebe87 100644
+--- a/src/fit_field.cpp
++++ b/src/fit_field.cpp
+@@ -15,6 +15,7 @@
+ #include "fit_field.hpp"
+ #include "fit_mesg.hpp"
+ #include "fit_unicode.hpp"
++#include <cstring>
+ 
+ namespace fit
+ {
+@@ -29,11 +30,10 @@ Field::Field(void)
+ 
+ Field::Field(const Field &field)
+     : FieldBase(field)
+-    , profile(field.profile)
+-    , profileIndex(field.profileIndex)
+-    , type(field.type)
+-    , isFieldExpanded(field.isFieldExpanded)
+ {
++    std::memcpy(static_cast<void*>(&profile),
++                static_cast<const void*>(&field.profile),
++                sizeof(Field) - sizeof(FieldBase));
+ }
+ 
+ Field::Field(const Profile::MESG_INDEX mesgIndex, const FIT_UINT16 fieldIndex)
+diff --git a/src/fit_field_base.cpp b/src/fit_field_base.cpp
+index 2f8212c..d07a874 100644
+--- a/src/fit_field_base.cpp
++++ b/src/fit_field_base.cpp
+@@ -16,6 +16,7 @@
+ #include "fit_field_base.hpp"
+ #include "fit_mesg.hpp"
+ #include "fit_unicode.hpp"
++#include <cstring>
+ 
+ namespace fit
+ {
+@@ -25,9 +26,9 @@ FieldBase::FieldBase(void)
+ }
+ 
+ FieldBase::FieldBase(const FieldBase &field)
++    : values(field.values),
++      stringIndexes(field.stringIndexes)
+ {
+-    values = field.values;
+-    stringIndexes = field.stringIndexes;
+ }
+ 
+ FieldBase::~FieldBase()
+@@ -344,12 +345,13 @@ FIT_FLOAT32 FieldBase::GetFLOAT32Value(const FIT_UINT8 fieldArrayIndex, const FI
+ 
+ FIT_FLOAT64 FieldBase::GetFLOAT64Value(const FIT_UINT8 fieldArrayIndex, const FIT_UINT16 subFieldIndex) const
+ {
+-    FIT_FLOAT64 float64Value;
+-
+     if (!IsValid())
+         return FIT_FLOAT64_INVALID;
+ 
+-    switch (GetType()) { // Note: This checks the type of the MAIN field since data is aligned according to that type
++    FIT_FLOAT64 float64Value;
++    FIT_UINT8 type = GetType();
++
++    switch (type) { // Note: This checks the type of the MAIN field since data is aligned according to that type
+         case FIT_BASE_TYPE_BYTE:
+         {
+             float64Value =
+@@ -411,14 +413,32 @@ FIT_FLOAT64 FieldBase::GetFLOAT64Value(const FIT_UINT8 fieldArrayIndex, const FI
+ 
+         case FIT_BASE_TYPE_FLOAT32:
+         {
+-            FIT_FLOAT32 val = GetFLOAT32Value(fieldArrayIndex, subFieldIndex);
++            FIT_UINT32 uint32Value = GetValue<FIT_UINT32>(fieldArrayIndex);
++            FIT_FLOAT32 val;
++            memcpy(&val, &uint32Value, sizeof(FIT_FLOAT32));
+ 
+-            if (FIT_FLOAT32_INVALID == val)
++            if (memcmp(&val, baseTypeInvalids[FIT_BASE_TYPE_FLOAT32 & FIT_BASE_TYPE_NUM_MASK], sizeof(FIT_FLOAT32)) == 0)
+             {
+                 return FIT_FLOAT64_INVALID;
+             }
+ 
+-            return static_cast<FIT_FLOAT64>(val);
++            FIT_FLOAT64 scale = GetScale(subFieldIndex);
++            FIT_FLOAT64 offset = GetOffset(subFieldIndex);
++            FIT_FLOAT32 scaled;
++            if (scale == 1.0 && offset == 0.0 && val == val)
++            {
++                scaled = val;
++            }
++            else
++            {
++                scaled = static_cast<FIT_FLOAT32>(val / scale - offset);
++            }
++
++            if (scaled == FIT_FLOAT32_INVALID)
++            {
++                return FIT_FLOAT64_INVALID;
++            }
++            return static_cast<FIT_FLOAT64>(scaled);
+         }
+ 
+         case FIT_BASE_TYPE_FLOAT64:
+@@ -437,7 +457,13 @@ FIT_FLOAT64 FieldBase::GetFLOAT64Value(const FIT_UINT8 fieldArrayIndex, const FI
+         return float64Value;
+     }
+ 
+-    return float64Value / GetScale(subFieldIndex) - GetOffset(subFieldIndex);
++    FIT_FLOAT64 scale = GetScale(subFieldIndex);
++    FIT_FLOAT64 offset = GetOffset(subFieldIndex);
++    if (scale == 1.0 && offset == 0.0 && float64Value == float64Value)
++    {
++        return float64Value;
++    }
++    return float64Value / scale - offset;
+ }
+ 
+ FIT_WSTRING FieldBase::GetSTRINGValue(const FIT_UINT8 fieldArrayIndex, const FIT_UINT16 subFieldIndex) const
+@@ -1131,19 +1157,60 @@ FIT_FLOAT64 FieldBase::Round(FIT_FLOAT64 value)
+ template <typename T>
+ T FieldBase::GetValue(const FIT_UINT8 fieldArrayIndex) const
+ {
+-    FIT_UINT8 size = baseTypeSizes[GetType() & FIT_BASE_TYPE_NUM_MASK];
++    const FIT_UINT8 baseType = GetType() & FIT_BASE_TYPE_NUM_MASK;
++    const FIT_UINT8 size = baseTypeSizes[baseType];
++
+     if (fieldArrayIndex >= (FIT_UINT8)values.size())
+     {
+-        return *reinterpret_cast<const T*>(baseTypeInvalids[GetType() & FIT_BASE_TYPE_NUM_MASK]);
++        return *reinterpret_cast<const T*>(baseTypeInvalids[baseType]);
+     }
+ 
+-    T rv = 0;
++    const FIT_UINT8* p = &values[fieldArrayIndex * size];
+ 
+-    for (int i = 0; i < size; i++)
++    if (size <= sizeof(T))
+     {
+-        rv |= static_cast<T>(values[(fieldArrayIndex * size) + i]) << (i * 8);
++        T rv = 0;
++        switch (size)
++        {
++        case 1:
++            rv = static_cast<T>(p[0]);
++            break;
++        case 2:
++        {
++            FIT_UINT16 v;
++            std::memcpy(&v, p, 2);
++            rv = static_cast<T>(v);
++            break;
++        }
++        case 4:
++        {
++            FIT_UINT32 v;
++            std::memcpy(&v, p, 4);
++            rv = static_cast<T>(v);
++            break;
++        }
++        case 8:
++        {
++            FIT_UINT64 v;
++            std::memcpy(&v, p, 8);
++            rv = static_cast<T>(v);
++            break;
++        }
++        default:
++            for (int i = 0; i < size; i++)
++            {
++                rv |= static_cast<T>(p[i]) << (i * 8);
++            }
++            break;
++        }
++        return rv;
+     }
+ 
++    T rv = 0;
++    for (int i = 0; i < size; i++)
++    {
++        rv |= static_cast<T>(p[i]) << (i * 8);
++    }
+     return rv;
+ }
+ 
+diff --git a/src/fit_magnetometer_data_mesg.hpp b/src/fit_magnetometer_data_mesg.hpp
+index 794ab6b..f50fdc8 100644
+--- a/src/fit_magnetometer_data_mesg.hpp
++++ b/src/fit_magnetometer_data_mesg.hpp
+@@ -51,12 +51,7 @@ public:
+     FIT_BOOL IsTimestampValid() const
+     {
+         const Field* field = GetField(253);
+-        if( FIT_NULL == field )
+-        {
+-            return FIT_FALSE;
+-        }
+-
+-        return field->IsValueValid();
++        return (FIT_NULL != field) ? field->IsValueValid() : FIT_FALSE;
+     }
+ 
+     ///////////////////////////////////////////////////////////////////////
+diff --git a/src/fit_mesg.cpp b/src/fit_mesg.cpp
+index 6972b9b..6dbdbf6 100644
+--- a/src/fit_mesg.cpp
++++ b/src/fit_mesg.cpp
+@@ -174,10 +174,15 @@ FIT_BOOL Mesg::HasField(const int fieldNum) const
+ 
+ void Mesg::AddField(const Field& field)
+ {
+-    Field *existingField = GetField(field.GetNum());
++    const int num = field.GetNum();
+ 
+-    if (existingField == FIT_NULL)
+-        fields.push_back(field);
++    for (const Field& existing : fields)
++    {
++        if (existing.GetNum() == num)
++            return;
++    }
++
++    fields.push_back(field);
+ }
+ 
+ Field* Mesg::AddField(const FIT_UINT8 fieldNum)
+@@ -250,10 +255,13 @@ Field* Mesg::GetFieldByIndex(const FIT_UINT16 index)
+ 
+ Field* Mesg::GetField(const FIT_UINT8 fieldNum)
+ {
+-    for (int i = 0; i < (int)fields.size(); i++)
++    Field* p = fields.data();
++    const size_t n = fields.size();
++
++    for (size_t i = 0; i < n; ++i)
+     {
+-        if (fields[i].GetNum() == fieldNum)
+-            return &fields[i];
++        if (p[i].GetNum() == fieldNum)
++            return p + i;
+     }
+ 
+     return FIT_NULL;
+diff --git a/src/fit_mesg_broadcaster.cpp b/src/fit_mesg_broadcaster.cpp
+index b7d9b28..94a8a2b 100644
+--- a/src/fit_mesg_broadcaster.cpp
++++ b/src/fit_mesg_broadcaster.cpp
+@@ -1532,9 +1532,13 @@ void MesgBroadcaster::AddListener(HrvValueMesgListener& hrvValueMesgListener)
+ 
+ void MesgBroadcaster::RemoveListener(HrvValueMesgListener& hrvValueMesgListener)
+ {
+-    std::vector<HrvValueMesgListener *>::iterator it = std::find(hrvValueMesgListeners.begin(), hrvValueMesgListeners.end(), &hrvValueMesgListener);
+-    if (hrvValueMesgListeners.end() != it)
+-    hrvValueMesgListeners.erase(it);
++    HrvValueMesgListener **begin = hrvValueMesgListeners.data();
++    HrvValueMesgListener **end = begin + hrvValueMesgListeners.size();
++    HrvValueMesgListener **it = begin;
++    while (it != end && *it != &hrvValueMesgListener)
++        ++it;
++    if (it != end)
++        hrvValueMesgListeners.erase(hrvValueMesgListeners.begin() + (it - begin));
+ }
+ 
+ 
+diff --git a/src/fit_profile.cpp b/src/fit_profile.cpp
+index d7551dd..0728f06 100644
+--- a/src/fit_profile.cpp
++++ b/src/fit_profile.cpp
+@@ -3057,13 +3057,17 @@ const Profile::MESG Profile::mesgs[MESGS] =
+ 
+ const Profile::MESG* Profile::GetMesg(const FIT_UINT16 num)
+ {
+-    for (int i = 0; i < MESGS; i++)
++    static const MESG* lookup[65536] = {};
++    static bool initialized = false;
++
++    if (!initialized)
+     {
+-        if (mesgs[i].num == num)
+-            return &mesgs[i];
++        for (int i = MESGS - 1; i >= 0; --i)
++            lookup[mesgs[i].num] = &mesgs[i];
++        initialized = true;
+     }
+ 
+-    return NULL;
++    return lookup[num];
+ }
+ 
+ const Profile::MESG* Profile::GetMesg(const std::string& name)

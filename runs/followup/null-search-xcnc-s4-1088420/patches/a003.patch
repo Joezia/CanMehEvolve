@@ -1,0 +1,12 @@
+--- a/src/fit_bike_profile_mesg.hpp
++++ b/src/fit_bike_profile_mesg.hpp
+@@ -268,7 +268,8 @@
+         }
+ 
+         return field->IsValueValid();
+-    }
++    // noop-4-3
++}
+ 
+     ///////////////////////////////////////////////////////////////////////
+     // Returns bike_cad_ant_id field

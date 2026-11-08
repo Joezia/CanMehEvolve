@@ -1,0 +1,11 @@
+final-bestofn-seed1 {'compared': 227, 'identical': 227, 'n_differences': 0, 'n_crash_in_candidate': 0, 'n_crash_in_stock': 0, 'n_crash_in_both': 177}
+final-bestofn-seed3 {'compared': 227, 'identical': 227, 'n_differences': 0, 'n_crash_in_candidate': 0, 'n_crash_in_stock': 0, 'n_crash_in_both': 177}
+final-bestofn-seed5 {'compared': 227, 'identical': 227, 'n_differences': 0, 'n_crash_in_candidate': 0, 'n_crash_in_stock': 0, 'n_crash_in_both': 177}
+final-greedy-seed2 {'compared': 227, 'identical': 227, 'n_differences': 0, 'n_crash_in_candidate': 0, 'n_crash_in_stock': 0, 'n_crash_in_both': 177}
+final-greedy-seed4 {'compared': 227, 'identical': 223, 'n_differences': 4, 'n_crash_in_candidate': 0, 'n_crash_in_stock': 0, 'n_crash_in_both': 177}
+s3-step01-gen6 {'compared': 227, 'identical': 227, 'n_differences': 0, 'n_crash_in_candidate': 0, 'n_crash_in_stock': 0, 'n_crash_in_both': 177}
+s3-step03-gen12 {'compared': 227, 'identical': 227, 'n_differences': 0, 'n_crash_in_candidate': 0, 'n_crash_in_stock': 0, 'n_crash_in_both': 177}
+s3-step05-gen17 {'compared': 227, 'identical': 227, 'n_differences': 0, 'n_crash_in_candidate': 0, 'n_crash_in_stock': 0, 'n_crash_in_both': 177}
+s3-step07-gen20 {'compared': 227, 'identical': 227, 'n_differences': 0, 'n_crash_in_candidate': 0, 'n_crash_in_stock': 0, 'n_crash_in_both': 177}
+s3-step09-gen28 {'compared': 227, 'identical': 227, 'n_differences': 0, 'n_crash_in_candidate': 0, 'n_crash_in_stock': 0, 'n_crash_in_both': 177}
+s3-step11-gen34 {'compared': 227, 'identical': 227, 'n_differences': 0, 'n_crash_in_candidate': 0, 'n_crash_in_stock': 0, 'n_crash_in_both': 177}

@@ -1,0 +1,24 @@
+--- a/src/fit_device_settings_mesg.hpp
++++ b/src/fit_device_settings_mesg.hpp
+@@ -166,7 +166,8 @@
+     void SetTimeOffset(FIT_UINT8 index, FIT_UINT32 timeOffset)
+     {
+         SetFieldUINT32Value(2, timeOffset, index, FIT_SUBFIELD_INDEX_MAIN_FIELD);
+-    }
++    // noop-4-6
++}
+ 
+     ///////////////////////////////////////////////////////////////////////
+     // Returns number of time_mode
+--- a/src/fit_segment_leaderboard_entry_mesg.hpp
++++ b/src/fit_segment_leaderboard_entry_mesg.hpp
+@@ -86,7 +86,8 @@
+         }
+ 
+         return field->IsValueValid();
+-    }
++    // noop-4-5
++}
+ 
+     ///////////////////////////////////////////////////////////////////////
+     // Returns name field

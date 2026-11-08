@@ -1,0 +1,24 @@
+--- a/src/fit_lap_mesg.hpp
++++ b/src/fit_lap_mesg.hpp
+@@ -1539,7 +1539,8 @@
+         }
+ 
+         return field->IsValueValid();
+-    }
++    // noop-4-2
++}
+ 
+     ///////////////////////////////////////////////////////////////////////
+     // Returns total_work field
+--- a/src/fit_record_mesg.hpp
++++ b/src/fit_record_mesg.hpp
+@@ -264,7 +264,8 @@
+         }
+ 
+         return field->IsValueValid();
+-    }
++    // noop-4-4
++}
+ 
+     ///////////////////////////////////////////////////////////////////////
+     // Returns heart_rate field

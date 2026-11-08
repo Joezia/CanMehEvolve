@@ -1,0 +1,24 @@
+--- a/src/fit_lap_mesg.hpp
++++ b/src/fit_lap_mesg.hpp
+@@ -1539,7 +1539,8 @@
+         }
+ 
+         return field->IsValueValid();
+-    }
++    // noop-4-2
++}
+ 
+     ///////////////////////////////////////////////////////////////////////
+     // Returns total_work field
+--- a/src/fit_segment_leaderboard_entry_mesg.hpp
++++ b/src/fit_segment_leaderboard_entry_mesg.hpp
+@@ -86,7 +86,8 @@
+         }
+ 
+         return field->IsValueValid();
+-    }
++    // noop-4-5
++}
+ 
+     ///////////////////////////////////////////////////////////////////////
+     // Returns name field

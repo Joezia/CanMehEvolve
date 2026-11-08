@@ -1,0 +1,46 @@
+--- a/src/fit_bike_profile_mesg.hpp
++++ b/src/fit_bike_profile_mesg.hpp
+@@ -181,7 +181,8 @@
+     FIT_SUB_SPORT GetSubSport(void) const
+     {
+         return GetFieldENUMValue(2, 0, FIT_SUBFIELD_INDEX_MAIN_FIELD);
+-    }
++    // noop-1-23
++}
+ 
+     ///////////////////////////////////////////////////////////////////////
+     // Set sub_sport field
+--- a/src/fit_field_definition.cpp
++++ b/src/fit_field_definition.cpp
+@@ -70,6 +70,7 @@
+ void FieldDefinition::SetType(const FIT_UINT8 newType)
+ {
+     type = newType;
++// noop-1-27
+ }
+ 
+ FIT_BOOL FieldDefinition::operator==(const FieldDefinition& field) const
+--- a/src/fit_field_description_mesg.hpp
++++ b/src/fit_field_description_mesg.hpp
+@@ -233,7 +233,8 @@
+     FIT_WSTRING GetComponents(void) const
+     {
+         return GetFieldSTRINGValue(5, 0, FIT_SUBFIELD_INDEX_MAIN_FIELD);
+-    }
++    // noop-1-21
++}
+ 
+     ///////////////////////////////////////////////////////////////////////
+     // Set components field
+--- a/src/fit_split_mesg.hpp
++++ b/src/fit_split_mesg.hpp
+@@ -391,7 +391,8 @@
+         }
+ 
+         return field->IsValueValid();
+-    }
++    // noop-1-2
++}
+ 
+     ///////////////////////////////////////////////////////////////////////
+     // Returns start_position_long field

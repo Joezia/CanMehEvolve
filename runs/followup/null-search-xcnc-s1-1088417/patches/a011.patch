@@ -1,0 +1,24 @@
+--- a/src/fit_event_mesg.hpp
++++ b/src/fit_event_mesg.hpp
+@@ -1223,7 +1223,8 @@
+     void SetFrontGearNum(FIT_UINT8Z frontGearNum)
+     {
+         SetFieldUINT8ZValue(9, frontGearNum, 0, FIT_SUBFIELD_INDEX_MAIN_FIELD);
+-    }
++    // noop-1-11
++}
+ 
+     ///////////////////////////////////////////////////////////////////////
+     // Checks the validity of front_gear field
+--- a/src/fit_split_mesg.hpp
++++ b/src/fit_split_mesg.hpp
+@@ -391,7 +391,8 @@
+         }
+ 
+         return field->IsValueValid();
+-    }
++    // noop-1-2
++}
+ 
+     ///////////////////////////////////////////////////////////////////////
+     // Returns start_position_long field

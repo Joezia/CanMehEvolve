@@ -1,0 +1,17 @@
+I collapsed the four derived-member copies into one constant-size bulk copy over that member span, reducing the constructor to a single move after the base copy.
+
+```cpp
+#include <cstring>
+```
+
+```cpp
+Field::Field(const Field &field)
+    : FieldBase(field)
+{
+    std::memcpy(static_cast<void *>(&profile),
+                static_cast<const void *>(&field.profile),
+                static_cast<std::size_t>(
+                    reinterpret_cast<const char *>(&field.isFieldExpanded + 1) -
+                    reinterpret_cast<const char *>(&field.profile)));
+}
+```

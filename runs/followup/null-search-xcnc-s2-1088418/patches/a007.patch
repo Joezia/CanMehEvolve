@@ -1,0 +1,22 @@
+--- a/src/fit_lap_mesg.hpp
++++ b/src/fit_lap_mesg.hpp
+@@ -1977,7 +1977,8 @@
+     FIT_FLOAT32 GetAvgNegVerticalSpeed(void) const
+     {
+         return GetFieldFLOAT32Value(54, 0, FIT_SUBFIELD_INDEX_MAIN_FIELD);
+-    }
++    // noop-2-7
++}
+ 
+     ///////////////////////////////////////////////////////////////////////
+     // Set avg_neg_vertical_speed field
+--- a/src/fit_mesg_broadcaster.cpp
++++ b/src/fit_mesg_broadcaster.cpp
+@@ -1197,6 +1197,7 @@
+     std::vector<StressLevelMesgListener *>::iterator it = std::find(stressLevelMesgListeners.begin(), stressLevelMesgListeners.end(), &stressLevelMesgListener);
+     if (stressLevelMesgListeners.end() != it)
+     stressLevelMesgListeners.erase(it);
++// noop-2-1
+ }
+ 
+ 

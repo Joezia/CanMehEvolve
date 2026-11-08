@@ -1,0 +1,119 @@
+diff --git a/src/fit_field_base.cpp b/src/fit_field_base.cpp
+index 2f8212c..b57095a 100644
+--- a/src/fit_field_base.cpp
++++ b/src/fit_field_base.cpp
+@@ -25,9 +25,9 @@ FieldBase::FieldBase(void)
+ }
+ 
+ FieldBase::FieldBase(const FieldBase &field)
++    : values(field.values),
++      stringIndexes(field.stringIndexes)
+ {
+-    values = field.values;
+-    stringIndexes = field.stringIndexes;
+ }
+ 
+ FieldBase::~FieldBase()
+diff --git a/src/fit_mesg.cpp b/src/fit_mesg.cpp
+index 6972b9b..aff3545 100644
+--- a/src/fit_mesg.cpp
++++ b/src/fit_mesg.cpp
+@@ -174,10 +174,21 @@ FIT_BOOL Mesg::HasField(const int fieldNum) const
+ 
+ void Mesg::AddField(const Field& field)
+ {
+-    Field *existingField = GetField(field.GetNum());
+-
+-    if (existingField == FIT_NULL)
++    if (fields.empty())
++    {
++        fields.reserve(16);
+         fields.push_back(field);
++        return;
++    }
++
++    const FIT_UINT8 fieldNum = field.GetNum();
++    for (const Field& existingField : fields)
++    {
++        if (existingField.GetNum() == fieldNum)
++            return;
++    }
++
++    fields.push_back(field);
+ }
+ 
+ Field* Mesg::AddField(const FIT_UINT8 fieldNum)
+diff --git a/src/fit_profile.cpp b/src/fit_profile.cpp
+index d7551dd..b8438a8 100644
+--- a/src/fit_profile.cpp
++++ b/src/fit_profile.cpp
+@@ -3057,6 +3057,23 @@ const Profile::MESG Profile::mesgs[MESGS] =
+ 
+ const Profile::MESG* Profile::GetMesg(const FIT_UINT16 num)
+ {
++    static const MESG* lookup[512] = {};
++    static bool initialized = false;
++
++    if (!initialized)
++    {
++        for (int i = 0; i < MESGS; i++)
++        {
++            const FIT_UINT16 n = mesgs[i].num;
++            if (n < 512 && lookup[n] == NULL)
++                lookup[n] = &mesgs[i];
++        }
++        initialized = true;
++    }
++
++    if (num < 512)
++        return lookup[num];
++
+     for (int i = 0; i < MESGS; i++)
+     {
+         if (mesgs[i].num == num)
+@@ -3079,18 +3096,37 @@ const Profile::MESG* Profile::GetMesg(const std::string& name)
+ 
+ const FIT_UINT16 Profile::GetFieldIndex(const FIT_UINT16 mesgNum, const FIT_UINT8 fieldNum)
+ {
+-    const MESG *mesg = GetMesg(mesgNum);
++    static const int CACHE_SIZE = 128;
++    static FIT_UINT16 cachedMesgNum[CACHE_SIZE];
++    static const MESG* cachedMesg[CACHE_SIZE];
++    static FIT_UINT16 fieldIndex[CACHE_SIZE][256];
++    static bool initialized[CACHE_SIZE] = {false};
++
++    const int idx = mesgNum % CACHE_SIZE;
++
++    if (!initialized[idx] || cachedMesgNum[idx] != mesgNum) {
++        cachedMesgNum[idx] = mesgNum;
++        cachedMesg[idx] = GetMesg(mesgNum);
++        if (cachedMesg[idx] != NULL) {
++            for (int i = 0; i < 256; i++) {
++                fieldIndex[idx][i] = FIT_UINT16_INVALID;
++            }
++            const MESG* mesg = cachedMesg[idx];
++            for (FIT_UINT16 i = 0; i < mesg->numFields; i++) {
++                FIT_UINT8 num = mesg->fields[i].num;
++                if (fieldIndex[idx][num] == FIT_UINT16_INVALID) {
++                    fieldIndex[idx][num] = i;
++                }
++            }
++        }
++        initialized[idx] = true;
++    }
+ 
+-    if (mesg == NULL)
++    if (cachedMesg[idx] == NULL) {
+         return FIT_UINT16_INVALID;
+-
+-    for (FIT_UINT16 i = 0; i < mesg->numFields; i++)
+-    {
+-        if (mesg->fields[i].num == fieldNum)
+-            return i;
+     }
+ 
+-    return FIT_UINT16_INVALID;
++    return fieldIndex[idx][fieldNum];
+ }
+ 
+ const FIT_UINT16 Profile::GetFieldIndex(const std::string& mesgName, const std::string& fieldName)

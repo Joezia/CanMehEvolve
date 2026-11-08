@@ -1,0 +1,15 @@
+{
+  "baseline_ms": 479.8590310383588,
+  "bench": "/home/z/zhouzia/Workspace/CanMehEvolve/build/CanMehBench",
+  "cxx": "/usr/bin/c++",
+  "cxxstd": "-std=c++17",
+  "data": "/home/z/zhouzia/Workspace/CanMehEvolve/build/data",
+  "min_time": "0.25s",
+  "null_p": 0.5703125,
+  "null_ratio": 1.0001748931100747,
+  "opt": "-O2",
+  "reference_cv": 0.002225938617429054,
+  "repeat": 10,
+  "repetitions": 9,
+  "sdk": "/home/z/zhouzia/Workspace/CanMehEvolve/build/FITSDK-prefix/src/FITSDK"
+}

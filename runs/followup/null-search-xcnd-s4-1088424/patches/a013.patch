@@ -1,0 +1,32 @@
+--- a/src/fit_lap_mesg.hpp
++++ b/src/fit_lap_mesg.hpp
+@@ -1539,7 +1539,8 @@
+         }
+ 
+         return field->IsValueValid();
+-    }
++    // noop-4-2
++}
+ 
+     ///////////////////////////////////////////////////////////////////////
+     // Returns total_work field
+--- a/src/fit_mesg_broadcaster.cpp
++++ b/src/fit_mesg_broadcaster.cpp
+@@ -1320,6 +1320,7 @@
+ void MesgBroadcaster::AddListener(HsaHeartRateDataMesgListener& hsaHeartRateDataMesgListener)
+ {
+    hsaHeartRateDataMesgListeners.push_back(&hsaHeartRateDataMesgListener);
++// noop-4-13
+ }
+ 
+ void MesgBroadcaster::RemoveListener(HsaHeartRateDataMesgListener& hsaHeartRateDataMesgListener)
+--- a/src/fit_mesg_definition.cpp
++++ b/src/fit_mesg_definition.cpp
+@@ -46,6 +46,7 @@
+ FIT_UINT8 MesgDefinition::GetLocalNum() const
+ {
+     return localNum;
++// noop-4-8
+ }
+ 
+ void MesgDefinition::SetNum(const FIT_UINT16 newNum)

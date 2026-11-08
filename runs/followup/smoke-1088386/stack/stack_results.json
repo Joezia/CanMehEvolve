@@ -1,0 +1,29 @@
+{
+ "run_dir": "/home/z/zhouzia/Workspace/CanMehEvolve/runs/deepseek/bestofn-s4-1072872",
+ "results": [
+  {
+   "k": 1,
+   "added": "Profile::GetMesg",
+   "added_generation": 38,
+   "added_individual_speedup": 1.0721497812026444,
+   "functions": [
+    "Profile::GetMesg"
+   ],
+   "valid_measurements": 3,
+   "passes": 3,
+   "median_speedup": 1.0725501368390713,
+   "ratios": [
+    0.9323573468995259,
+    0.9336149819375241,
+    0.9312037727838045
+   ],
+   "stages": [
+    "",
+    "",
+    ""
+   ],
+   "errors": []
+  }
+ ],
+ "skipped": []
+}

@@ -1,0 +1,6 @@
+host=xcnc3
+job=1091677
+start=2026-11-07T20:57:42+08:00
+gcc=g++ (Ubuntu 13.3.0-6ubuntu2~24.04.1) 13.3.0
+sanitize_exit=0
+end=2026-11-07T21:11:52+08:00

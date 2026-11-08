@@ -1,0 +1,320 @@
+{
+ "run_dir": "/home/z/zhouzia/Workspace/CanMehEvolve/runs/deepseek/bestofn-s5-1072874",
+ "results": [
+  {
+   "k": 1,
+   "added": "Profile::GetMesg",
+   "added_generation": 26,
+   "added_individual_speedup": 1.066834291362156,
+   "functions": [
+    "Profile::GetMesg"
+   ],
+   "valid_measurements": 3,
+   "passes": 3,
+   "median_speedup": 1.0670755058844643,
+   "ratios": [
+    0.9372841959433782,
+    0.9367227904313085,
+    0.9371408063304127
+   ],
+   "stages": [
+    "",
+    "",
+    ""
+   ],
+   "errors": []
+  },
+  {
+   "k": 2,
+   "added": "FieldBase::FieldBase",
+   "added_generation": 11,
+   "added_individual_speedup": 1.058815975519722,
+   "functions": [
+    "Profile::GetMesg",
+    "FieldBase::FieldBase"
+   ],
+   "valid_measurements": 3,
+   "passes": 3,
+   "median_speedup": 1.1167414041241148,
+   "ratios": [
+    0.895462455593578,
+    0.8950673081903757,
+    0.8962124634770119
+   ],
+   "stages": [
+    "",
+    "",
+    ""
+   ],
+   "errors": []
+  },
+  {
+   "k": 3,
+   "added": "Profile::GetFieldIndex",
+   "added_generation": 18,
+   "added_individual_speedup": 1.0563725613869956,
+   "functions": [
+    "Profile::GetMesg",
+    "FieldBase::FieldBase",
+    "Profile::GetFieldIndex"
+   ],
+   "valid_measurements": 3,
+   "passes": 3,
+   "median_speedup": 1.1461638845319408,
+   "ratios": [
+    0.8727975161943368,
+    0.8724755800592776,
+    0.8720978649792199
+   ],
+   "stages": [
+    "",
+    "",
+    ""
+   ],
+   "errors": []
+  },
+  {
+   "k": 4,
+   "added": "Mesg::AddField",
+   "added_generation": 28,
+   "added_individual_speedup": 1.0359417416165484,
+   "functions": [
+    "Profile::GetMesg",
+    "FieldBase::FieldBase",
+    "Profile::GetFieldIndex",
+    "Mesg::AddField"
+   ],
+   "valid_measurements": 3,
+   "passes": 3,
+   "median_speedup": 1.154661235162137,
+   "ratios": [
+    0.8659429972599428,
+    0.8663918345275625,
+    0.8660548822006485
+   ],
+   "stages": [
+    "",
+    "",
+    ""
+   ],
+   "errors": []
+  },
+  {
+   "k": 5,
+   "added": "FieldBase::GetNumValues",
+   "added_generation": 3,
+   "added_individual_speedup": 1.035368420638802,
+   "functions": [
+    "Profile::GetMesg",
+    "FieldBase::FieldBase",
+    "Profile::GetFieldIndex",
+    "Mesg::AddField",
+    "FieldBase::GetNumValues"
+   ],
+   "valid_measurements": 3,
+   "passes": 3,
+   "median_speedup": 1.1879561410012673,
+   "ratios": [
+    0.8416930108237729,
+    0.8417819189495929,
+    0.8429338195367849
+   ],
+   "stages": [
+    "",
+    "",
+    ""
+   ],
+   "errors": []
+  },
+  {
+   "k": 6,
+   "added": "FieldBase::Read",
+   "added_generation": 33,
+   "added_individual_speedup": 1.0256858944197351,
+   "functions": [
+    "Profile::GetMesg",
+    "FieldBase::FieldBase",
+    "Profile::GetFieldIndex",
+    "Mesg::AddField",
+    "FieldBase::GetNumValues",
+    "FieldBase::Read"
+   ],
+   "valid_measurements": 3,
+   "passes": 3,
+   "median_speedup": 1.2094996790588397,
+   "ratios": [
+    0.8246584834358293,
+    0.8276340109380498,
+    0.8267881482847025
+   ],
+   "stages": [
+    "",
+    "",
+    ""
+   ],
+   "errors": []
+  },
+  {
+   "k": 7,
+   "added": "Field::GetNum",
+   "added_generation": 32,
+   "added_individual_speedup": 1.0035906738361848,
+   "functions": [
+    "Profile::GetMesg",
+    "FieldBase::FieldBase",
+    "Profile::GetFieldIndex",
+    "Mesg::AddField",
+    "FieldBase::GetNumValues",
+    "FieldBase::Read",
+    "Field::GetNum"
+   ],
+   "valid_measurements": 3,
+   "passes": 3,
+   "median_speedup": 1.2073018757464045,
+   "ratios": [
+    0.8298583202500189,
+    0.8274604152622531,
+    0.8282932546441695
+   ],
+   "stages": [
+    "",
+    "",
+    ""
+   ],
+   "errors": []
+  },
+  {
+   "k": 8,
+   "added": "Decode::Resume",
+   "added_generation": 23,
+   "added_individual_speedup": 1.002243108853059,
+   "functions": [
+    "Profile::GetMesg",
+    "FieldBase::FieldBase",
+    "Profile::GetFieldIndex",
+    "Mesg::AddField",
+    "FieldBase::GetNumValues",
+    "FieldBase::Read",
+    "Field::GetNum",
+    "Decode::Resume"
+   ],
+   "valid_measurements": 3,
+   "passes": 3,
+   "median_speedup": 1.2085920549801183,
+   "ratios": [
+    0.8277167424763159,
+    0.8261769847795286,
+    0.8274090466501124
+   ],
+   "stages": [
+    "",
+    "",
+    ""
+   ],
+   "errors": []
+  },
+  {
+   "k": 9,
+   "added": "DeveloperFieldDefinition::IsDefined",
+   "added_generation": 7,
+   "added_individual_speedup": 1.0015690247080287,
+   "functions": [
+    "Profile::GetMesg",
+    "FieldBase::FieldBase",
+    "Profile::GetFieldIndex",
+    "Mesg::AddField",
+    "FieldBase::GetNumValues",
+    "FieldBase::Read",
+    "Field::GetNum",
+    "Decode::Resume",
+    "DeveloperFieldDefinition::IsDefined"
+   ],
+   "valid_measurements": 3,
+   "passes": 3,
+   "median_speedup": 1.2080272315170466,
+   "ratios": [
+    0.8277959088258259,
+    0.8283116613931347,
+    0.8268651471410029
+   ],
+   "stages": [
+    "",
+    "",
+    ""
+   ],
+   "errors": []
+  },
+  {
+   "k": 10,
+   "added": "Field::IsValid",
+   "added_generation": 9,
+   "added_individual_speedup": 1.0007292161136858,
+   "functions": [
+    "Profile::GetMesg",
+    "FieldBase::FieldBase",
+    "Profile::GetFieldIndex",
+    "Mesg::AddField",
+    "FieldBase::GetNumValues",
+    "FieldBase::Read",
+    "Field::GetNum",
+    "Decode::Resume",
+    "DeveloperFieldDefinition::IsDefined",
+    "Field::IsValid"
+   ],
+   "valid_measurements": 3,
+   "passes": 3,
+   "median_speedup": 1.2091400135749673,
+   "ratios": [
+    0.8273170319587109,
+    0.8270340810601249,
+    0.8261727968283983
+   ],
+   "stages": [
+    "",
+    "",
+    ""
+   ],
+   "errors": []
+  },
+  {
+   "k": 11,
+   "added": "Field::GetNumSubFields",
+   "added_generation": 24,
+   "added_individual_speedup": 1.0000376328983953,
+   "functions": [
+    "Profile::GetMesg",
+    "FieldBase::FieldBase",
+    "Profile::GetFieldIndex",
+    "Mesg::AddField",
+    "FieldBase::GetNumValues",
+    "FieldBase::Read",
+    "Field::GetNum",
+    "Decode::Resume",
+    "DeveloperFieldDefinition::IsDefined",
+    "Field::IsValid",
+    "Field::GetNumSubFields"
+   ],
+   "valid_measurements": 3,
+   "passes": 3,
+   "median_speedup": 1.2092604307102672,
+   "ratios": [
+    0.8269517257028275,
+    0.8273447333443893,
+    0.8261921401098431
+   ],
+   "stages": [
+    "",
+    "",
+    ""
+   ],
+   "errors": []
+  }
+ ],
+ "skipped": [
+  {
+   "label": "FieldBase::GetValue",
+   "generation": 13,
+   "reason": "error: patch failed: src/fit_field_base.cpp:16\nerror: src/fit_field_base.cpp: patch does not apply\n"
+  }
+ ]
+}

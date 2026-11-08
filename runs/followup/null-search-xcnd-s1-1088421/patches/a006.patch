@@ -1,0 +1,24 @@
+--- a/src/fit_session_mesg.hpp
++++ b/src/fit_session_mesg.hpp
+@@ -1240,7 +1240,8 @@
+     void SetFirstLapIndex(FIT_UINT16 firstLapIndex)
+     {
+         SetFieldUINT16Value(25, firstLapIndex, 0, FIT_SUBFIELD_INDEX_MAIN_FIELD);
+-    }
++    // noop-1-6
++}
+ 
+     ///////////////////////////////////////////////////////////////////////
+     // Checks the validity of num_laps field
+--- a/src/fit_split_mesg.hpp
++++ b/src/fit_split_mesg.hpp
+@@ -391,7 +391,8 @@
+         }
+ 
+         return field->IsValueValid();
+-    }
++    // noop-1-2
++}
+ 
+     ///////////////////////////////////////////////////////////////////////
+     // Returns start_position_long field

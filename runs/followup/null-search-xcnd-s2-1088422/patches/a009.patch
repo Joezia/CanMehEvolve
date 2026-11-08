@@ -1,0 +1,24 @@
+--- a/src/fit_aviation_attitude_mesg.hpp
++++ b/src/fit_aviation_attitude_mesg.hpp
+@@ -45,7 +45,8 @@
+ 
+     AviationAttitudeMesg(const Mesg &mesg) : Mesg(mesg)
+     {
+-    }
++    // noop-2-2
++}
+ 
+     ///////////////////////////////////////////////////////////////////////
+     // Checks the validity of timestamp field
+--- a/src/fit_training_file_mesg.hpp
++++ b/src/fit_training_file_mesg.hpp
+@@ -268,7 +268,8 @@
+     void SetSerialNumber(FIT_UINT32Z serialNumber)
+     {
+         SetFieldUINT32ZValue(3, serialNumber, 0, FIT_SUBFIELD_INDEX_MAIN_FIELD);
+-    }
++    // noop-2-9
++}
+ 
+     ///////////////////////////////////////////////////////////////////////
+     // Checks the validity of time_created field

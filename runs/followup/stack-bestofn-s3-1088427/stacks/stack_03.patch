@@ -1,0 +1,116 @@
+diff --git a/src/fit_field_base.cpp b/src/fit_field_base.cpp
+index 2f8212c..6530d2a 100644
+--- a/src/fit_field_base.cpp
++++ b/src/fit_field_base.cpp
+@@ -16,6 +16,7 @@
+ #include "fit_field_base.hpp"
+ #include "fit_mesg.hpp"
+ #include "fit_unicode.hpp"
++#include <cstring>
+ 
+ namespace fit
+ {
+@@ -25,9 +26,9 @@ FieldBase::FieldBase(void)
+ }
+ 
+ FieldBase::FieldBase(const FieldBase &field)
++    : values(field.values),
++      stringIndexes(field.stringIndexes)
+ {
+-    values = field.values;
+-    stringIndexes = field.stringIndexes;
+ }
+ 
+ FieldBase::~FieldBase()
+@@ -1131,19 +1132,60 @@ FIT_FLOAT64 FieldBase::Round(FIT_FLOAT64 value)
+ template <typename T>
+ T FieldBase::GetValue(const FIT_UINT8 fieldArrayIndex) const
+ {
+-    FIT_UINT8 size = baseTypeSizes[GetType() & FIT_BASE_TYPE_NUM_MASK];
++    const FIT_UINT8 baseType = GetType() & FIT_BASE_TYPE_NUM_MASK;
++    const FIT_UINT8 size = baseTypeSizes[baseType];
++
+     if (fieldArrayIndex >= (FIT_UINT8)values.size())
+     {
+-        return *reinterpret_cast<const T*>(baseTypeInvalids[GetType() & FIT_BASE_TYPE_NUM_MASK]);
++        return *reinterpret_cast<const T*>(baseTypeInvalids[baseType]);
+     }
+ 
+-    T rv = 0;
++    const FIT_UINT8* p = &values[fieldArrayIndex * size];
+ 
+-    for (int i = 0; i < size; i++)
++    if (size <= sizeof(T))
+     {
+-        rv |= static_cast<T>(values[(fieldArrayIndex * size) + i]) << (i * 8);
++        T rv = 0;
++        switch (size)
++        {
++        case 1:
++            rv = static_cast<T>(p[0]);
++            break;
++        case 2:
++        {
++            FIT_UINT16 v;
++            std::memcpy(&v, p, 2);
++            rv = static_cast<T>(v);
++            break;
++        }
++        case 4:
++        {
++            FIT_UINT32 v;
++            std::memcpy(&v, p, 4);
++            rv = static_cast<T>(v);
++            break;
++        }
++        case 8:
++        {
++            FIT_UINT64 v;
++            std::memcpy(&v, p, 8);
++            rv = static_cast<T>(v);
++            break;
++        }
++        default:
++            for (int i = 0; i < size; i++)
++            {
++                rv |= static_cast<T>(p[i]) << (i * 8);
++            }
++            break;
++        }
++        return rv;
+     }
+ 
++    T rv = 0;
++    for (int i = 0; i < size; i++)
++    {
++        rv |= static_cast<T>(p[i]) << (i * 8);
++    }
+     return rv;
+ }
+ 
+diff --git a/src/fit_profile.cpp b/src/fit_profile.cpp
+index d7551dd..0728f06 100644
+--- a/src/fit_profile.cpp
++++ b/src/fit_profile.cpp
+@@ -3057,13 +3057,17 @@ const Profile::MESG Profile::mesgs[MESGS] =
+ 
+ const Profile::MESG* Profile::GetMesg(const FIT_UINT16 num)
+ {
+-    for (int i = 0; i < MESGS; i++)
++    static const MESG* lookup[65536] = {};
++    static bool initialized = false;
++
++    if (!initialized)
+     {
+-        if (mesgs[i].num == num)
+-            return &mesgs[i];
++        for (int i = MESGS - 1; i >= 0; --i)
++            lookup[mesgs[i].num] = &mesgs[i];
++        initialized = true;
+     }
+ 
+-    return NULL;
++    return lookup[num];
+ }
+ 
+ const Profile::MESG* Profile::GetMesg(const std::string& name)

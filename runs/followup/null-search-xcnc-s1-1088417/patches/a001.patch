@@ -1,0 +1,12 @@
+--- a/src/fit_connectivity_mesg.hpp
++++ b/src/fit_connectivity_mesg.hpp
+@@ -416,7 +416,8 @@
+     FIT_BOOL GetIncidentDetectionEnabled(void) const
+     {
+         return GetFieldENUMValue(11, 0, FIT_SUBFIELD_INDEX_MAIN_FIELD);
+-    }
++    // noop-1-1
++}
+ 
+     ///////////////////////////////////////////////////////////////////////
+     // Set incident_detection_enabled field

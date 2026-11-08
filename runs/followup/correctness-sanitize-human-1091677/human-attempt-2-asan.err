@@ -1,0 +1,16 @@
+/home/z/zhouzia/.sanitize-scratch/stock/src/fit_field_base.cpp:1144:68: runtime error: left shift of negative value -115
+    #0 0x632e87cbe7a2 in signed char fit::FieldBase::GetValue<signed char>(unsigned char) const /home/z/zhouzia/.sanitize-scratch/stock/src/fit_field_base.cpp:1144
+    #1 0x632e87ca7176 in double fit::FieldBase::ConvertBaseType<double, signed char>(unsigned char, unsigned char) const /home/z/zhouzia/.sanitize-scratch/stock/src/fit_field_base.cpp:1155
+    #2 0x632e87ca7176 in fit::FieldBase::GetFLOAT64Value(unsigned char, unsigned short) const /home/z/zhouzia/.sanitize-scratch/stock/src/fit_field_base.cpp:370
+    #3 0x632e87bb6c15 in fold /home/z/zhouzia/Workspace/CanMehEvolve/scripts/followup/driver.cpp:54
+    #4 0x632e87bb7850 in OnMesg /home/z/zhouzia/Workspace/CanMehEvolve/scripts/followup/driver.cpp:37
+    #5 0x632e87c551df in fit::Decode::Resume() /home/z/zhouzia/.sanitize-scratch/stock/src/fit_decode.cpp:300
+    #6 0x632e87c56c55 in fit::Decode::Read(std::istream*) /home/z/zhouzia/.sanitize-scratch/stock/src/fit_decode.cpp:191
+    #7 0x632e87c56e1b in fit::Decode::Read(std::istream*, fit::MesgListener*, fit::MesgDefinitionListener*, fit::DeveloperFieldDescriptionListener*) /home/z/zhouzia/.sanitize-scratch/stock/src/fit_decode.cpp:209
+    #8 0x632e87c56f03 in fit::Decode::Read(std::istream&, fit::MesgListener&) /home/z/zhouzia/.sanitize-scratch/stock/src/fit_decode.cpp:214
+    #9 0x632e87bbf087 in decodeOne /home/z/zhouzia/Workspace/CanMehEvolve/scripts/followup/driver.cpp:68
+    #10 0x632e87bc1cc3 in main /home/z/zhouzia/Workspace/CanMehEvolve/scripts/followup/driver.cpp:93
+    #11 0x7949e6e2a1c9 in __libc_start_call_main ../sysdeps/nptl/libc_start_call_main.h:58
+    #12 0x7949e6e2a28a in __libc_start_main_impl ../csu/libc-start.c:360
+    #13 0x632e87bb4464 in _start (/home/z/zhouzia/.sanitize-scratch/drv-asan-human-attempt-2+0x852464) (BuildId: 6b2f9d2f7debab0575031432c999105fdc3d98ae)
+

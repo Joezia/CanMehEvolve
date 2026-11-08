@@ -1,0 +1,44 @@
+{
+  "1006": {
+    "accepted": 0,
+    "attempts": 1,
+    "best_gain": 0.0,
+    "file": "src/fit_chrono_shot_data_mesg.hpp",
+    "label": "IsTimestampValid"
+  },
+  "113": {
+    "accepted": 0,
+    "attempts": 1,
+    "best_gain": 0.0,
+    "file": "src/fit_field.cpp",
+    "label": "Field::Field"
+  },
+  "134": {
+    "accepted": 0,
+    "attempts": 1,
+    "best_gain": 0.0,
+    "file": "src/fit_field_base.cpp",
+    "label": "FieldBase::FieldBase"
+  },
+  "203": {
+    "accepted": 0,
+    "attempts": 1,
+    "best_gain": 0.0,
+    "file": "src/fit_field_definition.cpp",
+    "label": "FieldDefinition::GetNum"
+  },
+  "234": {
+    "accepted": 0,
+    "attempts": 1,
+    "best_gain": 0.0,
+    "file": "src/fit_mesg.cpp",
+    "label": "Mesg::GetField"
+  },
+  "574": {
+    "accepted": 0,
+    "attempts": 2,
+    "best_gain": 0.0,
+    "file": "src/fit_profile.cpp",
+    "label": "Profile::GetMesg"
+  }
+}

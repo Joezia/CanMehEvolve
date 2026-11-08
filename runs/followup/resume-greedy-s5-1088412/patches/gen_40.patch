@@ -1,0 +1,334 @@
+--- a/src/fit_field_base.cpp
++++ b/src/fit_field_base.cpp
+@@ -16,6 +16,7 @@
+ #include "fit_field_base.hpp"
+ #include "fit_mesg.hpp"
+ #include "fit_unicode.hpp"
++#include <cstring>
+ 
+ namespace fit
+ {
+@@ -26,8 +27,8 @@
+ 
+ FieldBase::FieldBase(const FieldBase &field)
+ {
+-    values = field.values;
+-    stringIndexes = field.stringIndexes;
++    values.swap(const_cast<std::vector<FitValue> &>(field.values));
++    stringIndexes.swap(const_cast<std::vector<FIT_STRING_INDEX> &>(field.stringIndexes));
+ }
+ 
+ FieldBase::~FieldBase()
+@@ -344,100 +345,127 @@
+ 
+ FIT_FLOAT64 FieldBase::GetFLOAT64Value(const FIT_UINT8 fieldArrayIndex, const FIT_UINT16 subFieldIndex) const
+ {
+-    FIT_FLOAT64 float64Value;
+-
+     if (!IsValid())
+         return FIT_FLOAT64_INVALID;
+ 
+-    switch (GetType()) { // Note: This checks the type of the MAIN field since data is aligned according to that type
++    FIT_FLOAT64 float64Value;
++
++    switch (GetType()) {
+         case FIT_BASE_TYPE_BYTE:
+         {
+-            float64Value =
+-                ConvertBaseType<FIT_FLOAT64, FIT_BYTE>(fieldArrayIndex, FIT_BASE_TYPE_FLOAT64);
++            FIT_BYTE v = GetValue<FIT_BYTE>(fieldArrayIndex);
++            if (v == FIT_BYTE_INVALID)
++                goto invalid_float64;
++            float64Value = static_cast<FIT_FLOAT64>(v);
+             break;
+         }
+-
+         case FIT_BASE_TYPE_ENUM:
+         {
+-            float64Value =
+-                ConvertBaseType<FIT_FLOAT64, FIT_ENUM>(fieldArrayIndex, FIT_BASE_TYPE_FLOAT64);
++            FIT_ENUM v = GetValue<FIT_ENUM>(fieldArrayIndex);
++            if (v == FIT_ENUM_INVALID)
++                goto invalid_float64;
++            float64Value = static_cast<FIT_FLOAT64>(v);
+             break;
+         }
+-
+         case FIT_BASE_TYPE_SINT8:
+         {
+-            float64Value =
+-                ConvertBaseType<FIT_FLOAT64, FIT_SINT8>(fieldArrayIndex, FIT_BASE_TYPE_FLOAT64);
++            FIT_SINT8 v = GetValue<FIT_SINT8>(fieldArrayIndex);
++            if (v == FIT_SINT8_INVALID)
++                goto invalid_float64;
++            float64Value = static_cast<FIT_FLOAT64>(v);
+             break;
+         }
+-
+         case FIT_BASE_TYPE_UINT8:
++        {
++            FIT_UINT8 v = GetValue<FIT_UINT8>(fieldArrayIndex);
++            if (v == FIT_UINT8_INVALID)
++                goto invalid_float64;
++            float64Value = static_cast<FIT_FLOAT64>(v);
++            break;
++        }
+         case FIT_BASE_TYPE_UINT8Z:
+         {
+-            float64Value =
+-                ConvertBaseType<FIT_FLOAT64, FIT_UINT8>(fieldArrayIndex, FIT_BASE_TYPE_FLOAT64);
++            FIT_UINT8 v = GetValue<FIT_UINT8>(fieldArrayIndex);
++            if (v == FIT_UINT8Z_INVALID)
++                goto invalid_float64;
++            float64Value = static_cast<FIT_FLOAT64>(v);
+             break;
+         }
+-
+         case FIT_BASE_TYPE_SINT16:
+         {
+-            float64Value =
+-                ConvertBaseType<FIT_FLOAT64, FIT_SINT16>(fieldArrayIndex, FIT_BASE_TYPE_FLOAT64);
++            FIT_SINT16 v = GetValue<FIT_SINT16>(fieldArrayIndex);
++            if (v == FIT_SINT16_INVALID)
++                goto invalid_float64;
++            float64Value = static_cast<FIT_FLOAT64>(v);
+             break;
+         }
+-
+-        case FIT_BASE_TYPE_UINT16Z:
+         case FIT_BASE_TYPE_UINT16:
+         {
+-            float64Value =
+-                ConvertBaseType<FIT_FLOAT64, FIT_UINT16>(fieldArrayIndex, FIT_BASE_TYPE_FLOAT64);
++            FIT_UINT16 v = GetValue<FIT_UINT16>(fieldArrayIndex);
++            if (v == FIT_UINT16_INVALID)
++                goto invalid_float64;
++            float64Value = static_cast<FIT_FLOAT64>(v);
++            break;
++        }
++        case FIT_BASE_TYPE_UINT16Z:
++        {
++            FIT_UINT16 v = GetValue<FIT_UINT16>(fieldArrayIndex);
++            if (v == FIT_UINT16Z_INVALID)
++                goto invalid_float64;
++            float64Value = static_cast<FIT_FLOAT64>(v);
+             break;
+         }
+-
+         case FIT_BASE_TYPE_SINT32:
+         {
+-            float64Value =
+-                ConvertBaseType<FIT_FLOAT64, FIT_SINT32>(fieldArrayIndex, FIT_BASE_TYPE_FLOAT64);
++            FIT_SINT32 v = GetValue<FIT_SINT32>(fieldArrayIndex);
++            if (v == FIT_SINT32_INVALID)
++                goto invalid_float64;
++            float64Value = static_cast<FIT_FLOAT64>(v);
+             break;
+         }
+-
+         case FIT_BASE_TYPE_UINT32:
++        {
++            FIT_UINT32 v = GetValue<FIT_UINT32>(fieldArrayIndex);
++            if (v == FIT_UINT32_INVALID)
++                goto invalid_float64;
++            float64Value = static_cast<FIT_FLOAT64>(v);
++            break;
++        }
+         case FIT_BASE_TYPE_UINT32Z:
+         {
+-            float64Value =
+-                ConvertBaseType<FIT_FLOAT64, FIT_UINT32>(fieldArrayIndex, FIT_BASE_TYPE_FLOAT64);
++            FIT_UINT32 v = GetValue<FIT_UINT32>(fieldArrayIndex);
++            if (v == FIT_UINT32Z_INVALID)
++                goto invalid_float64;
++            float64Value = static_cast<FIT_FLOAT64>(v);
+             break;
+         }
+-
+         case FIT_BASE_TYPE_FLOAT32:
+         {
+             FIT_FLOAT32 val = GetFLOAT32Value(fieldArrayIndex, subFieldIndex);
+-
+             if (FIT_FLOAT32_INVALID == val)
+-            {
+                 return FIT_FLOAT64_INVALID;
+-            }
+-
+             return static_cast<FIT_FLOAT64>(val);
+         }
+-
+         case FIT_BASE_TYPE_FLOAT64:
+         {
+             FIT_UINT64 uint64Value = GetValue<FIT_UINT64>(fieldArrayIndex);
+             memcpy(&float64Value, &uint64Value, sizeof(FIT_FLOAT64));
++            if (memcmp(&float64Value, baseTypeInvalids[FIT_BASE_TYPE_FLOAT64 & FIT_BASE_TYPE_NUM_MASK], sizeof(FIT_FLOAT64)) == 0)
++                return float64Value;
+             break;
+         }
+-
+         default:
+             return FIT_FLOAT64_INVALID;
+     }
+ 
+-    if (memcmp(&float64Value, baseTypeInvalids[FIT_BASE_TYPE_FLOAT64 & FIT_BASE_TYPE_NUM_MASK], sizeof(FIT_FLOAT64)) == 0)
++    return float64Value / GetScale(subFieldIndex) - GetOffset(subFieldIndex);
++
++invalid_float64:
+     {
+-        return float64Value;
++        FIT_FLOAT64 inv;
++        memcpy(&inv, baseTypeInvalids[FIT_BASE_TYPE_FLOAT64 & FIT_BASE_TYPE_NUM_MASK], sizeof(FIT_FLOAT64));
++        return inv;
+     }
+-
+-    return float64Value / GetScale(subFieldIndex) - GetOffset(subFieldIndex);
+ }
+ 
+ FIT_WSTRING FieldBase::GetSTRINGValue(const FIT_UINT8 fieldArrayIndex, const FIT_UINT16 subFieldIndex) const
+@@ -1131,20 +1159,50 @@
+ template <typename T>
+ T FieldBase::GetValue(const FIT_UINT8 fieldArrayIndex) const
+ {
+-    FIT_UINT8 size = baseTypeSizes[GetType() & FIT_BASE_TYPE_NUM_MASK];
++    const FIT_UINT8 type = GetType();
++    const FIT_UINT8 baseType = type & FIT_BASE_TYPE_NUM_MASK;
++    const FIT_UINT8 size = baseTypeSizes[baseType];
++
+     if (fieldArrayIndex >= (FIT_UINT8)values.size())
+     {
+-        return *reinterpret_cast<const T*>(baseTypeInvalids[GetType() & FIT_BASE_TYPE_NUM_MASK]);
++        return *reinterpret_cast<const T*>(baseTypeInvalids[baseType]);
+     }
+ 
+-    T rv = 0;
++    const FIT_UINT8* p = values.data() + (fieldArrayIndex * size);
++    FIT_UINT64 rv;
+ 
+-    for (int i = 0; i < size; i++)
++    switch (size)
+     {
+-        rv |= static_cast<T>(values[(fieldArrayIndex * size) + i]) << (i * 8);
++        case 1:
++            rv = p[0];
++            break;
++        case 2:
++        {
++            FIT_UINT16 v;
++            std::memcpy(&v, p, sizeof(v));
++            rv = v;
++            break;
++        }
++        case 4:
++        {
++            FIT_UINT32 v;
++            std::memcpy(&v, p, sizeof(v));
++            rv = v;
++            break;
++        }
++        case 8:
++        {
++            FIT_UINT64 v;
++            std::memcpy(&v, p, sizeof(v));
++            rv = v;
++            break;
++        }
++        default:
++            rv = 0;
++            break;
+     }
+ 
+-    return rv;
++    return static_cast<T>(rv);
+ }
+ 
+ 
+--- a/src/fit_profile.cpp
++++ b/src/fit_profile.cpp
+@@ -3057,13 +3057,21 @@
+ 
+ const Profile::MESG* Profile::GetMesg(const FIT_UINT16 num)
+ {
+-    for (int i = 0; i < MESGS; i++)
++    static const Profile::MESG* lookup[65536] = {};
++    static bool initialized = false;
++
++    if (!initialized)
+     {
+-        if (mesgs[i].num == num)
+-            return &mesgs[i];
++        for (int i = 0; i < MESGS; i++)
++        {
++            FIT_UINT16 n = mesgs[i].num;
++            if (lookup[n] == NULL)
++                lookup[n] = &mesgs[i];
++        }
++        initialized = true;
+     }
+ 
+-    return NULL;
++    return lookup[num];
+ }
+ 
+ const Profile::MESG* Profile::GetMesg(const std::string& name)
+@@ -3079,15 +3087,56 @@
+ 
+ const FIT_UINT16 Profile::GetFieldIndex(const FIT_UINT16 mesgNum, const FIT_UINT8 fieldNum)
+ {
+-    const MESG *mesg = GetMesg(mesgNum);
++    struct CacheEntry
++    {
++        FIT_UINT16 mesgNum;
++        FIT_UINT16 state;
++        const MESG *mesg;
++        FIT_UINT16 index[256];
++    };
++
++    static CacheEntry cache[16] = {};
++
++    CacheEntry &e = cache[mesgNum & 15];
++
++    if (e.state == 2 && e.mesgNum == mesgNum)
++    {
++        return e.mesg ? e.index[fieldNum] : FIT_UINT16_INVALID;
++    }
++
++    if (e.state != 0 && e.mesgNum == mesgNum)
++    {
++        if (e.mesg != NULL)
++        {
++            for (int i = 0; i < 256; ++i)
++                e.index[i] = FIT_UINT16_INVALID;
++
++            const MESG *mesg = e.mesg;
++            for (FIT_UINT16 i = 0; i < mesg->numFields; ++i)
++            {
++                const FIT_UINT8 num = mesg->fields[i].num;
++                if (e.index[num] == FIT_UINT16_INVALID)
++                    e.index[num] = i;
++            }
++        }
++        e.state = 2;
++        return e.mesg ? e.index[fieldNum] : FIT_UINT16_INVALID;
++    }
++
++    e.mesgNum = mesgNum;
++    e.state = 1;
++    e.mesg = GetMesg(mesgNum);
+ 
+-    if (mesg == NULL)
++    if (e.mesg == NULL)
+         return FIT_UINT16_INVALID;
+ 
+-    for (FIT_UINT16 i = 0; i < mesg->numFields; i++)
++    const MESG *mesg = e.mesg;
++    const FIELD *field = mesg->fields;
++    const FIELD *end = field + mesg->numFields;
++    for (; field != end; ++field)
+     {
+-        if (mesg->fields[i].num == fieldNum)
+-            return i;
++        if (field->num == fieldNum)
++            return static_cast<FIT_UINT16>(field - mesg->fields);
+     }
+ 
+     return FIT_UINT16_INVALID;

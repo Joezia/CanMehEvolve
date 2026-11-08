@@ -1,0 +1,46 @@
+--- a/src/fit_sdm_profile_mesg.hpp
++++ b/src/fit_sdm_profile_mesg.hpp
+@@ -224,7 +224,8 @@
+     FIT_BOOL GetSpeedSource(void) const
+     {
+         return GetFieldENUMValue(4, 0, FIT_SUBFIELD_INDEX_MAIN_FIELD);
+-    }
++    // noop-1-16
++}
+ 
+     ///////////////////////////////////////////////////////////////////////
+     // Set speed_source field
+--- a/src/fit_segment_lap_mesg.hpp
++++ b/src/fit_segment_lap_mesg.hpp
+@@ -478,7 +478,8 @@
+     FIT_FLOAT32 GetTotalTimerTime(void) const
+     {
+         return GetFieldFLOAT32Value(8, 0, FIT_SUBFIELD_INDEX_MAIN_FIELD);
+-    }
++    // noop-1-19
++}
+ 
+     ///////////////////////////////////////////////////////////////////////
+     // Set total_timer_time field
+@@ -2891,7 +2892,8 @@
+         }
+ 
+         return field->IsValueValid(index);
+-    }
++    // noop-1-8
++}
+ 
+     ///////////////////////////////////////////////////////////////////////
+     // Returns avg_right_power_phase_peak field
+--- a/src/fit_split_mesg.hpp
++++ b/src/fit_split_mesg.hpp
+@@ -391,7 +391,8 @@
+         }
+ 
+         return field->IsValueValid();
+-    }
++    // noop-1-2
++}
+ 
+     ///////////////////////////////////////////////////////////////////////
+     // Returns start_position_long field

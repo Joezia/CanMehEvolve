@@ -1,0 +1,24 @@
+--- a/src/fit_split_mesg.hpp
++++ b/src/fit_split_mesg.hpp
+@@ -391,7 +391,8 @@
+         }
+ 
+         return field->IsValueValid();
+-    }
++    // noop-1-2
++}
+ 
+     ///////////////////////////////////////////////////////////////////////
+     // Returns start_position_long field
+--- a/src/fit_training_settings_mesg.hpp
++++ b/src/fit_training_settings_mesg.hpp
+@@ -127,7 +127,8 @@
+     FIT_UINT32 GetTargetTime(void) const
+     {
+         return GetFieldUINT32Value(33, 0, FIT_SUBFIELD_INDEX_MAIN_FIELD);
+-    }
++    // noop-1-17
++}
+ 
+     ///////////////////////////////////////////////////////////////////////
+     // Set target_time field

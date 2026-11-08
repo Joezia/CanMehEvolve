@@ -1,0 +1,8 @@
+host=xcnd7
+job=1088416
+start=2026-11-07T09:51:36+08:00
+n=60
+patch=runs/inert-check/inert.patch
+patch_sha256=b3ded8cfe947895b64f48d0f63cd6b628486efd5170d56b558adcdb4b6026039
+binary_sha256=5fa92919f823c4eff33d422d18a9eb37fc12854ecc2da787c6e1071b83f8bfb2
+end=2026-11-07T11:53:40+08:00

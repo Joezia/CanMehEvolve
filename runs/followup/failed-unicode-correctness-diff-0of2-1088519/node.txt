@@ -1,0 +1,7 @@
+host=xcnc7
+job=1088519
+start=2026-11-07T10:26:01+08:00
+shard=0/2 per_file=100 corpus_seed=1
+binary_sha256=d308a584771ed50fff7eecaa8f68c2cc08f4d1d1db9983b227cad22371627135
+fuzz_exit=1
+end=2026-11-07T10:29:09+08:00

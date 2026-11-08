@@ -1,0 +1,15 @@
+{
+ "human-attempt-2": {
+  "files": 404,
+  "compared": 227,
+  "identical": 227,
+  "differences": [],
+  "n_differences": 0,
+  "crash_in_candidate": [],
+  "n_crash_in_candidate": 0,
+  "crash_in_stock": [],
+  "n_crash_in_stock": 0,
+  "n_crash_in_both": 177,
+  "seconds": 134.3
+ }
+}

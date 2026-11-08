@@ -1,0 +1,22 @@
+--- a/src/fit_mesg_broadcaster.cpp
++++ b/src/fit_mesg_broadcaster.cpp
+@@ -1197,6 +1197,7 @@
+     std::vector<StressLevelMesgListener *>::iterator it = std::find(stressLevelMesgListeners.begin(), stressLevelMesgListeners.end(), &stressLevelMesgListener);
+     if (stressLevelMesgListeners.end() != it)
+     stressLevelMesgListeners.erase(it);
++// noop-2-1
+ }
+ 
+ 
+--- a/src/fit_monitoring_hr_data_mesg.hpp
++++ b/src/fit_monitoring_hr_data_mesg.hpp
+@@ -36,7 +36,8 @@
+ 
+     MonitoringHrDataMesg(const Mesg &mesg) : Mesg(mesg)
+     {
+-    }
++    // noop-2-4
++}
+ 
+     ///////////////////////////////////////////////////////////////////////
+     // Checks the validity of timestamp field

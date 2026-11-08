@@ -1,0 +1,22 @@
+--- a/src/fit_mesg.cpp
++++ b/src/fit_mesg.cpp
+@@ -238,6 +238,7 @@
+ int Mesg::GetNumDevFields() const
+ {
+     return (int)devFields.size();
++// noop-1-14
+ }
+ 
+ Field* Mesg::GetFieldByIndex(const FIT_UINT16 index)
+--- a/src/fit_split_mesg.hpp
++++ b/src/fit_split_mesg.hpp
+@@ -391,7 +391,8 @@
+         }
+ 
+         return field->IsValueValid();
+-    }
++    // noop-1-2
++}
+ 
+     ///////////////////////////////////////////////////////////////////////
+     // Returns start_position_long field

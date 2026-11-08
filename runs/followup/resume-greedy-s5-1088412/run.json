@@ -1,0 +1,80 @@
+{
+  "base_url": "https://soclaas-api.comp.nus.edu.sg/v1",
+  "compiler": "/usr/bin/c++",
+  "compiler_version": "c++ (Ubuntu 13.3.0-6ubuntu2~24.04.1) 13.3.0",
+  "cxxstd": "-std=c++17",
+  "deadline_seconds": 0.0,
+  "generations": 40,
+  "git_commit": "d5aa9e77fbbb97577075bcfcf75f2cc98866fc60",
+  "git_dirty": false,
+  "hostname": "xcnd5",
+  "llm_expect_model": "deepseek-v4.1-flash-1017",
+  "llm_http_attempts": 1,
+  "llm_timeout_seconds": 600,
+  "max_lines": 250,
+  "max_tokens": 32768,
+  "meta": {
+    "baseline_ms": 478.80334802903235,
+    "bench": "/home/z/zhouzia/Workspace/CanMehEvolve/build/CanMehBench",
+    "cxx": "/usr/bin/c++",
+    "cxxstd": "-std=c++17",
+    "data": "/home/z/zhouzia/Workspace/CanMehEvolve/build/data",
+    "min_time": "0.25s",
+    "null_p": 0.810546875,
+    "null_ratio": 0.9999889393814964,
+    "opt": "-O2",
+    "reference_cv": 0.002426981400287619,
+    "repeat": 10,
+    "repetitions": 9,
+    "sdk": "/home/z/zhouzia/Workspace/CanMehEvolve/build/FITSDK-prefix/src/FITSDK"
+  },
+  "mode": "greedy",
+  "model_probe": {
+    "http_status": 200,
+    "model": "deepseek-v4.1-flash-1017",
+    "ok": true,
+    "requested_model": "deepseek-v4.1-flash",
+    "usage": {
+      "completion_tokens": 14,
+      "completion_tokens_details": {
+        "reasoning_tokens": 11
+      },
+      "prompt_tokens": 36,
+      "prompt_tokens_details": {
+        "cached_tokens": 0,
+        "created_cache_tokens": 0,
+        "multimodal_tokens": null
+      },
+      "total_tokens": 50
+    }
+  },
+  "model_requested": "deepseek-v4.1-flash",
+  "null_evidence": {
+    "baseline_ms": 478.80334802903235,
+    "null_ok": true,
+    "null_ratio": 0.9999889393814964,
+    "null_spread": 0.013492501382652677,
+    "reference_cv": 0.002426981400287619,
+    "source": "/home/z/zhouzia/Workspace/CanMehEvolve/runs/followup/resume-greedy-s5-1088412/init.json"
+  },
+  "opt": "-O2",
+  "population": 6,
+  "prompt_hints": false,
+  "rank_rule": "candidate measured once; if r1 < record and not unstable, measured again; R = max(r1, r2); record is replaced only when both are valid, stable and R < record. Ordering heuristic, not a significance test.",
+  "region_files": "",
+  "rule": {
+    "alpha": 0.01,
+    "min_effect": 0.02,
+    "required_processes": 10,
+    "statistic": "median over processes of median(candidate_ns)/median(reference_ns); exact two-sided sign-flip test on sum of log process ratios",
+    "unstable_spread": 0.25
+  },
+  "sample_seconds": 0.0,
+  "search_version": "2026-11-04 greedy/bestofn rank rule, own LLM adapter",
+  "seed": 5,
+  "slurm_job_id": "1088412",
+  "slurm_nodelist": "xcnd5",
+  "started": "2026-11-07T09:54:36+0800",
+  "temperature": 0.8,
+  "uniform_share": 0.1
+}

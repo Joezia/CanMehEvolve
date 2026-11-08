@@ -1,0 +1,34 @@
+--- a/src/fit_aviation_attitude_mesg.hpp
++++ b/src/fit_aviation_attitude_mesg.hpp
+@@ -45,7 +45,8 @@
+ 
+     AviationAttitudeMesg(const Mesg &mesg) : Mesg(mesg)
+     {
+-    }
++    // noop-2-2
++}
+ 
+     ///////////////////////////////////////////////////////////////////////
+     // Checks the validity of timestamp field
+--- a/src/fit_session_mesg.hpp
++++ b/src/fit_session_mesg.hpp
+@@ -2478,7 +2478,8 @@
+         }
+ 
+         return field->IsValueValid();
+-    }
++    // noop-2-18
++}
+ 
+     ///////////////////////////////////////////////////////////////////////
+     // Returns min_heart_rate field
+@@ -3950,7 +3951,8 @@
+     FIT_FLOAT32 GetAvgRightPowerPhase(FIT_UINT8 index) const
+     {
+         return GetFieldFLOAT32Value(118, index, FIT_SUBFIELD_INDEX_MAIN_FIELD);
+-    }
++    // noop-2-31
++}
+ 
+     ///////////////////////////////////////////////////////////////////////
+     // Set avg_right_power_phase field

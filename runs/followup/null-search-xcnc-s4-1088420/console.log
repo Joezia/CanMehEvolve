@@ -1,0 +1,37 @@
+[step 1] region SetType ratio=0.99908 r2=1.00152 record=1.00000 updates=0
+[step 2] region IsTotalWorkValid ratio=1.00060 record=1.00000 updates=0
+[step 3] region IsBikeCadAntIdValid ratio=0.99929 r2=1.00151 record=1.00000 updates=0
+[step 4] region IsHeartRateValid ratio=1.00070 record=1.00000 updates=0
+[step 5] region IsNameValid ratio=0.99973 r2=0.99966 record=0.99973 updates=1
+[step 6] region SetTimeOffset ratio=0.99949 r2=0.99992 record=0.99973 updates=1
+[step 7] region GetNumMesgData ratio=1.00003 record=0.99973 updates=1
+[step 8] region MesgDefinition::GetLocalNum ratio=1.00011 record=0.99973 updates=1
+[step 9] region FieldBase::GetSINT64Value ratio=0.99961 r2=1.00097 record=0.99973 updates=1
+[step 10] region GetCompressedAccumulatedPower ratio=1.00009 record=0.99973 updates=1
+[step 11] region IsMessageIndexValid ratio=0.99972 r2=0.99956 record=0.99972 updates=2
+[step 12] region IsEventTypeValid ratio=1.00046 record=0.99972 updates=2
+[step 13] region MesgBroadcaster::AddListener ratio=0.99961 r2=1.00048 record=0.99972 updates=2
+[step 14] region GetLayout ratio=1.00018 record=0.99972 updates=2
+[step 15] region SetMaxSaturatedHemoglobinPercent ratio=1.00011 record=0.99972 updates=2
+[step 16] region SetMinRespirationRate ratio=1.00049 record=0.99972 updates=2
+[step 17] region GetCalories ratio=0.99965 r2=0.99897 record=0.99965 updates=3
+[step 18] region GetTimestamp ratio=1.00042 record=0.99965 updates=3
+[step 19] region SetTriggerOnAscent ratio=0.99926 r2=0.99905 record=0.99926 updates=4
+[step 20] region IsAutoPowerZeroValid ratio=1.00015 record=0.99926 updates=4
+[step 21] region SetBaselineBalancedUpper ratio=1.00071 record=0.99926 updates=4
+[step 22] region GetScreenIndex ratio=0.99995 record=0.99926 updates=4
+[step 23] region FieldDefinition::operator!= ratio=0.99992 record=0.99926 updates=4
+[step 24] region IsBasalMetValid ratio=1.00041 record=0.99926 updates=4
+[step 25] region SetLastNightAverage ratio=1.00138 record=0.99926 updates=4
+[step 26] region SetTimestamp ratio=1.00027 record=0.99926 updates=4
+[step 27] region GetO2Toxicity ratio=0.99934 record=0.99926 updates=4
+[step 28] region SetEnabled ratio=0.99919 r2=1.00017 record=0.99926 updates=4
+[step 29] region GetTimeInSpeedZone ratio=1.00059 record=0.99926 updates=4
+[step 30] region SetEventType ratio=1.00029 record=0.99926 updates=4
+[step 31] region GetText ratio=0.99907 r2=0.99958 record=0.99926 updates=4
+[step 32] region IsActiveCaloriesValid ratio=0.99944 record=0.99926 updates=4
+[step 33] region IsFractionalTimestampValid ratio=0.99955 record=0.99926 updates=4
+[step 34] region SetSerialNumber ratio=0.99964 record=0.99926 updates=4
+[step 35] region IsMessageIndexValid ratio=1.00198 record=0.99926 updates=4
+[step 36] region IsThresholdHeartRateValid ratio=0.99779 r2=1.00057 record=0.99926 updates=4
+{"seed": 4, "steps_measured": 36, "attempts": 36, "updates": 4, "final_record": 0.9992568201847094, "final_record_speedup": 1.000743732542304, "measurements": 48, "rule_faster_count": 0, "elapsed_s": 5051.8, "ended_because": "steps"}

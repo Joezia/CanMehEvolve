@@ -1,0 +1,86 @@
+{
+  "api_calls": 6,
+  "best_confirmed_generation": 0,
+  "best_confirmed_speedup": 1.0,
+  "best_ranked_generation": 26,
+  "best_ranked_speedup": 1.1665588460912708,
+  "best_retained_speedup": 1.1663325159349451,
+  "completion_tokens": 97206,
+  "confirmed_candidates": 0,
+  "elapsed_s": 1289.409740579,
+  "ended_because": "generations exhausted",
+  "finished": "2026-11-07T10:16:04+0800",
+  "improved_on_parent_candidates": 0,
+  "llm_seconds": 751.066018355,
+  "max_tokens": 32768,
+  "mode": "greedy",
+  "outcomes": {
+    "compile": 2,
+    "measured": 4
+  },
+  "prior_api_calls": 34,
+  "prompt_tokens": 3530,
+  "rank_updates": [
+    {
+      "R": 0.9457192527912888,
+      "generation": 4,
+      "label": "FieldBase::FieldBase",
+      "previous_R": 1.0,
+      "region": 134,
+      "speedup": 1.0573962590361798
+    },
+    {
+      "R": 0.8960943735520501,
+      "generation": 6,
+      "label": "Profile::GetFieldIndex",
+      "previous_R": 0.9457192527912888,
+      "region": 576,
+      "speedup": 1.1159538877987547
+    },
+    {
+      "R": 0.8732459305111058,
+      "generation": 8,
+      "label": "Profile::GetMesg",
+      "previous_R": 0.8960943735520501,
+      "region": 574,
+      "speedup": 1.1451527743332348
+    },
+    {
+      "R": 0.8673041757234561,
+      "generation": 13,
+      "label": "FieldBase::GetValue",
+      "previous_R": 0.8732459305111058,
+      "region": 196,
+      "speedup": 1.1529980230590458
+    },
+    {
+      "R": 0.866228847650382,
+      "generation": 22,
+      "label": "Profile::GetMesg",
+      "previous_R": 0.8673041757234561,
+      "region": 574,
+      "speedup": 1.154429343599521
+    },
+    {
+      "R": 0.8615799343128108,
+      "generation": 25,
+      "label": "FieldBase::GetFLOAT64Value",
+      "previous_R": 0.866228847650382,
+      "region": 166,
+      "speedup": 1.1606584138912102
+    },
+    {
+      "R": 0.857222079581025,
+      "generation": 26,
+      "label": "Profile::GetMesg",
+      "previous_R": 0.8615799343128108,
+      "region": 574,
+      "speedup": 1.1665588460912708
+    }
+  ],
+  "reasoning_tokens": 95251,
+  "resumed_from": "/home/z/zhouzia/Workspace/CanMehEvolve/runs/deepseek/greedy-s5-1072873",
+  "seed": 5,
+  "total_tokens": 100736,
+  "truncated_replies": 0
+}

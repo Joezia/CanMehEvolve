@@ -1,0 +1,14 @@
+Added `__builtin_expect` hints so the common valid-type path falls through and the profile lookup path stays cold, reducing taken branches in the hot decode loop while preserving exact behavior.
+
+```cpp
+FIT_UINT8 Field::GetType() const
+{
+    if (__builtin_expect(type != FIT_UINT8_INVALID, 1))
+        return type;
+
+    if (__builtin_expect(profile != NULL && profileIndex < profile->numFields, 1))
+        return profile->fields[profileIndex].type;
+
+    return FIT_UINT8_INVALID;
+}
+```

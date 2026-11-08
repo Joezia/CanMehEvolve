@@ -1,0 +1,24 @@
+--- a/src/fit_aviation_attitude_mesg.hpp
++++ b/src/fit_aviation_attitude_mesg.hpp
+@@ -45,7 +45,8 @@
+ 
+     AviationAttitudeMesg(const Mesg &mesg) : Mesg(mesg)
+     {
+-    }
++    // noop-2-2
++}
+ 
+     ///////////////////////////////////////////////////////////////////////
+     // Checks the validity of timestamp field
+--- a/src/fit_event_mesg.hpp
++++ b/src/fit_event_mesg.hpp
+@@ -1441,7 +1441,8 @@
+         }
+ 
+         return field->IsValueValid(0, (FIT_UINT16) Profile::EVENT_MESG_START_TIMESTAMP_FIELD_AUTO_ACTIVITY_DETECT_START_TIMESTAMP);
+-    }
++    // noop-2-10
++}
+ 
+ 
+     ///////////////////////////////////////////////////////////////////////

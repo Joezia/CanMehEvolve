@@ -1,0 +1,56 @@
+{
+ "stock|asan": {
+  "returncode": 0,
+  "asan_errors": 0,
+  "ubsan_runtime_errors": 1,
+  "tsan_warnings": 0
+ },
+ "human-attempt-1|asan": {
+  "changed_units": [
+   "fit_profile"
+  ],
+  "returncode": 0,
+  "asan_errors": 0,
+  "ubsan_runtime_errors": 1,
+  "tsan_warnings": 0,
+  "files": 71,
+  "digest_differences_vs_stock": 0
+ },
+ "human-attempt-2|asan": {
+  "changed_units": [
+   "fit_profile"
+  ],
+  "returncode": 0,
+  "asan_errors": 0,
+  "ubsan_runtime_errors": 1,
+  "tsan_warnings": 0,
+  "files": 71,
+  "digest_differences_vs_stock": 0
+ },
+ "stock|tsan": {
+  "returncode": 0,
+  "asan_errors": 0,
+  "ubsan_runtime_errors": 0,
+  "tsan_warnings": 0
+ },
+ "human-attempt-1|tsan": {
+  "changed_units": [
+   "fit_profile"
+  ],
+  "returncode": 0,
+  "asan_errors": 0,
+  "ubsan_runtime_errors": 0,
+  "tsan_warnings": 0,
+  "output": "threads 4 repeats 1 files 12 digest_mismatches 0"
+ },
+ "human-attempt-2|tsan": {
+  "changed_units": [
+   "fit_profile"
+  ],
+  "returncode": 0,
+  "asan_errors": 0,
+  "ubsan_runtime_errors": 0,
+  "tsan_warnings": 0,
+  "output": "threads 4 repeats 1 files 12 digest_mismatches 0"
+ }
+}

@@ -1,0 +1,12 @@
+--- a/src/fit_time_in_zone_mesg.hpp
++++ b/src/fit_time_in_zone_mesg.hpp
+@@ -341,7 +341,8 @@
+     FIT_UINT8 GetHrZoneHighBoundary(FIT_UINT8 index) const
+     {
+         return GetFieldUINT8Value(6, index, FIT_SUBFIELD_INDEX_MAIN_FIELD);
+-    }
++    // noop-3-2
++}
+ 
+     ///////////////////////////////////////////////////////////////////////
+     // Set hr_zone_high_boundary field

@@ -1,0 +1,32 @@
+--- a/src/fit_lap_mesg.hpp
++++ b/src/fit_lap_mesg.hpp
+@@ -283,7 +283,8 @@
+     void SetEventType(FIT_EVENT_TYPE eventType)
+     {
+         SetFieldENUMValue(1, eventType, 0, FIT_SUBFIELD_INDEX_MAIN_FIELD);
+-    }
++    // noop-4-30
++}
+ 
+     ///////////////////////////////////////////////////////////////////////
+     // Checks the validity of start_time field
+@@ -1539,7 +1540,8 @@
+         }
+ 
+         return field->IsValueValid();
+-    }
++    // noop-4-2
++}
+ 
+     ///////////////////////////////////////////////////////////////////////
+     // Returns total_work field
+--- a/src/fit_mesg_definition.cpp
++++ b/src/fit_mesg_definition.cpp
+@@ -46,6 +46,7 @@
+ FIT_UINT8 MesgDefinition::GetLocalNum() const
+ {
+     return localNum;
++// noop-4-8
+ }
+ 
+ void MesgDefinition::SetNum(const FIT_UINT16 newNum)

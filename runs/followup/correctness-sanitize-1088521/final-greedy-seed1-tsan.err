@@ -1,0 +1,151 @@
+4d2187871a14e44d45255)
+    #4 fit::Decode::Read(std::istream*) /home/z/zhouzia/.sanitize-scratch/stock/src/fit_decode.cpp:191 (drv-tsan-final-greedy-seed1+0x2471b) (BuildId: 7f008d29c49cb66aa5d4d2187871a14e44d45255)
+    #5 fit::Decode::Read(std::istream*, fit::MesgListener*, fit::MesgDefinitionListener*, fit::DeveloperFieldDescriptionListener*) /home/z/zhouzia/.sanitize-scratch/stock/src/fit_decode.cpp:209 (drv-tsan-final-greedy-seed1+0x247e8) (BuildId: 7f008d29c49cb66aa5d4d2187871a14e44d45255)
+    #6 fit::Decode::Read(std::istream&, fit::MesgListener&) /home/z/zhouzia/.sanitize-scratch/stock/src/fit_decode.cpp:214 (drv-tsan-final-greedy-seed1+0x24853) (BuildId: 7f008d29c49cb66aa5d4d2187871a14e44d45255)
+    #7 decodeOne /home/z/zhouzia/Workspace/CanMehEvolve/scripts/followup/driver.cpp:68 (drv-tsan-final-greedy-seed1+0x921b) (BuildId: 7f008d29c49cb66aa5d4d2187871a14e44d45255)
+    #8 operator() /home/z/zhouzia/Workspace/CanMehEvolve/scripts/followup/driver.cpp:109 (drv-tsan-final-greedy-seed1+0x95df) (BuildId: 7f008d29c49cb66aa5d4d2187871a14e44d45255)
+    #9 __invoke_impl<void, main(int, char**)::<lambda()> > /usr/include/c++/13/bits/invoke.h:61 (drv-tsan-final-greedy-seed1+0x95df)
+    #10 __invoke<main(int, char**)::<lambda()> > /usr/include/c++/13/bits/invoke.h:96 (drv-tsan-final-greedy-seed1+0x95df)
+    #11 _M_invoke<0> /usr/include/c++/13/bits/std_thread.h:292 (drv-tsan-final-greedy-seed1+0x95df)
+    #12 operator() /usr/include/c++/13/bits/std_thread.h:299 (drv-tsan-final-greedy-seed1+0x95df)
+    #13 _M_run /usr/include/c++/13/bits/std_thread.h:244 (drv-tsan-final-greedy-seed1+0x95df)
+    #14 <null> <null> (libstdc++.so.6+0xecdb3) (BuildId: 753c6c8608b61d4e67be8f0c890e03e0aa046b8b)
+
+  Location is global 'fit::Field::Field(unsigned short, unsigned char)::fieldCacheValid' of size 256 at 0x555555648380 (drv-tsan-final-greedy-seed1+0xf43c9)
+
+  Thread T2 (tid=437776, running) created by main thread at:
+    #0 pthread_create ../../../../src/libsanitizer/tsan/tsan_interceptors_posix.cpp:1022 (libtsan.so.2+0x5ac1a) (BuildId: 2a13a7710e361d06f7babbea53065ca2be93f738)
+    #1 std::thread::_M_start_thread(std::unique_ptr<std::thread::_State, std::default_delete<std::thread::_State> >, void (*)()) <null> (libstdc++.so.6+0xeceb0) (BuildId: 753c6c8608b61d4e67be8f0c890e03e0aa046b8b)
+    #2 __libc_start_call_main ../sysdeps/nptl/libc_start_call_main.h:58 (libc.so.6+0x2a1c9) (BuildId: a4a7992a8e66555c8141ab2a08a8465ff6e0ea65)
+
+  Thread T3 (tid=437777, running) created by main thread at:
+    #0 pthread_create ../../../../src/libsanitizer/tsan/tsan_interceptors_posix.cpp:1022 (libtsan.so.2+0x5ac1a) (BuildId: 2a13a7710e361d06f7babbea53065ca2be93f738)
+    #1 std::thread::_M_start_thread(std::unique_ptr<std::thread::_State, std::default_delete<std::thread::_State> >, void (*)()) <null> (libstdc++.so.6+0xeceb0) (BuildId: 753c6c8608b61d4e67be8f0c890e03e0aa046b8b)
+    #2 __libc_start_call_main ../sysdeps/nptl/libc_start_call_main.h:58 (libc.so.6+0x2a1c9) (BuildId: a4a7992a8e66555c8141ab2a08a8465ff6e0ea65)
+
+SUMMARY: ThreadSanitizer: data race /home/z/zhouzia/.sanitize-scratch/var-tsan-final-greedy-seed1/src/fit_field.cpp:72 in fit::Field::Field(unsigned short, unsigned char)
+==================
+==================
+WARNING: ThreadSanitizer: data race (pid=437773)
+  Read of size 2 at 0x555555648612 by thread T4:
+    #0 fit::Field::Field(unsigned short, unsigned char) /home/z/zhouzia/.sanitize-scratch/var-tsan-final-greedy-seed1/src/fit_field.cpp:72 (drv-tsan-final-greedy-seed1+0x397a5) (BuildId: 7f008d29c49cb66aa5d4d2187871a14e44d45255)
+    #1 fit::Decode::ExpandComponents(fit::Field*, fit::Profile::FIELD_COMPONENT const*, unsigned short) /home/z/zhouzia/.sanitize-scratch/stock/src/fit_decode.cpp:988 (drv-tsan-final-greedy-seed1+0x1b019) (BuildId: 7f008d29c49cb66aa5d4d2187871a14e44d45255)
+    #2 fit::Decode::ReadByte(unsigned char) /home/z/zhouzia/.sanitize-scratch/stock/src/fit_decode.cpp:893 (drv-tsan-final-greedy-seed1+0x2241a) (BuildId: 7f008d29c49cb66aa5d4d2187871a14e44d45255)
+    #3 fit::Decode::Resume() /home/z/zhouzia/.sanitize-scratch/stock/src/fit_decode.cpp:246 (drv-tsan-final-greedy-seed1+0x242cf) (BuildId: 7f008d29c49cb66aa5d4d2187871a14e44d45255)
+    #4 fit::Decode::Read(std::istream*) /home/z/zhouzia/.sanitize-scratch/stock/src/fit_decode.cpp:191 (drv-tsan-final-greedy-seed1+0x2471b) (BuildId: 7f008d29c49cb66aa5d4d2187871a14e44d45255)
+    #5 fit::Decode::Read(std::istream*, fit::MesgListener*, fit::MesgDefinitionListener*, fit::DeveloperFieldDescriptionListener*) /home/z/zhouzia/.sanitize-scratch/stock/src/fit_decode.cpp:209 (drv-tsan-final-greedy-seed1+0x247e8) (BuildId: 7f008d29c49cb66aa5d4d2187871a14e44d45255)
+    #6 fit::Decode::Read(std::istream&, fit::MesgListener&) /home/z/zhouzia/.sanitize-scratch/stock/src/fit_decode.cpp:214 (drv-tsan-final-greedy-seed1+0x24853) (BuildId: 7f008d29c49cb66aa5d4d2187871a14e44d45255)
+    #7 decodeOne /home/z/zhouzia/Workspace/CanMehEvolve/scripts/followup/driver.cpp:68 (drv-tsan-final-greedy-seed1+0x921b) (BuildId: 7f008d29c49cb66aa5d4d2187871a14e44d45255)
+    #8 operator() /home/z/zhouzia/Workspace/CanMehEvolve/scripts/followup/driver.cpp:109 (drv-tsan-final-greedy-seed1+0x95df) (BuildId: 7f008d29c49cb66aa5d4d2187871a14e44d45255)
+    #9 __invoke_impl<void, main(int, char**)::<lambda()> > /usr/include/c++/13/bits/invoke.h:61 (drv-tsan-final-greedy-seed1+0x95df)
+    #10 __invoke<main(int, char**)::<lambda()> > /usr/include/c++/13/bits/invoke.h:96 (drv-tsan-final-greedy-seed1+0x95df)
+    #11 _M_invoke<0> /usr/include/c++/13/bits/std_thread.h:292 (drv-tsan-final-greedy-seed1+0x95df)
+    #12 operator() /usr/include/c++/13/bits/std_thread.h:299 (drv-tsan-final-greedy-seed1+0x95df)
+    #13 _M_run /usr/include/c++/13/bits/std_thread.h:244 (drv-tsan-final-greedy-seed1+0x95df)
+    #14 <null> <null> (libstdc++.so.6+0xecdb3) (BuildId: 753c6c8608b61d4e67be8f0c890e03e0aa046b8b)
+
+  Previous write of size 2 at 0x555555648612 by thread T3:
+    #0 fit::Field::Field(unsigned short, unsigned char) /home/z/zhouzia/.sanitize-scratch/var-tsan-final-greedy-seed1/src/fit_field.cpp:86 (drv-tsan-final-greedy-seed1+0x39839) (BuildId: 7f008d29c49cb66aa5d4d2187871a14e44d45255)
+    #1 fit::Decode::ExpandComponents(fit::Field*, fit::Profile::FIELD_COMPONENT const*, unsigned short) /home/z/zhouzia/.sanitize-scratch/stock/src/fit_decode.cpp:988 (drv-tsan-final-greedy-seed1+0x1b019) (BuildId: 7f008d29c49cb66aa5d4d2187871a14e44d45255)
+    #2 fit::Decode::ReadByte(unsigned char) /home/z/zhouzia/.sanitize-scratch/stock/src/fit_decode.cpp:893 (drv-tsan-final-greedy-seed1+0x2241a) (BuildId: 7f008d29c49cb66aa5d4d2187871a14e44d45255)
+    #3 fit::Decode::Resume() /home/z/zhouzia/.sanitize-scratch/stock/src/fit_decode.cpp:246 (drv-tsan-final-greedy-seed1+0x242cf) (BuildId: 7f008d29c49cb66aa5d4d2187871a14e44d45255)
+    #4 fit::Decode::Read(std::istream*) /home/z/zhouzia/.sanitize-scratch/stock/src/fit_decode.cpp:191 (drv-tsan-final-greedy-seed1+0x2471b) (BuildId: 7f008d29c49cb66aa5d4d2187871a14e44d45255)
+    #5 fit::Decode::Read(std::istream*, fit::MesgListener*, fit::MesgDefinitionListener*, fit::DeveloperFieldDescriptionListener*) /home/z/zhouzia/.sanitize-scratch/stock/src/fit_decode.cpp:209 (drv-tsan-final-greedy-seed1+0x247e8) (BuildId: 7f008d29c49cb66aa5d4d2187871a14e44d45255)
+    #6 fit::Decode::Read(std::istream&, fit::MesgListener&) /home/z/zhouzia/.sanitize-scratch/stock/src/fit_decode.cpp:214 (drv-tsan-final-greedy-seed1+0x24853) (BuildId: 7f008d29c49cb66aa5d4d2187871a14e44d45255)
+    #7 decodeOne /home/z/zhouzia/Workspace/CanMehEvolve/scripts/followup/driver.cpp:68 (drv-tsan-final-greedy-seed1+0x921b) (BuildId: 7f008d29c49cb66aa5d4d2187871a14e44d45255)
+    #8 operator() /home/z/zhouzia/Workspace/CanMehEvolve/scripts/followup/driver.cpp:109 (drv-tsan-final-greedy-seed1+0x95df) (BuildId: 7f008d29c49cb66aa5d4d2187871a14e44d45255)
+    #9 __invoke_impl<void, main(int, char**)::<lambda()> > /usr/include/c++/13/bits/invoke.h:61 (drv-tsan-final-greedy-seed1+0x95df)
+    #10 __invoke<main(int, char**)::<lambda()> > /usr/include/c++/13/bits/invoke.h:96 (drv-tsan-final-greedy-seed1+0x95df)
+    #11 _M_invoke<0> /usr/include/c++/13/bits/std_thread.h:292 (drv-tsan-final-greedy-seed1+0x95df)
+    #12 operator() /usr/include/c++/13/bits/std_thread.h:299 (drv-tsan-final-greedy-seed1+0x95df)
+    #13 _M_run /usr/include/c++/13/bits/std_thread.h:244 (drv-tsan-final-greedy-seed1+0x95df)
+    #14 <null> <null> (libstdc++.so.6+0xecdb3) (BuildId: 753c6c8608b61d4e67be8f0c890e03e0aa046b8b)
+
+  Location is global 'fit::Field::Field(unsigned short, unsigned char)::fieldCacheMesgNum' of size 512 at 0x555555648580 (drv-tsan-final-greedy-seed1+0xf4612)
+
+  Thread T4 (tid=437778, running) created by main thread at:
+    #0 pthread_create ../../../../src/libsanitizer/tsan/tsan_interceptors_posix.cpp:1022 (libtsan.so.2+0x5ac1a) (BuildId: 2a13a7710e361d06f7babbea53065ca2be93f738)
+    #1 std::thread::_M_start_thread(std::unique_ptr<std::thread::_State, std::default_delete<std::thread::_State> >, void (*)()) <null> (libstdc++.so.6+0xeceb0) (BuildId: 753c6c8608b61d4e67be8f0c890e03e0aa046b8b)
+    #2 __libc_start_call_main ../sysdeps/nptl/libc_start_call_main.h:58 (libc.so.6+0x2a1c9) (BuildId: a4a7992a8e66555c8141ab2a08a8465ff6e0ea65)
+
+  Thread T3 (tid=437777, running) created by main thread at:
+    #0 pthread_create ../../../../src/libsanitizer/tsan/tsan_interceptors_posix.cpp:1022 (libtsan.so.2+0x5ac1a) (BuildId: 2a13a7710e361d06f7babbea53065ca2be93f738)
+    #1 std::thread::_M_start_thread(std::unique_ptr<std::thread::_State, std::default_delete<std::thread::_State> >, void (*)()) <null> (libstdc++.so.6+0xeceb0) (BuildId: 753c6c8608b61d4e67be8f0c890e03e0aa046b8b)
+    #2 __libc_start_call_main ../sysdeps/nptl/libc_start_call_main.h:58 (libc.so.6+0x2a1c9) (BuildId: a4a7992a8e66555c8141ab2a08a8465ff6e0ea65)
+
+SUMMARY: ThreadSanitizer: data race /home/z/zhouzia/.sanitize-scratch/var-tsan-final-greedy-seed1/src/fit_field.cpp:72 in fit::Field::Field(unsigned short, unsigned char)
+==================
+==================
+WARNING: ThreadSanitizer: data race (pid=437773)
+  Read of size 1 at 0x5555556484c9 by thread T1:
+    #0 fit::Field::Field(unsigned short, unsigned char) /home/z/zhouzia/.sanitize-scratch/var-tsan-final-greedy-seed1/src/fit_field.cpp:90 (drv-tsan-final-greedy-seed1+0x3987e) (BuildId: 7f008d29c49cb66aa5d4d2187871a14e44d45255)
+    #1 fit::Decode::ExpandComponents(fit::Field*, fit::Profile::FIELD_COMPONENT const*, unsigned short) /home/z/zhouzia/.sanitize-scratch/stock/src/fit_decode.cpp:988 (drv-tsan-final-greedy-seed1+0x1b019) (BuildId: 7f008d29c49cb66aa5d4d2187871a14e44d45255)
+    #2 fit::Decode::ReadByte(unsigned char) /home/z/zhouzia/.sanitize-scratch/stock/src/fit_decode.cpp:893 (drv-tsan-final-greedy-seed1+0x2241a) (BuildId: 7f008d29c49cb66aa5d4d2187871a14e44d45255)
+    #3 fit::Decode::Resume() /home/z/zhouzia/.sanitize-scratch/stock/src/fit_decode.cpp:246 (drv-tsan-final-greedy-seed1+0x242cf) (BuildId: 7f008d29c49cb66aa5d4d2187871a14e44d45255)
+    #4 fit::Decode::Read(std::istream*) /home/z/zhouzia/.sanitize-scratch/stock/src/fit_decode.cpp:191 (drv-tsan-final-greedy-seed1+0x2471b) (BuildId: 7f008d29c49cb66aa5d4d2187871a14e44d45255)
+    #5 fit::Decode::Read(std::istream*, fit::MesgListener*, fit::MesgDefinitionListener*, fit::DeveloperFieldDescriptionListener*) /home/z/zhouzia/.sanitize-scratch/stock/src/fit_decode.cpp:209 (drv-tsan-final-greedy-seed1+0x247e8) (BuildId: 7f008d29c49cb66aa5d4d2187871a14e44d45255)
+    #6 fit::Decode::Read(std::istream&, fit::MesgListener&) /home/z/zhouzia/.sanitize-scratch/stock/src/fit_decode.cpp:214 (drv-tsan-final-greedy-seed1+0x24853) (BuildId: 7f008d29c49cb66aa5d4d2187871a14e44d45255)
+    #7 decodeOne /home/z/zhouzia/Workspace/CanMehEvolve/scripts/followup/driver.cpp:68 (drv-tsan-final-greedy-seed1+0x921b) (BuildId: 7f008d29c49cb66aa5d4d2187871a14e44d45255)
+    #8 operator() /home/z/zhouzia/Workspace/CanMehEvolve/scripts/followup/driver.cpp:109 (drv-tsan-final-greedy-seed1+0x95df) (BuildId: 7f008d29c49cb66aa5d4d2187871a14e44d45255)
+    #9 __invoke_impl<void, main(int, char**)::<lambda()> > /usr/include/c++/13/bits/invoke.h:61 (drv-tsan-final-greedy-seed1+0x95df)
+    #10 __invoke<main(int, char**)::<lambda()> > /usr/include/c++/13/bits/invoke.h:96 (drv-tsan-final-greedy-seed1+0x95df)
+    #11 _M_invoke<0> /usr/include/c++/13/bits/std_thread.h:292 (drv-tsan-final-greedy-seed1+0x95df)
+    #12 operator() /usr/include/c++/13/bits/std_thread.h:299 (drv-tsan-final-greedy-seed1+0x95df)
+    #13 _M_run /usr/include/c++/13/bits/std_thread.h:244 (drv-tsan-final-greedy-seed1+0x95df)
+    #14 <null> <null> (libstdc++.so.6+0xecdb3) (BuildId: 753c6c8608b61d4e67be8f0c890e03e0aa046b8b)
+
+  Previous write of size 1 at 0x5555556484c9 by thread T3:
+    #0 fit::Field::Field(unsigned short, unsigned char) /home/z/zhouzia/.sanitize-scratch/var-tsan-final-greedy-seed1/src/fit_field.cpp:87 (drv-tsan-final-greedy-seed1+0x39852) (BuildId: 7f008d29c49cb66aa5d4d2187871a14e44d45255)
+    #1 fit::Decode::ExpandComponents(fit::Field*, fit::Profile::FIELD_COMPONENT const*, unsigned short) /home/z/zhouzia/.sanitize-scratch/stock/src/fit_decode.cpp:988 (drv-tsan-final-greedy-seed1+0x1b019) (BuildId: 7f008d29c49cb66aa5d4d2187871a14e44d45255)
+    #2 fit::Decode::ReadByte(unsigned char) /home/z/zhouzia/.sanitize-scratch/stock/src/fit_decode.cpp:893 (drv-tsan-final-greedy-seed1+0x2241a) (BuildId: 7f008d29c49cb66aa5d4d2187871a14e44d45255)
+    #3 fit::Decode::Resume() /home/z/zhouzia/.sanitize-scratch/stock/src/fit_decode.cpp:246 (drv-tsan-final-greedy-seed1+0x242cf) (BuildId: 7f008d29c49cb66aa5d4d2187871a14e44d45255)
+    #4 fit::Decode::Read(std::istream*) /home/z/zhouzia/.sanitize-scratch/stock/src/fit_decode.cpp:191 (drv-tsan-final-greedy-seed1+0x2471b) (BuildId: 7f008d29c49cb66aa5d4d2187871a14e44d45255)
+    #5 fit::Decode::Read(std::istream*, fit::MesgListener*, fit::MesgDefinitionListener*, fit::DeveloperFieldDescriptionListener*) /home/z/zhouzia/.sanitize-scratch/stock/src/fit_decode.cpp:209 (drv-tsan-final-greedy-seed1+0x247e8) (BuildId: 7f008d29c49cb66aa5d4d2187871a14e44d45255)
+    #6 fit::Decode::Read(std::istream&, fit::MesgListener&) /home/z/zhouzia/.sanitize-scratch/stock/src/fit_decode.cpp:214 (drv-tsan-final-greedy-seed1+0x24853) (BuildId: 7f008d29c49cb66aa5d4d2187871a14e44d45255)
+    #7 decodeOne /home/z/zhouzia/Workspace/CanMehEvolve/scripts/followup/driver.cpp:68 (drv-tsan-final-greedy-seed1+0x921b) (BuildId: 7f008d29c49cb66aa5d4d2187871a14e44d45255)
+    #8 operator() /home/z/zhouzia/Workspace/CanMehEvolve/scripts/followup/driver.cpp:109 (drv-tsan-final-greedy-seed1+0x95df) (BuildId: 7f008d29c49cb66aa5d4d2187871a14e44d45255)
+    #9 __invoke_impl<void, main(int, char**)::<lambda()> > /usr/include/c++/13/bits/invoke.h:61 (drv-tsan-final-greedy-seed1+0x95df)
+    #10 __invoke<main(int, char**)::<lambda()> > /usr/include/c++/13/bits/invoke.h:96 (drv-tsan-final-greedy-seed1+0x95df)
+    #11 _M_invoke<0> /usr/include/c++/13/bits/std_thread.h:292 (drv-tsan-final-greedy-seed1+0x95df)
+    #12 operator() /usr/include/c++/13/bits/std_thread.h:299 (drv-tsan-final-greedy-seed1+0x95df)
+    #13 _M_run /usr/include/c++/13/bits/std_thread.h:244 (drv-tsan-final-greedy-seed1+0x95df)
+    #14 <null> <null> (libstdc++.so.6+0xecdb3) (BuildId: 753c6c8608b61d4e67be8f0c890e03e0aa046b8b)
+
+  Location is global 'fit::Field::Field(unsigned short, unsigned char)::fieldCacheIndex' of size 256 at 0x555555648480 (drv-tsan-final-greedy-seed1+0xf44c9)
+
+  Thread T1 (tid=437775, running) created by main thread at:
+    #0 pthread_create ../../../../src/libsanitizer/tsan/tsan_interceptors_posix.cpp:1022 (libtsan.so.2+0x5ac1a) (BuildId: 2a13a7710e361d06f7babbea53065ca2be93f738)
+    #1 std::thread::_M_start_thread(std::unique_ptr<std::thread::_State, std::default_delete<std::thread::_State> >, void (*)()) <null> (libstdc++.so.6+0xeceb0) (BuildId: 753c6c8608b61d4e67be8f0c890e03e0aa046b8b)
+    #2 __libc_start_call_main ../sysdeps/nptl/libc_start_call_main.h:58 (libc.so.6+0x2a1c9) (BuildId: a4a7992a8e66555c8141ab2a08a8465ff6e0ea65)
+
+  Thread T3 (tid=437777, running) created by main thread at:
+    #0 pthread_create ../../../../src/libsanitizer/tsan/tsan_interceptors_posix.cpp:1022 (libtsan.so.2+0x5ac1a) (BuildId: 2a13a7710e361d06f7babbea53065ca2be93f738)
+    #1 std::thread::_M_start_thread(std::unique_ptr<std::thread::_State, std::default_delete<std::thread::_State> >, void (*)()) <null> (libstdc++.so.6+0xeceb0) (BuildId: 753c6c8608b61d4e67be8f0c890e03e0aa046b8b)
+    #2 __libc_start_call_main ../sysdeps/nptl/libc_start_call_main.h:58 (libc.so.6+0x2a1c9) (BuildId: a4a7992a8e66555c8141ab2a08a8465ff6e0ea65)
+
+SUMMARY: ThreadSanitizer: data race /home/z/zhouzia/.sanitize-scratch/var-tsan-final-greedy-seed1/src/fit_field.cpp:90 in fit::Field::Field(unsigned short, unsigned char)
+==================
+ThreadSanitizer:DEADLYSIGNAL
+==437773==ERROR: ThreadSanitizer: SEGV on unknown address 0x5555556f9f16 (pc 0x55555558ced9 bp 0x7ffff1ffa610 sp 0x7ffff1ffa600 T437777)
+==437773==The signal is caused by a READ memory access.
+    #0 fit::Field::GetIsAccumulated() const /home/z/zhouzia/.sanitize-scratch/var-tsan-final-greedy-seed1/src/fit_field.cpp:114 (drv-tsan-final-greedy-seed1+0x38ed9) (BuildId: 7f008d29c49cb66aa5d4d2187871a14e44d45255)
+    #1 fit::Decode::ReadByte(unsigned char) /home/z/zhouzia/.sanitize-scratch/stock/src/fit_decode.cpp:846 (drv-tsan-final-greedy-seed1+0x21f21) (BuildId: 7f008d29c49cb66aa5d4d2187871a14e44d45255)
+    #2 fit::Decode::Resume() /home/z/zhouzia/.sanitize-scratch/stock/src/fit_decode.cpp:246 (drv-tsan-final-greedy-seed1+0x242cf) (BuildId: 7f008d29c49cb66aa5d4d2187871a14e44d45255)
+    #3 fit::Decode::Read(std::istream*) /home/z/zhouzia/.sanitize-scratch/stock/src/fit_decode.cpp:191 (drv-tsan-final-greedy-seed1+0x2471b) (BuildId: 7f008d29c49cb66aa5d4d2187871a14e44d45255)
+    #4 fit::Decode::Read(std::istream*, fit::MesgListener*, fit::MesgDefinitionListener*, fit::DeveloperFieldDescriptionListener*) /home/z/zhouzia/.sanitize-scratch/stock/src/fit_decode.cpp:209 (drv-tsan-final-greedy-seed1+0x247e8) (BuildId: 7f008d29c49cb66aa5d4d2187871a14e44d45255)
+    #5 fit::Decode::Read(std::istream&, fit::MesgListener&) /home/z/zhouzia/.sanitize-scratch/stock/src/fit_decode.cpp:214 (drv-tsan-final-greedy-seed1+0x24853) (BuildId: 7f008d29c49cb66aa5d4d2187871a14e44d45255)
+    #6 decodeOne /home/z/zhouzia/Workspace/CanMehEvolve/scripts/followup/driver.cpp:68 (drv-tsan-final-greedy-seed1+0x921b) (BuildId: 7f008d29c49cb66aa5d4d2187871a14e44d45255)
+    #7 operator() /home/z/zhouzia/Workspace/CanMehEvolve/scripts/followup/driver.cpp:109 (drv-tsan-final-greedy-seed1+0x95df) (BuildId: 7f008d29c49cb66aa5d4d2187871a14e44d45255)
+    #8 __invoke_impl<void, main(int, char**)::<lambda()> > /usr/include/c++/13/bits/invoke.h:61 (drv-tsan-final-greedy-seed1+0x95df)
+    #9 __invoke<main(int, char**)::<lambda()> > /usr/include/c++/13/bits/invoke.h:96 (drv-tsan-final-greedy-seed1+0x95df)
+    #10 _M_invoke<0> /usr/include/c++/13/bits/std_thread.h:292 (drv-tsan-final-greedy-seed1+0x95df)
+    #11 operator() /usr/include/c++/13/bits/std_thread.h:299 (drv-tsan-final-greedy-seed1+0x95df)
+    #12 _M_run /usr/include/c++/13/bits/std_thread.h:244 (drv-tsan-final-greedy-seed1+0x95df)
+    #13 <null> <null> (libstdc++.so.6+0xecdb3) (BuildId: 753c6c8608b61d4e67be8f0c890e03e0aa046b8b)
+    #14 __tsan_thread_start_func ../../../../src/libsanitizer/tsan/tsan_interceptors_posix.cpp:1012 (libtsan.so.2+0x4edee) (BuildId: 2a13a7710e361d06f7babbea53065ca2be93f738)
+    #15 start_thread nptl/pthread_create.c:447 (libc.so.6+0x9cb83) (BuildId: a4a7992a8e66555c8141ab2a08a8465ff6e0ea65)
+    #16 clone3 ../sysdeps/unix/sysv/linux/x86_64/clone3.S:78 (libc.so.6+0x129ecb) (BuildId: a4a7992a8e66555c8141ab2a08a8465ff6e0ea65)
+
+ThreadSanitizer can not provide additional info.
+SUMMARY: ThreadSanitizer: SEGV /home/z/zhouzia/.sanitize-scratch/var-tsan-final-greedy-seed1/src/fit_field.cpp:114 in fit::Field::GetIsAccumulated() const
+==437773==ABORTING

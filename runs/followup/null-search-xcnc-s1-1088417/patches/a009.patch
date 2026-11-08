@@ -1,0 +1,24 @@
+--- a/src/fit_split_mesg.hpp
++++ b/src/fit_split_mesg.hpp
+@@ -391,7 +391,8 @@
+         }
+ 
+         return field->IsValueValid();
+-    }
++    // noop-1-2
++}
+ 
+     ///////////////////////////////////////////////////////////////////////
+     // Returns start_position_long field
+--- a/src/fit_workout_step_mesg.hpp
++++ b/src/fit_workout_step_mesg.hpp
+@@ -215,7 +215,8 @@
+     void SetDurationTime(FIT_FLOAT32 durationTime)
+     {
+         SetFieldFLOAT32Value(2, durationTime, 0, (FIT_UINT16) Profile::WORKOUT_STEP_MESG_DURATION_VALUE_FIELD_DURATION_TIME);
+-    }
++    // noop-1-9
++}
+ 
+     ///////////////////////////////////////////////////////////////////////
+     // Checks the validity of duration_distance field

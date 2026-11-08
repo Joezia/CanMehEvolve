@@ -1,0 +1,333 @@
+diff --git a/src/fit_field.cpp b/src/fit_field.cpp
+index 1e4b215..1b0e0c6 100644
+--- a/src/fit_field.cpp
++++ b/src/fit_field.cpp
+@@ -92,7 +92,7 @@ std::string Field::GetName() const
+ 
+ FIT_UINT8 Field::GetNum(void) const
+ {
+-    if ((profile == NULL) || (profileIndex >= profile->numFields))
++    if (__builtin_expect((profile == NULL) || (profileIndex >= profile->numFields), 0))
+         return FIT_FIELD_NUM_INVALID;
+     return profile->fields[profileIndex].num;
+ }
+diff --git a/src/fit_field_base.cpp b/src/fit_field_base.cpp
+index 2f8212c..90f117e 100644
+--- a/src/fit_field_base.cpp
++++ b/src/fit_field_base.cpp
+@@ -16,6 +16,7 @@
+ #include "fit_field_base.hpp"
+ #include "fit_mesg.hpp"
+ #include "fit_unicode.hpp"
++#include <cstring>
+ 
+ namespace fit
+ {
+@@ -25,9 +26,9 @@ FieldBase::FieldBase(void)
+ }
+ 
+ FieldBase::FieldBase(const FieldBase &field)
++    : values(field.values),
++      stringIndexes(field.stringIndexes)
+ {
+-    values = field.values;
+-    stringIndexes = field.stringIndexes;
+ }
+ 
+ FieldBase::~FieldBase()
+@@ -105,8 +106,15 @@ FIT_UINT8 FieldBase::GetNumValues(void) const
+     if (!IsValid())
+         return 0;
+ 
+-    if (GetType() != FIT_BASE_TYPE_STRING)
+-        return (FIT_UINT8)(values.size() / baseTypeSizes[GetType() & FIT_BASE_TYPE_NUM_MASK]);
++    const FIT_UINT8 type = GetType();
++    if (type != FIT_BASE_TYPE_STRING)
++    {
++        static const FIT_UINT8 shifts[32] = {
++            0, 0, 0, 1, 1, 2, 2, 0, 2, 3, 0, 1, 2, 0, 3, 3,
++            3, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0
++        };
++        return (FIT_UINT8)(values.size() >> shifts[type & FIT_BASE_TYPE_NUM_MASK]);
++    }
+ 
+     return (FIT_UINT8)stringIndexes.size();
+ }
+@@ -1007,73 +1015,136 @@ void FieldBase::SetSTRINGValue(const FIT_WSTRING& value, const FIT_UINT8 fieldAr
+ 
+ FIT_BOOL FieldBase::Read(const void *data, const FIT_UINT8 size)
+ {
+-    FIT_UINT8 bytesLeft = size;
+-    FIT_UINT8 typeSize = baseTypeSizes[GetType() & FIT_BASE_TYPE_NUM_MASK];
++    const FIT_UINT8 type = GetType();
++    const FIT_UINT8 typeIndex = type & FIT_BASE_TYPE_NUM_MASK;
++    const FIT_UINT8 typeSize = baseTypeSizes[typeIndex];
+     FIT_BYTE *byteData = (FIT_BYTE *) data;
+ 
+     values.clear();
+ 
+-    switch (GetType())
++    if (type == FIT_BASE_TYPE_STRING)
+     {
+-        case FIT_BASE_TYPE_STRING:
++        FIT_UINT8 index = 0;
++        while (index < size)
+         {
+-            FIT_BOOL hasData = FIT_FALSE;
+-            FIT_UINT8 stringPos = 0;
+-            FIT_UINT8 index = 0;
++            if (byteData[index] != 0)
++                break;
++            ++index;
++        }
++
++        if (index == size)
++            return FIT_TRUE;
++
++        stringIndexes.push_back(0);
+ 
+-            // Check if the string is empty
+-            while (index < bytesLeft)
++        values.reserve(size + 1);
++        values.assign(byteData, byteData + size);
++
++        if (size > 2)
++        {
++            const FIT_UINT8 limit = size - 2;
++            for (FIT_UINT8 i = 0; i < limit; ++i)
+             {
+-                if (byteData[index] != 0)
++                if (byteData[i] == 0)
++                    stringIndexes.push_back(i + 1);
++            }
++        }
++
++        if (values.back() != 0)
++            values.push_back(0);
++    }
++    else
++    {
++        const FIT_BYTE *invalid = baseTypeInvalids[typeIndex];
++
++        if (typeSize == 1)
++        {
++            const FIT_BYTE invalidByte = invalid[0];
++            const FIT_BYTE *point = byteData;
++            int bytes = size;
++            while (bytes > 0)
++            {
++                if (*point != invalidByte)
+                 {
+-                    hasData = FIT_TRUE;
++                    values.assign(byteData, byteData + size);
+                     break;
+                 }
+-                index++;
++                ++point;
++                --bytes;
+             }
+-
+-            if (!hasData)
+-                break;
+-
+-            stringIndexes.push_back(stringPos);
+-
+-            while (bytesLeft-- > 0)
++        }
++        else if (typeSize == 2)
++        {
++            FIT_UINT16 invalidValue;
++            std::memcpy(&invalidValue, invalid, 2);
++            const FIT_BYTE *point = byteData;
++            int bytes = size;
++            while (bytes > 0)
+             {
+-                FIT_BYTE byte = *byteData++;
+-                values.push_back(byte);
+-                stringPos++;
+-
+-                if ( ( byte == 0 ) && ( stringPos + 1 < size ) )
++                FIT_UINT16 value;
++                std::memcpy(&value, point, 2);
++                if (value != invalidValue)
+                 {
+-                    stringIndexes.push_back(stringPos);
++                    values.assign(byteData, byteData + size);
++                    break;
+                 }
++                point += 2;
++                bytes -= 2;
+             }
+-
+-            // Null terminate if not already null terminated
+-            if ( values.back() != 0 )
++        }
++        else if (typeSize == 4)
++        {
++            FIT_UINT32 invalidValue;
++            std::memcpy(&invalidValue, invalid, 4);
++            const FIT_BYTE *point = byteData;
++            int bytes = size;
++            while (bytes > 0)
+             {
+-                values.push_back(0);
++                FIT_UINT32 value;
++                std::memcpy(&value, point, 4);
++                if (value != invalidValue)
++                {
++                    values.assign(byteData, byteData + size);
++                    break;
++                }
++                point += 4;
++                bytes -= 4;
+             }
+         }
+-            break;
+-
+-        default:
++        else if (typeSize == 8)
+         {
+-            int bytes = bytesLeft;
+-            FIT_BYTE *point = byteData;
+-
++            FIT_UINT64 invalidValue;
++            std::memcpy(&invalidValue, invalid, 8);
++            const FIT_BYTE *point = byteData;
++            int bytes = size;
++            while (bytes > 0)
++            {
++                FIT_UINT64 value;
++                std::memcpy(&value, point, 8);
++                if (value != invalidValue)
++                {
++                    values.assign(byteData, byteData + size);
++                    break;
++                }
++                point += 8;
++                bytes -= 8;
++            }
++        }
++        else
++        {
++            const FIT_BYTE *point = byteData;
++            int bytes = size;
+             while (bytes > 0)
+             {
+-                if (memcmp(point, baseTypeInvalids[GetType() & FIT_BASE_TYPE_NUM_MASK], typeSize) != 0)
++                if (std::memcmp(point, invalid, typeSize) != 0)
+                 {
+-                    values.insert(values.end(), byteData, byteData + bytesLeft);
++                    values.assign(byteData, byteData + size);
+                     break;
+                 }
+                 point += typeSize;
+                 bytes -= typeSize;
+             }
+         }
+-            break;
+     }
+ 
+     return FIT_TRUE;
+diff --git a/src/fit_mesg.cpp b/src/fit_mesg.cpp
+index 6972b9b..aff3545 100644
+--- a/src/fit_mesg.cpp
++++ b/src/fit_mesg.cpp
+@@ -174,10 +174,21 @@ FIT_BOOL Mesg::HasField(const int fieldNum) const
+ 
+ void Mesg::AddField(const Field& field)
+ {
+-    Field *existingField = GetField(field.GetNum());
+-
+-    if (existingField == FIT_NULL)
++    if (fields.empty())
++    {
++        fields.reserve(16);
+         fields.push_back(field);
++        return;
++    }
++
++    const FIT_UINT8 fieldNum = field.GetNum();
++    for (const Field& existingField : fields)
++    {
++        if (existingField.GetNum() == fieldNum)
++            return;
++    }
++
++    fields.push_back(field);
+ }
+ 
+ Field* Mesg::AddField(const FIT_UINT8 fieldNum)
+diff --git a/src/fit_profile.cpp b/src/fit_profile.cpp
+index d7551dd..b8438a8 100644
+--- a/src/fit_profile.cpp
++++ b/src/fit_profile.cpp
+@@ -3057,6 +3057,23 @@ const Profile::MESG Profile::mesgs[MESGS] =
+ 
+ const Profile::MESG* Profile::GetMesg(const FIT_UINT16 num)
+ {
++    static const MESG* lookup[512] = {};
++    static bool initialized = false;
++
++    if (!initialized)
++    {
++        for (int i = 0; i < MESGS; i++)
++        {
++            const FIT_UINT16 n = mesgs[i].num;
++            if (n < 512 && lookup[n] == NULL)
++                lookup[n] = &mesgs[i];
++        }
++        initialized = true;
++    }
++
++    if (num < 512)
++        return lookup[num];
++
+     for (int i = 0; i < MESGS; i++)
+     {
+         if (mesgs[i].num == num)
+@@ -3079,18 +3096,37 @@ const Profile::MESG* Profile::GetMesg(const std::string& name)
+ 
+ const FIT_UINT16 Profile::GetFieldIndex(const FIT_UINT16 mesgNum, const FIT_UINT8 fieldNum)
+ {
+-    const MESG *mesg = GetMesg(mesgNum);
++    static const int CACHE_SIZE = 128;
++    static FIT_UINT16 cachedMesgNum[CACHE_SIZE];
++    static const MESG* cachedMesg[CACHE_SIZE];
++    static FIT_UINT16 fieldIndex[CACHE_SIZE][256];
++    static bool initialized[CACHE_SIZE] = {false};
++
++    const int idx = mesgNum % CACHE_SIZE;
++
++    if (!initialized[idx] || cachedMesgNum[idx] != mesgNum) {
++        cachedMesgNum[idx] = mesgNum;
++        cachedMesg[idx] = GetMesg(mesgNum);
++        if (cachedMesg[idx] != NULL) {
++            for (int i = 0; i < 256; i++) {
++                fieldIndex[idx][i] = FIT_UINT16_INVALID;
++            }
++            const MESG* mesg = cachedMesg[idx];
++            for (FIT_UINT16 i = 0; i < mesg->numFields; i++) {
++                FIT_UINT8 num = mesg->fields[i].num;
++                if (fieldIndex[idx][num] == FIT_UINT16_INVALID) {
++                    fieldIndex[idx][num] = i;
++                }
++            }
++        }
++        initialized[idx] = true;
++    }
+ 
+-    if (mesg == NULL)
++    if (cachedMesg[idx] == NULL) {
+         return FIT_UINT16_INVALID;
+-
+-    for (FIT_UINT16 i = 0; i < mesg->numFields; i++)
+-    {
+-        if (mesg->fields[i].num == fieldNum)
+-            return i;
+     }
+ 
+-    return FIT_UINT16_INVALID;
++    return fieldIndex[idx][fieldNum];
+ }
+ 
+ const FIT_UINT16 Profile::GetFieldIndex(const std::string& mesgName, const std::string& fieldName)

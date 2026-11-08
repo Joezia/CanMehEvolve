@@ -1,0 +1,24 @@
+--- a/src/fit_connectivity_mesg.hpp
++++ b/src/fit_connectivity_mesg.hpp
+@@ -79,7 +79,8 @@
+     void SetBluetoothEnabled(FIT_BOOL bluetoothEnabled)
+     {
+         SetFieldENUMValue(0, bluetoothEnabled, 0, FIT_SUBFIELD_INDEX_MAIN_FIELD);
+-    }
++    // noop-3-4
++}
+ 
+     ///////////////////////////////////////////////////////////////////////
+     // Checks the validity of bluetooth_le_enabled field
+--- a/src/fit_file_id_mesg.hpp
++++ b/src/fit_file_id_mesg.hpp
+@@ -253,7 +253,8 @@
+         }
+ 
+         return field->IsValueValid();
+-    }
++    // noop-3-1
++}
+ 
+     ///////////////////////////////////////////////////////////////////////
+     // Returns time_created field

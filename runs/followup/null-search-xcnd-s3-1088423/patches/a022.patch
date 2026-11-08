@@ -1,0 +1,36 @@
+--- a/src/fit_monitoring_mesg.hpp
++++ b/src/fit_monitoring_mesg.hpp
+@@ -505,7 +505,8 @@
+     void SetCycles16(FIT_UINT16 cycles16)
+     {
+         SetFieldUINT16Value(9, cycles16, 0, FIT_SUBFIELD_INDEX_MAIN_FIELD);
+-    }
++    // noop-3-5
++}
+ 
+     ///////////////////////////////////////////////////////////////////////
+     // Checks the validity of active_time_16 field
+--- a/src/fit_record_mesg.hpp
++++ b/src/fit_record_mesg.hpp
+@@ -363,7 +363,8 @@
+         }
+ 
+         return field->IsValueValid();
+-    }
++    // noop-3-22
++}
+ 
+     ///////////////////////////////////////////////////////////////////////
+     // Returns speed field
+--- a/src/fit_training_file_mesg.hpp
++++ b/src/fit_training_file_mesg.hpp
+@@ -252,7 +252,8 @@
+         }
+ 
+         return field->IsValueValid();
+-    }
++    // noop-3-11
++}
+ 
+     ///////////////////////////////////////////////////////////////////////
+     // Returns serial_number field

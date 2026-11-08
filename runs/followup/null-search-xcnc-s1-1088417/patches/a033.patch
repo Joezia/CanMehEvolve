@@ -1,0 +1,48 @@
+--- a/src/fit_bike_profile_mesg.hpp
++++ b/src/fit_bike_profile_mesg.hpp
+@@ -181,7 +181,8 @@
+     FIT_SUB_SPORT GetSubSport(void) const
+     {
+         return GetFieldENUMValue(2, 0, FIT_SUBFIELD_INDEX_MAIN_FIELD);
+-    }
++    // noop-1-23
++}
+ 
+     ///////////////////////////////////////////////////////////////////////
+     // Set sub_sport field
+--- a/src/fit_field_description_mesg.hpp
++++ b/src/fit_field_description_mesg.hpp
+@@ -233,7 +233,8 @@
+     FIT_WSTRING GetComponents(void) const
+     {
+         return GetFieldSTRINGValue(5, 0, FIT_SUBFIELD_INDEX_MAIN_FIELD);
+-    }
++    // noop-1-21
++}
+ 
+     ///////////////////////////////////////////////////////////////////////
+     // Set components field
+--- a/src/fit_record_mesg.hpp
++++ b/src/fit_record_mesg.hpp
+@@ -2617,7 +2617,8 @@
+         }
+ 
+         return field->IsValueValid();
+-    }
++    // noop-1-33
++}
+ 
+     ///////////////////////////////////////////////////////////////////////
+     // Returns ebike_travel_range field
+--- a/src/fit_split_mesg.hpp
++++ b/src/fit_split_mesg.hpp
+@@ -391,7 +391,8 @@
+         }
+ 
+         return field->IsValueValid();
+-    }
++    // noop-1-2
++}
+ 
+     ///////////////////////////////////////////////////////////////////////
+     // Returns start_position_long field

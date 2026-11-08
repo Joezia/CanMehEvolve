@@ -1,0 +1,16 @@
+{
+  "123": {
+    "accepted": 0,
+    "attempts": 1,
+    "best_gain": 0.0,
+    "file": "src/fit_field.cpp",
+    "label": "Field::GetType"
+  },
+  "234": {
+    "accepted": 1,
+    "attempts": 1,
+    "best_gain": 0.0,
+    "file": "src/fit_mesg.cpp",
+    "label": "Mesg::GetField"
+  }
+}

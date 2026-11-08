@@ -1,0 +1,45 @@
+diff --git a/src/fit_field_base.cpp b/src/fit_field_base.cpp
+index 2f8212c..0a58c11 100644
+--- a/src/fit_field_base.cpp
++++ b/src/fit_field_base.cpp
+@@ -25,9 +25,9 @@ FieldBase::FieldBase(void)
+ }
+ 
+ FieldBase::FieldBase(const FieldBase &field)
++    : values(field.values)
++    , stringIndexes(field.stringIndexes)
+ {
+-    values = field.values;
+-    stringIndexes = field.stringIndexes;
+ }
+ 
+ FieldBase::~FieldBase()
+diff --git a/src/fit_profile.cpp b/src/fit_profile.cpp
+index d7551dd..7738c62 100644
+--- a/src/fit_profile.cpp
++++ b/src/fit_profile.cpp
+@@ -3057,13 +3057,20 @@ const Profile::MESG Profile::mesgs[MESGS] =
+ 
+ const Profile::MESG* Profile::GetMesg(const FIT_UINT16 num)
+ {
+-    for (int i = 0; i < MESGS; i++)
++    static const Profile::MESG* table[65536];
++    static bool init = false;
++
++    if (!init)
+     {
+-        if (mesgs[i].num == num)
+-            return &mesgs[i];
++        for (int i = 0; i < MESGS; i++)
++        {
++            if (table[mesgs[i].num] == NULL)
++                table[mesgs[i].num] = &mesgs[i];
++        }
++        init = true;
+     }
+ 
+-    return NULL;
++    return table[num];
+ }
+ 
+ const Profile::MESG* Profile::GetMesg(const std::string& name)

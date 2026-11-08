@@ -1,0 +1,22 @@
+--- a/src/fit_mesg_broadcaster.cpp
++++ b/src/fit_mesg_broadcaster.cpp
+@@ -1197,6 +1197,7 @@
+     std::vector<StressLevelMesgListener *>::iterator it = std::find(stressLevelMesgListeners.begin(), stressLevelMesgListeners.end(), &stressLevelMesgListener);
+     if (stressLevelMesgListeners.end() != it)
+     stressLevelMesgListeners.erase(it);
++// noop-2-1
+ }
+ 
+ 
+--- a/src/fit_workout_step_mesg.hpp
++++ b/src/fit_workout_step_mesg.hpp
+@@ -2032,7 +2032,8 @@
+     FIT_FLOAT32 GetSecondaryCustomTargetSpeedHigh(void) const
+     {
+         return GetFieldFLOAT32Value(22, 0, (FIT_UINT16) Profile::WORKOUT_STEP_MESG_SECONDARY_CUSTOM_TARGET_VALUE_HIGH_FIELD_SECONDARY_CUSTOM_TARGET_SPEED_HIGH);
+-    }
++    // noop-2-6
++}
+ 
+     ///////////////////////////////////////////////////////////////////////
+     // Set secondary_custom_target_speed_high field

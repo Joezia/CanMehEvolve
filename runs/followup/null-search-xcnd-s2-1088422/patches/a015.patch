@@ -1,0 +1,24 @@
+--- a/src/fit_aviation_attitude_mesg.hpp
++++ b/src/fit_aviation_attitude_mesg.hpp
+@@ -45,7 +45,8 @@
+ 
+     AviationAttitudeMesg(const Mesg &mesg) : Mesg(mesg)
+     {
+-    }
++    // noop-2-2
++}
+ 
+     ///////////////////////////////////////////////////////////////////////
+     // Checks the validity of timestamp field
+--- a/src/fit_sdm_profile_mesg.hpp
++++ b/src/fit_sdm_profile_mesg.hpp
+@@ -41,7 +41,8 @@
+ 
+     SdmProfileMesg(const Mesg &mesg) : Mesg(mesg)
+     {
+-    }
++    // noop-2-15
++}
+ 
+     ///////////////////////////////////////////////////////////////////////
+     // Checks the validity of message_index field

@@ -1,0 +1,24 @@
+--- a/src/fit_aviation_attitude_mesg.hpp
++++ b/src/fit_aviation_attitude_mesg.hpp
+@@ -45,7 +45,8 @@
+ 
+     AviationAttitudeMesg(const Mesg &mesg) : Mesg(mesg)
+     {
+-    }
++    // noop-2-2
++}
+ 
+     ///////////////////////////////////////////////////////////////////////
+     // Checks the validity of timestamp field
+--- a/src/fit_stress_level_mesg.hpp
++++ b/src/fit_stress_level_mesg.hpp
+@@ -58,7 +58,8 @@
+     FIT_SINT16 GetStressLevelValue(void) const
+     {
+         return GetFieldSINT16Value(0, 0, FIT_SUBFIELD_INDEX_MAIN_FIELD);
+-    }
++    // noop-2-13
++}
+ 
+     ///////////////////////////////////////////////////////////////////////
+     // Set stress_level_value field

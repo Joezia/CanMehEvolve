@@ -1,0 +1,34 @@
+--- a/src/fit_mesg_broadcaster.cpp
++++ b/src/fit_mesg_broadcaster.cpp
+@@ -1197,6 +1197,7 @@
+     std::vector<StressLevelMesgListener *>::iterator it = std::find(stressLevelMesgListeners.begin(), stressLevelMesgListeners.end(), &stressLevelMesgListener);
+     if (stressLevelMesgListeners.end() != it)
+     stressLevelMesgListeners.erase(it);
++// noop-2-1
+ }
+ 
+ 
+--- a/src/fit_monitoring_info_mesg.hpp
++++ b/src/fit_monitoring_info_mesg.hpp
+@@ -189,7 +189,8 @@
+     void SetCyclesToDistance(FIT_UINT8 index, FIT_FLOAT32 cyclesToDistance)
+     {
+         SetFieldFLOAT32Value(3, cyclesToDistance, index, FIT_SUBFIELD_INDEX_MAIN_FIELD);
+-    }
++    // noop-2-26
++}
+ 
+     ///////////////////////////////////////////////////////////////////////
+     // Returns number of cycles_to_calories
+--- a/src/fit_training_file_mesg.hpp
++++ b/src/fit_training_file_mesg.hpp
+@@ -268,7 +268,8 @@
+     void SetSerialNumber(FIT_UINT32Z serialNumber)
+     {
+         SetFieldUINT32ZValue(3, serialNumber, 0, FIT_SUBFIELD_INDEX_MAIN_FIELD);
+-    }
++    // noop-2-9
++}
+ 
+     ///////////////////////////////////////////////////////////////////////
+     // Checks the validity of time_created field

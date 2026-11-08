@@ -1,0 +1,110 @@
+[
+ {
+  "label": "Profile::GetMesg",
+  "generation": 26,
+  "ratio": 0.9373526967559127,
+  "speedup": 1.066834291362156,
+  "rule_pass_1": true,
+  "rule_pass_2": true,
+  "patch": "/home/z/zhouzia/Workspace/CanMehEvolve/runs/deepseek/bestofn-s5-1072874/patches/gen_26.patch"
+ },
+ {
+  "label": "FieldBase::FieldBase",
+  "generation": 11,
+  "ratio": 0.9444511823777006,
+  "speedup": 1.058815975519722,
+  "rule_pass_1": true,
+  "rule_pass_2": null,
+  "patch": "/home/z/zhouzia/Workspace/CanMehEvolve/runs/deepseek/bestofn-s5-1072874/patches/gen_11.patch"
+ },
+ {
+  "label": "Profile::GetFieldIndex",
+  "generation": 18,
+  "ratio": 0.9466357197758151,
+  "speedup": 1.0563725613869956,
+  "rule_pass_1": true,
+  "rule_pass_2": null,
+  "patch": "/home/z/zhouzia/Workspace/CanMehEvolve/runs/deepseek/bestofn-s5-1072874/patches/gen_18.patch"
+ },
+ {
+  "label": "Mesg::AddField",
+  "generation": 28,
+  "ratio": 0.9653052481885105,
+  "speedup": 1.0359417416165484,
+  "rule_pass_1": true,
+  "rule_pass_2": null,
+  "patch": "/home/z/zhouzia/Workspace/CanMehEvolve/runs/deepseek/bestofn-s5-1072874/patches/gen_28.patch"
+ },
+ {
+  "label": "FieldBase::GetNumValues",
+  "generation": 3,
+  "ratio": 0.9658397726511878,
+  "speedup": 1.035368420638802,
+  "rule_pass_1": true,
+  "rule_pass_2": true,
+  "patch": "/home/z/zhouzia/Workspace/CanMehEvolve/runs/deepseek/bestofn-s5-1072874/patches/gen_3.patch"
+ },
+ {
+  "label": "FieldBase::Read",
+  "generation": 33,
+  "ratio": 0.9749573484831178,
+  "speedup": 1.0256858944197351,
+  "rule_pass_1": true,
+  "rule_pass_2": null,
+  "patch": "/home/z/zhouzia/Workspace/CanMehEvolve/runs/deepseek/bestofn-s5-1072874/patches/gen_33.patch"
+ },
+ {
+  "label": "FieldBase::GetValue",
+  "generation": 13,
+  "ratio": 0.9869777415856309,
+  "speedup": 1.0131940750694621,
+  "rule_pass_1": false,
+  "rule_pass_2": null,
+  "patch": "/home/z/zhouzia/Workspace/CanMehEvolve/runs/deepseek/bestofn-s5-1072874/patches/gen_13.patch"
+ },
+ {
+  "label": "Field::GetNum",
+  "generation": 32,
+  "ratio": 0.9964221729737088,
+  "speedup": 1.0035906738361848,
+  "rule_pass_1": false,
+  "rule_pass_2": null,
+  "patch": "/home/z/zhouzia/Workspace/CanMehEvolve/runs/deepseek/bestofn-s5-1072874/patches/gen_32.patch"
+ },
+ {
+  "label": "Decode::Resume",
+  "generation": 23,
+  "ratio": 0.9977619114232416,
+  "speedup": 1.002243108853059,
+  "rule_pass_1": false,
+  "rule_pass_2": null,
+  "patch": "/home/z/zhouzia/Workspace/CanMehEvolve/runs/deepseek/bestofn-s5-1072874/patches/gen_23.patch"
+ },
+ {
+  "label": "DeveloperFieldDefinition::IsDefined",
+  "generation": 7,
+  "ratio": 0.9984334332738715,
+  "speedup": 1.0015690247080287,
+  "rule_pass_1": false,
+  "rule_pass_2": null,
+  "patch": "/home/z/zhouzia/Workspace/CanMehEvolve/runs/deepseek/bestofn-s5-1072874/patches/gen_7.patch"
+ },
+ {
+  "label": "Field::IsValid",
+  "generation": 9,
+  "ratio": 0.999271315254972,
+  "speedup": 1.0007292161136858,
+  "rule_pass_1": false,
+  "rule_pass_2": null,
+  "patch": "/home/z/zhouzia/Workspace/CanMehEvolve/runs/deepseek/bestofn-s5-1072874/patches/gen_9.patch"
+ },
+ {
+  "label": "Field::GetNumSubFields",
+  "generation": 24,
+  "ratio": 0.9999623685177864,
+  "speedup": 1.0000376328983953,
+  "rule_pass_1": false,
+  "rule_pass_2": null,
+  "patch": "/home/z/zhouzia/Workspace/CanMehEvolve/runs/deepseek/bestofn-s5-1072874/patches/gen_24.patch"
+ }
+]

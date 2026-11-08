@@ -1,0 +1,24 @@
+--- a/src/fit_aviation_attitude_mesg.hpp
++++ b/src/fit_aviation_attitude_mesg.hpp
+@@ -45,7 +45,8 @@
+ 
+     AviationAttitudeMesg(const Mesg &mesg) : Mesg(mesg)
+     {
+-    }
++    // noop-2-2
++}
+ 
+     ///////////////////////////////////////////////////////////////////////
+     // Checks the validity of timestamp field
+--- a/src/fit_gyroscope_data_mesg.hpp
++++ b/src/fit_gyroscope_data_mesg.hpp
+@@ -370,7 +370,8 @@
+     void SetCalibratedGyroY(FIT_UINT8 index, FIT_FLOAT32 calibratedGyroY)
+     {
+         SetFieldFLOAT32Value(6, calibratedGyroY, index, FIT_SUBFIELD_INDEX_MAIN_FIELD);
+-    }
++    // noop-2-8
++}
+ 
+     ///////////////////////////////////////////////////////////////////////
+     // Returns number of calibrated_gyro_z

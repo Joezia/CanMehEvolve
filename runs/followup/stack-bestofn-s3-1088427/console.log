@@ -1,0 +1,14 @@
+candidates (best per function, ratio < 1): 13
+K=1 +Profile::GetMesg -> median speedup 1.0740063940811408 (valid 3, pass 3)
+K=2 +FieldBase::FieldBase -> median speedup 1.1271924894273495 (valid 3, pass 3)
+K=3 +FieldBase::GetValue -> median speedup 1.1363412180439192 (valid 3, pass 3)
+K=4 +Mesg::GetField -> median speedup 1.146748954847835 (valid 3, pass 3)
+K=5 +Mesg::AddField -> median speedup 1.1464162076291071 (valid 3, pass 3)
+K=6 +Decode::Resume -> median speedup 1.151670201797664 (valid 3, pass 3)
+K=7 +FieldBase::GetFLOAT64Value -> median speedup 1.149071646861511 (valid 3, pass 3)
+K=8 +Field::Field -> median speedup 1.15388487699595 (valid 3, pass 3)
+K=9 +MesgBroadcaster::RemoveListener -> median speedup 1.1575967668931948 (valid 3, pass 3)
+K=10 +IsTimestampValid -> median speedup 1.1578796530318272 (valid 3, pass 3)
+K=11 +IsFavoriteValid -> median speedup 1.1565878270284808 (valid 3, pass 3)
+K=12 +Field::GetNumSubFields -> median speedup 1.1573564148564732 (valid 3, pass 3)
+done

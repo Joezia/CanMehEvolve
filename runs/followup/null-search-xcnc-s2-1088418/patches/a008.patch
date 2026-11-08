@@ -1,0 +1,22 @@
+--- a/src/fit_gyroscope_data_mesg.hpp
++++ b/src/fit_gyroscope_data_mesg.hpp
+@@ -370,7 +370,8 @@
+     void SetCalibratedGyroY(FIT_UINT8 index, FIT_FLOAT32 calibratedGyroY)
+     {
+         SetFieldFLOAT32Value(6, calibratedGyroY, index, FIT_SUBFIELD_INDEX_MAIN_FIELD);
+-    }
++    // noop-2-8
++}
+ 
+     ///////////////////////////////////////////////////////////////////////
+     // Returns number of calibrated_gyro_z
+--- a/src/fit_mesg_broadcaster.cpp
++++ b/src/fit_mesg_broadcaster.cpp
+@@ -1197,6 +1197,7 @@
+     std::vector<StressLevelMesgListener *>::iterator it = std::find(stressLevelMesgListeners.begin(), stressLevelMesgListeners.end(), &stressLevelMesgListener);
+     if (stressLevelMesgListeners.end() != it)
+     stressLevelMesgListeners.erase(it);
++// noop-2-1
+ }
+ 
+ 

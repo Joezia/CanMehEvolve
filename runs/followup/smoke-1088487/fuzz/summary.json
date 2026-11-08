@@ -1,0 +1,36 @@
+{
+ "final-bestofn-seed4": {
+  "files": 16,
+  "compared": 12,
+  "identical": 12,
+  "differences": [],
+  "n_differences": 0,
+  "crash_in_candidate": [],
+  "n_crash_in_candidate": 0,
+  "crash_in_stock": [
+   6,
+   7,
+   9,
+   14
+  ],
+  "n_crash_in_stock": 4,
+  "seconds": 17.1
+ },
+ "final-greedy-seed5": {
+  "files": 16,
+  "compared": 12,
+  "identical": 12,
+  "differences": [],
+  "n_differences": 0,
+  "crash_in_candidate": [],
+  "n_crash_in_candidate": 0,
+  "crash_in_stock": [
+   6,
+   7,
+   9,
+   14
+  ],
+  "n_crash_in_stock": 4,
+  "seconds": 18.0
+ }
+}

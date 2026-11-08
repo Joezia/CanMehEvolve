@@ -1,0 +1,3 @@
+final-bestofn-seed4 {'compared': 12, 'identical': 12, 'n_differences': 0, 'n_crash_in_candidate': 0, 'n_crash_in_stock': 4}
+final-greedy-seed5 {'compared': 12, 'identical': 12, 'n_differences': 0, 'n_crash_in_candidate': 0, 'n_crash_in_stock': 4}
+fuzz_exit=0

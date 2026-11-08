@@ -1,0 +1,17 @@
+The unrolled loop reloads `fields.data()`/`size()` semantics through pointer arithmetic and does 4 branches per iteration; replacing it with a simple indexed linear scan lets the compiler keep the base pointer and count in registers and emit a tight compare loop (fewer redundant address computations, better branch layout).
+
+```cpp
+Field* Mesg::GetField(const FIT_UINT8 fieldNum)
+{
+    Field* field = fields.data();
+    const std::size_t count = fields.size();
+
+    for (std::size_t i = 0; i < count; ++i)
+    {
+        if (static_cast<FIT_UINT8>(field[i].num) == fieldNum)
+            return &field[i];
+    }
+
+    return FIT_NULL;
+}
+```

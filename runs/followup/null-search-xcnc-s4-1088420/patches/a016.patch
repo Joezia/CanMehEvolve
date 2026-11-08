@@ -1,0 +1,36 @@
+--- a/src/fit_segment_leaderboard_entry_mesg.hpp
++++ b/src/fit_segment_leaderboard_entry_mesg.hpp
+@@ -86,7 +86,8 @@
+         }
+ 
+         return field->IsValueValid();
+-    }
++    // noop-4-5
++}
+ 
+     ///////////////////////////////////////////////////////////////////////
+     // Returns name field
+--- a/src/fit_session_mesg.hpp
++++ b/src/fit_session_mesg.hpp
+@@ -4940,7 +4940,8 @@
+     void SetMinRespirationRate(FIT_UINT8 minRespirationRate)
+     {
+         SetFieldUINT8Value(149, minRespirationRate, 0, FIT_SUBFIELD_INDEX_MAIN_FIELD);
+-    }
++    // noop-4-16
++}
+ 
+     ///////////////////////////////////////////////////////////////////////
+     // Checks the validity of min_temperature field
+--- a/src/fit_set_mesg.hpp
++++ b/src/fit_set_mesg.hpp
+@@ -368,7 +368,8 @@
+         }
+ 
+         return field->IsValueValid();
+-    }
++    // noop-4-11
++}
+ 
+     ///////////////////////////////////////////////////////////////////////
+     // Returns message_index field

@@ -1,0 +1,281 @@
+{
+ "run_dir": "/home/z/zhouzia/Workspace/CanMehEvolve/runs/deepseek/bestofn-s2-1072868",
+ "results": [
+  {
+   "k": 1,
+   "added": "Profile::GetMesg",
+   "added_generation": 34,
+   "added_individual_speedup": 1.068321850666974,
+   "functions": [
+    "Profile::GetMesg"
+   ],
+   "valid_measurements": 3,
+   "passes": 3,
+   "median_speedup": 1.0692326228712319,
+   "ratios": [
+    0.9349594399874921,
+    0.9352501771921997,
+    0.9362069243982886
+   ],
+   "stages": [
+    "",
+    "",
+    ""
+   ],
+   "errors": []
+  },
+  {
+   "k": 2,
+   "added": "FieldBase::FieldBase",
+   "added_generation": 3,
+   "added_individual_speedup": 1.0599601667457703,
+   "functions": [
+    "Profile::GetMesg",
+    "FieldBase::FieldBase"
+   ],
+   "valid_measurements": 3,
+   "passes": 3,
+   "median_speedup": 1.1217186690053307,
+   "ratios": [
+    0.8914891297001741,
+    0.8932585323681317,
+    0.8909118056326752
+   ],
+   "stages": [
+    "",
+    "",
+    ""
+   ],
+   "errors": []
+  },
+  {
+   "k": 3,
+   "added": "Profile::GetFieldIndex",
+   "added_generation": 33,
+   "added_individual_speedup": 1.0525741218091984,
+   "functions": [
+    "Profile::GetMesg",
+    "FieldBase::FieldBase",
+    "Profile::GetFieldIndex"
+   ],
+   "valid_measurements": 3,
+   "passes": 3,
+   "median_speedup": 1.1357718199907665,
+   "ratios": [
+    0.8791173769323846,
+    0.8807929682852487,
+    0.8804585414067851
+   ],
+   "stages": [
+    "",
+    "",
+    ""
+   ],
+   "errors": []
+  },
+  {
+   "k": 4,
+   "added": "FieldBase::GetNumValues",
+   "added_generation": 23,
+   "added_individual_speedup": 1.0427733469807792,
+   "functions": [
+    "Profile::GetMesg",
+    "FieldBase::FieldBase",
+    "Profile::GetFieldIndex",
+    "FieldBase::GetNumValues"
+   ],
+   "valid_measurements": 3,
+   "passes": 3,
+   "median_speedup": 1.1777640549834314,
+   "ratios": [
+    0.8491616346585469,
+    0.8490664966117241,
+    0.8490509419704635
+   ],
+   "stages": [
+    "",
+    "",
+    ""
+   ],
+   "errors": []
+  },
+  {
+   "k": 5,
+   "added": "FieldBase::GetValue",
+   "added_generation": 25,
+   "added_individual_speedup": 1.0330539735961128,
+   "functions": [
+    "Profile::GetMesg",
+    "FieldBase::FieldBase",
+    "Profile::GetFieldIndex",
+    "FieldBase::GetNumValues",
+    "FieldBase::GetValue"
+   ],
+   "valid_measurements": 3,
+   "passes": 3,
+   "median_speedup": 1.1922154169277175,
+   "ratios": [
+    0.8386497521975346,
+    0.8391117026423963,
+    0.8387745920757781
+   ],
+   "stages": [
+    "",
+    "",
+    ""
+   ],
+   "errors": []
+  },
+  {
+   "k": 6,
+   "added": "Field::GetNum",
+   "added_generation": 21,
+   "added_individual_speedup": 1.0021171914142584,
+   "functions": [
+    "Profile::GetMesg",
+    "FieldBase::FieldBase",
+    "Profile::GetFieldIndex",
+    "FieldBase::GetNumValues",
+    "FieldBase::GetValue",
+    "Field::GetNum"
+   ],
+   "valid_measurements": 3,
+   "passes": 3,
+   "median_speedup": 1.197707039572273,
+   "ratios": [
+    0.8344192105812618,
+    0.8349287154203597,
+    0.8353557278480523
+   ],
+   "stages": [
+    "",
+    "",
+    ""
+   ],
+   "errors": []
+  },
+  {
+   "k": 7,
+   "added": "Mesg::GetFieldByIndex",
+   "added_generation": 8,
+   "added_individual_speedup": 1.0012011440673005,
+   "functions": [
+    "Profile::GetMesg",
+    "FieldBase::FieldBase",
+    "Profile::GetFieldIndex",
+    "FieldBase::GetNumValues",
+    "FieldBase::GetValue",
+    "Field::GetNum",
+    "Mesg::GetFieldByIndex"
+   ],
+   "valid_measurements": 3,
+   "passes": 3,
+   "median_speedup": 1.1960820466916056,
+   "ratios": [
+    0.8360630466497063,
+    0.8357602735757478,
+    0.8364409279590073
+   ],
+   "stages": [
+    "",
+    "",
+    ""
+   ],
+   "errors": []
+  },
+  {
+   "k": 8,
+   "added": "Mesg::GetActiveSubFieldIndexByFieldIndex",
+   "added_generation": 10,
+   "added_individual_speedup": 1.0008731328591736,
+   "functions": [
+    "Profile::GetMesg",
+    "FieldBase::FieldBase",
+    "Profile::GetFieldIndex",
+    "FieldBase::GetNumValues",
+    "FieldBase::GetValue",
+    "Field::GetNum",
+    "Mesg::GetFieldByIndex",
+    "Mesg::GetActiveSubFieldIndexByFieldIndex"
+   ],
+   "valid_measurements": 3,
+   "passes": 3,
+   "median_speedup": 1.1965071481564908,
+   "ratios": [
+    0.8357660056947778,
+    0.8387133078520372,
+    0.8352575935625757
+   ],
+   "stages": [
+    "",
+    "",
+    ""
+   ],
+   "errors": []
+  },
+  {
+   "k": 9,
+   "added": "Field::GetNumSubFields",
+   "added_generation": 35,
+   "added_individual_speedup": 1.0008507823010881,
+   "functions": [
+    "Profile::GetMesg",
+    "FieldBase::FieldBase",
+    "Profile::GetFieldIndex",
+    "FieldBase::GetNumValues",
+    "FieldBase::GetValue",
+    "Field::GetNum",
+    "Mesg::GetFieldByIndex",
+    "Mesg::GetActiveSubFieldIndexByFieldIndex",
+    "Field::GetNumSubFields"
+   ],
+   "valid_measurements": 3,
+   "passes": 3,
+   "median_speedup": 1.1965901792315927,
+   "ratios": [
+    0.8370034866252176,
+    0.8357080121133571,
+    0.8351569867895388
+   ],
+   "stages": [
+    "",
+    "",
+    ""
+   ],
+   "errors": []
+  },
+  {
+   "k": 10,
+   "added": "Field::GetScale",
+   "added_generation": 29,
+   "added_individual_speedup": 1.0004615838633857,
+   "functions": [
+    "Profile::GetMesg",
+    "FieldBase::FieldBase",
+    "Profile::GetFieldIndex",
+    "FieldBase::GetNumValues",
+    "FieldBase::GetValue",
+    "Field::GetNum",
+    "Mesg::GetFieldByIndex",
+    "Mesg::GetActiveSubFieldIndexByFieldIndex",
+    "Field::GetNumSubFields",
+    "Field::GetScale"
+   ],
+   "valid_measurements": 3,
+   "passes": 3,
+   "median_speedup": 1.1923632542473286,
+   "ratios": [
+    0.838062119225842,
+    0.838670595087437,
+    0.838976243211663
+   ],
+   "stages": [
+    "",
+    "",
+    ""
+   ],
+   "errors": []
+  }
+ ],
+ "skipped": []
+}

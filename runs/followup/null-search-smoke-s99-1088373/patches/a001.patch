@@ -1,0 +1,12 @@
+--- a/src/fit_record_mesg.hpp
++++ b/src/fit_record_mesg.hpp
+@@ -971,7 +971,8 @@
+         }
+ 
+         return field->IsValueValid();
+-    }
++    // noop-99-1
++}
+ 
+     ///////////////////////////////////////////////////////////////////////
+     // Returns stance_time_percent field
