@@ -1,0 +1,211 @@
+{
+ "round": 2,
+ "purpose": "README-conformant population search and matched best-of-N, DeepSeek and Qwen, five seeds each, 40 actual HTTP requests per run",
+ "models": {
+  "ds": {
+   "requested": "deepseek-v4.1-flash",
+   "expected_returned_id": "deepseek-v4.1-flash-1017",
+   "max_tokens": 32768,
+   "timeout_s": 600
+  },
+  "qwen": {
+   "requested": "qwen3-coder-next",
+   "expected_returned_id": "qwen3-coder-next",
+   "max_tokens": 4096,
+   "timeout_s": 180
+  }
+ },
+ "common": {
+  "temperature": 0.8,
+  "http_attempts_per_call": 1,
+  "request_budget": 40,
+  "population": 6,
+  "sample_seconds": 20,
+  "uniform_share": 0.1,
+  "exploit_share_population_only": 0.25,
+  "repeat": 10,
+  "repetitions": 9,
+  "alpha": 0.01,
+  "min_effect": 0.02,
+  "segment_deadline_s": 9300,
+  "region_draws": "profile-proportional (perf, 20 s) with 10% uniform; population arm additionally sends 25% of draws to the best-credited region; best-of-N uses no history"
+ },
+ "arms": {
+  "search": "population of 6 (every measured candidate retained, worst evicted), tournament of two, cumulative child patches, one failure-feedback retry for compile/correctness-type failures",
+  "bestofn-confirmed": "every call starts from stock, no history, no failure feedback; candidates judged by the same confirmation rule as the population arm"
+ },
+ "confirmation": "best_confirmed = best candidate for which two measurements each pass the frozen rule against stock (ratio <= 0.98, sign-flip p < 0.01, not unstable); not required to improve on its parent by 2%",
+ "final_check": "best.patch fixed at the end of the search, then 3 independent re-measurements in a separate job; failures recorded, no re-picking",
+ "runs": [
+  {
+   "id": "ds-population-s1",
+   "model_key": "ds",
+   "mode": "search",
+   "seed": 1,
+   "class": "xcnc|xcnd"
+  },
+  {
+   "id": "ds-bestofn-s1",
+   "model_key": "ds",
+   "mode": "bestofn-confirmed",
+   "seed": 1,
+   "class": "xcnc|xcnd"
+  },
+  {
+   "id": "ds-population-s2",
+   "model_key": "ds",
+   "mode": "search",
+   "seed": 2,
+   "class": "xcnc|xcnd"
+  },
+  {
+   "id": "ds-bestofn-s2",
+   "model_key": "ds",
+   "mode": "bestofn-confirmed",
+   "seed": 2,
+   "class": "xcnc|xcnd"
+  },
+  {
+   "id": "ds-population-s3",
+   "model_key": "ds",
+   "mode": "search",
+   "seed": 3,
+   "class": "xcnc|xcnd"
+  },
+  {
+   "id": "ds-bestofn-s3",
+   "model_key": "ds",
+   "mode": "bestofn-confirmed",
+   "seed": 3,
+   "class": "xcnc|xcnd"
+  },
+  {
+   "id": "ds-population-s4",
+   "model_key": "ds",
+   "mode": "search",
+   "seed": 4,
+   "class": "xcnc|xcnd"
+  },
+  {
+   "id": "ds-bestofn-s4",
+   "model_key": "ds",
+   "mode": "bestofn-confirmed",
+   "seed": 4,
+   "class": "xcnc|xcnd"
+  },
+  {
+   "id": "ds-population-s5",
+   "model_key": "ds",
+   "mode": "search",
+   "seed": 5,
+   "class": "xcnc|xcnd"
+  },
+  {
+   "id": "ds-bestofn-s5",
+   "model_key": "ds",
+   "mode": "bestofn-confirmed",
+   "seed": 5,
+   "class": "xcnc|xcnd"
+  },
+  {
+   "id": "qwen-population-s1",
+   "model_key": "qwen",
+   "mode": "search",
+   "seed": 1,
+   "class": "xcnc|xcnd"
+  },
+  {
+   "id": "qwen-bestofn-s1",
+   "model_key": "qwen",
+   "mode": "bestofn-confirmed",
+   "seed": 1,
+   "class": "xcnc|xcnd"
+  },
+  {
+   "id": "qwen-population-s2",
+   "model_key": "qwen",
+   "mode": "search",
+   "seed": 2,
+   "class": "xcnc|xcnd"
+  },
+  {
+   "id": "qwen-bestofn-s2",
+   "model_key": "qwen",
+   "mode": "bestofn-confirmed",
+   "seed": 2,
+   "class": "xcnc|xcnd"
+  },
+  {
+   "id": "qwen-population-s3",
+   "model_key": "qwen",
+   "mode": "search",
+   "seed": 3,
+   "class": "xcnc|xcnd"
+  },
+  {
+   "id": "qwen-bestofn-s3",
+   "model_key": "qwen",
+   "mode": "bestofn-confirmed",
+   "seed": 3,
+   "class": "xcnc|xcnd"
+  },
+  {
+   "id": "qwen-population-s4",
+   "model_key": "qwen",
+   "mode": "search",
+   "seed": 4,
+   "class": "xcnc|xcnd"
+  },
+  {
+   "id": "qwen-bestofn-s4",
+   "model_key": "qwen",
+   "mode": "bestofn-confirmed",
+   "seed": 4,
+   "class": "xcnc|xcnd"
+  },
+  {
+   "id": "qwen-population-s5",
+   "model_key": "qwen",
+   "mode": "search",
+   "seed": 5,
+   "class": "xcnc|xcnd"
+  },
+  {
+   "id": "qwen-bestofn-s5",
+   "model_key": "qwen",
+   "mode": "bestofn-confirmed",
+   "seed": 5,
+   "class": "xcnc|xcnd"
+  }
+ ],
+ "chains": {
+  "A": [
+   "ds-population-s1",
+   "ds-bestofn-s2",
+   "qwen-population-s3",
+   "qwen-bestofn-s4",
+   "ds-population-s5"
+  ],
+  "B": [
+   "ds-bestofn-s1",
+   "ds-population-s2",
+   "qwen-bestofn-s3",
+   "qwen-population-s4",
+   "ds-bestofn-s5"
+  ],
+  "C": [
+   "ds-population-s3",
+   "ds-bestofn-s4",
+   "qwen-population-s1",
+   "qwen-bestofn-s2",
+   "qwen-population-s5"
+  ],
+  "D": [
+   "ds-bestofn-s3",
+   "ds-population-s4",
+   "qwen-bestofn-s1",
+   "qwen-population-s2",
+   "qwen-bestofn-s5"
+  ]
+ }
+}

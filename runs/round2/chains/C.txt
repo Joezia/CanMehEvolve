@@ -1,0 +1,5 @@
+{"id": "ds-population-s3", "model_key": "ds", "mode": "search", "seed": 3, "class": "xcnc|xcnd"}
+{"id": "ds-bestofn-s4", "model_key": "ds", "mode": "bestofn-confirmed", "seed": 4, "class": "xcnc|xcnd"}
+{"id": "qwen-population-s1", "model_key": "qwen", "mode": "search", "seed": 1, "class": "xcnc|xcnd"}
+{"id": "qwen-bestofn-s2", "model_key": "qwen", "mode": "bestofn-confirmed", "seed": 2, "class": "xcnc|xcnd"}
+{"id": "qwen-population-s5", "model_key": "qwen", "mode": "search", "seed": 5, "class": "xcnc|xcnd"}
