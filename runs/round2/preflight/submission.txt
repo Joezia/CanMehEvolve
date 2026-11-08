@@ -1,0 +1,4 @@
+preflight jobs (billed separately from formal runs):
+DeepSeek population preflight 1094649
+DeepSeek best-of-N confirmed preflight 1094650
+Qwen population preflight 1094678
