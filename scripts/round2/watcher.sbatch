@@ -5,7 +5,7 @@ set -u
 cd "${SLURM_SUBMIT_DIR:-$PWD}"
 TICK=${TICK:-0}
 done_n=0; total=0
-for spec in runs/round2/chains/*.txt; do
+for spec in runs/round2/chains/[A-D].txt; do
   while read -r line; do
     [ -z "$line" ] && continue
     id=$(jq -r .id <<< "$line"); total=$((total + 1)); d=runs/round2/runs/$id
