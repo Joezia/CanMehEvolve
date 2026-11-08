@@ -13,6 +13,26 @@ for spec in runs/round2/chains/[A-D].txt; do
   done < "$spec"
 done
 echo "$(date -Is) tick $TICK: $done_n of $total runs finished" >> runs/round2/watcher.log
+# health check: a chain with no job in the queue and unfinished runs is restarted at its first unfinished run (a segment normally submits its successor itself)
+if [ "$done_n" -lt "$total" ]; then
+  queued=$(squeue -u "$USER" -h -o "%j")
+  for c in A B C D; do
+    if ! grep -q "^r2-$c-" <<< "$queued"; then
+      i=0; n=0; found=-1
+      while read -r line; do
+        [ -z "$line" ] && continue
+        id=$(jq -r .id <<< "$line"); d=runs/round2/runs/$id
+        if [ "$found" -lt 0 ] && [ ! -s "$d/summary.json" ] && [ ! -e "$d/ABANDONED" ]; then found=$i; fi
+        i=$((i + 1))
+      done < runs/round2/chains/$c.txt
+      if [ "$found" -ge 0 ]; then
+        j=$(sbatch --parsable --partition=normal --constraint="xcnc|xcnd" --nodes=1 --ntasks=1 --cpus-per-task=24 --mem=0 --time=3:00:00 --job-name="r2-$c-$found" \
+              --output=runs/round2/slurm/%j.log --export=ALL,CHAIN=$c,IDX=$found,ATTEMPT=0 scripts/round2/run_segment.sbatch)
+        echo "$(date -Is) health check: chain $c had no job; restarted index $found as job $j" >> runs/round2/watcher.log
+      fi
+    fi
+  done
+fi
 if [ "$done_n" -ge "$total" ] && [ ! -e runs/round2/post_submitted ]; then
   touch runs/round2/post_submitted
   ids=""
