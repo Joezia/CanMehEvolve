@@ -1,0 +1,8 @@
+kind,outcome,files
+data,decoded,129
+data,not decoded,21
+defs,decoded,91
+defs,not decoded,66
+original,decoded,4
+trunc,decoded,3
+trunc,not decoded,90

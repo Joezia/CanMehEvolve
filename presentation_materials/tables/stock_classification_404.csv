@@ -1,0 +1,9 @@
+outcome,files
+decoded,227
+uncaught C++ exception: FIT decode error: Decoder not in correct state after last data byte in file. Check message definitions. (at byte N),91
+uncaught C++ exception: FIT decode error: Missing FIT message definition for local message number N. (at byte N),52
+uncaught C++ exception: FIT decode error: Architecture <byte> not supported. (at byte N),16
+uncaught C++ exception: FIT decode error: Invalid Field Size,12
+uncaught C++ exception: Invalid developer field definition number in FieldDescriptionMesg,4
+uncaught C++ exception: Invalid developer data index in FieldDescriptionMesg,1
+killed by signal N,1

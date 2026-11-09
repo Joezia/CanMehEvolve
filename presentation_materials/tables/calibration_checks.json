@@ -1,0 +1,17 @@
+{
+ "rule_replay_mismatches_vs_stored_rule_rows": 0,
+ "n_trial_files": 681,
+ "unreadable": [
+  {
+   "pair": "null",
+   "batch": "batch1",
+   "trial": "t051",
+   "valid": false
+  }
+ ],
+ "weakest_effect_ge90pct": {
+  "pair": "faster-5-percent",
+  "true_reduction_pct": 4.764999999999997,
+  "rate": 0.99
+ }
+}

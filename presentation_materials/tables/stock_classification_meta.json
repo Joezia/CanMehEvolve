@@ -1,0 +1,11 @@
+{
+ "corpusA_prefix_identical_to_corpusB_first404": true,
+ "stock_files_not_decoded_of_404": 177,
+ "uncaught_exceptions": 176,
+ "killed_by_signal": 1,
+ "stock_files_with_asan_error": 13,
+ "stock_files_with_ubsan_msg": 28,
+ "stock_own_ubsan_in_sanitizer_subset": [
+  "src/fit_field_base.cpp left shift of negative value N"
+ ]
+}

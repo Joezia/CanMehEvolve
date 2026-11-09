@@ -1,0 +1,39 @@
+{
+ "null_runs": 8,
+ "candidates_per_run": [
+  36
+ ],
+ "updates_per_run": [
+  3,
+  3,
+  3,
+  4,
+  3,
+  2,
+  4,
+  2
+ ],
+ "total_updates": 24,
+ "max_single_update_pct": 0.06287834849501017,
+ "median_single_update_pct": 0.02360691927188463,
+ "false_progress_pct_per_run": [
+  0.0821,
+  0.0773,
+  0.0707,
+  0.0743,
+  0.0859,
+  0.1095,
+  0.062,
+  0.085
+ ],
+ "false_progress_median": 0.07972425357930524,
+ "false_progress_max": 0.10947314184232004,
+ "real_greedy_steps": 51,
+ "real_steps_leq_max_null_step": 4,
+ "real_steps_leq_0.2pct": 15,
+ "real_steps_leq_0.5pct": 21,
+ "real_median_step_pct": 0.5645566091250886,
+ "real_max_step_pct": 6.930220091921058,
+ "replay_vs_stored_update_mismatches": 0,
+ "any_null_candidate_passed_single_rule": false
+}

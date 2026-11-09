@@ -1,0 +1,23 @@
+{
+ "median_best_of_N": 1.072532703567242,
+ "median_greedy": 1.1758058549391703,
+ "median_K2": 1.1271924894273495,
+ "median_K3": 1.1426745018286335,
+ "median_K5": 1.1578227567138075,
+ "median_bestK_posthoc": 1.187014983645801,
+ "median_lastK": 1.176929002300529,
+ "range_K5": [
+  1.1420923291759737,
+  1.1922154169277175
+ ],
+ "range_bestK": [
+  1.1578796530318272,
+  1.2094996790588397
+ ],
+ "total_independent_measurements": 168,
+ "total_stacks": 56,
+ "gap_closed_median_stack_K2_fixed": 0.5033682913801201,
+ "gap_closed_median_stack_K3_fixed": 0.6484260077269601,
+ "gap_closed_median_stack_K5_fixed": 0.8189541178283034,
+ "gap_closed_median_bestK_speedup_posthoc": 0.9593780225701344
+}

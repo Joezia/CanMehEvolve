@@ -1,0 +1,12 @@
+group,valid_measurements,false_accepts,cp95_lo,cp95_hi
+"Synthetic null, calibration batches (xcnc2, 2 batches)",100,0,0.0,0.03621669264517641
+"Synthetic null, extra batches, xcnc",200,0,0.0,0.018275340355136237
+"Synthetic null, extra batches, xcnd",200,0,0.0,0.018275340355136237
+"Synthetic null, all",500,0,0.0,0.007350610051907784
+"SDK inert, batch group A, xcnc",120,0,0.0,0.03027297257742007
+"SDK inert, batch group A, xcnd",120,0,0.0,0.03027297257742007
+"SDK inert, batch group B, xcnc",282,0,0.0,0.012995946646552813
+"SDK inert, batch group B, xcnd",282,0,0.0,0.012995946646552813
+"SDK inert, all batches, xcnc",402,0,0.0,0.009134343139488086
+"SDK inert, all batches, xcnd",402,0,0.0,0.009134343139488086
+"SDK inert, all batches, both classes",804,0,0.0,0.004577649004950304

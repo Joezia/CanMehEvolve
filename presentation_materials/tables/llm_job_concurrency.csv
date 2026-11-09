@@ -1,0 +1,4 @@
+code_version,jobs_or_segments,max_concurrent,first_start,last_end
+I1 (Qwen),10,4,2026-11-03T21:44:44,2026-11-04T01:40:36
+I2 (DeepSeek),10,8,2026-11-04T12:03:23,2026-11-04T17:58:25
+I3 (both models),25,4,2026-11-08T10:09:33,2026-11-08T20:18:14

@@ -1,0 +1,10 @@
+{
+ "baseline_ms_min": 357.8636460006237,
+ "baseline_ms_max": 481.9796369411051,
+ "baseline_ms_median": 358.8780939971912,
+ "n_runs_with_baseline": 40,
+ "search_measurements_autocorr_n": 977,
+ "search_autocorr_median": 0.02728694220116181,
+ "search_autocorr_min": -0.3334484513147842,
+ "search_autocorr_max": 0.5228406058743946
+}

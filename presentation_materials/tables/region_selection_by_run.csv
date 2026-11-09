@@ -1,0 +1,41 @@
+run,config,algorithm,independent_draws,repair_rows_excluded,distinct_regions_drawn,repeat_draws,max_times_one_region,most_drawn_region,draws_in_top5_profile_regions,draws_in_regions_with_samples,draws_in_zero_sample_regions,profile_regions_with_samples,profile_total_samples,profile_coverage,expected_share_zero_sample_draws_if_no_credit_branch,draws_after_first_credit,draws_equal_to_best_credited_region
+qwen_pop_I1_s1,qwen_pop_I1,population,29,11,17,12,9,574,14,20,9,40,6631,top 40 regions (95.7% of attributed samples),0.09927457381211463,15,6
+qwen_bon_I1_s1,qwen_bon_I1,best-of-N,40,0,22,18,7,574,20,34,6,40,6652,top 40 regions (96.1% of attributed samples),0.09927457381211463,0,
+qwen_pop_I3_s1,qwen_pop_I3,population,49,7,25,24,18,134,27,44,5,79,6762,all regions,0.09856728327892637,45,17
+qwen_bon_I3_s1,qwen_bon_I3,best-of-N,40,0,22,18,7,574,20,34,6,80,7021,all regions,0.09854914762422924,0,
+ds_greedy_I2_s1,ds_greedy_I2,greedy,42,0,23,19,7,574,21,36,6,40,6652,top 40 regions (95.8% of attributed samples),0.09927457381211463,0,
+ds_bon_I2_s1,ds_bon_I2,best-of-N,40,0,21,19,7,574,20,34,6,40,6648,top 40 regions (95.8% of attributed samples),0.09927457381211463,0,
+ds_pop_I3_s1,ds_pop_I3,population,34,6,16,18,16,134,21,32,2,76,7085,all regions,0.09862169024301777,31,15
+ds_bon_I3_s1,ds_bon_I3,best-of-N,40,0,22,18,7,574,21,34,6,78,6953,all regions,0.0985854189336235,0,
+qwen_pop_I1_s2,qwen_pop_I1,population,32,8,18,14,6,574,17,29,3,40,6813,top 40 regions (96.2% of attributed samples),0.09927457381211463,21,4
+qwen_bon_I1_s2,qwen_bon_I1,best-of-N,40,0,18,22,5,134,16,38,2,40,6565,top 40 regions (96.2% of attributed samples),0.09927457381211463,0,
+qwen_pop_I3_s2,qwen_pop_I3,population,30,10,18,12,6,574,12,27,3,82,6951,all regions,0.09851287631483496,13,2
+qwen_bon_I3_s2,qwen_bon_I3,best-of-N,40,0,17,23,5,134,18,39,1,78,6959,all regions,0.0985854189336235,0,
+ds_greedy_I2_s2,ds_greedy_I2,greedy,40,0,17,23,5,134,23,39,1,40,6734,top 40 regions (96.1% of attributed samples),0.09927457381211463,0,
+ds_bon_I2_s2,ds_bon_I2,best-of-N,40,0,19,21,5,134,16,39,1,40,6593,top 40 regions (95.9% of attributed samples),0.09927457381211463,0,
+ds_pop_I3_s2,ds_pop_I3,population,34,6,20,14,8,574,14,31,3,81,7062,all regions,0.09853101196953211,30,7
+ds_bon_I3_s2,ds_bon_I3,best-of-N,40,0,20,20,5,134,17,39,1,80,6884,all regions,0.09854914762422924,0,
+qwen_pop_I1_s3,qwen_pop_I1,population,32,8,18,14,8,192,10,30,2,40,6488,top 40 regions (96.1% of attributed samples),0.09927457381211463,26,7
+qwen_bon_I1_s3,qwen_bon_I1,best-of-N,40,0,21,19,6,574,16,34,6,40,6629,top 40 regions (96.4% of attributed samples),0.09927457381211463,0,
+qwen_pop_I3_s3,qwen_pop_I3,population,31,9,18,13,4,123,15,27,4,79,6926,all regions,0.09856728327892637,1,0
+qwen_bon_I3_s3,qwen_bon_I3,best-of-N,40,0,23,17,5,574,15,34,6,78,6906,all regions,0.0985854189336235,0,
+ds_greedy_I2_s3,ds_greedy_I2,greedy,40,0,24,16,5,574,15,32,8,40,6575,top 40 regions (95.7% of attributed samples),0.09927457381211463,0,
+ds_bon_I2_s3,ds_bon_I2,best-of-N,40,0,22,18,5,574,15,34,6,40,6675,top 40 regions (95.9% of attributed samples),0.09927457381211463,0,
+ds_pop_I3_s3,ds_pop_I3,population,37,3,20,17,8,574,18,35,2,81,6964,all regions,0.09853101196953211,27,9
+ds_bon_I3_s3,ds_bon_I3,best-of-N,40,0,22,18,5,50,15,34,6,82,7013,all regions,0.09851287631483496,0,
+qwen_pop_I1_s4,qwen_pop_I1,population,35,5,21,14,6,574,14,27,8,40,6754,top 40 regions (95.8% of attributed samples),0.09927457381211463,16,5
+qwen_bon_I1_s4,qwen_bon_I1,best-of-N,40,0,20,20,8,574,20,37,3,40,6573,top 40 regions (96.4% of attributed samples),0.09927457381211463,0,
+qwen_pop_I3_s4,qwen_pop_I3,population,31,9,19,12,4,196,12,25,6,77,7016,all regions,0.09860355458832065,13,1
+qwen_bon_I3_s4,qwen_bon_I3,best-of-N,40,0,20,20,7,574,19,37,3,76,6984,all regions,0.09862169024301777,0,
+ds_greedy_I2_s4,ds_greedy_I2,greedy,41,0,19,22,8,574,21,36,5,40,6683,top 40 regions (95.5% of attributed samples),0.09927457381211463,0,
+ds_bon_I2_s4,ds_bon_I2,best-of-N,40,0,19,21,8,574,20,36,4,40,6729,top 40 regions (95.7% of attributed samples),0.09927457381211463,0,
+ds_pop_I3_s4,ds_pop_I3,population,34,6,19,15,8,134,16,29,5,80,7044,all regions,0.09854914762422924,33,7
+ds_bon_I3_s4,ds_bon_I3,best-of-N,40,0,19,21,8,574,21,37,3,78,6804,all regions,0.0985854189336235,0,
+qwen_pop_I1_s5,qwen_pop_I1,population,36,4,20,16,11,574,21,32,4,40,6636,top 40 regions (95.7% of attributed samples),0.09927457381211463,32,10
+qwen_bon_I1_s5,qwen_bon_I1,best-of-N,40,0,20,20,7,574,17,34,6,40,6671,top 40 regions (95.6% of attributed samples),0.09927457381211463,0,
+qwen_pop_I3_s5,qwen_pop_I3,population,31,9,14,17,6,574,13,29,2,80,6748,all regions,0.09854914762422924,19,6
+qwen_bon_I3_s5,qwen_bon_I3,best-of-N,40,0,22,18,7,574,16,35,5,80,6882,all regions,0.09854914762422924,0,
+ds_greedy_I2_s5,ds_greedy_I2,greedy,40,0,23,17,7,574,16,33,7,40,6705,top 40 regions (95.6% of attributed samples),0.09927457381211463,0,
+ds_bon_I2_s5,ds_bon_I2,best-of-N,40,0,23,17,7,574,15,34,6,40,6663,top 40 regions (95.8% of attributed samples),0.09927457381211463,0,
+ds_pop_I3_s5,ds_pop_I3,population,31,9,17,14,7,574,19,30,1,79,7057,all regions,0.09856728327892637,29,8
+ds_bon_I3_s5,ds_bon_I3,best-of-N,40,0,20,20,7,574,17,35,5,78,6910,all regions,0.0985854189336235,0,

@@ -1,0 +1,41 @@
+run,tested_object,level,code_reading,remeasured_speedup
+qwen_pop_I1_s1,,not tested,thread-safe one-time init,1.057277568780665
+qwen_pop_I1_s2,,not tested,unsynchronised lazy init (race on the first calls),1.0753436754705266
+qwen_pop_I1_s3,,not tested,no function-local static state added,1.0265957779813648
+qwen_pop_I1_s4,,not tested,no function-local static state added,1.0397320439917002
+qwen_pop_I1_s5,,not tested,mutable shared cache or lazily built tables (races in steady state),1.0804070953776652
+qwen_bon_I1_s1,,not tested,unsynchronised lazy init (race on the first calls),1.0744195595115402
+qwen_bon_I1_s2,,not tested,no function-local static state added,1.0577532107419452
+qwen_bon_I1_s3,,not tested,unsynchronised lazy init (race on the first calls),1.0842671677518805
+qwen_bon_I1_s4,,not tested,unsynchronised lazy init (race on the first calls),1.0612730085676048
+qwen_bon_I1_s5,,not tested,mutable shared cache or lazily built tables (races in steady state),1.0383691765625986
+qwen_pop_I3_s1,r2-qwen-population-s1,no finding in tested conditions,thread-safe one-time init (static std::array lookup = lambda),1.1237465795510302
+qwen_pop_I3_s2,r2-qwen-population-s2,no finding in tested conditions,thread-safe one-time init (static const auto sorted = lambda),1.0585780236897147
+qwen_pop_I3_s3,r2-qwen-population-s3,wrong output / crash / memory error,unsynchronised lazy init (race on the first calls),1.0828389534544447
+qwen_pop_I3_s4,r2-qwen-population-s4,wrong output / crash / memory error,no function-local static state added,1.0306764461757052
+qwen_pop_I3_s5,r2-qwen-population-s5,TSan race only,unsynchronised lazy init (race on the first calls),1.0744515307746845
+qwen_bon_I3_s1,r2-qwen-bestofn-s1,no finding in tested conditions,unsynchronised lazy init (static bool initialized + manual build),1.0388868711064643
+qwen_bon_I3_s2,r2-qwen-bestofn-s2,TSan race only,unsynchronised lazy init (race on the first calls),1.040895677101811
+qwen_bon_I3_s3,r2-qwen-bestofn-s3,TSan race only,unsynchronised lazy init (static vector filled when empty),1.0622208808935327
+qwen_bon_I3_s4,r2-qwen-bestofn-s4,no finding in tested conditions,thread-safe one-time init (static const auto sorted = lambda),1.0560142314628898
+qwen_bon_I3_s5,r2-qwen-bestofn-s5,TSan race only,mutable shared cache (static cache pointer overwritten on later calls),1.0727165144465516
+ds_greedy_I2_s1,final-greedy-seed1,wrong output / crash / memory error,mutable shared cache or lazily built tables (races in steady state),1.1573656981155525
+ds_greedy_I2_s2,final-greedy-seed2,TSan race only,unsynchronised lazy init (race on the first calls),1.2155460097451194
+ds_greedy_I2_s3,,not tested,mutable shared cache or lazily built tables (races in steady state),1.1758058549391703
+ds_greedy_I2_s4,final-greedy-seed4,differs only on hostile mutants,mutable shared cache (GetFieldIndex tables allocated lazily into static pointer array) + thread-safe GetMesg init,1.1918623915372308
+ds_greedy_I2_s5,final-greedy-seed5,TSan race only,mutable shared cache or lazily built tables (races in steady state),1.1661189041343363
+ds_bon_I2_s1,final-bestofn-seed1,TSan race only,unsynchronised lazy init (race on the first calls),1.0730038294203335
+ds_bon_I2_s2,final-bestofn-seed2,no finding in tested conditions,thread-safe one-time init (static const bool initialized = lambda),1.0688407026778401
+ds_bon_I2_s3,final-bestofn-seed3,TSan race only,unsynchronised lazy init (race on the first calls),1.073967643191451
+ds_bon_I2_s4,final-bestofn-seed4,TSan race only,unsynchronised lazy init (race on the first calls),1.072532703567242
+ds_bon_I2_s5,final-bestofn-seed5,TSan race only,unsynchronised lazy init (race on the first calls),1.0666941208327634
+ds_pop_I3_s1,r2-ds-population-s1,wrong output / crash / memory error,mutable shared cache or lazily built tables (races in steady state),1.1648415995903842
+ds_pop_I3_s2,r2-ds-population-s2,wrong output / crash / memory error,unsynchronised lazy init (race on the first calls),1.1374896892719681
+ds_pop_I3_s3,r2-ds-population-s3,TSan race only,unsynchronised lazy init (race on the first calls),1.1810654135113965
+ds_pop_I3_s4,r2-ds-population-s4,TSan race only,mutable shared cache or lazily built tables (races in steady state),1.1634017467168285
+ds_pop_I3_s5,r2-ds-population-s5,TSan race only,mutable shared cache or lazily built tables (races in steady state),1.1714641639293506
+ds_bon_I3_s1,r2-ds-bestofn-s1,TSan race only,unsynchronised lazy init (race on the first calls),1.0736640870848104
+ds_bon_I3_s2,r2-ds-bestofn-s2,TSan race only,unsynchronised lazy init (race on the first calls),1.0731409718822504
+ds_bon_I3_s3,r2-ds-bestofn-s3,TSan race only,unsynchronised lazy init (race on the first calls),1.0732284864869988
+ds_bon_I3_s4,r2-ds-bestofn-s4,TSan race only,unsynchronised lazy init (race on the first calls),1.0733093050422502
+ds_bon_I3_s5,r2-ds-bestofn-s5,TSan race only,unsynchronised lazy init (race on the first calls),1.0685247180212423

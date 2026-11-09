@@ -1,0 +1,20 @@
+item,value,source
+FIT SDK version,21.201.0,runs/phase1-final/VERSIONS.txt (fit_sdk=21.201.0)
+workload,decode the 4 activity files with the SDK decoder; every decoded field value folded into a 64-bit checksum; timed with CanMehBench (reference vs candidate library in one process pair),README.md Architecture; src/workloads/SdkDecode.cpp
+data: total bytes,907007,runs/round2/runs/ds-population-s1/bench.err; runs/phase1-final/run_facts.json data.identifiers
+data: messages decoded,34251,same
+data: fields decoded,428714,same
+data: checksum (CanMehBench fold),92bebfd7f8978fc8,same
+data file intervals.fit,102887 bytes; 3626 messages; 46984 fields; sha256 449c8f032de7ffa4...,build/data/*.fit; counts from the stock decoder (scripts/followup/driver.cpp 'single' mode on the 4 originals); sums equal the CanMehBench totals
+data file long_run.fit,403783 bytes; 14410 messages; 187256 fields; sha256 3c9f63c71ac0d063...,build/data/*.fit; counts from the stock decoder (scripts/followup/driver.cpp 'single' mode on the 4 originals); sums equal the CanMehBench totals
+data file ride.fit,302889 bytes; 10809 messages; 140448 fields; sha256 2ba822794922b430...,build/data/*.fit; counts from the stock decoder (scripts/followup/driver.cpp 'single' mode on the 4 originals); sums equal the CanMehBench totals
+data file treadmill.fit,97448 bytes; 5406 messages; 54026 fields; sha256 46a60603dab88e46...,build/data/*.fit; counts from the stock decoder (scripts/followup/driver.cpp 'single' mode on the 4 originals); sums equal the CanMehBench totals
+regions (functions / units the search can rewrite),5514,profile_samples.json (round-2 runs)
+"regions with profile samples (per run, 20 s perf)",76 (ds-population-s1); ~70-80 in other runs,"runs/*/profile.json, profile_samples.json"
+compiler,c++ (Ubuntu 13.3.0-6ubuntu2~24.04.1) 13.3.0 (GCC),runs/*/run.json compiler_version
+compiler options for stock and candidates,"-std=c++17 -O2 (C1 controls: -O3, -O3 -march=native which resolves to haswell)","runs/*/run.json (opt, cxxstd); runs/controls-native-1071478/node.txt"
+measurement parameters,"10 processes x 9 repetitions per measurement (--repeat 10 --repetitions 9), min-time 0.25 s, alpha 0.01, minimum effect 2%, unstable if ratio spread > 0.25","runs/*/run.json meta, rule; src/Search.cpp constants"
+machine,"NUS cluster compute nodes xcnc*/xcnd*: 2 x Intel Xeon E5-2620 v3 @ 2.40 GHz (6 cores, 2 threads each, 24 logical CPUs, max 3.2 GHz, 64 GB, 30 MiB L3), governor schedutil, Linux 6.8.0-1xx; whole node per job",runs/phase1-final/node_hardware/*.txt; runs/*/node.txt
+models: Qwen,"requested qwen3-coder-next, returned qwen3-coder-next (server fingerprint vllm-0.26.0-1cf708c9); temperature 0.8; max_tokens 4096",runs/setup/llm-check.json; runs/main/*/run.json; runs/round2/runs/qwen-*/results.jsonl llm.model_returned
+models: DeepSeek,"requested deepseek-v4.1-flash, every response returned deepseek-v4.1-flash-1017 (expected id enforced); temperature 0.8; max_tokens 32768; request timeout 600 s",runs/deepseek/*/run.json; results.jsonl llm.model_returned
+endpoint,https://soclaas-api.comp.nus.edu.sg/v1 (chat completions); one HTTP request per model call in code I2/I3,runs/*/run.json base_url

@@ -1,0 +1,19 @@
+{
+ "attempt-1": {
+  "files": [
+   "src/fit_profile.cpp"
+  ],
+  "hunks": 1,
+  "added_lines": 15,
+  "removed_lines": 5
+ },
+ "attempt-2": {
+  "files": [
+   "src/fit_profile.cpp"
+  ],
+  "hunks": 2,
+  "added_lines": 37,
+  "removed_lines": 12
+ },
+ "MESGS_entries_in_fit_profile.cpp": 124
+}

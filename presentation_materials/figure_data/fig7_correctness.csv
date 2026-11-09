@@ -1,0 +1,64 @@
+object,findings
+final-bestofn-seed1,TSan race (2 locations)
+final-bestofn-seed2,none in the tested conditions
+final-bestofn-seed3,TSan race (2 locations)
+final-bestofn-seed4,TSan race (2 locations)
+final-bestofn-seed5,TSan race (2 locations)
+final-greedy-seed1,crashes where stock does not on 11 mutant(s); ASan error; 2 new UBSan message(s); TSan race (3 locations); ASan run aborted; TSan run did not complete
+final-greedy-seed2,TSan race (1 locations)
+final-greedy-seed3,TSan race (4 locations); TSan run did not complete
+final-greedy-seed4,output differs on 4 mutant(s); TSan race (2 locations)
+final-greedy-seed5,TSan race (3 locations)
+human-attempt-1,none in the tested conditions
+human-attempt-2,none in the tested conditions
+s3-step01-gen6,none in the tested conditions
+s3-step02-gen11,none in the tested conditions
+s3-step03-gen12,TSan race (3 locations); 36 concurrent digest mismatch(es)
+s3-step04-gen13,TSan race (2 locations); 38 concurrent digest mismatch(es)
+s3-step05-gen17,TSan race (3 locations); TSan run did not complete
+s3-step06-gen18,TSan race (3 locations); TSan run did not complete
+s3-step07-gen20,TSan race (3 locations); TSan run did not complete
+s3-step08-gen21,TSan race (3 locations); 39 concurrent digest mismatch(es)
+s3-step09-gen28,TSan race (3 locations); 39 concurrent digest mismatch(es)
+s3-step10-gen31,TSan race (2 locations); 38 concurrent digest mismatch(es)
+s3-step11-gen34,TSan race (4 locations); TSan run did not complete
+r2-ds-bestofn-s1,TSan race (2 locations)
+r2-ds-bestofn-s2,TSan race (2 locations)
+r2-ds-bestofn-s3,TSan race (2 locations)
+r2-ds-bestofn-s4,TSan race (2 locations)
+r2-ds-bestofn-s5,TSan race (2 locations)
+r2-ds-population-s1,crashes where stock does not on 11 mutant(s); ASan error; 2 new UBSan message(s); TSan race (4 locations); ASan run aborted; TSan run did not complete
+r2-ds-population-s2,output differs on 1 legal encoder file(s); TSan race (2 locations)
+r2-ds-population-s3,TSan race (2 locations)
+r2-ds-population-s4,TSan race (2 locations)
+r2-ds-population-s5,TSan race (2 locations)
+r2-qwen-bestofn-s1,none in the tested conditions
+r2-qwen-bestofn-s2,TSan race (1 locations)
+r2-qwen-bestofn-s3,TSan race (1 locations)
+r2-qwen-bestofn-s4,none in the tested conditions
+r2-qwen-bestofn-s5,TSan race (1 locations)
+r2-qwen-population-s1,none in the tested conditions
+r2-qwen-population-s2,none in the tested conditions
+r2-qwen-population-s3,output differs on 45 legal encoder file(s); TSan race (3 locations); TSan run did not complete
+r2-qwen-population-s4,output differs on 4 legal encoder file(s)
+r2-qwen-population-s5,TSan race (2 locations)
+stack-s1-K2-fixed,TSan race (2 locations)
+stack-s1-K3-fixed,TSan race (3 locations); 2 concurrent digest mismatch(es)
+stack-s1-K5-fixed,crashes where stock does not on 11 mutant(s); ASan error; 2 new UBSan message(s); TSan race (4 locations); ASan run aborted; TSan run did not complete
+stack-s1-bestK9-posthoc,crashes where stock does not on 11 mutant(s); ASan error; 2 new UBSan message(s); TSan race (4 locations); ASan run aborted; TSan run did not complete
+stack-s2-K2-fixed,none in the tested conditions
+stack-s2-K3-fixed,TSan race (4 locations); TSan run did not complete
+stack-s2-K5-fixed,TSan race (3 locations); TSan run did not complete
+stack-s2-bestK6-posthoc,TSan race (4 locations); TSan run did not complete
+stack-s3-K2-fixed,TSan race (2 locations)
+stack-s3-K3-fixed,TSan race (2 locations)
+stack-s3-K5-fixed,TSan race (2 locations)
+stack-s3-bestK10-posthoc,TSan race (2 locations)
+stack-s4-K2-fixed,TSan race (2 locations)
+stack-s4-K3-fixed,TSan race (3 locations); 3 concurrent digest mismatch(es)
+stack-s4-K5-fixed,TSan race (3 locations); 5 concurrent digest mismatch(es)
+stack-s4-bestK7-posthoc,TSan race (3 locations); 8 concurrent digest mismatch(es)
+stack-s5-K2-fixed,TSan race (2 locations)
+stack-s5-K3-fixed,TSan race (3 locations)
+stack-s5-K5-fixed,TSan race (3 locations); 3 concurrent digest mismatch(es)
+stack-s5-bestK6-posthoc,TSan race (3 locations); 2 concurrent digest mismatch(es)

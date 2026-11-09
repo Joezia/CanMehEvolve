@@ -1,0 +1,41 @@
+model,config,seed,remeasured_speedup,correctness_status
+Qwen3-coder-next,qwen_bon_I3,1,1.0388868711064643,no finding in the tested conditions
+Qwen3-coder-next,qwen_bon_I3,2,1.040895677101811,"race reported by TSan, no wrong output seen"
+Qwen3-coder-next,qwen_bon_I3,3,1.0622208808935327,"race reported by TSan, no wrong output seen"
+Qwen3-coder-next,qwen_bon_I3,4,1.0560142314628898,no finding in the tested conditions
+Qwen3-coder-next,qwen_bon_I3,5,1.0727165144465516,"race reported by TSan, no wrong output seen"
+Qwen3-coder-next,qwen_pop_I3,1,1.1237465795510302,no finding in the tested conditions
+Qwen3-coder-next,qwen_pop_I3,2,1.0585780236897147,no finding in the tested conditions
+Qwen3-coder-next,qwen_pop_I3,3,1.0828389534544447,wrong output / crash / memory error
+Qwen3-coder-next,qwen_pop_I3,4,1.0306764461757052,wrong output / crash / memory error
+Qwen3-coder-next,qwen_pop_I3,5,1.0744515307746845,"race reported by TSan, no wrong output seen"
+Qwen3-coder-next,qwen_bon_I1,1,1.0744195595115402,not tested
+Qwen3-coder-next,qwen_bon_I1,2,1.0577532107419452,not tested
+Qwen3-coder-next,qwen_bon_I1,3,1.0842671677518805,not tested
+Qwen3-coder-next,qwen_bon_I1,4,1.0612730085676048,not tested
+Qwen3-coder-next,qwen_bon_I1,5,1.0383691765625986,not tested
+Qwen3-coder-next,qwen_pop_I1,1,1.057277568780665,not tested
+Qwen3-coder-next,qwen_pop_I1,2,1.0753436754705266,not tested
+Qwen3-coder-next,qwen_pop_I1,3,1.0265957779813648,not tested
+Qwen3-coder-next,qwen_pop_I1,4,1.0397320439917002,not tested
+Qwen3-coder-next,qwen_pop_I1,5,1.0804070953776652,not tested
+DeepSeek-v4.1-flash,ds_bon_I3,1,1.0736640870848104,"race reported by TSan, no wrong output seen"
+DeepSeek-v4.1-flash,ds_bon_I3,2,1.0731409718822504,"race reported by TSan, no wrong output seen"
+DeepSeek-v4.1-flash,ds_bon_I3,3,1.0732284864869988,"race reported by TSan, no wrong output seen"
+DeepSeek-v4.1-flash,ds_bon_I3,4,1.0733093050422502,"race reported by TSan, no wrong output seen"
+DeepSeek-v4.1-flash,ds_bon_I3,5,1.0685247180212423,"race reported by TSan, no wrong output seen"
+DeepSeek-v4.1-flash,ds_pop_I3,1,1.1648415995903842,wrong output / crash / memory error
+DeepSeek-v4.1-flash,ds_pop_I3,2,1.1374896892719681,wrong output / crash / memory error
+DeepSeek-v4.1-flash,ds_pop_I3,3,1.1810654135113965,"race reported by TSan, no wrong output seen"
+DeepSeek-v4.1-flash,ds_pop_I3,4,1.1634017467168285,"race reported by TSan, no wrong output seen"
+DeepSeek-v4.1-flash,ds_pop_I3,5,1.1714641639293506,"race reported by TSan, no wrong output seen"
+DeepSeek-v4.1-flash,ds_bon_I2,1,1.0730038294203335,"race reported by TSan, no wrong output seen"
+DeepSeek-v4.1-flash,ds_bon_I2,2,1.0688407026778401,no finding in the tested conditions
+DeepSeek-v4.1-flash,ds_bon_I2,3,1.073967643191451,"race reported by TSan, no wrong output seen"
+DeepSeek-v4.1-flash,ds_bon_I2,4,1.072532703567242,"race reported by TSan, no wrong output seen"
+DeepSeek-v4.1-flash,ds_bon_I2,5,1.0666941208327634,"race reported by TSan, no wrong output seen"
+DeepSeek-v4.1-flash,ds_greedy_I2,1,1.1573656981155525,wrong output / crash / memory error
+DeepSeek-v4.1-flash,ds_greedy_I2,2,1.2155460097451194,"race reported by TSan, no wrong output seen"
+DeepSeek-v4.1-flash,ds_greedy_I2,3,1.1758058549391703,not tested
+DeepSeek-v4.1-flash,ds_greedy_I2,4,1.1918623915372308,differs only on hostile mutant files
+DeepSeek-v4.1-flash,ds_greedy_I2,5,1.1661189041343363,"race reported by TSan, no wrong output seen"

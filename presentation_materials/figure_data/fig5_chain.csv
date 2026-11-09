@@ -1,0 +1,14 @@
+step,generation,function,R_after,cumulative_speedup_at_search_time,step_gain_pct,independently_confirmed,corr_differential,corr_asan_errors,corr_tsan_locations,corr_tsan_digest_mismatches,corr_tsan_result
+1,6,MesgBroadcaster::RemoveListener,0.998979192796134,1.00102185031603,0.10208072038659921,no (only the fixed final patch is re-measured),227 / 227 / 0,0,0,0,completed
+2,11,Decode::Resume,0.99529419745699,1.0047280518212942,0.36887608527959026,no (only the fixed final patch is re-measured),227 / 227 / 0,0,0,0,completed
+3,12,Profile::GetFieldIndex,0.9803906806321474,1.0200015358726264,1.497398142470996,no (only the fixed final patch is re-measured),227 / 227 / 0,0,3,36,completed with race reports (exit 66)
+4,13,FieldBase::FieldBase,0.9369209625063009,1.067325889822083,4.433917925231368,no (only the fixed final patch is re-measured),227 / 227 / 0,0,2,38,completed with race reports (exit 66)
+5,17,Profile::GetMesg,0.8795396386474734,1.1369584224058014,6.124457254679216,no (only the fixed final patch is re-measured),227 / 227 / 0,0,3,-,"did not finish (exit 66, no digest line)"
+6,18,Field::GetType,0.8792419169735868,1.1373434099253037,0.033849716465816915,no (only the fixed final patch is re-measured),227 / 227 / 0,0,3,-,"did not finish (exit 66, no digest line)"
+7,20,CRC::Get16,0.8770299876524126,1.1402118674148727,0.2515723236658052,no (only the fixed final patch is re-measured),227 / 227 / 0,0,3,-,"did not finish (exit 66, no digest line)"
+8,21,Mesg::AddField,0.8649595153661707,1.1561234742607132,1.3762895746075365,no (only the fixed final patch is re-measured),227 / 227 / 0,0,3,39,completed with race reports (exit 66)
+9,28,MesgDefinition::GetFieldByIndex,0.863535046404037,1.1580305908419526,0.16468620054784777,no (only the fixed final patch is re-measured),227 / 227 / 0,0,3,39,completed with race reports (exit 66)
+10,31,FieldBase::GetValue,0.8575730069380356,1.1660814786725855,0.6904224085436672,no (only the fixed final patch is re-measured),227 / 227 / 0,0,2,38,completed with race reports (exit 66)
+11,34,Profile::GetMesg,0.8565233767565834,1.1675104581345144,0.12239543140472042,no (only the fixed final patch is re-measured),227 / 227 / 0,0,4,-,"did not finish (exit 66, no digest line)"
+12,37,Field::GetNumSubFields,0.8559782621624509,1.1682539664894156,0.063642698953148,no (only the fixed final patch is re-measured),,,,,
+13,39,Mesg::GetField,0.8499039539070646,1.1766035390268912,0.7096334713034391,yes: 3 re-measurements of the 40-request final patch,,,,,

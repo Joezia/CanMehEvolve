@@ -1,0 +1,9 @@
+config,label,http_or_no_code_or_truncated,unchanged,compile_fail,check_fail,measured_not_confirmed,confirmed_inherited_or_not_better_than_parent,new_step_accepted,confirmed,rows_without_request_median,in_final_patch_lineage_median,accepted_steps_median
+qwen_pop_I1,Qwen population (I1),0.0,3.0,7.0,4.0,11.0,5.0,6.0,12.0,0.0,6.0,3.0
+qwen_bon_I1,Qwen best-of-N (I1),1.0,4.0,11.0,2.0,18.0,0.0,3.0,3.0,0.0,1.0,1.0
+qwen_pop_I3,Qwen population (I3),0.0,3.0,7.0,8.0,12.0,1.0,4.0,5.0,0.0,6.0,3.0
+qwen_bon_I3,Qwen best-of-N (I3),1.0,4.0,8.0,3.0,19.0,0.0,3.0,3.0,0.0,1.0,1.0
+ds_greedy_I2,DeepSeek greedy (I2),4.0,2.0,7.0,2.0,12.0,2.0,11.0,11.0,0.0,11.0,11.0
+ds_bon_I2,DeepSeek best-of-N (I2),0.0,4.0,4.0,1.0,25.0,0.0,4.0,4.0,0.0,1.0,1.0
+ds_pop_I3,DeepSeek population (I3),8.0,1.0,7.0,1.0,1.0,9.0,12.0,21.0,0.0,8.0,5.0
+ds_bon_I3,DeepSeek best-of-N (I3),4.0,3.0,5.0,1.0,15.0,0.0,13.0,13.0,0.0,1.0,1.0

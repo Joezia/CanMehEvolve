@@ -1,0 +1,3 @@
+pair,expected_stage,observed_stage,as_expected,message
+broken-digest,correctness,correctness,True,checksum 0043616c69627232 does not match the reference 0043616c69627231; the decoder produced different values
+shared-install-name,load,load,True,"both libraries resolved to one image, so CanMehBench would measure one build twice; check that the two libraries do not claim one name (LC_ID_DYLIB on macOS, SONAME on Linux)"
