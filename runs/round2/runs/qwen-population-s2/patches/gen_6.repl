@@ -1,0 +1,19 @@
+The function implements a linear search through a small, fixed-size array of profile messages. Since the array is small and sorted at compile time in release builds, replacing it with a compile-time binary search via `std::lower_bound` on a pre-sorted array of pointers yields O(log n) lookup instead of O(n), which is faster for typical small `MESGS` counts (e.g., ~100–200 entries). This avoids runtime sorting by leveraging the fact that `mesgs` is already sorted by `num` in release builds.
+
+```cpp
+#include <algorithm>
+
+const Profile::MESG* Profile::GetMesg(const FIT_UINT16 num)
+{
+    // Binary search over the already-sorted mesgs array (MESGS is small, typically <200)
+    auto it = std::lower_bound(mesgs, mesgs + MESGS, num,
+        [](const Profile::MESG& mesg, FIT_UINT16 value) {
+            return mesg.num < value;
+        });
+
+    if (it != mesgs + MESGS && it->num == num)
+        return it;
+
+    return NULL;
+}
+```

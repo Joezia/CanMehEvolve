@@ -1,0 +1,11 @@
+[run] mode=search host=xcnc3 model_probe={"http_status":200,"model":"deepseek-v4.1-flash-1017","ok":true,"requested_model":"deepseek-v4.1-flash","usage":{"completion_tokens":14,"completion_tokens_details":{"reasoning_tokens":11},"prompt_tokens":36,"prompt_tokens_details":{"cached_tokens":0,"created_cache_tokens":0,"multimodal_tokens":null},"total_tokens":50}}
+[resume] segment 2 continues after generation 32 with 32 requests already sent
+[gen 33/40] region 134 FieldBase::FieldBase parent=25 ratio=0.879988 CONFIRMED best_confirmed_speedup=1.13638 tokens=384642 t=207s
+[gen 34/40] region 166 FieldBase::GetFLOAT64Value parent=23 stage=llm_http best_confirmed_speedup=1.13638 tokens=384642 t=508s
+[gen 35/40] region 574 Profile::GetMesg parent=25 stage=llm_http best_confirmed_speedup=1.13638 tokens=384642 t=808s
+[gen 36/40] region 128 Field::GetNumSubFields parent=20 stage=compile best_confirmed_speedup=1.13638 tokens=385176 t=814s
+[gen 37/40] region 128 Field::GetNumSubFields parent=20 stage=compile best_confirmed_speedup=1.13638 tokens=388088 t=850s
+[gen 38/40] region 126 Field::GetOffset parent=30 stage=llm_http best_confirmed_speedup=1.13638 tokens=388088 t=1151s
+[gen 39/40] region 576 Profile::GetFieldIndex parent=30 ratio=0.895723 CONFIRMED best_confirmed_speedup=1.13638 tokens=407612 t=1575s
+[gen 40/40] region 574 Profile::GetMesg parent=20 ratio=0.909546 CONFIRMED best_confirmed_speedup=1.13638 tokens=421966 t=1947s
+[done] {"api_calls":40,"best_confirmed_generation":33,"best_confirmed_speedup":1.1363794823570441,"best_ranked_generation":0,"best_ranked_speedup":1.0,"best_retained_speedup":1.1363794823570441,"complete":true,"completion_tokens":402994,"confirmed_candidates":21,"elapsed_s":11349.461339826,"ended_because":"request budget reached","finished":"2026-11-08T15:51:12+0800","http_attempts":40,"improved_on_parent_candidates":15,"llm_seconds":6644.585737332,"max_tokens":32768,"mode":"search","outcomes":{"compile":7,"llm_http":6,"llm_nocode":1,"measured":25,"unchanged":1},"prompt_tokens":18972,"rank_updates":[],"reasoning_tokens":393777,"request_budget":40,"seed":2,"segments":2,"total_tokens":421966,"truncated_replies":0}

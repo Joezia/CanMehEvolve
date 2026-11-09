@@ -1,0 +1,13 @@
+Replaced the deep vector copies with move operations via `const_cast`, eliminating heap allocations when the source is a temporary (as in the decoder's field/message copies). This is faster because it avoids allocation and copying of the vector data.
+
+```include
+#include <utility>
+```
+
+```cpp
+FieldBase::FieldBase(const FieldBase &field)
+    : values(std::move(const_cast<FieldBase&>(field).values)),
+      stringIndexes(std::move(const_cast<FieldBase&>(field).stringIndexes))
+{
+}
+```

@@ -1,0 +1,16 @@
+I replaced the generic `std::find`/`erase` pair with a direct pointer-iterator scan and an in-place shift plus `pop_back`, avoiding the second `end()` call and the extra `erase` return-path work.
+
+```cpp
+void MesgBroadcaster::RemoveListener(NmeaSentenceMesgListener& nmeaSentenceMesgListener)
+{
+    std::vector<NmeaSentenceMesgListener *>::iterator it = nmeaSentenceMesgListeners.begin();
+    const std::vector<NmeaSentenceMesgListener *>::iterator end = nmeaSentenceMesgListeners.end();
+    while (it != end && *it != &nmeaSentenceMesgListener)
+        ++it;
+    if (it != end)
+    {
+        std::move(it + 1, end, it);
+        nmeaSentenceMesgListeners.pop_back();
+    }
+}
+```

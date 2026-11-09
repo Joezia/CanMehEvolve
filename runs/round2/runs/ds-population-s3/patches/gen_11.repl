@@ -1,0 +1,8 @@
+Replaced the default-construct-then-copy-assign body with direct member initialization. This avoids `std::vector` copy-assignment overhead and lets each vector copy-construct directly, which is faster for the many small/empty field vectors.
+
+```cpp
+FieldBase::FieldBase(const FieldBase &field)
+    : values(field.values), stringIndexes(field.stringIndexes)
+{
+}
+```

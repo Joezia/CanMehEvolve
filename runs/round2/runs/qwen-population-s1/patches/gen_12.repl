@@ -1,0 +1,10 @@
+```cpp
+#include <algorithm>
+#include <vector>
+
+Field* Mesg::GetField(const FIT_UINT8 fieldNum)
+{
+    auto it = std::find_if(fields.begin(), fields.end(), [fieldNum](const Field& f) { return f.GetNum() == fieldNum; });
+    return (it != fields.end()) ? &*it : FIT_NULL;
+}
+```

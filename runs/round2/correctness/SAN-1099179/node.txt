@@ -1,0 +1,8 @@
+host=xcnc1
+job=1099179
+start=2026-11-09T09:11:15+08:00
+part=SAN
+gcc=g++ (Ubuntu 13.3.0-6ubuntu2~24.04.1) 13.3.0
+git_commit=4f44902a739db51d97b83168db080cd9d9360dea
+exit=0
+end=2026-11-09T09:22:01+08:00

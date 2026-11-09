@@ -1,0 +1,14 @@
+I split the null check from the bounds check and load the fields pointer before the bounds check so the two independent loads can overlap. This keeps identical behavior while shortening the dependency chain on the valid path.
+
+```cpp
+FIT_UINT8 Field::GetNum(void) const
+{
+    const auto *p = profile;
+    if (p == NULL)
+        return FIT_FIELD_NUM_INVALID;
+    const auto fields = p->fields;
+    if (profileIndex >= p->numFields)
+        return FIT_FIELD_NUM_INVALID;
+    return fields[profileIndex].num;
+}
+```

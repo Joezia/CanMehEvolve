@@ -1,0 +1,9 @@
+The members are now copy-constructed directly from the source in the initializer list instead of being default-constructed and then copy-assigned, which performs a single sized allocation-and-copy per vector and skips the extra self-assignment, capacity, and element-destruction checks of `operator=`.
+
+```cpp
+FieldBase::FieldBase(const FieldBase &field)
+    : values(field.values),
+      stringIndexes(field.stringIndexes)
+{
+}
+```

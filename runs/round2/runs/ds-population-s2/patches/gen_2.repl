@@ -1,0 +1,9 @@
+The function is already a single lookup, so I only hoisted the profile pointer into a local (using `auto` to stay type-agnostic) and index through it directly, giving the compiler a clean, alias-free base pointer for the field-def load.
+
+```cpp
+FIT_BOOL Field::GetIsAccumulated() const
+{
+    const auto* p = profile;
+    return p->fields[profileIndex].isAccumulated;
+}
+```

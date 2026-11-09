@@ -1,0 +1,253 @@
+{
+  "attributed": 6882,
+  "error": "",
+  "in_image": 18276,
+  "located": 18276,
+  "ok": true,
+  "ran": true,
+  "tool": "perf",
+  "top_regions": [
+    {
+      "file": "src/fit_profile.cpp",
+      "id": 574,
+      "label": "Profile::GetMesg",
+      "samples": 1319
+    },
+    {
+      "file": "src/fit_field.cpp",
+      "id": 123,
+      "label": "Field::GetType",
+      "samples": 753
+    },
+    {
+      "file": "src/fit_field.cpp",
+      "id": 122,
+      "label": "Field::GetNum",
+      "samples": 492
+    },
+    {
+      "file": "src/fit_field_base.cpp",
+      "id": 134,
+      "label": "FieldBase::FieldBase",
+      "samples": 458
+    },
+    {
+      "file": "src/fit_field.cpp",
+      "id": 113,
+      "label": "Field::Field",
+      "samples": 424
+    },
+    {
+      "file": "src/fit_field_base.cpp",
+      "id": 196,
+      "label": "FieldBase::GetValue",
+      "samples": 300
+    },
+    {
+      "file": "src/fit_profile.cpp",
+      "id": 576,
+      "label": "Profile::GetFieldIndex",
+      "samples": 298
+    },
+    {
+      "file": "src/fit_mesg.cpp",
+      "id": 234,
+      "label": "Mesg::GetField",
+      "samples": 244
+    },
+    {
+      "file": "src/fit_field_base.cpp",
+      "id": 192,
+      "label": "FieldBase::Read",
+      "samples": 188
+    },
+    {
+      "file": "src/fit_field_base.cpp",
+      "id": 143,
+      "label": "FieldBase::GetNumValues",
+      "samples": 185
+    },
+    {
+      "file": "src/fit_field_base.cpp",
+      "id": 166,
+      "label": "FieldBase::GetFLOAT64Value",
+      "samples": 164
+    },
+    {
+      "file": "src/fit_field.cpp",
+      "id": 128,
+      "label": "Field::GetNumSubFields",
+      "samples": 143
+    },
+    {
+      "file": "src/fit_crc.cpp",
+      "id": 26,
+      "label": "CRC::Get16",
+      "samples": 115
+    },
+    {
+      "file": "src/fit_mesg.cpp",
+      "id": 213,
+      "label": "Mesg::Mesg",
+      "samples": 113
+    },
+    {
+      "file": "src/fit_decode.cpp",
+      "id": 50,
+      "label": "Decode::Resume",
+      "samples": 113
+    },
+    {
+      "file": "src/fit_field_base.cpp",
+      "id": 135,
+      "label": "FieldBase::~FieldBase",
+      "samples": 91
+    },
+    {
+      "file": "src/fit_field.cpp",
+      "id": 127,
+      "label": "Field::GetNumComponents",
+      "samples": 84
+    },
+    {
+      "file": "src/fit_developer_field_definition.cpp",
+      "id": 80,
+      "label": "DeveloperFieldDefinition::DeveloperFieldDefinition",
+      "samples": 81
+    },
+    {
+      "file": "src/fit_field.cpp",
+      "id": 118,
+      "label": "Field::IsValid",
+      "samples": 74
+    },
+    {
+      "file": "src/fit_mesg.cpp",
+      "id": 226,
+      "label": "Mesg::AddField",
+      "samples": 70
+    },
+    {
+      "file": "src/fit_field_base.cpp",
+      "id": 197,
+      "label": "FieldBase::ConvertBaseType",
+      "samples": 69
+    },
+    {
+      "file": "src/fit_mesg.cpp",
+      "id": 242,
+      "label": "Mesg::GetActiveSubFieldIndexByFieldIndex",
+      "samples": 66
+    },
+    {
+      "file": "src/fit_mesg_definition.cpp",
+      "id": 555,
+      "label": "MesgDefinition::GetFieldByIndex",
+      "samples": 64
+    },
+    {
+      "file": "src/fit_field.cpp",
+      "id": 115,
+      "label": "Field::Field",
+      "samples": 63
+    },
+    {
+      "file": "src/fit_field_base.cpp",
+      "id": 140,
+      "label": "FieldBase::GetOffset",
+      "samples": 58
+    },
+    {
+      "file": "src/fit_field.cpp",
+      "id": 126,
+      "label": "Field::GetOffset",
+      "samples": 55
+    },
+    {
+      "file": "src/fit_field_base.cpp",
+      "id": 139,
+      "label": "FieldBase::GetScale",
+      "samples": 55
+    },
+    {
+      "file": "src/fit_decode.cpp",
+      "id": 57,
+      "label": "Decode::ExpandComponents",
+      "samples": 53
+    },
+    {
+      "file": "src/fit_mesg.cpp",
+      "id": 248,
+      "label": "Mesg::GetFieldUINT8Value",
+      "samples": 52
+    },
+    {
+      "file": "src/fit_developer_field_definition.cpp",
+      "id": 84,
+      "label": "DeveloperFieldDefinition::~DeveloperFieldDefinition",
+      "samples": 45
+    },
+    {
+      "file": "src/fit_mesg.cpp",
+      "id": 233,
+      "label": "Mesg::GetFieldByIndex",
+      "samples": 36
+    },
+    {
+      "file": "src/fit_field_definition.cpp",
+      "id": 205,
+      "label": "FieldDefinition::GetType",
+      "samples": 36
+    },
+    {
+      "file": "src/fit_mesg.cpp",
+      "id": 225,
+      "label": "Mesg::HasField",
+      "samples": 35
+    },
+    {
+      "file": "src/fit_developer_field_definition.cpp",
+      "id": 85,
+      "label": "DeveloperFieldDefinition::IsDefined",
+      "samples": 34
+    },
+    {
+      "file": "src/fit_field_base.cpp",
+      "id": 199,
+      "label": "FieldBase::GetBitsValueT",
+      "samples": 34
+    },
+    {
+      "file": "src/fit_field_definition.cpp",
+      "id": 204,
+      "label": "FieldDefinition::GetSize",
+      "samples": 32
+    },
+    {
+      "file": "src/fit_developer_field.cpp",
+      "id": 67,
+      "label": "DeveloperField::GetType",
+      "samples": 27
+    },
+    {
+      "file": "src/fit_field.cpp",
+      "id": 125,
+      "label": "Field::GetScale",
+      "samples": 27
+    },
+    {
+      "file": "src/fit_mesg.cpp",
+      "id": 222,
+      "label": "Mesg::GetNum",
+      "samples": 23
+    },
+    {
+      "file": "src/fit_field.cpp",
+      "id": 119,
+      "label": "Field::GetIsAccumulated",
+      "samples": 22
+    }
+  ],
+  "total": 19951,
+  "unattributed": 2033
+}

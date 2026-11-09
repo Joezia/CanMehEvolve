@@ -1,0 +1,6 @@
+{
+ "error": "/home/z/zhouzia/Workspace/CanMehEvolve/build/work-1095171/tree/src/fit_decode.cpp: In member function ‘void fit::Decode::ExpandComponents(fit::Field*, const fit::Profile::FIELD_COMPONENT*, FIT_UINT16)’:\n/home/z/zhouzia/Workspace/CanMehEvolve/build/work-1095171/tree/src/fit_decode.cpp:985:15: error: ‘FIT_FIELD_NUM’ does not name a type; did you mean ‘FIT_FIELD_DEF’?\n  985 |         const FIT_FIELD_NUM fieldNum = component->num;\n      |               ^~~~~~~~~~~~~\n      |               FIT_FIELD_DEF\n/home/z/zhouzia/Workspace/CanMehEvolve/build/work-1095171/tree/src/fit_decode.cpp:988:13: error: ‘fieldNum’ was not declared in this scope\n  988 |         if (fieldNum != FIT_FIELD_NUM_INVALID)\n      |             ^~~~~~~~\n",
+ "ok": false,
+ "rebuilt": 3,
+ "stage": "compile"
+}

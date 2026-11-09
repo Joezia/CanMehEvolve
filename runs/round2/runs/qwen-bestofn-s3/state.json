@@ -1,0 +1,432 @@
+{
+ "best_confirmed_id": 17,
+ "best_confirmed_ratio": 0.9408690836022622,
+ "best_retained_ratio": 0.9408690836022622,
+ "calls": 40,
+ "complete": true,
+ "completion_tokens": 8337,
+ "confirmed_count": 3,
+ "elapsed_total_s": 2723.12703332,
+ "host": "xcnc3",
+ "improved_count": 3,
+ "last_generation": 40,
+ "llm_seconds": 72.13202274400001,
+ "mode": "bestofn-confirmed",
+ "population": [
+  {
+   "generation": 17,
+   "id": 17,
+   "note": "",
+   "parent": 0,
+   "patch": "/home/z/zhouzia/Workspace/CanMehEvolve/runs/round2/runs/qwen-bestofn-s3/patches/gen_17.patch",
+   "region": 574,
+   "score": 0.9408690836022622,
+   "significant": true,
+   "significant_at_min_effect": true,
+   "valid": true
+  },
+  {
+   "generation": 22,
+   "id": 22,
+   "note": "",
+   "parent": 0,
+   "patch": "/home/z/zhouzia/Workspace/CanMehEvolve/runs/round2/runs/qwen-bestofn-s3/patches/gen_22.patch",
+   "region": 574,
+   "score": 0.9588897226614879,
+   "significant": true,
+   "significant_at_min_effect": true,
+   "valid": true
+  },
+  {
+   "generation": 34,
+   "id": 34,
+   "note": "",
+   "parent": 0,
+   "patch": "/home/z/zhouzia/Workspace/CanMehEvolve/runs/round2/runs/qwen-bestofn-s3/patches/gen_34.patch",
+   "region": 574,
+   "score": 0.9610662756339807,
+   "significant": true,
+   "significant_at_min_effect": true,
+   "valid": true
+  },
+  {
+   "generation": 31,
+   "id": 31,
+   "note": "",
+   "parent": 0,
+   "patch": "/home/z/zhouzia/Workspace/CanMehEvolve/runs/round2/runs/qwen-bestofn-s3/patches/gen_31.patch",
+   "region": 196,
+   "score": 0.9841434517255656,
+   "significant": false,
+   "significant_at_min_effect": false,
+   "valid": true
+  },
+  {
+   "generation": 32,
+   "id": 32,
+   "note": "",
+   "parent": 0,
+   "patch": "/home/z/zhouzia/Workspace/CanMehEvolve/runs/round2/runs/qwen-bestofn-s3/patches/gen_32.patch",
+   "region": 574,
+   "score": 0.9887399693117317,
+   "significant": false,
+   "significant_at_min_effect": false,
+   "valid": true
+  },
+  {
+   "generation": 30,
+   "id": 30,
+   "note": "",
+   "parent": 0,
+   "patch": "/home/z/zhouzia/Workspace/CanMehEvolve/runs/round2/runs/qwen-bestofn-s3/patches/gen_30.patch",
+   "region": 225,
+   "score": 0.9929002487623514,
+   "significant": false,
+   "significant_at_min_effect": false,
+   "valid": true
+  },
+  {
+   "generation": 12,
+   "id": 12,
+   "note": "",
+   "parent": 0,
+   "patch": "/home/z/zhouzia/Workspace/CanMehEvolve/runs/round2/runs/qwen-bestofn-s3/patches/gen_12.patch",
+   "region": 576,
+   "score": 0.9945863629857024,
+   "significant": false,
+   "significant_at_min_effect": false,
+   "valid": true
+  },
+  {
+   "generation": 18,
+   "id": 18,
+   "note": "",
+   "parent": 0,
+   "patch": "/home/z/zhouzia/Workspace/CanMehEvolve/runs/round2/runs/qwen-bestofn-s3/patches/gen_18.patch",
+   "region": 123,
+   "score": 0.9986547455705836,
+   "significant": false,
+   "significant_at_min_effect": false,
+   "valid": true
+  },
+  {
+   "generation": 4,
+   "id": 4,
+   "note": "",
+   "parent": 0,
+   "patch": "/home/z/zhouzia/Workspace/CanMehEvolve/runs/round2/runs/qwen-bestofn-s3/patches/gen_4.patch",
+   "region": 26,
+   "score": 0.9987985594571018,
+   "significant": false,
+   "significant_at_min_effect": false,
+   "valid": true
+  },
+  {
+   "generation": 36,
+   "id": 36,
+   "note": "",
+   "parent": 0,
+   "patch": "/home/z/zhouzia/Workspace/CanMehEvolve/runs/round2/runs/qwen-bestofn-s3/patches/gen_36.patch",
+   "region": 3819,
+   "score": 0.9993381096618374,
+   "significant": false,
+   "significant_at_min_effect": false,
+   "valid": true
+  },
+  {
+   "generation": 19,
+   "id": 19,
+   "note": "",
+   "parent": 0,
+   "patch": "/home/z/zhouzia/Workspace/CanMehEvolve/runs/round2/runs/qwen-bestofn-s3/patches/gen_19.patch",
+   "region": 134,
+   "score": 0.9994109285223214,
+   "significant": false,
+   "significant_at_min_effect": false,
+   "valid": true
+  },
+  {
+   "generation": 21,
+   "id": 21,
+   "note": "",
+   "parent": 0,
+   "patch": "/home/z/zhouzia/Workspace/CanMehEvolve/runs/round2/runs/qwen-bestofn-s3/patches/gen_21.patch",
+   "region": 233,
+   "score": 0.9994197760801904,
+   "significant": false,
+   "significant_at_min_effect": false,
+   "valid": true
+  },
+  {
+   "generation": 14,
+   "id": 14,
+   "note": "",
+   "parent": 0,
+   "patch": "/home/z/zhouzia/Workspace/CanMehEvolve/runs/round2/runs/qwen-bestofn-s3/patches/gen_14.patch",
+   "region": 123,
+   "score": 0.9998176702944666,
+   "significant": false,
+   "significant_at_min_effect": false,
+   "valid": true
+  },
+  {
+   "generation": 9,
+   "id": 9,
+   "note": "",
+   "parent": 0,
+   "patch": "/home/z/zhouzia/Workspace/CanMehEvolve/runs/round2/runs/qwen-bestofn-s3/patches/gen_9.patch",
+   "region": 123,
+   "score": 1.0001351627891029,
+   "significant": false,
+   "significant_at_min_effect": false,
+   "valid": true
+  },
+  {
+   "generation": 40,
+   "id": 40,
+   "note": "",
+   "parent": 0,
+   "patch": "/home/z/zhouzia/Workspace/CanMehEvolve/runs/round2/runs/qwen-bestofn-s3/patches/gen_40.patch",
+   "region": 123,
+   "score": 1.0002897304434228,
+   "significant": false,
+   "significant_at_min_effect": false,
+   "valid": true
+  },
+  {
+   "generation": 6,
+   "id": 6,
+   "note": "",
+   "parent": 0,
+   "patch": "/home/z/zhouzia/Workspace/CanMehEvolve/runs/round2/runs/qwen-bestofn-s3/patches/gen_6.patch",
+   "region": 515,
+   "score": 1.0003200174037872,
+   "significant": false,
+   "significant_at_min_effect": false,
+   "valid": true
+  },
+  {
+   "generation": 27,
+   "id": 27,
+   "note": "",
+   "parent": 0,
+   "patch": "/home/z/zhouzia/Workspace/CanMehEvolve/runs/round2/runs/qwen-bestofn-s3/patches/gen_27.patch",
+   "region": 134,
+   "score": 1.00037709334425,
+   "significant": false,
+   "significant_at_min_effect": false,
+   "valid": true
+  },
+  {
+   "generation": 28,
+   "id": 28,
+   "note": "",
+   "parent": 0,
+   "patch": "/home/z/zhouzia/Workspace/CanMehEvolve/runs/round2/runs/qwen-bestofn-s3/patches/gen_28.patch",
+   "region": 555,
+   "score": 1.0005427766945645,
+   "significant": false,
+   "significant_at_min_effect": false,
+   "valid": true
+  },
+  {
+   "generation": 29,
+   "id": 29,
+   "note": "",
+   "parent": 0,
+   "patch": "/home/z/zhouzia/Workspace/CanMehEvolve/runs/round2/runs/qwen-bestofn-s3/patches/gen_29.patch",
+   "region": 123,
+   "score": 1.0008510002419422,
+   "significant": false,
+   "significant_at_min_effect": false,
+   "valid": true
+  },
+  {
+   "generation": 23,
+   "id": 23,
+   "note": "",
+   "parent": 0,
+   "patch": "/home/z/zhouzia/Workspace/CanMehEvolve/runs/round2/runs/qwen-bestofn-s3/patches/gen_23.patch",
+   "region": 128,
+   "score": 1.0009556354468487,
+   "significant": false,
+   "significant_at_min_effect": false,
+   "valid": true
+  },
+  {
+   "generation": 11,
+   "id": 11,
+   "note": "",
+   "parent": 0,
+   "patch": "/home/z/zhouzia/Workspace/CanMehEvolve/runs/round2/runs/qwen-bestofn-s3/patches/gen_11.patch",
+   "region": 50,
+   "score": 1.0015534352856097,
+   "significant": false,
+   "significant_at_min_effect": false,
+   "valid": true
+  },
+  {
+   "generation": 39,
+   "id": 39,
+   "note": "",
+   "parent": 0,
+   "patch": "/home/z/zhouzia/Workspace/CanMehEvolve/runs/round2/runs/qwen-bestofn-s3/patches/gen_39.patch",
+   "region": 234,
+   "score": 1.0037012125097537,
+   "significant": false,
+   "significant_at_min_effect": false,
+   "valid": true
+  }
+ ],
+ "prompt_tokens": 21026,
+ "reasoning_tokens": 0,
+ "region_stats": {
+  "113": {
+   "accepted": 0,
+   "attempts": 1,
+   "best_gain": 0.0
+  },
+  "1142": {
+   "accepted": 0,
+   "attempts": 1,
+   "best_gain": 0.0
+  },
+  "123": {
+   "accepted": 0,
+   "attempts": 5,
+   "best_gain": 0.0
+  },
+  "128": {
+   "accepted": 0,
+   "attempts": 2,
+   "best_gain": 0.0
+  },
+  "134": {
+   "accepted": 0,
+   "attempts": 4,
+   "best_gain": 0.0
+  },
+  "135": {
+   "accepted": 0,
+   "attempts": 3,
+   "best_gain": 0.0
+  },
+  "143": {
+   "accepted": 0,
+   "attempts": 1,
+   "best_gain": 0.0
+  },
+  "166": {
+   "accepted": 0,
+   "attempts": 1,
+   "best_gain": 0.0
+  },
+  "192": {
+   "accepted": 0,
+   "attempts": 1,
+   "best_gain": 0.0
+  },
+  "196": {
+   "accepted": 0,
+   "attempts": 1,
+   "best_gain": 0.0
+  },
+  "225": {
+   "accepted": 0,
+   "attempts": 1,
+   "best_gain": 0.0
+  },
+  "2281": {
+   "accepted": 0,
+   "attempts": 1,
+   "best_gain": 0.0
+  },
+  "233": {
+   "accepted": 0,
+   "attempts": 1,
+   "best_gain": 0.0
+  },
+  "234": {
+   "accepted": 0,
+   "attempts": 1,
+   "best_gain": 0.0
+  },
+  "26": {
+   "accepted": 0,
+   "attempts": 1,
+   "best_gain": 0.0
+  },
+  "2834": {
+   "accepted": 0,
+   "attempts": 1,
+   "best_gain": 0.0
+  },
+  "3819": {
+   "accepted": 0,
+   "attempts": 1,
+   "best_gain": 0.0
+  },
+  "3904": {
+   "accepted": 0,
+   "attempts": 1,
+   "best_gain": 0.0
+  },
+  "50": {
+   "accepted": 0,
+   "attempts": 4,
+   "best_gain": 0.0
+  },
+  "515": {
+   "accepted": 0,
+   "attempts": 1,
+   "best_gain": 0.0
+  },
+  "555": {
+   "accepted": 0,
+   "attempts": 1,
+   "best_gain": 0.0
+  },
+  "574": {
+   "accepted": 3,
+   "attempts": 5,
+   "best_gain": 0.05913091639773782
+  },
+  "576": {
+   "accepted": 0,
+   "attempts": 1,
+   "best_gain": 0.0
+  }
+ },
+ "repair": {
+  "active": false,
+  "failure": "",
+  "parent": {
+   "generation": 0,
+   "id": 0,
+   "note": "",
+   "parent": -1,
+   "patch": "",
+   "region": -1,
+   "score": 1e+18,
+   "significant": false,
+   "significant_at_min_effect": false,
+   "valid": false
+  },
+  "region_index": 0
+ },
+ "request_budget": 40,
+ "rng": "2266350226 522119106 3046352735 732669494 2548320174 3088851727 1309173820 991244764 1708698958 3598568018 1522424413 3319010522 417668947 3981672031 3438823488 1769258719 3818296302 1993615070 2466305996 3248750108 2040561877 3246834632 1706535662 3866725823 354717793 3217406305 841786775 2651604212 551238198 1232752911 4028149703 2133296956 3293934618 3522657645 339605832 4090971106 1746340915 4067629259 3943922704 2719897163 1366782294 2428482183 71013814 3425765969 3059041190 3736136450 350928037 3971790501 2149477175 1834860734 25994155 1663570273 1025783352 1542612516 3141617987 2502391288 2096747259 1704991238 2485663908 4215245268 2229428262 3199500869 2207455581 3996292611 4273457649 909711631 1376339482 3378471313 1982377115 4066602342 1561471259 1529235723 3581766587 2985944953 3360786815 3188822967 386233772 2220607219 831586886 1481707842 826006922 3282678469 1222996455 839734432 113907077 3058365886 685629939 2734627899 2373392441 393382523 2877205399 3419970394 3358312940 2429221778 2365917591 163693720 2392464574 277652869 1689032405 1011457006 3637154258 1882923735 4141045816 2424649615 3981182532 1630305256 3712030278 395508727 3587876821 2910797804 2154798786 3950584368 1527627687 2147421838 1502596767 737970277 208050003 601786791 2788219958 3507254848 3786810953 1896103004 1334798942 1785274849 1625574328 1018094837 3671433332 3582194054 1084627844 2120495559 1639131688 2249849494 875223562 1462354191 3357991596 3414707987 2263106174 4250636471 1642325942 397410032 4074690704 2893037976 4114053406 1129288212 738001457 921035595 1536704963 1737022497 2098685904 1939051228 3811891754 85871764 3196123804 72382850 911509357 9970403 2574858418 3329265921 3080225612 1761541130 465312471 3530819356 3543780435 539119470 3957818134 2276889927 299298444 97175569 3164972989 2736962588 2853267431 3463227447 3346866136 2645599838 3339904276 4028826478 249041969 1156700304 3920125698 3549144299 3191973843 1226384117 3894548756 1970574631 3636932244 104477867 2788748847 1505058838 2735820836 2383504863 1239371251 2412779458 1247578502 4043009916 1647073372 2358458515 4260117 186085886 3734005698 1618950256 1697324867 3120980457 14768723 1434546805 2477771720 2969799770 1123226744 126095693 4016082235 2762324383 3771913581 3371699873 3645503177 3981596958 2176754695 1568299860 4015717928 1994979512 4260927446 2468524031 1942552762 2346504236 3862276918 2810824632 1160728783 2617629187 1230024446 3218682643 230355400 3712365205 73224686 1860786610 1829066542 3513037758 531944453 3724773716 1779393954 1217998687 580411811 1654408456 2229791474 997622168 3850334524 1354641641 3690134195 4167137750 3586957676 196846020 3546688044 1083498911 3056006623 1452930978 375079635 1269836684 3448109952 1708792991 2513357080 1031959192 634225957 2353848288 267968571 4242262602 1147779209 1447837371 3115982479 4254507337 614798134 3717898667 2187154980 544209504 2990538332 901640226 2669062847 857450943 3835606235 2720792951 2078159043 212297079 2979797762 2795539341 932328786 1656331182 2514628866 1181602763 1794832183 3761667291 3609873289 2110422903 939946764 2082594132 2127214627 1941868529 2042749396 39165583 2093736210 136541918 2184719229 2170211917 550526203 1695680412 1794848885 300842115 2220315822 2619766356 2590610525 860536697 4176003305 1198378313 2174189842 398756846 2993722199 2683999564 3569809628 2982752213 2767913654 2829294342 1287336124 3851029802 540299086 2411337662 822530999 2403413204 3915936236 3333368330 2947874044 1296864244 306376629 1434992944 1388069055 707600675 2251453475 2987151011 3583355390 3910769842 2140163828 1708842371 250459782 2546089168 2076901676 2315644318 1810591381 1102745805 3325663952 2040512688 1065248073 2868511909 368005848 344337512 2539762378 1944243746 534687314 3973560678 974175293 3468799981 971063024 776691326 1804409536 1871090526 717035528 618850131 3479348225 1455729583 4059781671 1069745229 1054826847 3058840286 792144749 1278900500 1939534461 934893427 1218720178 1005085961 3302189219 405734090 3589023926 1831739124 3189750614 529685862 3194512631 2790401142 4256333608 119873157 1141509564 3857630820 4081403104 642622379 768987387 269528576 1723326294 4151495903 513517532 1429137017 1880239361 327067822 3559071578 969327038 2980969049 4042029692 915275873 3880181773 3118143450 859418175 965752515 3210201496 3032135666 2702098165 620681453 3664301527 1932238822 1939218741 1674783377 3808831240 749680806 699344210 1815240314 61002469 1889504011 2138878939 2499961998 495598261 1577853266 1579800244 2861856669 2833237446 2195059889 687101857 3198777545 2589135543 1087556958 386107276 4141818488 4294137055 3628647267 3746901167 174565881 4210867941 1624688533 143505027 738966709 3646573370 2052003194 1924141097 3756590969 1755418109 1514072635 723420114 2286136582 1801809575 1198263583 1932751942 3033185063 1988432466 2552547461 16196056 168907565 1077983372 362370135 4057062290 3319838553 1415227460 2313453166 638670834 3047879420 3617694623 2651913463 3910465621 484061036 1720817240 2782558548 143923028 3144916111 3267406938 14662525 3097651066 384308106 4160044440 1899205178 1818061909 1719494281 2707291285 2772140475 2516235358 3015931564 1651803106 3758045025 1476468083 4293898521 3057688071 1434280214 1033819574 1486727224 2590729002 2935339540 1541872501 2396059679 4095153221 1327149035 1676415390 100409663 1186552792 1629494549 3917346518 1282525727 1378979820 294928205 2176694493 4054692299 1002652110 2758225054 399920161 457555016 1607265688 2874349186 4000439447 1495076349 2216367093 2520355566 1760454911 2296484378 1568000860 667339728 4004387583 1340525833 3142713508 2887253275 4169890344 683141703 223197823 1862765457 1582272331 3680227671 3328795273 3322834869 2866891468 2982787241 3506274704 3127508327 4003218231 1164641729 1077485593 2177035734 1719390434 3522632498 3956387365 603193318 3047751123 2261904496 1224995594 3438503717 4143612356 1462874638 27286286 2901119579 790044144 585564076 2159349465 134243557 60524059 3635809835 22713846 3571972396 2374240941 2553009152 1185829197 1720779203 1012377296 764772038 1649486538 4011782533 2957536667 1824635351 1014063240 1421062564 204623213 2309422143 1798516426 3864687334 4236142744 65815228 76938022 2476348154 1495096865 1096685976 2863753446 477494001 2211558965 2715776451 135403584 817790011 1578560965 3709158209 1854556253 348373747 2129299301 3566199194 2431991758 2220273514 738658076 1855757024 3685269946 3653778865 1359392250 818025614 4077342179 2806636078 2188922421 3637107623 1956070304 89304499 1922143939 4193702811 2289227912 1321865209 2849883163 15984577 1524415503 4035532251 1221700338 2426932582 3197493203 1498146827 2939509425 123985695 4062649104 120",
+ "seed": 3,
+ "segment": 1,
+ "slurm_job_id": "1095870",
+ "stage_counts": {
+  "compile": 10,
+  "llm_nocode": 3,
+  "measured": 22,
+  "unchanged": 5
+ },
+ "total_tokens": 29363,
+ "truncated_replies": 0,
+ "version": 1,
+ "why": "request budget reached"
+}

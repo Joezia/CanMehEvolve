@@ -1,0 +1,20 @@
+Replaced the generic `std::find` + second end-check with a direct pointer scan that erases and returns on the first match, removing the extra iterator comparison after lookup. This keeps identical first-occurrence semantics while giving the compiler a tighter loop for the common small-list case.
+
+```cpp
+void MesgBroadcaster::RemoveListener(HrvValueMesgListener& hrvValueMesgListener)
+{
+    if (hrvValueMesgListeners.empty())
+        return;
+
+    HrvValueMesgListener ** const data = hrvValueMesgListeners.data();
+    HrvValueMesgListener ** const end = data + hrvValueMesgListeners.size();
+    for (HrvValueMesgListener ** it = data; it != end; ++it)
+    {
+        if (*it == &hrvValueMesgListener)
+        {
+            hrvValueMesgListeners.erase(hrvValueMesgListeners.begin() + (it - data));
+            return;
+        }
+    }
+}
+```

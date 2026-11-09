@@ -1,0 +1,52 @@
+Looking at this function, the main performance bottleneck is the linear search through `mesg->fields` array for each field lookup. Since field numbers are typically small integers and the fields array is likely sorted by field number (as per typical FIT profile design), we can optimize this with a small integer optimization or early termination.
+
+However, given the constraints of maintaining identical behavior and the fact that the benchmark compares checksums across all decoded values, the most reliable optimization is to add an early exit condition when field numbers are likely sorted in ascending order (which is standard for FIT profiles). But since we can't assume sorting without verification, and the benchmark tests all possible inputs, we need a safer optimization.
+
+The real optimization here is to cache the last lookup result for common patterns (like consecutive field lookups within the same message), but the function signature doesn't allow for state storage.
+
+Wait - re-reading the problem: it says "Best measured so far: 1.000" meaning we're already at the baseline performance. But we need to make it faster.
+
+The most effective optimization for this type of profile lookup is to use a small optimization for common cases: if the field number is small (like < 8), we can check the first few fields directly without the loop overhead, or use a switch statement for the common case where `mesg->numFields` is small.
+
+But the simplest and most effective optimization for typical FIT profile data (where fields are usually small consecutive numbers) is to check the last field first, since lookups often access recent fields (locality of reference). However, the safest optimization that maintains correctness while improving performance is to unroll the loop for small `numFields` values or use a more efficient search pattern.
+
+Given that FIT message definitions typically have very few fields (often 1-10), the best optimization is to handle the common cases with early returns and minimize branch mispredictions.
+
+```cpp
+const FIT_UINT16 Profile::GetFieldIndex(const FIT_UINT16 mesgNum, const FIT_UINT8 fieldNum)
+{
+    const MESG *mesg = GetMesg(mesgNum);
+
+    if (mesg == NULL)
+        return FIT_UINT16_INVALID;
+
+    // Optimized linear search with early termination for common cases
+    // FIT fields are typically small integers and often accessed sequentially
+    const FIT_UINT8 numFields = mesg->numFields;
+    
+    // Check first field (most common case for single-field messages)
+    if (numFields > 0 && mesg->fields[0].num == fieldNum)
+        return 0;
+    
+    // Check last field (common for sequential access patterns)
+    if (numFields > 1 && mesg->fields[numFields-1].num == fieldNum)
+        return numFields - 1;
+    
+    // For small field counts, unroll slightly
+    if (numFields <= 4) {
+        for (FIT_UINT16 i = 1; i < numFields - 1; i++) {
+            if (mesg->fields[i].num == fieldNum)
+                return i;
+        }
+        return FIT_UINT16_INVALID;
+    }
+    
+    // Standard search for larger field counts
+    for (FIT_UINT16 i = 1; i < numFields - 1; i++) {
+        if (mesg->fields[i].num == fieldNum)
+            return i;
+    }
+
+    return FIT_UINT16_INVALID;
+}
+```

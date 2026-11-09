@@ -1,0 +1,28 @@
+--- a/src/fit_field_base.cpp
++++ b/src/fit_field_base.cpp
+@@ -849,15 +849,19 @@
+ 
+ void FieldBase::SetUINT32Value(const FIT_UINT32 value, const FIT_UINT8 fieldArrayIndex)
+ {
+-    if ((FIT_UINT8)values.size() < ((fieldArrayIndex + 1) * sizeof(FIT_UINT32)))
+-    {
+-        values.resize((fieldArrayIndex + 1) * sizeof(FIT_UINT32));
+-    }
++    const size_t offset = static_cast<size_t>(fieldArrayIndex) * sizeof(FIT_UINT32);
++    const size_t required = offset + sizeof(FIT_UINT32);
+ 
+-    for (size_t i = 0; i < sizeof(FIT_UINT32); i++)
++    if (static_cast<FIT_UINT8>(values.size()) < required)
+     {
+-        values[(fieldArrayIndex * sizeof(FIT_UINT32)) + i] = ((FIT_BYTE)(value >> (8 * i)));
++        values.resize(required);
+     }
++
++    FIT_BYTE* const p = values.data() + offset;
++    p[0] = static_cast<FIT_BYTE>(value);
++    p[1] = static_cast<FIT_BYTE>(value >> 8);
++    p[2] = static_cast<FIT_BYTE>(value >> 16);
++    p[3] = static_cast<FIT_BYTE>(value >> 24);
+ }
+ 
+ void FieldBase::SetUINT32ZValue(const FIT_UINT32Z value, const FIT_UINT8 fieldArrayIndex)

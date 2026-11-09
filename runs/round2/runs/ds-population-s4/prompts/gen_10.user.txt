@@ -1,0 +1,24 @@
+File: src/fit_developer_field_definition.cpp
+Function: DeveloperFieldDefinition::~DeveloperFieldDefinition (14 lines)
+One full decode of the four files takes about 358.3 ms in the stock build.
+Time of the current version of the whole library relative to stock: 0.949 (below 1.0 is faster). Best measured so far: 0.893.
+
+Current text of the function:
+```cpp
+DeveloperFieldDefinition::~DeveloperFieldDefinition()
+{
+    if ( nullptr != mesg )
+    {
+        delete mesg;
+        mesg = nullptr;
+    }
+
+    if ( nullptr != developer )
+    {
+        delete developer;
+        developer = nullptr;
+    }
+}
+
+```
+Return the faster replacement now.

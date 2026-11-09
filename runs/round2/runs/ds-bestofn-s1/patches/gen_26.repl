@@ -1,0 +1,7 @@
+The function is already a single forwarding call with no work of its own, so the only safe drop-in is the identical body; any further gain would require changing `SetUINT64Value`, which is out of scope.
+```cpp
+void FieldBase::SetUINT64ZValue(const FIT_UINT64Z value, const FIT_UINT8 fieldArrayIndex)
+{
+    SetUINT64Value(value, fieldArrayIndex);
+}
+```

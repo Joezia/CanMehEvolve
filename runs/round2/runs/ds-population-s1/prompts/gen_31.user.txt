@@ -1,0 +1,65 @@
+File: src/fit_field.cpp
+Function: Field::Field (8 lines)
+One full decode of the four files takes about 480.3 ms in the stock build.
+Time of the current version of the whole library relative to stock: 0.911 (below 1.0 is faster). Best measured so far: 0.863.
+
+Your previous attempt failed:
+Stage 'compile' rejected it: /home/z/zhouzia/Workspace/CanMehEvolve/build/work-1094747/tree/src/fit_field.cpp: In constructor ‘fit::Field::Field(FIT_UINT16, FIT_UINT8)’:
+/home/z/zhouzia/Workspace/CanMehEvolve/build/work-1094747/tree/src/fit_field.cpp:73:45: error: ‘const struct fit::Profile::MESG’ has no member named ‘num_fields’; did you mean ‘numFields’?
+   73 |         for (FIT_UINT16 i = 0; i < profile->num_fields; ++i)
+      |                                             ^~~~~~~~~~
+      |                                             numFields
+
+The rejected replacement was:
+```cpp
+Field::Field(const FIT_UINT16 mesgNum, const FIT_UINT8 fieldNum)
+    : FieldBase()
+    , profile(NULL)
+    , profileIndex(FIT_UINT8_INVALID)
+    , type(FIT_UINT8_INVALID)
+    , isFieldExpanded(FIT_FALSE)
+{
+    static FIT_UINT16 cachedMesgNum = 0;
+    static const Profile::MESG* cachedProfile = NULL;
+    static bool cacheValid = false;
+
+    if (cacheValid && cachedMesgNum == mesgNum)
+    {
+        profile = cachedProfile;
+    }
+    else
+    {
+        profile = Profile::GetMesg(mesgNum);
+        cachedMesgNum = mesgNum;
+        cachedProfile = profile;
+        cacheValid = true;
+    }
+
+    if (profile != NULL)
+    {
+        for (FIT_UINT16 i = 0; i < profile->num_fields; ++i)
+        {
+            if (profile->fields[i].num == fieldNum)
+            {
+                profileIndex = static_cast<FIT_UINT8>(i);
+                break;
+            }
+        }
+    }
+}
+
+```
+
+Current text of the function:
+```cpp
+Field::Field(const FIT_UINT16 mesgNum, const FIT_UINT8 fieldNum)
+    : FieldBase()
+    , profile(Profile::GetMesg(mesgNum))
+    , profileIndex(Profile::GetFieldIndex(mesgNum, fieldNum))
+    , type(FIT_UINT8_INVALID)
+    , isFieldExpanded(FIT_FALSE)
+{
+}
+
+```
+Return the faster replacement now.

@@ -1,0 +1,117 @@
+Looking at the current implementation and the failure of the previous attempt, I need to understand what makes the correct behavior tricky:
+
+1. For strings: The current code uses `stringIndexes.push_back(stringPos)` before entering the loop, but `stringPos` is 0 at that point. Then it increments `stringPos` after processing each byte. The string index is pushed when a null byte is encountered *and* there's room for another string (stringPos + 1 < size).
+
+2. For non-strings: It scans through type-sized blocks, and if any block is not the invalid value, it copies the entire data and breaks. But crucially, it only copies when it finds the *first* non-invalid block, and then breaks.
+
+The previous attempt failed because it didn't preserve the exact semantics of string index handling and the early termination behavior.
+
+Let me analyze the current code more carefully:
+
+- For strings: It checks if there's any non-zero byte. If not, it breaks (empty string). Then it pushes `stringPos` (which is 0) to stringIndexes. Then it processes each byte, pushing to values, and when it sees a null and there's room for another string, it pushes the next position to stringIndexes. Finally, if not null-terminated, it adds a null.
+
+- For other types: It loops through typeSize blocks, and if any block differs from the invalid value, it copies all the data and breaks. But importantly, it continues scanning even after finding a non-invalid block? No, it breaks after the insert.
+
+Wait, there's a subtle bug in the current code: when it finds a non-invalid block, it inserts all the data and breaks, but it doesn't account for partial blocks at the end if the total size isn't a multiple of typeSize. Actually, looking again, the loop decrements `bytes` by `typeSize`, so for non-multiple sizes, the last iteration might check a partial block.
+
+The key insight for optimization: The current code for non-strings has a subtle issue - it's comparing full typeSize blocks, but if bytesLeft isn't a multiple of typeSize, the last comparison might be reading past the end or comparing partial data incorrectly. But looking at the code, it seems like it's designed to handle this by continuing the loop until bytes <= 0.
+
+Actually, re-reading: The loop condition is `while (bytes > 0)`, and it does `bytes -= typeSize`. So if bytesLeft is 5 and typeSize is 4, it will do:
+- First iteration: bytes=5, compare 4 bytes, if not invalid, insert all 5 bytes and break
+- If invalid, bytes becomes 1, next iteration: compare 4 bytes (but only 1 left!), which is a buffer overread!
+
+This is likely the source of the correctness issue in my previous attempt and why the reference checksum is different.
+
+The correct behavior must be to only compare full blocks, and if there's a partial block at the end, it should be treated as non-invalid (since invalid values are defined for full types).
+
+Let me write a correct and faster version:
+
+1. For strings: Optimize the initial scan for non-zero bytes, and use more efficient string processing.
+2. For non-strings: Only compare full typeSize blocks, and if any full block is non-invalid, copy all data. If all full blocks are invalid but there are remaining bytes (partial block), treat as non-invalid.
+
+```cpp
+#include <cstring>
+#include <algorithm>
+
+FIT_BOOL FieldBase::Read(const void *data, const FIT_UINT8 size)
+{
+    FIT_UINT8 typeIdx = GetType() & FIT_BASE_TYPE_NUM_MASK;
+    FIT_UINT8 typeSize = baseTypeSizes[typeIdx];
+    const FIT_BYTE* byteData = static_cast<const FIT_BYTE*>(data);
+
+    values.clear();
+    stringIndexes.clear();
+
+    if (GetType() == FIT_BASE_TYPE_STRING)
+    {
+        // Fast check for empty string (all zeros)
+        bool hasNonZero = false;
+        for (FIT_UINT8 i = 0; i < size; ++i)
+        {
+            if (byteData[i] != 0)
+            {
+                hasNonZero = true;
+                break;
+            }
+        }
+        
+        if (!hasNonZero)
+            return FIT_TRUE;
+        
+        // First string starts at position 0
+        stringIndexes.push_back(0);
+        
+        // Copy data and track string boundaries
+        FIT_UINT8 pos = 0;
+        for (FIT_UINT8 i = 0; i < size; ++i)
+        {
+            FIT_BYTE b = byteData[i];
+            values.push_back(b);
+            ++pos;
+            
+            if (b == 0 && pos < size)
+            {
+                stringIndexes.push_back(pos);
+            }
+        }
+        
+        // Null terminate if not already
+        if (values.empty() || values.back() != 0)
+        {
+            values.push_back(0);
+        }
+    }
+    else
+    {
+        // Check all full type-sized blocks for invalid values
+        FIT_UINT8 remaining = size;
+        const FIT_BYTE* p = byteData;
+        const FIT_BYTE* invalid = baseTypeInvalids[typeIdx];
+        bool hasNonInvalid = false;
+        
+        while (remaining >= typeSize)
+        {
+            if (std::memcmp(p, invalid, typeSize) != 0)
+            {
+                hasNonInvalid = true;
+                break;
+            }
+            p += typeSize;
+            remaining -= typeSize;
+        }
+        
+        // If there's a partial block at the end, it's always non-invalid
+        if (remaining > 0)
+        {
+            hasNonInvalid = true;
+        }
+        
+        if (hasNonInvalid)
+        {
+            values.insert(values.end(), byteData, byteData + size);
+        }
+    }
+
+    return FIT_TRUE;
+}
+```

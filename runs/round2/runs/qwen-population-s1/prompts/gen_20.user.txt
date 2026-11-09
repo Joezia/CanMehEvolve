@@ -1,0 +1,51 @@
+File: src/fit_field_base.cpp
+Function: FieldBase::GetNumValues (10 lines)
+One full decode of the four files takes about 357.9 ms in the stock build.
+Time of the current version of the whole library relative to stock: 0.948 (below 1.0 is faster). Best measured so far: 0.898.
+
+Your previous attempt failed:
+Stage 'compile' rejected it: /home/z/zhouzia/Workspace/CanMehEvolve/build/work-1095979/tree/src/fit_field_base.cpp: In member function ‘FIT_UINT8 fit::FieldBase::GetNumValues() const’:
+/home/z/zhouzia/Workspace/CanMehEvolve/build/work-1095979/tree/src/fit_field_base.cpp:106:11: error: ‘FIT_BASE_TYPE’ does not name a type; did you mean ‘FIT_BASE_TYPES’?
+  106 |     const FIT_BASE_TYPE type = GetType();
+      |           ^~~~~~~~~~~~~
+      |           FIT_BASE_TYPES
+/home/z/zhouzia/Workspace/CanMehEvolve/build/work-1095979/tree/src/fit_field_base.cpp:107:9: error: ‘type’ was not declared in this scope; did you mean ‘wctype’?
+  107 |     if (type != FIT_BASE_TYPE_STRING)
+      |         ^~~~
+      |         wctype
+
+The rejected replacement was:
+```cpp
+
+FIT_UINT8 FieldBase::GetNumValues(void) const
+{
+    if (!IsValid())
+        return 0;
+
+    const FIT_BASE_TYPE type = GetType();
+    if (type != FIT_BASE_TYPE_STRING)
+    {
+        const FIT_UINT8 size = baseTypeSizes[type & FIT_BASE_TYPE_NUM_MASK];
+        return (FIT_UINT8)(values.size() / size);
+    }
+
+    return (FIT_UINT8)stringIndexes.size();
+}
+
+```
+
+Current text of the function:
+```cpp
+FIT_UINT8 FieldBase::GetNumValues(void) const
+{
+    if (!IsValid())
+        return 0;
+
+    if (GetType() != FIT_BASE_TYPE_STRING)
+        return (FIT_UINT8)(values.size() / baseTypeSizes[GetType() & FIT_BASE_TYPE_NUM_MASK]);
+
+    return (FIT_UINT8)stringIndexes.size();
+}
+
+```
+Return the faster replacement now.

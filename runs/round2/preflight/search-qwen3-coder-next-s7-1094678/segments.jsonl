@@ -1,0 +1,4 @@
+{"calls_at_start":0,"event":"start","host":"xcnc3","label":"seg1","previous_host":"","resumed":false,"segment":1,"slurm_job_id":"1094678","time":"2026-11-08T09:43:44+0800"}
+{"calls_at_end":4,"complete":false,"ended_because":"deadline","event":"end","segment":1,"time":"2026-11-08T09:48:39+0800"}
+{"calls_at_start":4,"event":"start","host":"xcnc3","label":"seg2","previous_host":"xcnc3","resumed":true,"segment":2,"slurm_job_id":"1094678","time":"2026-11-08T09:48:43+0800"}
+{"calls_at_end":6,"complete":true,"ended_because":"request budget reached","event":"end","segment":2,"time":"2026-11-08T09:52:18+0800"}

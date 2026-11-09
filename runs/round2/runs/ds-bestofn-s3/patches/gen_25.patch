@@ -1,0 +1,177 @@
+--- a/src/fit_field_base.cpp
++++ b/src/fit_field_base.cpp
+@@ -1007,73 +1007,126 @@
+ 
+ FIT_BOOL FieldBase::Read(const void *data, const FIT_UINT8 size)
+ {
+-    FIT_UINT8 bytesLeft = size;
+-    FIT_UINT8 typeSize = baseTypeSizes[GetType() & FIT_BASE_TYPE_NUM_MASK];
+     FIT_BYTE *byteData = (FIT_BYTE *) data;
++    const FIT_UINT8 type = GetType();
+ 
+-    values.clear();
+-
+-    switch (GetType())
++    if (type == FIT_BASE_TYPE_STRING)
+     {
+-        case FIT_BASE_TYPE_STRING:
++        FIT_UINT8 index = 0;
++        while (index < size && byteData[index] == 0)
+         {
+-            FIT_BOOL hasData = FIT_FALSE;
+-            FIT_UINT8 stringPos = 0;
+-            FIT_UINT8 index = 0;
++            ++index;
++        }
++
++        if (index == size)
++        {
++            values.clear();
++            return FIT_TRUE;
++        }
+ 
+-            // Check if the string is empty
+-            while (index < bytesLeft)
++        stringIndexes.push_back(0);
++
++        values.reserve(size + 1);
++        values.assign(byteData, byteData + size);
++
++        for (int i = 0; i < (int)size; ++i)
++        {
++            if (byteData[i] == 0 && i + 2 < (int)size)
+             {
+-                if (byteData[index] != 0)
+-                {
+-                    hasData = FIT_TRUE;
+-                    break;
+-                }
+-                index++;
++                stringIndexes.push_back((FIT_UINT8)(i + 1));
+             }
++        }
++
++        if (values.back() != 0)
++        {
++            values.push_back(0);
++        }
++    }
++    else
++    {
++        const FIT_UINT8 baseType = type & FIT_BASE_TYPE_NUM_MASK;
++        const FIT_UINT8 typeSize = baseTypeSizes[baseType];
++        const FIT_BYTE *invalid = baseTypeInvalids[baseType];
++        int bytes = size;
++        const FIT_BYTE *point = byteData;
++        FIT_BOOL found = FIT_FALSE;
+ 
+-            if (!hasData)
++        switch (typeSize)
++        {
++            case 1:
++                while (bytes > 0)
++                {
++                    if (*point != *invalid)
++                    {
++                        found = FIT_TRUE;
++                        break;
++                    }
++                    ++point;
++                    --bytes;
++                }
+                 break;
+ 
+-            stringIndexes.push_back(stringPos);
++            case 2:
++                while (bytes > 0)
++                {
++                    if (memcmp(point, invalid, 2) != 0)
++                    {
++                        found = FIT_TRUE;
++                        break;
++                    }
++                    point += 2;
++                    bytes -= 2;
++                }
++                break;
+ 
+-            while (bytesLeft-- > 0)
+-            {
+-                FIT_BYTE byte = *byteData++;
+-                values.push_back(byte);
+-                stringPos++;
++            case 4:
++                while (bytes > 0)
++                {
++                    if (memcmp(point, invalid, 4) != 0)
++                    {
++                        found = FIT_TRUE;
++                        break;
++                    }
++                    point += 4;
++                    bytes -= 4;
++                }
++                break;
+ 
+-                if ( ( byte == 0 ) && ( stringPos + 1 < size ) )
++            case 8:
++                while (bytes > 0)
+                 {
+-                    stringIndexes.push_back(stringPos);
++                    if (memcmp(point, invalid, 8) != 0)
++                    {
++                        found = FIT_TRUE;
++                        break;
++                    }
++                    point += 8;
++                    bytes -= 8;
+                 }
+-            }
++                break;
+ 
+-            // Null terminate if not already null terminated
+-            if ( values.back() != 0 )
+-            {
+-                values.push_back(0);
+-            }
++            default:
++                while (bytes > 0)
++                {
++                    if (memcmp(point, invalid, typeSize) != 0)
++                    {
++                        found = FIT_TRUE;
++                        break;
++                    }
++                    point += typeSize;
++                    bytes -= typeSize;
++                }
++                break;
+         }
+-            break;
+ 
+-        default:
++        if (found)
+         {
+-            int bytes = bytesLeft;
+-            FIT_BYTE *point = byteData;
+-
+-            while (bytes > 0)
+-            {
+-                if (memcmp(point, baseTypeInvalids[GetType() & FIT_BASE_TYPE_NUM_MASK], typeSize) != 0)
+-                {
+-                    values.insert(values.end(), byteData, byteData + bytesLeft);
+-                    break;
+-                }
+-                point += typeSize;
+-                bytes -= typeSize;
+-            }
++            values.assign(byteData, byteData + size);
++        }
++        else
++        {
++            values.clear();
+         }
+-            break;
+     }
+ 
+     return FIT_TRUE;

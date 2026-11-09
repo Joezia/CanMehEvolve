@@ -1,0 +1,146 @@
+c/fit_decode.cpp:191 (drv-tsan-r2-ds-population-s4+0x25233) (BuildId: 5a331e6fe300fcc79eb4ea2ed4837c3f4dc43a22)
+    #5 fit::Decode::Read(std::istream*, fit::MesgListener*, fit::MesgDefinitionListener*, fit::DeveloperFieldDescriptionListener*) /home/z/zhouzia/.sanitize-scratch/stock/src/fit_decode.cpp:209 (drv-tsan-r2-ds-population-s4+0x25300) (BuildId: 5a331e6fe300fcc79eb4ea2ed4837c3f4dc43a22)
+    #6 fit::Decode::Read(std::istream&, fit::MesgListener&) /home/z/zhouzia/.sanitize-scratch/stock/src/fit_decode.cpp:214 (drv-tsan-r2-ds-population-s4+0x2536b) (BuildId: 5a331e6fe300fcc79eb4ea2ed4837c3f4dc43a22)
+    #7 decodeOne /home/z/zhouzia/Workspace/CanMehEvolve/scripts/followup/driver.cpp:68 (drv-tsan-r2-ds-population-s4+0x93bd) (BuildId: 5a331e6fe300fcc79eb4ea2ed4837c3f4dc43a22)
+    #8 operator() /home/z/zhouzia/Workspace/CanMehEvolve/scripts/followup/driver.cpp:117 (drv-tsan-r2-ds-population-s4+0x99c9) (BuildId: 5a331e6fe300fcc79eb4ea2ed4837c3f4dc43a22)
+    #9 __invoke_impl<void, main(int, char**)::<lambda()> > /usr/include/c++/13/bits/invoke.h:61 (drv-tsan-r2-ds-population-s4+0x99c9)
+    #10 __invoke<main(int, char**)::<lambda()> > /usr/include/c++/13/bits/invoke.h:96 (drv-tsan-r2-ds-population-s4+0x99c9)
+    #11 _M_invoke<0> /usr/include/c++/13/bits/std_thread.h:292 (drv-tsan-r2-ds-population-s4+0x99c9)
+    #12 operator() /usr/include/c++/13/bits/std_thread.h:299 (drv-tsan-r2-ds-population-s4+0x99c9)
+    #13 _M_run /usr/include/c++/13/bits/std_thread.h:244 (drv-tsan-r2-ds-population-s4+0x99c9)
+    #14 <null> <null> (libstdc++.so.6+0xecdb3) (BuildId: 753c6c8608b61d4e67be8f0c890e03e0aa046b8b)
+
+  Previous write of size 8 at 0x555555649b18 by thread T4:
+    #0 fit::Profile::GetFieldIndex(unsigned short, unsigned char) /home/z/zhouzia/.sanitize-scratch/var-tsan-r2-ds-population-s4/src/fit_profile.cpp:3113 (drv-tsan-r2-ds-population-s4+0x7e01e) (BuildId: 5a331e6fe300fcc79eb4ea2ed4837c3f4dc43a22)
+    #1 fit::Field::Field(unsigned short, unsigned char) /home/z/zhouzia/.sanitize-scratch/var-tsan-r2-ds-population-s4/src/fit_field.cpp:51 (drv-tsan-r2-ds-population-s4+0x399cf) (BuildId: 5a331e6fe300fcc79eb4ea2ed4837c3f4dc43a22)
+    #2 fit::Decode::ReadByte(unsigned char) /home/z/zhouzia/.sanitize-scratch/stock/src/fit_decode.cpp:814 (drv-tsan-r2-ds-population-s4+0x22959) (BuildId: 5a331e6fe300fcc79eb4ea2ed4837c3f4dc43a22)
+    #3 fit::Decode::Resume() /home/z/zhouzia/.sanitize-scratch/stock/src/fit_decode.cpp:246 (drv-tsan-r2-ds-population-s4+0x24de7) (BuildId: 5a331e6fe300fcc79eb4ea2ed4837c3f4dc43a22)
+    #4 fit::Decode::Read(std::istream*) /home/z/zhouzia/.sanitize-scratch/stock/src/fit_decode.cpp:191 (drv-tsan-r2-ds-population-s4+0x25233) (BuildId: 5a331e6fe300fcc79eb4ea2ed4837c3f4dc43a22)
+    #5 fit::Decode::Read(std::istream*, fit::MesgListener*, fit::MesgDefinitionListener*, fit::DeveloperFieldDescriptionListener*) /home/z/zhouzia/.sanitize-scratch/stock/src/fit_decode.cpp:209 (drv-tsan-r2-ds-population-s4+0x25300) (BuildId: 5a331e6fe300fcc79eb4ea2ed4837c3f4dc43a22)
+    #6 fit::Decode::Read(std::istream&, fit::MesgListener&) /home/z/zhouzia/.sanitize-scratch/stock/src/fit_decode.cpp:214 (drv-tsan-r2-ds-population-s4+0x2536b) (BuildId: 5a331e6fe300fcc79eb4ea2ed4837c3f4dc43a22)
+    #7 decodeOne /home/z/zhouzia/Workspace/CanMehEvolve/scripts/followup/driver.cpp:68 (drv-tsan-r2-ds-population-s4+0x93bd) (BuildId: 5a331e6fe300fcc79eb4ea2ed4837c3f4dc43a22)
+    #8 operator() /home/z/zhouzia/Workspace/CanMehEvolve/scripts/followup/driver.cpp:117 (drv-tsan-r2-ds-population-s4+0x99c9) (BuildId: 5a331e6fe300fcc79eb4ea2ed4837c3f4dc43a22)
+    #9 __invoke_impl<void, main(int, char**)::<lambda()> > /usr/include/c++/13/bits/invoke.h:61 (drv-tsan-r2-ds-population-s4+0x99c9)
+    #10 __invoke<main(int, char**)::<lambda()> > /usr/include/c++/13/bits/invoke.h:96 (drv-tsan-r2-ds-population-s4+0x99c9)
+    #11 _M_invoke<0> /usr/include/c++/13/bits/std_thread.h:292 (drv-tsan-r2-ds-population-s4+0x99c9)
+    #12 operator() /usr/include/c++/13/bits/std_thread.h:299 (drv-tsan-r2-ds-population-s4+0x99c9)
+    #13 _M_run /usr/include/c++/13/bits/std_thread.h:244 (drv-tsan-r2-ds-population-s4+0x99c9)
+    #14 <null> <null> (libstdc++.so.6+0xecdb3) (BuildId: 753c6c8608b61d4e67be8f0c890e03e0aa046b8b)
+
+  Location is global 'fit::Profile::GetFieldIndex(unsigned short, unsigned char)::fieldIndexCache' of size 16384 at 0x555555649b00 (drv-tsan-r2-ds-population-s4+0xf5b18)
+
+  Thread T3 (tid=93268, running) created by main thread at:
+    #0 pthread_create ../../../../src/libsanitizer/tsan/tsan_interceptors_posix.cpp:1022 (libtsan.so.2+0x5ac1a) (BuildId: 2a13a7710e361d06f7babbea53065ca2be93f738)
+    #1 std::thread::_M_start_thread(std::unique_ptr<std::thread::_State, std::default_delete<std::thread::_State> >, void (*)()) <null> (libstdc++.so.6+0xeceb0) (BuildId: 753c6c8608b61d4e67be8f0c890e03e0aa046b8b)
+    #2 __libc_start_call_main ../sysdeps/nptl/libc_start_call_main.h:58 (libc.so.6+0x2a1c9) (BuildId: a4a7992a8e66555c8141ab2a08a8465ff6e0ea65)
+
+  Thread T4 (tid=93269, running) created by main thread at:
+    #0 pthread_create ../../../../src/libsanitizer/tsan/tsan_interceptors_posix.cpp:1022 (libtsan.so.2+0x5ac1a) (BuildId: 2a13a7710e361d06f7babbea53065ca2be93f738)
+    #1 std::thread::_M_start_thread(std::unique_ptr<std::thread::_State, std::default_delete<std::thread::_State> >, void (*)()) <null> (libstdc++.so.6+0xeceb0) (BuildId: 753c6c8608b61d4e67be8f0c890e03e0aa046b8b)
+    #2 __libc_start_call_main ../sysdeps/nptl/libc_start_call_main.h:58 (libc.so.6+0x2a1c9) (BuildId: a4a7992a8e66555c8141ab2a08a8465ff6e0ea65)
+
+SUMMARY: ThreadSanitizer: data race /home/z/zhouzia/.sanitize-scratch/var-tsan-r2-ds-population-s4/src/fit_profile.cpp:3093 in fit::Profile::GetFieldIndex(unsigned short, unsigned char)
+==================
+==================
+WARNING: ThreadSanitizer: data race (pid=93264)
+  Read of size 8 at 0x55555564bd50 by thread T2:
+    #0 fit::Profile::GetFieldIndex(unsigned short, unsigned char) /home/z/zhouzia/.sanitize-scratch/var-tsan-r2-ds-population-s4/src/fit_profile.cpp:3093 (drv-tsan-r2-ds-population-s4+0x7dfa8) (BuildId: 5a331e6fe300fcc79eb4ea2ed4837c3f4dc43a22)
+    #1 fit::Field::Field(unsigned short, unsigned char) /home/z/zhouzia/.sanitize-scratch/var-tsan-r2-ds-population-s4/src/fit_field.cpp:51 (drv-tsan-r2-ds-population-s4+0x399cf) (BuildId: 5a331e6fe300fcc79eb4ea2ed4837c3f4dc43a22)
+    #2 fit::Decode::ExpandComponents(fit::Field*, fit::Profile::FIELD_COMPONENT const*, unsigned short) /home/z/zhouzia/.sanitize-scratch/stock/src/fit_decode.cpp:988 (drv-tsan-r2-ds-population-s4+0x1bb31) (BuildId: 5a331e6fe300fcc79eb4ea2ed4837c3f4dc43a22)
+    #3 fit::Decode::ReadByte(unsigned char) /home/z/zhouzia/.sanitize-scratch/stock/src/fit_decode.cpp:893 (drv-tsan-r2-ds-population-s4+0x22f32) (BuildId: 5a331e6fe300fcc79eb4ea2ed4837c3f4dc43a22)
+    #4 fit::Decode::Resume() /home/z/zhouzia/.sanitize-scratch/stock/src/fit_decode.cpp:246 (drv-tsan-r2-ds-population-s4+0x24de7) (BuildId: 5a331e6fe300fcc79eb4ea2ed4837c3f4dc43a22)
+    #5 fit::Decode::Read(std::istream*) /home/z/zhouzia/.sanitize-scratch/stock/src/fit_decode.cpp:191 (drv-tsan-r2-ds-population-s4+0x25233) (BuildId: 5a331e6fe300fcc79eb4ea2ed4837c3f4dc43a22)
+    #6 fit::Decode::Read(std::istream*, fit::MesgListener*, fit::MesgDefinitionListener*, fit::DeveloperFieldDescriptionListener*) /home/z/zhouzia/.sanitize-scratch/stock/src/fit_decode.cpp:209 (drv-tsan-r2-ds-population-s4+0x25300) (BuildId: 5a331e6fe300fcc79eb4ea2ed4837c3f4dc43a22)
+    #7 fit::Decode::Read(std::istream&, fit::MesgListener&) /home/z/zhouzia/.sanitize-scratch/stock/src/fit_decode.cpp:214 (drv-tsan-r2-ds-population-s4+0x2536b) (BuildId: 5a331e6fe300fcc79eb4ea2ed4837c3f4dc43a22)
+    #8 decodeOne /home/z/zhouzia/Workspace/CanMehEvolve/scripts/followup/driver.cpp:68 (drv-tsan-r2-ds-population-s4+0x93bd) (BuildId: 5a331e6fe300fcc79eb4ea2ed4837c3f4dc43a22)
+    #9 operator() /home/z/zhouzia/Workspace/CanMehEvolve/scripts/followup/driver.cpp:117 (drv-tsan-r2-ds-population-s4+0x99c9) (BuildId: 5a331e6fe300fcc79eb4ea2ed4837c3f4dc43a22)
+    #10 __invoke_impl<void, main(int, char**)::<lambda()> > /usr/include/c++/13/bits/invoke.h:61 (drv-tsan-r2-ds-population-s4+0x99c9)
+    #11 __invoke<main(int, char**)::<lambda()> > /usr/include/c++/13/bits/invoke.h:96 (drv-tsan-r2-ds-population-s4+0x99c9)
+    #12 _M_invoke<0> /usr/include/c++/13/bits/std_thread.h:292 (drv-tsan-r2-ds-population-s4+0x99c9)
+    #13 operator() /usr/include/c++/13/bits/std_thread.h:299 (drv-tsan-r2-ds-population-s4+0x99c9)
+    #14 _M_run /usr/include/c++/13/bits/std_thread.h:244 (drv-tsan-r2-ds-population-s4+0x99c9)
+    #15 <null> <null> (libstdc++.so.6+0xecdb3) (BuildId: 753c6c8608b61d4e67be8f0c890e03e0aa046b8b)
+
+  Previous write of size 8 at 0x55555564bd50 by thread T3:
+    #0 fit::Profile::GetFieldIndex(unsigned short, unsigned char) /home/z/zhouzia/.sanitize-scratch/var-tsan-r2-ds-population-s4/src/fit_profile.cpp:3113 (drv-tsan-r2-ds-population-s4+0x7e01e) (BuildId: 5a331e6fe300fcc79eb4ea2ed4837c3f4dc43a22)
+    #1 fit::Field::Field(unsigned short, unsigned char) /home/z/zhouzia/.sanitize-scratch/var-tsan-r2-ds-population-s4/src/fit_field.cpp:51 (drv-tsan-r2-ds-population-s4+0x399cf) (BuildId: 5a331e6fe300fcc79eb4ea2ed4837c3f4dc43a22)
+    #2 fit::Decode::ExpandComponents(fit::Field*, fit::Profile::FIELD_COMPONENT const*, unsigned short) /home/z/zhouzia/.sanitize-scratch/stock/src/fit_decode.cpp:988 (drv-tsan-r2-ds-population-s4+0x1bb31) (BuildId: 5a331e6fe300fcc79eb4ea2ed4837c3f4dc43a22)
+    #3 fit::Decode::ReadByte(unsigned char) /home/z/zhouzia/.sanitize-scratch/stock/src/fit_decode.cpp:893 (drv-tsan-r2-ds-population-s4+0x22f32) (BuildId: 5a331e6fe300fcc79eb4ea2ed4837c3f4dc43a22)
+    #4 fit::Decode::Resume() /home/z/zhouzia/.sanitize-scratch/stock/src/fit_decode.cpp:246 (drv-tsan-r2-ds-population-s4+0x24de7) (BuildId: 5a331e6fe300fcc79eb4ea2ed4837c3f4dc43a22)
+    #5 fit::Decode::Read(std::istream*) /home/z/zhouzia/.sanitize-scratch/stock/src/fit_decode.cpp:191 (drv-tsan-r2-ds-population-s4+0x25233) (BuildId: 5a331e6fe300fcc79eb4ea2ed4837c3f4dc43a22)
+    #6 fit::Decode::Read(std::istream*, fit::MesgListener*, fit::MesgDefinitionListener*, fit::DeveloperFieldDescriptionListener*) /home/z/zhouzia/.sanitize-scratch/stock/src/fit_decode.cpp:209 (drv-tsan-r2-ds-population-s4+0x25300) (BuildId: 5a331e6fe300fcc79eb4ea2ed4837c3f4dc43a22)
+    #7 fit::Decode::Read(std::istream&, fit::MesgListener&) /home/z/zhouzia/.sanitize-scratch/stock/src/fit_decode.cpp:214 (drv-tsan-r2-ds-population-s4+0x2536b) (BuildId: 5a331e6fe300fcc79eb4ea2ed4837c3f4dc43a22)
+    #8 decodeOne /home/z/zhouzia/Workspace/CanMehEvolve/scripts/followup/driver.cpp:68 (drv-tsan-r2-ds-population-s4+0x93bd) (BuildId: 5a331e6fe300fcc79eb4ea2ed4837c3f4dc43a22)
+    #9 operator() /home/z/zhouzia/Workspace/CanMehEvolve/scripts/followup/driver.cpp:117 (drv-tsan-r2-ds-population-s4+0x99c9) (BuildId: 5a331e6fe300fcc79eb4ea2ed4837c3f4dc43a22)
+    #10 __invoke_impl<void, main(int, char**)::<lambda()> > /usr/include/c++/13/bits/invoke.h:61 (drv-tsan-r2-ds-population-s4+0x99c9)
+    #11 __invoke<main(int, char**)::<lambda()> > /usr/include/c++/13/bits/invoke.h:96 (drv-tsan-r2-ds-population-s4+0x99c9)
+    #12 _M_invoke<0> /usr/include/c++/13/bits/std_thread.h:292 (drv-tsan-r2-ds-population-s4+0x99c9)
+    #13 operator() /usr/include/c++/13/bits/std_thread.h:299 (drv-tsan-r2-ds-population-s4+0x99c9)
+    #14 _M_run /usr/include/c++/13/bits/std_thread.h:244 (drv-tsan-r2-ds-population-s4+0x99c9)
+    #15 <null> <null> (libstdc++.so.6+0xecdb3) (BuildId: 753c6c8608b61d4e67be8f0c890e03e0aa046b8b)
+
+  Location is global 'fit::Profile::GetFieldIndex(unsigned short, unsigned char)::fieldIndexCache' of size 16384 at 0x555555649b00 (drv-tsan-r2-ds-population-s4+0xf7d50)
+
+  Thread T2 (tid=93267, running) created by main thread at:
+    #0 pthread_create ../../../../src/libsanitizer/tsan/tsan_interceptors_posix.cpp:1022 (libtsan.so.2+0x5ac1a) (BuildId: 2a13a7710e361d06f7babbea53065ca2be93f738)
+    #1 std::thread::_M_start_thread(std::unique_ptr<std::thread::_State, std::default_delete<std::thread::_State> >, void (*)()) <null> (libstdc++.so.6+0xeceb0) (BuildId: 753c6c8608b61d4e67be8f0c890e03e0aa046b8b)
+    #2 __libc_start_call_main ../sysdeps/nptl/libc_start_call_main.h:58 (libc.so.6+0x2a1c9) (BuildId: a4a7992a8e66555c8141ab2a08a8465ff6e0ea65)
+
+  Thread T3 (tid=93268, running) created by main thread at:
+    #0 pthread_create ../../../../src/libsanitizer/tsan/tsan_interceptors_posix.cpp:1022 (libtsan.so.2+0x5ac1a) (BuildId: 2a13a7710e361d06f7babbea53065ca2be93f738)
+    #1 std::thread::_M_start_thread(std::unique_ptr<std::thread::_State, std::default_delete<std::thread::_State> >, void (*)()) <null> (libstdc++.so.6+0xeceb0) (BuildId: 753c6c8608b61d4e67be8f0c890e03e0aa046b8b)
+    #2 __libc_start_call_main ../sysdeps/nptl/libc_start_call_main.h:58 (libc.so.6+0x2a1c9) (BuildId: a4a7992a8e66555c8141ab2a08a8465ff6e0ea65)
+
+SUMMARY: ThreadSanitizer: data race /home/z/zhouzia/.sanitize-scratch/var-tsan-r2-ds-population-s4/src/fit_profile.cpp:3093 in fit::Profile::GetFieldIndex(unsigned short, unsigned char)
+==================
+==================
+WARNING: ThreadSanitizer: data race (pid=93264)
+  Write of size 8 at 0x55555564bb18 by thread T4:
+    #0 fit::Profile::GetFieldIndex(unsigned short, unsigned char) /home/z/zhouzia/.sanitize-scratch/var-tsan-r2-ds-population-s4/src/fit_profile.cpp:3113 (drv-tsan-r2-ds-population-s4+0x7e01e) (BuildId: 5a331e6fe300fcc79eb4ea2ed4837c3f4dc43a22)
+    #1 fit::Field::Field(unsigned short, unsigned char) /home/z/zhouzia/.sanitize-scratch/var-tsan-r2-ds-population-s4/src/fit_field.cpp:51 (drv-tsan-r2-ds-population-s4+0x399cf) (BuildId: 5a331e6fe300fcc79eb4ea2ed4837c3f4dc43a22)
+    #2 fit::Decode::ReadByte(unsigned char) /home/z/zhouzia/.sanitize-scratch/stock/src/fit_decode.cpp:814 (drv-tsan-r2-ds-population-s4+0x22959) (BuildId: 5a331e6fe300fcc79eb4ea2ed4837c3f4dc43a22)
+    #3 fit::Decode::Resume() /home/z/zhouzia/.sanitize-scratch/stock/src/fit_decode.cpp:246 (drv-tsan-r2-ds-population-s4+0x24de7) (BuildId: 5a331e6fe300fcc79eb4ea2ed4837c3f4dc43a22)
+    #4 fit::Decode::Read(std::istream*) /home/z/zhouzia/.sanitize-scratch/stock/src/fit_decode.cpp:191 (drv-tsan-r2-ds-population-s4+0x25233) (BuildId: 5a331e6fe300fcc79eb4ea2ed4837c3f4dc43a22)
+    #5 fit::Decode::Read(std::istream*, fit::MesgListener*, fit::MesgDefinitionListener*, fit::DeveloperFieldDescriptionListener*) /home/z/zhouzia/.sanitize-scratch/stock/src/fit_decode.cpp:209 (drv-tsan-r2-ds-population-s4+0x25300) (BuildId: 5a331e6fe300fcc79eb4ea2ed4837c3f4dc43a22)
+    #6 fit::Decode::Read(std::istream&, fit::MesgListener&) /home/z/zhouzia/.sanitize-scratch/stock/src/fit_decode.cpp:214 (drv-tsan-r2-ds-population-s4+0x2536b) (BuildId: 5a331e6fe300fcc79eb4ea2ed4837c3f4dc43a22)
+    #7 decodeOne /home/z/zhouzia/Workspace/CanMehEvolve/scripts/followup/driver.cpp:68 (drv-tsan-r2-ds-population-s4+0x93bd) (BuildId: 5a331e6fe300fcc79eb4ea2ed4837c3f4dc43a22)
+    #8 operator() /home/z/zhouzia/Workspace/CanMehEvolve/scripts/followup/driver.cpp:117 (drv-tsan-r2-ds-population-s4+0x99c9) (BuildId: 5a331e6fe300fcc79eb4ea2ed4837c3f4dc43a22)
+    #9 __invoke_impl<void, main(int, char**)::<lambda()> > /usr/include/c++/13/bits/invoke.h:61 (drv-tsan-r2-ds-population-s4+0x99c9)
+    #10 __invoke<main(int, char**)::<lambda()> > /usr/include/c++/13/bits/invoke.h:96 (drv-tsan-r2-ds-population-s4+0x99c9)
+    #11 _M_invoke<0> /usr/include/c++/13/bits/std_thread.h:292 (drv-tsan-r2-ds-population-s4+0x99c9)
+    #12 operator() /usr/include/c++/13/bits/std_thread.h:299 (drv-tsan-r2-ds-population-s4+0x99c9)
+    #13 _M_run /usr/include/c++/13/bits/std_thread.h:244 (drv-tsan-r2-ds-population-s4+0x99c9)
+    #14 <null> <null> (libstdc++.so.6+0xecdb3) (BuildId: 753c6c8608b61d4e67be8f0c890e03e0aa046b8b)
+
+  Previous write of size 8 at 0x55555564bb18 by thread T3:
+    #0 fit::Profile::GetFieldIndex(unsigned short, unsigned char) /home/z/zhouzia/.sanitize-scratch/var-tsan-r2-ds-population-s4/src/fit_profile.cpp:3113 (drv-tsan-r2-ds-population-s4+0x7e01e) (BuildId: 5a331e6fe300fcc79eb4ea2ed4837c3f4dc43a22)
+    #1 fit::Field::Field(unsigned short, unsigned char) /home/z/zhouzia/.sanitize-scratch/var-tsan-r2-ds-population-s4/src/fit_field.cpp:51 (drv-tsan-r2-ds-population-s4+0x399cf) (BuildId: 5a331e6fe300fcc79eb4ea2ed4837c3f4dc43a22)
+    #2 fit::Decode::ReadByte(unsigned char) /home/z/zhouzia/.sanitize-scratch/stock/src/fit_decode.cpp:814 (drv-tsan-r2-ds-population-s4+0x22959) (BuildId: 5a331e6fe300fcc79eb4ea2ed4837c3f4dc43a22)
+    #3 fit::Decode::Resume() /home/z/zhouzia/.sanitize-scratch/stock/src/fit_decode.cpp:246 (drv-tsan-r2-ds-population-s4+0x24de7) (BuildId: 5a331e6fe300fcc79eb4ea2ed4837c3f4dc43a22)
+    #4 fit::Decode::Read(std::istream*) /home/z/zhouzia/.sanitize-scratch/stock/src/fit_decode.cpp:191 (drv-tsan-r2-ds-population-s4+0x25233) (BuildId: 5a331e6fe300fcc79eb4ea2ed4837c3f4dc43a22)
+    #5 fit::Decode::Read(std::istream*, fit::MesgListener*, fit::MesgDefinitionListener*, fit::DeveloperFieldDescriptionListener*) /home/z/zhouzia/.sanitize-scratch/stock/src/fit_decode.cpp:209 (drv-tsan-r2-ds-population-s4+0x25300) (BuildId: 5a331e6fe300fcc79eb4ea2ed4837c3f4dc43a22)
+    #6 fit::Decode::Read(std::istream&, fit::MesgListener&) /home/z/zhouzia/.sanitize-scratch/stock/src/fit_decode.cpp:214 (drv-tsan-r2-ds-population-s4+0x2536b) (BuildId: 5a331e6fe300fcc79eb4ea2ed4837c3f4dc43a22)
+    #7 decodeOne /home/z/zhouzia/Workspace/CanMehEvolve/scripts/followup/driver.cpp:68 (drv-tsan-r2-ds-population-s4+0x93bd) (BuildId: 5a331e6fe300fcc79eb4ea2ed4837c3f4dc43a22)
+    #8 operator() /home/z/zhouzia/Workspace/CanMehEvolve/scripts/followup/driver.cpp:117 (drv-tsan-r2-ds-population-s4+0x99c9) (BuildId: 5a331e6fe300fcc79eb4ea2ed4837c3f4dc43a22)
+    #9 __invoke_impl<void, main(int, char**)::<lambda()> > /usr/include/c++/13/bits/invoke.h:61 (drv-tsan-r2-ds-population-s4+0x99c9)
+    #10 __invoke<main(int, char**)::<lambda()> > /usr/include/c++/13/bits/invoke.h:96 (drv-tsan-r2-ds-population-s4+0x99c9)
+    #11 _M_invoke<0> /usr/include/c++/13/bits/std_thread.h:292 (drv-tsan-r2-ds-population-s4+0x99c9)
+    #12 operator() /usr/include/c++/13/bits/std_thread.h:299 (drv-tsan-r2-ds-population-s4+0x99c9)
+    #13 _M_run /usr/include/c++/13/bits/std_thread.h:244 (drv-tsan-r2-ds-population-s4+0x99c9)
+    #14 <null> <null> (libstdc++.so.6+0xecdb3) (BuildId: 753c6c8608b61d4e67be8f0c890e03e0aa046b8b)
+
+  Location is global 'fit::Profile::GetFieldIndex(unsigned short, unsigned char)::fieldIndexCache' of size 16384 at 0x555555649b00 (drv-tsan-r2-ds-population-s4+0xf7b18)
+
+  Thread T4 (tid=93269, running) created by main thread at:
+    #0 pthread_create ../../../../src/libsanitizer/tsan/tsan_interceptors_posix.cpp:1022 (libtsan.so.2+0x5ac1a) (BuildId: 2a13a7710e361d06f7babbea53065ca2be93f738)
+    #1 std::thread::_M_start_thread(std::unique_ptr<std::thread::_State, std::default_delete<std::thread::_State> >, void (*)()) <null> (libstdc++.so.6+0xeceb0) (BuildId: 753c6c8608b61d4e67be8f0c890e03e0aa046b8b)
+    #2 __libc_start_call_main ../sysdeps/nptl/libc_start_call_main.h:58 (libc.so.6+0x2a1c9) (BuildId: a4a7992a8e66555c8141ab2a08a8465ff6e0ea65)
+
+  Thread T3 (tid=93268, running) created by main thread at:
+    #0 pthread_create ../../../../src/libsanitizer/tsan/tsan_interceptors_posix.cpp:1022 (libtsan.so.2+0x5ac1a) (BuildId: 2a13a7710e361d06f7babbea53065ca2be93f738)
+    #1 std::thread::_M_start_thread(std::unique_ptr<std::thread::_State, std::default_delete<std::thread::_State> >, void (*)()) <null> (libstdc++.so.6+0xeceb0) (BuildId: 753c6c8608b61d4e67be8f0c890e03e0aa046b8b)
+    #2 __libc_start_call_main ../sysdeps/nptl/libc_start_call_main.h:58 (libc.so.6+0x2a1c9) (BuildId: a4a7992a8e66555c8141ab2a08a8465ff6e0ea65)
+
+SUMMARY: ThreadSanitizer: data race /home/z/zhouzia/.sanitize-scratch/var-tsan-r2-ds-population-s4/src/fit_profile.cpp:3113 in fit::Profile::GetFieldIndex(unsigned short, unsigned char)
+==================
+ThreadSanitizer: reported 5 warnings

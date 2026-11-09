@@ -1,0 +1,204 @@
+--- a/src/fit_field.cpp
++++ b/src/fit_field.cpp
+@@ -15,6 +15,8 @@
+ #include "fit_field.hpp"
+ #include "fit_mesg.hpp"
+ #include "fit_unicode.hpp"
++#include <cstddef>
++#include <cstdint>
+ 
+ namespace fit
+ {
+@@ -90,19 +92,21 @@
+     return profile->fields[profileIndex].name;
+ }
+ 
++
+ FIT_UINT8 Field::GetNum(void) const
+ {
+-    if ((profile == NULL) || (profileIndex >= profile->numFields))
++    if (!profile || profileIndex >= profile->numFields)
+         return FIT_FIELD_NUM_INVALID;
+     return profile->fields[profileIndex].num;
+ }
+ 
++
+ FIT_UINT8 Field::GetType() const
+ {
+-    if ( type != FIT_UINT8_INVALID )
++    if (type != FIT_UINT8_INVALID)
+         return type;
+ 
+-    if ((profile == NULL) || (profileIndex >= profile->numFields))
++    if (!profile || profileIndex >= profile->numFields)
+         return FIT_UINT8_INVALID;
+ 
+     return profile->fields[profileIndex].type;
+--- a/src/fit_field_base.cpp
++++ b/src/fit_field_base.cpp
+@@ -16,6 +16,8 @@
+ #include "fit_field_base.hpp"
+ #include "fit_mesg.hpp"
+ #include "fit_unicode.hpp"
++#include <cstring>
++#include <cstddef>
+ 
+ namespace fit
+ {
+@@ -70,13 +72,15 @@
+     return NULL != subfield ? subfield->scale : 1.0;
+ }
+ 
++
+ FIT_FLOAT64 FieldBase::GetOffset(const FIT_UINT16 subFieldIndex) const
+ {
+-    if (subFieldIndex >= GetNumSubFields())
++    const FIT_UINT16 numSubFields = GetNumSubFields();
++    if (subFieldIndex >= numSubFields)
+         return GetOffset();
+ 
+-    auto subfield = GetSubField(subFieldIndex);
+-    return NULL != subfield ? subfield->offset : 0.0;
++    const SubField* subfield = GetSubField(subFieldIndex);
++    return (subfield != nullptr) ? subfield->offset : 0.0;
+ }
+ 
+ FIT_BOOL FieldBase::IsSignedInteger(const FIT_UINT16 subFieldIndex) const
+@@ -1005,75 +1009,68 @@
+     values[idx + i] = 0; // null terminate
+ }
+ 
++
+ FIT_BOOL FieldBase::Read(const void *data, const FIT_UINT8 size)
+ {
+-    FIT_UINT8 bytesLeft = size;
+-    FIT_UINT8 typeSize = baseTypeSizes[GetType() & FIT_BASE_TYPE_NUM_MASK];
+-    FIT_BYTE *byteData = (FIT_BYTE *) data;
+-
++    const FIT_UINT8 typeIdx = GetType() & FIT_BASE_TYPE_NUM_MASK;
++    const FIT_UINT8 typeSize = baseTypeSizes[typeIdx];
++    const FIT_BYTE* byteData = static_cast<const FIT_BYTE*>(data);
++    
+     values.clear();
+ 
+-    switch (GetType())
++    if (typeIdx == FIT_BASE_TYPE_STRING)
+     {
+-        case FIT_BASE_TYPE_STRING:
++        // Check for all-zero buffer (empty string)
++        bool allZero = true;
++        for (FIT_UINT8 i = 0; i < size; ++i)
+         {
+-            FIT_BOOL hasData = FIT_FALSE;
+-            FIT_UINT8 stringPos = 0;
+-            FIT_UINT8 index = 0;
+-
+-            // Check if the string is empty
+-            while (index < bytesLeft)
++            if (byteData[i] != 0)
+             {
+-                if (byteData[index] != 0)
+-                {
+-                    hasData = FIT_TRUE;
+-                    break;
+-                }
+-                index++;
+-            }
+-
+-            if (!hasData)
++                allZero = false;
+                 break;
+-
+-            stringIndexes.push_back(stringPos);
+-
+-            while (bytesLeft-- > 0)
+-            {
+-                FIT_BYTE byte = *byteData++;
+-                values.push_back(byte);
+-                stringPos++;
+-
+-                if ( ( byte == 0 ) && ( stringPos + 1 < size ) )
+-                {
+-                    stringIndexes.push_back(stringPos);
+-                }
+-            }
+-
+-            // Null terminate if not already null terminated
+-            if ( values.back() != 0 )
+-            {
+-                values.push_back(0);
+             }
+         }
+-            break;
++        if (allZero) return FIT_TRUE;
+ 
+-        default:
++        // Find first null terminator using memchr for speed
++        const FIT_BYTE* nullPos = static_cast<const FIT_BYTE*>(std::memchr(byteData, 0, size));
++        FIT_UINT8 copySize = (nullPos != nullptr) ? (nullPos - byteData + 1) : size;
++
++        values.assign(byteData, byteData + copySize);
++        
++        // If not null-terminated, add terminator
++        if (copySize == size && values.back() != 0)
+         {
+-            int bytes = bytesLeft;
+-            FIT_BYTE *point = byteData;
++            values.push_back(0);
++        }
+ 
+-            while (bytes > 0)
++        // Build string indexes
++        stringIndexes.clear();
++        FIT_UINT8 pos = 0;
++        while (pos < values.size())
++        {
++            stringIndexes.push_back(pos);
++            while (pos < values.size() && values[pos] != 0) ++pos;
++            ++pos;  // skip null terminator
++        }
++    }
++    else
++    {
++        // Non-string types: skip leading invalid entries
++        const FIT_BYTE* invalidPtr = baseTypeInvalids[typeIdx];
++        const FIT_BYTE* endPtr = byteData + size;
++        const FIT_BYTE* current = byteData;
++
++        while (current + typeSize <= endPtr)
++        {
++            if (std::memcmp(current, invalidPtr, typeSize) != 0)
+             {
+-                if (memcmp(point, baseTypeInvalids[GetType() & FIT_BASE_TYPE_NUM_MASK], typeSize) != 0)
+-                {
+-                    values.insert(values.end(), byteData, byteData + bytesLeft);
+-                    break;
+-                }
+-                point += typeSize;
+-                bytes -= typeSize;
++                // Found valid data; copy from original pointer to end
++                values.insert(values.end(), byteData, endPtr);
++                break;
+             }
++            current += typeSize;
+         }
+-            break;
+     }
+ 
+     return FIT_TRUE;
+--- a/src/fit_lap_mesg.hpp
++++ b/src/fit_lap_mesg.hpp
+@@ -943,12 +943,7 @@
+     FIT_BOOL IsMaxCadenceValid() const
+     {
+         const Field* field = GetField(18);
+-        if( FIT_NULL == field )
+-        {
+-            return FIT_FALSE;
+-        }
+-
+-        return field->IsValueValid();
++        return (field != FIT_NULL) ? field->IsValueValid() : FIT_FALSE;
+     }
+ 
+     ///////////////////////////////////////////////////////////////////////

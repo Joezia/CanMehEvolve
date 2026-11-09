@@ -1,0 +1,91 @@
+File: src/fit_mesg.cpp
+Function: Mesg::GetActiveSubFieldIndexByFieldIndex (28 lines)
+One full decode of the four files takes about 357.9 ms in the stock build.
+Time of the current version of the whole library relative to stock: 0.902 (below 1.0 is faster). Best measured so far: 0.898.
+
+Your previous attempt failed:
+Stage 'compile' rejected it: /home/z/zhouzia/Workspace/CanMehEvolve/build/work-1095979/tree/src/fit_mesg.cpp:377:1: error: stray ‘`’ in program
+  377 | ```cpp
+      | ^
+/home/z/zhouzia/Workspace/CanMehEvolve/build/work-1095979/tree/src/fit_mesg.cpp:377:2: error: stray ‘`’ in program
+  377 | ```cpp
+      |  ^
+/home/z/zhouzia/Workspace/CanMehEvolve/build/work-1095979/tree/src/fit_mesg.cpp:377:3: error: stray ‘`’ in program
+  377 | ```cpp
+      |   ^
+/home/z/zhouzia/Workspace/CanMehEvolve/build/work-1095979/tree/src/fit_mesg.cpp:377:4: error: ‘cpp’ does not name a type
+  377 | ```cpp
+      |    ^~~
+
+The rejected replacement was:
+```cpp
+
+```cpp
+FIT_UINT16 Mesg::GetActiveSubFieldIndexByFieldIndex(const FIT_UINT16 fieldIndex) const
+{
+    if (fieldIndex >= GetNumFields())
+        return FIT_SUBFIELD_INDEX_MAIN_FIELD;
+
+    const Field& field = fields[fieldIndex];
+    const FIT_UINT16 numSubFields = field.GetNumSubFields();
+    
+    for (FIT_UINT16 i = 0; i < numSubFields; i++)
+    {
+        const Profile::SUBFIELD* subField = field.GetSubField(i);
+
+        if (subField != FIT_NULL)
+        {
+            for (FIT_UINT16 j = 0; j < subField->numMaps; j++)
+            {
+                const Field* refField = GetField(subField->maps[j].refFieldNum);
+
+                if (refField != FIT_NULL)
+                {
+                    FIT_FLOAT64 refValue = refField->GetFLOAT64Value(0, FIT_SUBFIELD_INDEX_MAIN_FIELD);
+                    // Round to nearest integer (handles negative values correctly)
+                    FIT_SINT32 rounded = static_cast<FIT_SINT32>(std::floor(refValue + (refValue >= 0.0 ? 0.5 : -0.5)));
+                    if (rounded == subField->maps[j].refFieldValue)
+                        return i;
+                }
+            }
+        }
+    }
+
+    return FIT_SUBFIELD_INDEX_MAIN_FIELD;
+}
+
+```
+
+Current text of the function:
+```cpp
+FIT_UINT16 Mesg::GetActiveSubFieldIndexByFieldIndex(const FIT_UINT16 fieldIndex) const
+{
+    if ((int) fieldIndex >= GetNumFields())
+        return FIT_SUBFIELD_INDEX_MAIN_FIELD;
+
+    for (FIT_UINT16 i = 0; i < fields[fieldIndex].GetNumSubFields(); i++)
+    {
+        const Profile::SUBFIELD* subField = fields[fieldIndex].GetSubField(i);
+
+        if (subField != FIT_NULL)
+        {
+            for (int j = 0; j < (int) subField->numMaps; j++)
+            {
+                const Field* refField = GetField(subField->maps[j].refFieldNum);
+
+                if (refField != FIT_NULL)
+                {
+                    FIT_FLOAT64 refValue = refField->GetFLOAT64Value(0, FIT_SUBFIELD_INDEX_MAIN_FIELD);
+                    refValue += ((refValue >= 0.0) ? (0.5) : (-0.5));
+                    if ((FIT_SINT32)refValue == subField->maps[j].refFieldValue)
+                        return ((FIT_UINT16) i);
+                }
+            }
+        }
+    }
+
+    return FIT_SUBFIELD_INDEX_MAIN_FIELD;
+}
+
+```
+Return the faster replacement now.

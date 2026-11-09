@@ -1,0 +1,68 @@
+--- a/src/fit_field.cpp
++++ b/src/fit_field.cpp
+@@ -15,6 +15,7 @@
+ #include "fit_field.hpp"
+ #include "fit_mesg.hpp"
+ #include "fit_unicode.hpp"
++#include <cstddef>
+ 
+ namespace fit
+ {
+@@ -90,11 +91,12 @@
+     return profile->fields[profileIndex].name;
+ }
+ 
++
+ FIT_UINT8 Field::GetNum(void) const
+ {
+-    if ((profile == NULL) || (profileIndex >= profile->numFields))
+-        return FIT_FIELD_NUM_INVALID;
+-    return profile->fields[profileIndex].num;
++    return (profile && profileIndex < profile->numFields)
++        ? profile->fields[profileIndex].num
++        : FIT_FIELD_NUM_INVALID;
+ }
+ 
+ FIT_UINT8 Field::GetType() const
+--- a/src/fit_profile.cpp
++++ b/src/fit_profile.cpp
+@@ -11,6 +11,7 @@
+ 
+ 
+ #include "fit_profile.hpp"
++#include <algorithm>
+ 
+ namespace fit
+ {
+@@ -3077,6 +3078,7 @@
+     return NULL;
+ }
+ 
++
+ const FIT_UINT16 Profile::GetFieldIndex(const FIT_UINT16 mesgNum, const FIT_UINT8 fieldNum)
+ {
+     const MESG *mesg = GetMesg(mesgNum);
+@@ -3084,13 +3086,16 @@
+     if (mesg == NULL)
+         return FIT_UINT16_INVALID;
+ 
+-    for (FIT_UINT16 i = 0; i < mesg->numFields; i++)
+-    {
+-        if (mesg->fields[i].num == fieldNum)
+-            return i;
+-    }
+-
+-    return FIT_UINT16_INVALID;
++    // Binary search since fields are sorted by num (per SDK design)
++    const FIELD *begin = mesg->fields;
++    const FIELD *end = begin + mesg->numFields;
++    
++    auto it = std::lower_bound(begin, end, fieldNum,
++        [](const FIELD& a, FIT_UINT8 b) { return a.num < b; });
++    
++    return (it != end && it->num == fieldNum) 
++        ? static_cast<FIT_UINT16>(it - begin) 
++        : FIT_UINT16_INVALID;
+ }
+ 
+ const FIT_UINT16 Profile::GetFieldIndex(const std::string& mesgName, const std::string& fieldName)

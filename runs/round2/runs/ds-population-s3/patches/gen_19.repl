@@ -1,0 +1,19 @@
+I replaced the linear scan with a lazily-built 65536-entry direct lookup table (index+1, zero = absent), so every query is one array load instead of up to `MESGS` comparisons; the table is reverse-filled so duplicate numbers still resolve to the first matching entry, preserving exact behaviour.
+
+```cpp
+const Profile::MESG* Profile::GetMesg(const FIT_UINT16 num)
+{
+    static FIT_UINT16 index[65536] = { 0 };
+    static bool init = false;
+
+    if (!init)
+    {
+        for (int i = MESGS - 1; i >= 0; i--)
+            index[mesgs[i].num] = (FIT_UINT16)(i + 1);
+        init = true;
+    }
+
+    const FIT_UINT16 v = index[num];
+    return v ? &mesgs[v - 1] : NULL;
+}
+```

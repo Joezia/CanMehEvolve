@@ -1,0 +1,57 @@
+FIT_UINT16 Mesg::GetActiveSubFieldIndex(const FIT_UINT8 fieldNum) const
+{
+    const Profile::FIELD* field = Profile::GetField(GetNum(), fieldNum);
+    if (field == FIT_NULL)
+        return FIT_SUBFIELD_INDEX_MAIN_FIELD;
+
+    const FIT_UINT16 numSubFields = field->numSubFields;
+    if (numSubFields == 0)
+        return FIT_SUBFIELD_INDEX_MAIN_FIELD;
+
+    const Field* lastRefField = FIT_NULL;
+    FIT_UINT16 lastRefFieldNum = 0xFFFF;
+    FIT_SINT32 lastRefRounded = 0;
+
+    const auto* subField = field->subFields;
+    for (FIT_UINT16 i = 0; i < numSubFields; ++i, ++subField)
+    {
+        const FIT_UINT8 numMaps = subField->numMaps;
+        const auto* map = subField->maps;
+        for (FIT_UINT8 j = 0; j < numMaps; ++j, ++map)
+        {
+            const FIT_UINT8 refFieldNum = map->refFieldNum;
+            const Field* refField;
+            FIT_SINT32 refRounded;
+
+            if (refFieldNum == lastRefFieldNum)
+            {
+                refField = lastRefField;
+                refRounded = lastRefRounded;
+            }
+            else
+            {
+                refField = GetField(refFieldNum);
+                lastRefFieldNum = refFieldNum;
+                lastRefField = refField;
+
+                if (refField != FIT_NULL)
+                {
+                    FIT_FLOAT64 refValue = refField->GetFLOAT64Value(0, FIT_SUBFIELD_INDEX_MAIN_FIELD);
+                    refValue += ((refValue >= 0.0) ? 0.5 : -0.5);
+                    refRounded = (FIT_SINT32)refValue;
+                }
+                else
+                {
+                    refRounded = 0;
+                }
+
+                lastRefRounded = refRounded;
+            }
+
+            if (refField != FIT_NULL && refRounded == map->refFieldValue)
+                return i;
+        }
+    }
+
+    return FIT_SUBFIELD_INDEX_MAIN_FIELD;
+}

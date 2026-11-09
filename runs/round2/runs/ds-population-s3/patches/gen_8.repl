@@ -1,0 +1,8 @@
+The function is already a single comparison; I added a branch-prediction hint so call sites lay out the common "valid" path as fall-through, which is the only remaining lever for such a trivial inline-candidate getter.
+
+```cpp
+FIT_BOOL Field::IsValid(void) const
+{
+    return __builtin_expect(profileIndex != FIT_UINT16_INVALID, 1);
+}
+```

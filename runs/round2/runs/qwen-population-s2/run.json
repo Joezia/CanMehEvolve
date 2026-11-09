@@ -1,0 +1,73 @@
+{
+  "base_url": "https://soclaas-api.comp.nus.edu.sg/v1",
+  "compiler": "/usr/bin/c++",
+  "compiler_version": "c++ (Ubuntu 13.3.0-6ubuntu2~24.04.1) 13.3.0",
+  "cxxstd": "-std=c++17",
+  "deadline_seconds": 9300.0,
+  "generations": 40,
+  "git_commit": "4f44902a739db51d97b83168db080cd9d9360dea",
+  "git_dirty": false,
+  "hostname": "xcnc43",
+  "llm_expect_model": "qwen3-coder-next",
+  "llm_http_attempts": 1,
+  "llm_timeout_seconds": 180,
+  "max_lines": 250,
+  "max_tokens": 4096,
+  "meta": {
+    "baseline_ms": 358.6242250021314,
+    "bench": "/home/z/zhouzia/Workspace/CanMehEvolve/build/CanMehBench",
+    "cxx": "/usr/bin/c++",
+    "cxxstd": "-std=c++17",
+    "data": "/home/z/zhouzia/Workspace/CanMehEvolve/build/data",
+    "min_time": "0.25s",
+    "null_p": 0.640625,
+    "null_ratio": 0.9998295941136728,
+    "opt": "-O2",
+    "reference_cv": 0.003634769938599571,
+    "repeat": 10,
+    "repetitions": 9,
+    "sdk": "/home/z/zhouzia/Workspace/CanMehEvolve/build/FITSDK-prefix/src/FITSDK"
+  },
+  "mode": "search",
+  "model_probe": {
+    "http_status": 200,
+    "model": "qwen3-coder-next",
+    "ok": true,
+    "requested_model": "qwen3-coder-next",
+    "usage": {
+      "completion_tokens": 2,
+      "prompt_tokens": 14,
+      "prompt_tokens_details": null,
+      "total_tokens": 16
+    }
+  },
+  "model_requested": "qwen3-coder-next",
+  "null_evidence": {
+    "baseline_ms": 358.6242250021314,
+    "null_ok": true,
+    "null_ratio": 0.9998295941136728,
+    "null_spread": 0.023191926189547574,
+    "reference_cv": 0.003634769938599571,
+    "source": "/home/z/zhouzia/Workspace/CanMehEvolve/runs/round2/runs/qwen-population-s2/segments/1096058.init.json"
+  },
+  "opt": "-O2",
+  "population": 6,
+  "prompt_hints": false,
+  "rank_rule": null,
+  "region_files": "",
+  "rule": {
+    "alpha": 0.01,
+    "min_effect": 0.02,
+    "required_processes": 10,
+    "statistic": "median over processes of median(candidate_ns)/median(reference_ns); exact two-sided sign-flip test on sum of log process ratios",
+    "unstable_spread": 0.25
+  },
+  "sample_seconds": 20.0,
+  "search_version": "2026-11-04 greedy/bestofn rank rule, own LLM adapter",
+  "seed": 2,
+  "slurm_job_id": "1096058",
+  "slurm_nodelist": "xcnc43",
+  "started": "2026-11-08T16:33:16+0800",
+  "temperature": 0.8,
+  "uniform_share": 0.1
+}

@@ -1,0 +1,13 @@
+This function is already near-optimal, so the only safe win is to keep the loads on the fast path and hint the compiler that both guards almost always pass, letting it lay out the taken path straight-line and speculate the final load.
+
+```cpp
+FIT_UINT16 Field::GetNumSubFields(void) const
+{
+    const auto* const p = profile;
+    if (__builtin_expect(p == NULL, 0))
+        return 0;
+    if (__builtin_expect(profileIndex >= p->numFields, 0))
+        return 0;
+    return p->fields[profileIndex].numSubFields;
+}
+```

@@ -1,0 +1,14 @@
+I load `profileIndex` once into a local and split the null and bounds checks so the index load can be scheduled early while keeping the common valid path as the fallthrough.
+
+```cpp
+FIT_UINT8 Field::GetNum(void) const
+{
+    const auto* p = profile;
+    const auto index = profileIndex;
+    if (__builtin_expect(p == NULL, 0))
+        return FIT_FIELD_NUM_INVALID;
+    if (__builtin_expect(index >= p->numFields, 0))
+        return FIT_FIELD_NUM_INVALID;
+    return p->fields[index].num;
+}
+```

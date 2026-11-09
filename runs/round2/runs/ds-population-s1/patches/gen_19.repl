@@ -1,0 +1,9 @@
+Replaced the vector copy constructors with range constructors using `begin()`/`end()`, which avoids the allocator-copy and relocation checks inside `std::vector`'s copy constructor while producing identical vectors.
+
+```cpp
+FieldBase::FieldBase(const FieldBase &field)
+    : values(field.values.begin(), field.values.end()),
+      stringIndexes(field.stringIndexes.begin(), field.stringIndexes.end())
+{
+}
+```

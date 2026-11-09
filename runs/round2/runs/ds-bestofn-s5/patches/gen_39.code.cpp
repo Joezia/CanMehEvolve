@@ -1,0 +1,21 @@
+const Profile::MESG* Profile::GetMesg(const FIT_UINT16 num)
+{
+    static const struct MesgIndex
+    {
+        FIT_SINT16 idx[65536];
+        MesgIndex()
+        {
+            for (int i = 0; i < 65536; i++)
+                idx[i] = -1;
+            for (int i = 0; i < MESGS; i++)
+            {
+                const FIT_UINT16 n = mesgs[i].num;
+                if (idx[n] < 0)
+                    idx[n] = (FIT_SINT16)i;
+            }
+        }
+    } mesgIndex;
+
+    const FIT_SINT16 i = mesgIndex.idx[num];
+    return (i < 0) ? NULL : &mesgs[i];
+}

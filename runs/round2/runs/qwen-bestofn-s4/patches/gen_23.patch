@@ -1,0 +1,28 @@
+--- a/src/fit_bike_profile_mesg.hpp
++++ b/src/fit_bike_profile_mesg.hpp
+@@ -14,6 +14,7 @@
+ #define FIT_BIKE_PROFILE_MESG_HPP
+ 
+ #include "fit_mesg.hpp"
++#include <cstdint>
+ 
+ namespace fit
+ {
+@@ -546,15 +547,11 @@
+     // Checks the validity of id field
+     // Returns FIT_TRUE if field is valid
+     ///////////////////////////////////////////////////////////////////////
++
+     FIT_BOOL IsIdValid() const
+     {
+         const Field* field = GetField(14);
+-        if( FIT_NULL == field )
+-        {
+-            return FIT_FALSE;
+-        }
+-
+-        return field->IsValueValid();
++        return (field != FIT_NULL) && field->IsValueValid();
+     }
+ 
+     ///////////////////////////////////////////////////////////////////////

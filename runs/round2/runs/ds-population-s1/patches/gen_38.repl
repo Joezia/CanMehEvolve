@@ -1,0 +1,9 @@
+The member initializer list copies both vectors directly in one step, avoiding any default-construction followed by assignment. This is the minimal work required for a correct deep copy of the two byte vectors.
+
+```cpp
+FieldBase::FieldBase(const FieldBase &field)
+    : values(field.values),
+      stringIndexes(field.stringIndexes)
+{
+}
+```

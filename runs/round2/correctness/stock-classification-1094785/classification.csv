@@ -1,0 +1,460 @@
+id,kind,base,outcome,detail,asan_error,ubsan_messages
+0,original,intervals.fit,decoded,,0,0
+1,data,intervals.fit,decoded,,0,0
+2,data,intervals.fit,decoded,,0,0
+3,data,intervals.fit,decoded,,0,0
+4,data,intervals.fit,decoded,,0,0
+5,data,intervals.fit,decoded,,0,1
+6,trunc,intervals.fit,uncaught exception,FIT decode error: Decoder not in correct state after last data byte in file. Check message definitions. Error at byte: 55386,0,0
+7,trunc,intervals.fit,uncaught exception,FIT decode error: Decoder not in correct state after last data byte in file. Check message definitions. Error at byte: 87918,0,0
+8,data,intervals.fit,decoded,,0,0
+9,data,intervals.fit,uncaught exception,FIT decode error: Architecture � not supported. Error at byte: 48137,0,0
+10,defs,intervals.fit,uncaught exception,Invalid developer field definition number in FieldDescriptionMesg,1,2
+11,defs,intervals.fit,decoded,,0,0
+12,data,intervals.fit,decoded,,0,0
+13,trunc,intervals.fit,uncaught exception,FIT decode error: Decoder not in correct state after last data byte in file. Check message definitions. Error at byte: 30491,0,0
+14,defs,intervals.fit,uncaught exception,FIT decode error: Missing FIT message definition for local message number 3. Error at byte: 151,0,0
+15,trunc,intervals.fit,uncaught exception,FIT decode error: Decoder not in correct state after last data byte in file. Check message definitions. Error at byte: 17000,0,0
+16,trunc,intervals.fit,uncaught exception,FIT decode error: Decoder not in correct state after last data byte in file. Check message definitions. Error at byte: 101955,0,0
+17,trunc,intervals.fit,uncaught exception,FIT decode error: Decoder not in correct state after last data byte in file. Check message definitions. Error at byte: 26993,0,0
+18,defs,intervals.fit,decoded,,0,0
+19,trunc,intervals.fit,uncaught exception,FIT decode error: Decoder not in correct state after last data byte in file. Check message definitions. Error at byte: 72726,0,0
+20,data,intervals.fit,decoded,,0,0
+21,data,intervals.fit,decoded,,0,1
+22,defs,intervals.fit,decoded,,0,0
+23,trunc,intervals.fit,uncaught exception,FIT decode error: Decoder not in correct state after last data byte in file. Check message definitions. Error at byte: 24257,0,0
+24,defs,intervals.fit,uncaught exception,FIT decode error: Missing FIT message definition for local message number 6. Error at byte: 163,0,0
+25,trunc,intervals.fit,decoded,,0,0
+26,defs,intervals.fit,decoded,,0,0
+27,data,intervals.fit,decoded,,0,0
+28,defs,intervals.fit,uncaught exception,FIT decode error: Missing FIT message definition for local message number 10. Error at byte: 129,0,0
+29,data,intervals.fit,decoded,,0,0
+30,trunc,intervals.fit,uncaught exception,FIT decode error: Decoder not in correct state after last data byte in file. Check message definitions. Error at byte: 88949,0,0
+31,defs,intervals.fit,decoded,,0,0
+32,trunc,intervals.fit,uncaught exception,FIT decode error: Decoder not in correct state after last data byte in file. Check message definitions. Error at byte: 42166,0,0
+33,defs,intervals.fit,decoded,,0,0
+34,data,intervals.fit,decoded,,0,0
+35,data,intervals.fit,decoded,,0,0
+36,data,intervals.fit,decoded,,0,0
+37,data,intervals.fit,decoded,,0,0
+38,data,intervals.fit,uncaught exception,FIT decode error: Architecture � not supported. Error at byte: 42975,0,0
+39,trunc,intervals.fit,uncaught exception,FIT decode error: Decoder not in correct state after last data byte in file. Check message definitions. Error at byte: 102650,0,0
+40,data,intervals.fit,decoded,,0,0
+41,trunc,intervals.fit,uncaught exception,FIT decode error: Decoder not in correct state after last data byte in file. Check message definitions. Error at byte: 45129,0,0
+42,trunc,intervals.fit,uncaught exception,FIT decode error: Decoder not in correct state after last data byte in file. Check message definitions. Error at byte: 63564,0,0
+43,trunc,intervals.fit,uncaught exception,FIT decode error: Decoder not in correct state after last data byte in file. Check message definitions. Error at byte: 30814,0,0
+44,data,intervals.fit,decoded,,0,1
+45,defs,intervals.fit,decoded,,0,0
+46,data,intervals.fit,decoded,,0,0
+47,trunc,intervals.fit,uncaught exception,FIT decode error: Decoder not in correct state after last data byte in file. Check message definitions. Error at byte: 77052,0,0
+48,defs,intervals.fit,decoded,,0,0
+49,defs,intervals.fit,decoded,,0,0
+50,defs,intervals.fit,decoded,,1,2
+51,data,intervals.fit,decoded,,0,0
+52,data,intervals.fit,decoded,,0,0
+53,defs,intervals.fit,uncaught exception,FIT decode error: Missing FIT message definition for local message number 3. Error at byte: 323,0,1
+54,data,intervals.fit,decoded,,0,0
+55,trunc,intervals.fit,uncaught exception,FIT decode error: Decoder not in correct state after last data byte in file. Check message definitions. Error at byte: 42035,0,0
+56,defs,intervals.fit,decoded,,0,0
+57,defs,intervals.fit,decoded,,0,0
+58,defs,intervals.fit,decoded,,0,0
+59,data,intervals.fit,decoded,,0,0
+60,defs,intervals.fit,decoded,,0,0
+61,defs,intervals.fit,uncaught exception,FIT decode error: Architecture � not supported. Error at byte: 437,0,0
+62,trunc,intervals.fit,uncaught exception,FIT decode error: Decoder not in correct state after last data byte in file. Check message definitions. Error at byte: 39749,0,0
+63,data,intervals.fit,decoded,,0,0
+64,data,intervals.fit,decoded,,0,0
+65,defs,intervals.fit,uncaught exception,Invalid developer data index in FieldDescriptionMesg,0,0
+66,defs,intervals.fit,uncaught exception,FIT decode error: Missing FIT message definition for local message number 2. Error at byte: 215,0,0
+67,data,intervals.fit,decoded,,0,0
+68,trunc,intervals.fit,uncaught exception,FIT decode error: Decoder not in correct state after last data byte in file. Check message definitions. Error at byte: 78951,0,0
+69,defs,intervals.fit,uncaught exception,FIT decode error: Missing FIT message definition for local message number 2. Error at byte: 221,0,0
+70,trunc,intervals.fit,uncaught exception,FIT decode error: Decoder not in correct state after last data byte in file. Check message definitions. Error at byte: 94776,0,0
+71,data,intervals.fit,decoded,,0,0
+72,data,intervals.fit,decoded,,0,0
+73,defs,intervals.fit,uncaught exception,FIT decode error: Invalid Field Size,0,0
+74,defs,intervals.fit,decoded,,0,0
+75,data,intervals.fit,decoded,,0,0
+76,trunc,intervals.fit,uncaught exception,FIT decode error: Decoder not in correct state after last data byte in file. Check message definitions. Error at byte: 11757,0,0
+77,data,intervals.fit,decoded,,0,0
+78,defs,intervals.fit,uncaught exception,FIT decode error: Missing FIT message definition for local message number 3. Error at byte: 129,0,0
+79,trunc,intervals.fit,uncaught exception,FIT decode error: Decoder not in correct state after last data byte in file. Check message definitions. Error at byte: 80182,0,0
+80,defs,intervals.fit,uncaught exception,Invalid developer field definition number in FieldDescriptionMesg,0,0
+81,trunc,intervals.fit,uncaught exception,FIT decode error: Decoder not in correct state after last data byte in file. Check message definitions. Error at byte: 100464,0,0
+82,data,intervals.fit,decoded,,0,0
+83,defs,intervals.fit,uncaught exception,FIT decode error: Missing FIT message definition for local message number 15. Error at byte: 229,0,0
+84,defs,intervals.fit,decoded,,0,0
+85,defs,intervals.fit,decoded,,0,0
+86,data,intervals.fit,decoded,,0,0
+87,data,intervals.fit,decoded,,0,0
+88,data,intervals.fit,decoded,,0,0
+89,trunc,intervals.fit,uncaught exception,FIT decode error: Decoder not in correct state after last data byte in file. Check message definitions. Error at byte: 57570,0,0
+90,trunc,intervals.fit,uncaught exception,FIT decode error: Decoder not in correct state after last data byte in file. Check message definitions. Error at byte: 2817,0,0
+91,data,intervals.fit,decoded,,0,0
+92,defs,intervals.fit,decoded,,0,0
+93,defs,intervals.fit,decoded,,0,0
+94,data,intervals.fit,decoded,,0,0
+95,defs,intervals.fit,uncaught exception,FIT decode error: Missing FIT message definition for local message number 1. Error at byte: 625,0,1
+96,defs,intervals.fit,uncaught exception,FIT decode error: Missing FIT message definition for local message number 1. Error at byte: 14,0,0
+97,defs,intervals.fit,killed by signal 11,,1,0
+98,data,intervals.fit,decoded,,0,0
+99,trunc,intervals.fit,uncaught exception,FIT decode error: Decoder not in correct state after last data byte in file. Check message definitions. Error at byte: 87726,0,0
+100,trunc,intervals.fit,uncaught exception,FIT decode error: Decoder not in correct state after last data byte in file. Check message definitions. Error at byte: 25928,0,0
+101,original,long_run.fit,decoded,,0,0
+102,defs,long_run.fit,decoded,,0,0
+103,defs,long_run.fit,decoded,,1,2
+104,defs,long_run.fit,uncaught exception,FIT decode error: Invalid Field Size,0,0
+105,defs,long_run.fit,uncaught exception,FIT decode error: Invalid Field Size,0,0
+106,defs,long_run.fit,uncaught exception,FIT decode error: Missing FIT message definition for local message number 3. Error at byte: 275,1,2
+107,data,long_run.fit,decoded,,0,0
+108,defs,long_run.fit,decoded,,0,0
+109,data,long_run.fit,decoded,,0,0
+110,trunc,long_run.fit,uncaught exception,FIT decode error: Decoder not in correct state after last data byte in file. Check message definitions. Error at byte: 345453,0,0
+111,defs,long_run.fit,decoded,,1,2
+112,defs,long_run.fit,uncaught exception,FIT decode error: Missing FIT message definition for local message number 2. Error at byte: 322,0,0
+113,defs,long_run.fit,uncaught exception,FIT decode error: Invalid Field Size,0,0
+114,data,long_run.fit,decoded,,0,0
+115,defs,long_run.fit,decoded,,0,0
+116,data,long_run.fit,decoded,,0,0
+117,data,long_run.fit,decoded,,0,0
+118,data,long_run.fit,decoded,,0,0
+119,data,long_run.fit,decoded,,0,0
+120,defs,long_run.fit,uncaught exception,FIT decode error: Missing FIT message definition for local message number 1. Error at byte: 170,0,0
+121,data,long_run.fit,decoded,,0,0
+122,defs,long_run.fit,decoded,,0,0
+123,trunc,long_run.fit,uncaught exception,FIT decode error: Decoder not in correct state after last data byte in file. Check message definitions. Error at byte: 58227,0,0
+124,data,long_run.fit,decoded,,0,0
+125,data,long_run.fit,decoded,,0,0
+126,data,long_run.fit,decoded,,0,0
+127,defs,long_run.fit,uncaught exception,FIT decode error: Invalid Field Size,0,0
+128,data,long_run.fit,decoded,,0,1
+129,defs,long_run.fit,decoded,,0,0
+130,defs,long_run.fit,uncaught exception,FIT decode error: Invalid Field Size,0,0
+131,defs,long_run.fit,uncaught exception,FIT decode error: Missing FIT message definition for local message number 12. Error at byte: 404,1,2
+132,defs,long_run.fit,decoded,,0,0
+133,data,long_run.fit,decoded,,0,0
+134,data,long_run.fit,decoded,,0,0
+135,defs,long_run.fit,decoded,,0,0
+136,data,long_run.fit,decoded,,0,0
+137,data,long_run.fit,decoded,,0,0
+138,data,long_run.fit,uncaught exception,FIT decode error: Missing FIT message definition for local message number 2. Error at byte: 61427,0,0
+139,trunc,long_run.fit,uncaught exception,FIT decode error: Decoder not in correct state after last data byte in file. Check message definitions. Error at byte: 292181,0,0
+140,data,long_run.fit,decoded,,0,0
+141,data,long_run.fit,decoded,,0,0
+142,data,long_run.fit,decoded,,0,0
+143,defs,long_run.fit,decoded,,0,0
+144,defs,long_run.fit,decoded,,0,0
+145,defs,long_run.fit,decoded,,0,0
+146,data,long_run.fit,uncaught exception,FIT decode error: Missing FIT message definition for local message number 1. Error at byte: 211079,0,0
+147,trunc,long_run.fit,uncaught exception,FIT decode error: Decoder not in correct state after last data byte in file. Check message definitions. Error at byte: 178554,0,0
+148,trunc,long_run.fit,uncaught exception,FIT decode error: Decoder not in correct state after last data byte in file. Check message definitions. Error at byte: 266158,0,0
+149,data,long_run.fit,decoded,,0,0
+150,data,long_run.fit,decoded,,0,0
+151,data,long_run.fit,decoded,,0,0
+152,data,long_run.fit,decoded,,0,0
+153,defs,long_run.fit,decoded,,0,1
+154,data,long_run.fit,decoded,,0,0
+155,defs,long_run.fit,uncaught exception,FIT decode error: Missing FIT message definition for local message number 2. Error at byte: 275,0,0
+156,trunc,long_run.fit,uncaught exception,FIT decode error: Decoder not in correct state after last data byte in file. Check message definitions. Error at byte: 306557,0,0
+157,defs,long_run.fit,decoded,,0,0
+158,data,long_run.fit,decoded,,0,0
+159,data,long_run.fit,decoded,,0,0
+160,trunc,long_run.fit,uncaught exception,FIT decode error: Decoder not in correct state after last data byte in file. Check message definitions. Error at byte: 214127,0,0
+161,trunc,long_run.fit,uncaught exception,FIT decode error: Decoder not in correct state after last data byte in file. Check message definitions. Error at byte: 330343,0,0
+162,trunc,long_run.fit,uncaught exception,FIT decode error: Decoder not in correct state after last data byte in file. Check message definitions. Error at byte: 161414,0,0
+163,defs,long_run.fit,decoded,,0,0
+164,trunc,long_run.fit,uncaught exception,FIT decode error: Decoder not in correct state after last data byte in file. Check message definitions. Error at byte: 85503,0,0
+165,defs,long_run.fit,uncaught exception,FIT decode error: Missing FIT message definition for local message number 2. Error at byte: 219,0,0
+166,defs,long_run.fit,uncaught exception,FIT decode error: Architecture . not supported. Error at byte: 18,0,0
+167,defs,long_run.fit,decoded,,0,0
+168,defs,long_run.fit,decoded,,0,0
+169,data,long_run.fit,decoded,,0,0
+170,defs,long_run.fit,decoded,,0,0
+171,data,long_run.fit,decoded,,0,0
+172,defs,long_run.fit,uncaught exception,FIT decode error: Missing FIT message definition for local message number 3. Error at byte: 64,0,0
+173,defs,long_run.fit,decoded,,0,0
+174,data,long_run.fit,decoded,,0,0
+175,defs,long_run.fit,decoded,,0,0
+176,data,long_run.fit,decoded,,0,0
+177,data,long_run.fit,decoded,,0,0
+178,trunc,long_run.fit,uncaught exception,FIT decode error: Decoder not in correct state after last data byte in file. Check message definitions. Error at byte: 176791,0,0
+179,defs,long_run.fit,uncaught exception,FIT decode error: Missing FIT message definition for local message number 4. Error at byte: 191,0,0
+180,defs,long_run.fit,uncaught exception,FIT decode error: Architecture � not supported. Error at byte: 101247,0,0
+181,data,long_run.fit,decoded,,0,0
+182,data,long_run.fit,decoded,,0,1
+183,trunc,long_run.fit,uncaught exception,FIT decode error: Decoder not in correct state after last data byte in file. Check message definitions. Error at byte: 30694,0,0
+184,trunc,long_run.fit,uncaught exception,FIT decode error: Decoder not in correct state after last data byte in file. Check message definitions. Error at byte: 319341,0,0
+185,trunc,long_run.fit,uncaught exception,FIT decode error: Decoder not in correct state after last data byte in file. Check message definitions. Error at byte: 78102,0,0
+186,defs,long_run.fit,decoded,,0,0
+187,defs,long_run.fit,decoded,,0,0
+188,trunc,long_run.fit,uncaught exception,FIT decode error: Decoder not in correct state after last data byte in file. Check message definitions. Error at byte: 246763,0,0
+189,data,long_run.fit,decoded,,0,0
+190,data,long_run.fit,decoded,,0,0
+191,data,long_run.fit,decoded,,0,0
+192,trunc,long_run.fit,uncaught exception,FIT decode error: Decoder not in correct state after last data byte in file. Check message definitions. Error at byte: 368593,0,0
+193,data,long_run.fit,uncaught exception,FIT decode error: Missing FIT message definition for local message number 1. Error at byte: 2235,0,0
+194,data,long_run.fit,decoded,,0,1
+195,trunc,long_run.fit,uncaught exception,FIT decode error: Decoder not in correct state after last data byte in file. Check message definitions. Error at byte: 376900,0,0
+196,trunc,long_run.fit,uncaught exception,FIT decode error: Decoder not in correct state after last data byte in file. Check message definitions. Error at byte: 198910,0,0
+197,data,long_run.fit,decoded,,0,0
+198,data,long_run.fit,uncaught exception,FIT decode error: Decoder not in correct state after last data byte in file. Check message definitions. Error at byte: 403781,0,0
+199,data,long_run.fit,decoded,,0,0
+200,data,long_run.fit,decoded,,0,0
+201,defs,long_run.fit,uncaught exception,FIT decode error: Missing FIT message definition for local message number 1. Error at byte: 205,0,0
+202,original,ride.fit,decoded,,0,0
+203,defs,ride.fit,decoded,,0,0
+204,trunc,ride.fit,uncaught exception,FIT decode error: Decoder not in correct state after last data byte in file. Check message definitions. Error at byte: 142183,0,0
+205,defs,ride.fit,decoded,,0,0
+206,trunc,ride.fit,uncaught exception,FIT decode error: Decoder not in correct state after last data byte in file. Check message definitions. Error at byte: 206509,0,0
+207,defs,ride.fit,decoded,,0,0
+208,data,ride.fit,decoded,,0,0
+209,data,ride.fit,decoded,,0,0
+210,trunc,ride.fit,uncaught exception,FIT decode error: Decoder not in correct state after last data byte in file. Check message definitions. Error at byte: 142107,0,0
+211,trunc,ride.fit,decoded,,0,0
+212,defs,ride.fit,decoded,,0,0
+213,defs,ride.fit,decoded,,0,1
+214,trunc,ride.fit,uncaught exception,FIT decode error: Decoder not in correct state after last data byte in file. Check message definitions. Error at byte: 266060,0,0
+215,trunc,ride.fit,uncaught exception,FIT decode error: Decoder not in correct state after last data byte in file. Check message definitions. Error at byte: 16005,0,0
+216,trunc,ride.fit,uncaught exception,FIT decode error: Decoder not in correct state after last data byte in file. Check message definitions. Error at byte: 161607,0,0
+217,defs,ride.fit,uncaught exception,FIT decode error: Missing FIT message definition for local message number 6. Error at byte: 86,0,0
+218,defs,ride.fit,uncaught exception,Invalid developer field definition number in FieldDescriptionMesg,0,0
+219,defs,ride.fit,uncaught exception,FIT decode error: Architecture < not supported. Error at byte: 90,0,0
+220,trunc,ride.fit,uncaught exception,FIT decode error: Decoder not in correct state after last data byte in file. Check message definitions. Error at byte: 4351,0,0
+221,trunc,ride.fit,uncaught exception,FIT decode error: Decoder not in correct state after last data byte in file. Check message definitions. Error at byte: 5144,0,0
+222,data,ride.fit,decoded,,0,0
+223,defs,ride.fit,uncaught exception,FIT decode error: Missing FIT message definition for local message number 3. Error at byte: 14,0,0
+224,data,ride.fit,decoded,,0,0
+225,trunc,ride.fit,uncaught exception,FIT decode error: Decoder not in correct state after last data byte in file. Check message definitions. Error at byte: 186857,0,0
+226,trunc,ride.fit,uncaught exception,FIT decode error: Decoder not in correct state after last data byte in file. Check message definitions. Error at byte: 142091,0,0
+227,trunc,ride.fit,uncaught exception,FIT decode error: Decoder not in correct state after last data byte in file. Check message definitions. Error at byte: 186925,0,0
+228,defs,ride.fit,uncaught exception,FIT decode error: Invalid Field Size,0,0
+229,data,ride.fit,decoded,,0,0
+230,data,ride.fit,decoded,,0,0
+231,defs,ride.fit,uncaught exception,FIT decode error: Architecture � not supported. Error at byte: 497,0,0
+232,defs,ride.fit,decoded,,0,0
+233,defs,ride.fit,decoded,,0,0
+234,defs,ride.fit,decoded,,0,0
+235,defs,ride.fit,uncaught exception,FIT decode error: Missing FIT message definition for local message number 11. Error at byte: 102,0,0
+236,defs,ride.fit,uncaught exception,FIT decode error: Invalid Field Size,0,0
+237,data,ride.fit,decoded,,0,0
+238,trunc,ride.fit,uncaught exception,FIT decode error: Decoder not in correct state after last data byte in file. Check message definitions. Error at byte: 130856,0,0
+239,defs,ride.fit,uncaught exception,FIT decode error: Invalid Field Size,0,0
+240,data,ride.fit,decoded,,0,0
+241,defs,ride.fit,decoded,,1,2
+242,trunc,ride.fit,uncaught exception,FIT decode error: Decoder not in correct state after last data byte in file. Check message definitions. Error at byte: 99800,0,0
+243,trunc,ride.fit,uncaught exception,FIT decode error: Decoder not in correct state after last data byte in file. Check message definitions. Error at byte: 281473,0,0
+244,data,ride.fit,uncaught exception,FIT decode error: Missing FIT message definition for local message number 12. Error at byte: 297291,0,0
+245,data,ride.fit,uncaught exception,FIT decode error: Missing FIT message definition for local message number 13. Error at byte: 293595,0,0
+246,data,ride.fit,uncaught exception,FIT decode error: Missing FIT message definition for local message number 2. Error at byte: 87411,0,0
+247,defs,ride.fit,decoded,,0,0
+248,defs,ride.fit,uncaught exception,FIT decode error: Invalid Field Size,0,0
+249,defs,ride.fit,decoded,,0,0
+250,data,ride.fit,decoded,,0,0
+251,data,ride.fit,uncaught exception,FIT decode error: Architecture � not supported. Error at byte: 36959,0,0
+252,trunc,ride.fit,uncaught exception,FIT decode error: Decoder not in correct state after last data byte in file. Check message definitions. Error at byte: 281894,0,0
+253,trunc,ride.fit,uncaught exception,FIT decode error: Decoder not in correct state after last data byte in file. Check message definitions. Error at byte: 104084,0,0
+254,trunc,ride.fit,uncaught exception,FIT decode error: Decoder not in correct state after last data byte in file. Check message definitions. Error at byte: 225093,0,0
+255,data,ride.fit,decoded,,0,0
+256,defs,ride.fit,decoded,,0,0
+257,trunc,ride.fit,uncaught exception,FIT decode error: Decoder not in correct state after last data byte in file. Check message definitions. Error at byte: 38945,0,0
+258,data,ride.fit,decoded,,0,0
+259,data,ride.fit,decoded,,0,0
+260,defs,ride.fit,decoded,,0,0
+261,trunc,ride.fit,uncaught exception,FIT decode error: Decoder not in correct state after last data byte in file. Check message definitions. Error at byte: 195426,0,0
+262,defs,ride.fit,uncaught exception,Invalid developer field definition number in FieldDescriptionMesg,0,0
+263,data,ride.fit,decoded,,0,0
+264,data,ride.fit,decoded,,0,0
+265,defs,ride.fit,uncaught exception,FIT decode error: Missing FIT message definition for local message number 3. Error at byte: 64,0,0
+266,trunc,ride.fit,uncaught exception,FIT decode error: Decoder not in correct state after last data byte in file. Check message definitions. Error at byte: 8381,0,0
+267,defs,ride.fit,decoded,,0,0
+268,defs,ride.fit,decoded,,0,0
+269,defs,ride.fit,decoded,,0,0
+270,data,ride.fit,decoded,,0,0
+271,data,ride.fit,uncaught exception,FIT decode error: Architecture � not supported. Error at byte: 77447,0,0
+272,defs,ride.fit,decoded,,0,0
+273,trunc,ride.fit,uncaught exception,FIT decode error: Decoder not in correct state after last data byte in file. Check message definitions. Error at byte: 250227,0,0
+274,data,ride.fit,decoded,,0,0
+275,defs,ride.fit,decoded,,0,0
+276,defs,ride.fit,decoded,,0,0
+277,trunc,ride.fit,uncaught exception,FIT decode error: Decoder not in correct state after last data byte in file. Check message definitions. Error at byte: 38942,0,0
+278,defs,ride.fit,uncaught exception,FIT decode error: Architecture � not supported. Error at byte: 101247,0,0
+279,defs,ride.fit,uncaught exception,FIT decode error: Architecture m not supported. Error at byte: 90,0,0
+280,defs,ride.fit,decoded,,0,0
+281,trunc,ride.fit,uncaught exception,FIT decode error: Decoder not in correct state after last data byte in file. Check message definitions. Error at byte: 193252,0,0
+282,data,ride.fit,decoded,,0,0
+283,data,ride.fit,decoded,,0,0
+284,data,ride.fit,decoded,,0,0
+285,data,ride.fit,decoded,,0,0
+286,data,ride.fit,decoded,,0,0
+287,defs,ride.fit,decoded,,0,0
+288,defs,ride.fit,uncaught exception,FIT decode error: Missing FIT message definition for local message number 2. Error at byte: 52,0,0
+289,defs,ride.fit,decoded,,1,2
+290,trunc,ride.fit,uncaught exception,FIT decode error: Decoder not in correct state after last data byte in file. Check message definitions. Error at byte: 20962,0,0
+291,data,ride.fit,decoded,,0,0
+292,trunc,ride.fit,uncaught exception,FIT decode error: Decoder not in correct state after last data byte in file. Check message definitions. Error at byte: 105049,0,0
+293,data,ride.fit,decoded,,0,0
+294,data,ride.fit,uncaught exception,FIT decode error: Architecture � not supported. Error at byte: 98335,0,0
+295,trunc,ride.fit,uncaught exception,FIT decode error: Decoder not in correct state after last data byte in file. Check message definitions. Error at byte: 226798,0,0
+296,trunc,ride.fit,uncaught exception,FIT decode error: Decoder not in correct state after last data byte in file. Check message definitions. Error at byte: 180206,0,0
+297,defs,ride.fit,decoded,,0,0
+298,trunc,ride.fit,uncaught exception,FIT decode error: Decoder not in correct state after last data byte in file. Check message definitions. Error at byte: 259234,0,0
+299,trunc,ride.fit,uncaught exception,FIT decode error: Decoder not in correct state after last data byte in file. Check message definitions. Error at byte: 295556,0,0
+300,trunc,ride.fit,uncaught exception,FIT decode error: Decoder not in correct state after last data byte in file. Check message definitions. Error at byte: 262778,0,0
+301,defs,ride.fit,uncaught exception,FIT decode error: Missing FIT message definition for local message number 1. Error at byte: 187,0,0
+302,trunc,ride.fit,uncaught exception,FIT decode error: Decoder not in correct state after last data byte in file. Check message definitions. Error at byte: 283023,0,0
+303,original,treadmill.fit,decoded,,0,0
+304,defs,treadmill.fit,uncaught exception,FIT decode error: Missing FIT message definition for local message number 1. Error at byte: 206,0,0
+305,defs,treadmill.fit,uncaught exception,FIT decode error: Missing FIT message definition for local message number 12. Error at byte: 381,0,0
+306,defs,treadmill.fit,uncaught exception,FIT decode error: Architecture � not supported. Error at byte: 214,0,0
+307,data,treadmill.fit,uncaught exception,FIT decode error: Missing FIT message definition for local message number 2. Error at byte: 1974,0,0
+308,defs,treadmill.fit,decoded,,0,0
+309,defs,treadmill.fit,decoded,,0,0
+310,defs,treadmill.fit,uncaught exception,FIT decode error: Missing FIT message definition for local message number 15. Error at byte: 328,0,0
+311,trunc,treadmill.fit,uncaught exception,FIT decode error: Decoder not in correct state after last data byte in file. Check message definitions. Error at byte: 75300,0,0
+312,defs,treadmill.fit,decoded,,0,0
+313,defs,treadmill.fit,decoded,,0,0
+314,data,treadmill.fit,decoded,,0,0
+315,data,treadmill.fit,decoded,,0,0
+316,trunc,treadmill.fit,uncaught exception,FIT decode error: Decoder not in correct state after last data byte in file. Check message definitions. Error at byte: 44872,0,0
+317,trunc,treadmill.fit,uncaught exception,FIT decode error: Decoder not in correct state after last data byte in file. Check message definitions. Error at byte: 64245,0,0
+318,defs,treadmill.fit,decoded,,0,0
+319,data,treadmill.fit,decoded,,0,1
+320,defs,treadmill.fit,decoded,,0,0
+321,data,treadmill.fit,uncaught exception,FIT decode error: Missing FIT message definition for local message number 9. Error at byte: 80166,0,0
+322,data,treadmill.fit,decoded,,0,1
+323,defs,treadmill.fit,decoded,,0,0
+324,defs,treadmill.fit,decoded,,0,0
+325,defs,treadmill.fit,uncaught exception,FIT decode error: Missing FIT message definition for local message number 8. Error at byte: 108,0,0
+326,trunc,treadmill.fit,decoded,,0,0
+327,data,treadmill.fit,decoded,,0,0
+328,data,treadmill.fit,decoded,,0,0
+329,data,treadmill.fit,decoded,,0,0
+330,data,treadmill.fit,decoded,,0,0
+331,data,treadmill.fit,uncaught exception,FIT decode error: Architecture � not supported. Error at byte: 15640,0,0
+332,data,treadmill.fit,decoded,,0,0
+333,defs,treadmill.fit,decoded,,0,0
+334,defs,treadmill.fit,uncaught exception,FIT decode error: Missing FIT message definition for local message number 2. Error at byte: 500,0,0
+335,defs,treadmill.fit,decoded,,0,0
+336,data,treadmill.fit,decoded,,0,1
+337,defs,treadmill.fit,decoded,,0,0
+338,trunc,treadmill.fit,uncaught exception,FIT decode error: Decoder not in correct state after last data byte in file. Check message definitions. Error at byte: 2302,0,0
+339,defs,treadmill.fit,decoded,,1,2
+340,defs,treadmill.fit,uncaught exception,FIT decode error: Invalid Field Size,0,0
+341,data,treadmill.fit,decoded,,0,0
+342,defs,treadmill.fit,uncaught exception,FIT decode error: Missing FIT message definition for local message number 1. Error at byte: 101,0,0
+343,defs,treadmill.fit,decoded,,0,0
+344,data,treadmill.fit,decoded,,0,0
+345,trunc,treadmill.fit,uncaught exception,FIT decode error: Decoder not in correct state after last data byte in file. Check message definitions. Error at byte: 4643,0,0
+346,data,treadmill.fit,uncaught exception,FIT decode error: Missing FIT message definition for local message number 1. Error at byte: 44850,0,0
+347,defs,treadmill.fit,uncaught exception,FIT decode error: Missing FIT message definition for local message number 15. Error at byte: 292,0,0
+348,data,treadmill.fit,decoded,,0,0
+349,defs,treadmill.fit,decoded,,0,0
+350,trunc,treadmill.fit,uncaught exception,FIT decode error: Decoder not in correct state after last data byte in file. Check message definitions. Error at byte: 954,0,0
+351,data,treadmill.fit,decoded,,0,0
+352,defs,treadmill.fit,uncaught exception,FIT decode error: Missing FIT message definition for local message number 14. Error at byte: 237,0,0
+353,trunc,treadmill.fit,uncaught exception,FIT decode error: Decoder not in correct state after last data byte in file. Check message definitions. Error at byte: 66997,0,0
+354,trunc,treadmill.fit,uncaught exception,FIT decode error: Decoder not in correct state after last data byte in file. Check message definitions. Error at byte: 70767,0,0
+355,trunc,treadmill.fit,uncaught exception,FIT decode error: Decoder not in correct state after last data byte in file. Check message definitions. Error at byte: 71091,0,0
+356,defs,treadmill.fit,decoded,,0,0
+357,defs,treadmill.fit,decoded,,0,0
+358,data,treadmill.fit,decoded,,0,0
+359,defs,treadmill.fit,uncaught exception,FIT decode error: Missing FIT message definition for local message number 15. Error at byte: 634,0,0
+360,trunc,treadmill.fit,uncaught exception,FIT decode error: Decoder not in correct state after last data byte in file. Check message definitions. Error at byte: 31166,0,0
+361,data,treadmill.fit,decoded,,0,0
+362,data,treadmill.fit,uncaught exception,FIT decode error: Missing FIT message definition for local message number 1. Error at byte: 62976,0,0
+363,trunc,treadmill.fit,uncaught exception,FIT decode error: Decoder not in correct state after last data byte in file. Check message definitions. Error at byte: 45870,0,0
+364,data,treadmill.fit,decoded,,0,0
+365,data,treadmill.fit,uncaught exception,FIT decode error: Missing FIT message definition for local message number 1. Error at byte: 54480,0,0
+366,data,treadmill.fit,decoded,,0,0
+367,defs,treadmill.fit,decoded,,1,2
+368,defs,treadmill.fit,decoded,,0,0
+369,defs,treadmill.fit,uncaught exception,FIT decode error: Architecture � not supported. Error at byte: 160,0,0
+370,data,treadmill.fit,decoded,,0,0
+371,trunc,treadmill.fit,uncaught exception,FIT decode error: Decoder not in correct state after last data byte in file. Check message definitions. Error at byte: 91336,0,0
+372,data,treadmill.fit,uncaught exception,FIT decode error: Architecture � not supported. Error at byte: 4966,0,0
+373,data,treadmill.fit,decoded,,0,0
+374,defs,treadmill.fit,decoded,,0,0
+375,defs,treadmill.fit,decoded,,0,0
+376,defs,treadmill.fit,uncaught exception,FIT decode error: Invalid Field Size,0,0
+377,defs,treadmill.fit,uncaught exception,FIT decode error: Missing FIT message definition for local message number 1. Error at byte: 206,0,0
+378,data,treadmill.fit,decoded,,0,1
+379,data,treadmill.fit,uncaught exception,FIT decode error: Missing FIT message definition for local message number 14. Error at byte: 58224,0,0
+380,data,treadmill.fit,decoded,,0,0
+381,trunc,treadmill.fit,uncaught exception,FIT decode error: Decoder not in correct state after last data byte in file. Check message definitions. Error at byte: 69562,0,0
+382,defs,treadmill.fit,decoded,,0,0
+383,defs,treadmill.fit,uncaught exception,FIT decode error: Missing FIT message definition for local message number 2. Error at byte: 248,1,2
+384,data,treadmill.fit,decoded,,0,0
+385,defs,treadmill.fit,decoded,,0,0
+386,data,treadmill.fit,decoded,,0,1
+387,data,treadmill.fit,decoded,,0,0
+388,data,treadmill.fit,decoded,,0,0
+389,defs,treadmill.fit,decoded,,0,0
+390,defs,treadmill.fit,decoded,,0,0
+391,data,treadmill.fit,decoded,,0,0
+392,data,treadmill.fit,decoded,,0,0
+393,defs,treadmill.fit,decoded,,0,0
+394,data,treadmill.fit,decoded,,0,0
+395,defs,treadmill.fit,decoded,,0,0
+396,trunc,treadmill.fit,uncaught exception,FIT decode error: Decoder not in correct state after last data byte in file. Check message definitions. Error at byte: 16232,0,0
+397,trunc,treadmill.fit,uncaught exception,FIT decode error: Decoder not in correct state after last data byte in file. Check message definitions. Error at byte: 41817,0,0
+398,defs,treadmill.fit,decoded,,0,0
+399,defs,treadmill.fit,uncaught exception,FIT decode error: Missing FIT message definition for local message number 12. Error at byte: 335,0,0
+400,data,treadmill.fit,uncaught exception,FIT decode error: Missing FIT message definition for local message number 1. Error at byte: 47136,0,0
+401,defs,treadmill.fit,uncaught exception,FIT decode error: Missing FIT message definition for local message number 4. Error at byte: 363,1,2
+402,defs,treadmill.fit,uncaught exception,FIT decode error: Missing FIT message definition for local message number 6. Error at byte: 396,0,1
+403,data,treadmill.fit,decoded,,0,0
+404,valid,valid_1.fit,decoded,,0,0
+405,valid,valid_10.fit,decoded,,0,0
+406,valid,valid_11.fit,decoded,,0,0
+407,valid,valid_13.fit,decoded,,0,1
+408,valid,valid_14.fit,decoded,,0,1
+409,valid,valid_15.fit,decoded,,0,0
+410,valid,valid_16.fit,decoded,,0,1
+411,valid,valid_17.fit,decoded,,0,1
+412,valid,valid_18.fit,decoded,,0,0
+413,valid,valid_19.fit,decoded,,0,0
+414,valid,valid_2.fit,decoded,,0,0
+415,valid,valid_20.fit,decoded,,0,0
+416,valid,valid_21.fit,decoded,,0,1
+417,valid,valid_22.fit,decoded,,0,1
+418,valid,valid_23.fit,decoded,,0,1
+419,valid,valid_24.fit,decoded,,0,0
+420,valid,valid_25.fit,decoded,,0,0
+421,valid,valid_26.fit,decoded,,0,0
+422,valid,valid_27.fit,decoded,,0,0
+423,valid,valid_28.fit,decoded,,0,1
+424,valid,valid_29.fit,decoded,,0,0
+425,valid,valid_3.fit,decoded,,0,0
+426,valid,valid_30.fit,decoded,,0,0
+427,valid,valid_33.fit,decoded,,0,1
+428,valid,valid_34.fit,decoded,,0,1
+429,valid,valid_35.fit,decoded,,0,1
+430,valid,valid_36.fit,decoded,,0,0
+431,valid,valid_37.fit,decoded,,0,0
+432,valid,valid_38.fit,decoded,,0,0
+433,valid,valid_39.fit,decoded,,0,1
+434,valid,valid_4.fit,decoded,,0,1
+435,valid,valid_40.fit,decoded,,0,0
+436,valid,valid_41.fit,decoded,,0,1
+437,valid,valid_42.fit,decoded,,0,1
+438,valid,valid_43.fit,decoded,,0,0
+439,valid,valid_45.fit,decoded,,0,0
+440,valid,valid_47.fit,decoded,,0,1
+441,valid,valid_48.fit,decoded,,0,0
+442,valid,valid_49.fit,decoded,,0,0
+443,valid,valid_5.fit,decoded,,0,0
+444,valid,valid_50.fit,decoded,,0,0
+445,valid,valid_51.fit,decoded,,0,0
+446,valid,valid_52.fit,decoded,,0,0
+447,valid,valid_53.fit,decoded,,0,0
+448,valid,valid_54.fit,decoded,,0,0
+449,valid,valid_55.fit,decoded,,0,0
+450,valid,valid_56.fit,decoded,,0,0
+451,valid,valid_57.fit,decoded,,0,1
+452,valid,valid_58.fit,decoded,,0,0
+453,valid,valid_59.fit,decoded,,0,0
+454,valid,valid_6.fit,decoded,,0,0
+455,valid,valid_60.fit,decoded,,0,0
+456,valid,valid_7.fit,decoded,,0,0
+457,valid,valid_8.fit,decoded,,0,1
+458,valid,valid_9.fit,decoded,,0,1

@@ -1,0 +1,58 @@
+I added a small per-call cache for referenced fields so repeated subfield maps that reference the same field reuse the field lookup and rounded reference value. This avoids repeatedly scanning the message fields and converting the same reference field for common multi-subfield cases such as `event.data`.
+
+```cpp
+FIT_UINT16 Mesg::GetActiveSubFieldIndexByFieldIndex(const FIT_UINT16 fieldIndex) const
+{
+    const FIT_UINT16 numFields = GetNumFields();
+    if (fieldIndex >= numFields)
+        return FIT_SUBFIELD_INDEX_MAIN_FIELD;
+
+    const Field& field = fields[fieldIndex];
+    const FIT_UINT16 numSubFields = field.GetNumSubFields();
+    if (numSubFields == 0)
+        return FIT_SUBFIELD_INDEX_MAIN_FIELD;
+
+    struct RefCache
+    {
+        FIT_UINT16 num;
+        const Field* field;
+        FIT_SINT32 value;
+        bool valid;
+    };
+    RefCache cache[4] = {};
+
+    for (FIT_UINT16 i = 0; i < numSubFields; ++i)
+    {
+        const Profile::SUBFIELD* subField = field.GetSubField(i);
+        if (subField == FIT_NULL)
+            continue;
+
+        const int numMaps = (int)subField->numMaps;
+        for (int j = 0; j < numMaps; ++j)
+        {
+            const auto& map = subField->maps[j];
+            const FIT_UINT16 refFieldNum = map.refFieldNum;
+            RefCache& entry = cache[refFieldNum & 3];
+
+            if (!entry.valid || entry.num != refFieldNum)
+            {
+                entry.valid = true;
+                entry.num = refFieldNum;
+                entry.field = GetField(refFieldNum);
+
+                if (entry.field != FIT_NULL)
+                {
+                    FIT_FLOAT64 refValue = entry.field->GetFLOAT64Value(0, FIT_SUBFIELD_INDEX_MAIN_FIELD);
+                    refValue += ((refValue >= 0.0) ? (0.5) : (-0.5));
+                    entry.value = (FIT_SINT32)refValue;
+                }
+            }
+
+            if (entry.field != FIT_NULL && entry.value == map.refFieldValue)
+                return i;
+        }
+    }
+
+    return FIT_SUBFIELD_INDEX_MAIN_FIELD;
+}
+```

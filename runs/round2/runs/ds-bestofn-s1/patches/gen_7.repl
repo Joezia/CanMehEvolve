@@ -1,0 +1,8 @@
+Replaced the body with a member-initializer list so `values` and `stringIndexes` are copy-constructed directly, avoiding default construction followed by assignment.
+
+```cpp
+FieldBase::FieldBase(const FieldBase &field)
+    : values(field.values), stringIndexes(field.stringIndexes)
+{
+}
+```

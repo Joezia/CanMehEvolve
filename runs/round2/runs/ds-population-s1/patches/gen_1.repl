@@ -1,0 +1,8 @@
+The constructor is already minimal—two zero stores—so there is no meaningful instruction to remove; I keep it identical (an explicitly-defaulted definition would compile to the same code) to guarantee bit-identical behaviour.
+
+```cpp
+    AccumulatedField::AccumulatedField()
+        : lastValue(0), accumulatedValue(0)
+    {
+    }
+```

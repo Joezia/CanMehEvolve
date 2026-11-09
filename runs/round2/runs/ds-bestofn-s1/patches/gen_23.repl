@@ -1,0 +1,14 @@
+I replaced the indexed loop with a range-based loop so the vector bounds are evaluated once and the repeated `size()`/`int` cast and `operator[]` overhead are removed while preserving first-match semantics.
+
+```cpp
+Field* Mesg::GetField(const FIT_UINT8 fieldNum)
+{
+    for (Field& field : fields)
+    {
+        if (field.GetNum() == fieldNum)
+            return &field;
+    }
+
+    return FIT_NULL;
+}
+```

@@ -1,0 +1,11 @@
+The function is already near-optimal, so the only gain is making the guard branchless: load the members once and let the compiler emit a conditional move instead of a predictable-but-still-branching early return.
+
+```cpp
+FIT_UINT8 Field::GetNum(void) const
+{
+    const Profile* p = profile;
+    return ((p != NULL) && (profileIndex < p->numFields))
+               ? p->fields[profileIndex].num
+               : static_cast<FIT_UINT8>(FIT_FIELD_NUM_INVALID);
+}
+```

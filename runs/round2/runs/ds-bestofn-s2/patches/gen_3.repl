@@ -1,0 +1,8 @@
+Replaced default-construction followed by vector copy-assignment with direct member-initializer copy construction, avoiding the extra assignment overhead while preserving identical copying behavior.
+
+```cpp
+FieldBase::FieldBase(const FieldBase &field)
+    : values(field.values), stringIndexes(field.stringIndexes)
+{
+}
+```

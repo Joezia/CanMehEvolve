@@ -1,0 +1,33 @@
+Added a small direct-mapped cache for `(mesgNum, fieldNum)` lookups and streamlined the miss path; decoding repeatedly queries the same profile fields, so this avoids repeated `GetMesg` calls and linear scans.
+
+```cpp
+const FIT_UINT16 Profile::GetFieldIndex(const FIT_UINT16 mesgNum, const FIT_UINT8 fieldNum)
+{
+    static FIT_UINT64 fieldIndexCache[2048];
+
+    const FIT_UINT32 keyPlus = (((FIT_UINT32)mesgNum << 8) | fieldNum) + 1u;
+    const FIT_UINT32 hash = keyPlus & 2047u;
+    const FIT_UINT64 cached = fieldIndexCache[hash];
+
+    if ((FIT_UINT32)cached == keyPlus)
+        return (FIT_UINT16)(cached >> 32);
+
+    const MESG *mesg = GetMesg(mesgNum);
+    FIT_UINT16 index = FIT_UINT16_INVALID;
+
+    if (mesg != NULL)
+    {
+        for (FIT_UINT16 i = 0; i < mesg->numFields; i++)
+        {
+            if (mesg->fields[i].num == fieldNum)
+            {
+                index = i;
+                break;
+            }
+        }
+    }
+
+    fieldIndexCache[hash] = ((FIT_UINT64)index << 32) | keyPlus;
+    return index;
+}
+```

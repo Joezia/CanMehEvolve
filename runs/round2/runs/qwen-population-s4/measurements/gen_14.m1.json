@@ -1,0 +1,6 @@
+{
+ "error": "/home/z/zhouzia/Workspace/CanMehEvolve/build/work-1096083/tree/src/fit_field_base.cpp: In member function ‘FIT_FLOAT64 fit::FieldBase::GetFLOAT64Value(FIT_UINT8, FIT_UINT16) const’:\n/home/z/zhouzia/Workspace/CanMehEvolve/build/work-1096083/tree/src/fit_field_base.cpp:379:41: error: ‘data_’ was not declared in this scope\n  379 |             const FIT_UINT8* data_ptr = data_.data() + fieldArrayIndex * sizeof(FIT_FLOAT64);\n      |                                         ^~~~~\n",
+ "ok": false,
+ "rebuilt": 2,
+ "stage": "compile"
+}

@@ -1,0 +1,6 @@
+{
+ "error": "/home/z/zhouzia/Workspace/CanMehEvolve/build/work-1094748/tree/src/fit_field.cpp: In member function ‘virtual FIT_UINT8 fit::Field::GetType() const’:\n/home/z/zhouzia/Workspace/CanMehEvolve/build/work-1094748/tree/src/fit_field.cpp:105:20: error: ‘ProfileField’ in ‘class fit::Profile’ does not name a type\n  105 |     const Profile::ProfileField *p = profile;\n      |                    ^~~~~~~~~~~~\n/home/z/zhouzia/Workspace/CanMehEvolve/build/work-1094748/tree/src/fit_field.cpp:106:26: error: ‘p’ was not declared in this scope\n  106 |     if (__builtin_expect(p == NULL, 0) ||\n      |                          ^\n/home/z/zhouzia/Workspace/CanMehEvolve/build/work-1094748/tree/src/fit_field.cpp:110:12: error: ‘p’ was not declared in this scope\n  110 |     return p->fields[profileIndex].type;\n      |            ^\n",
+ "ok": false,
+ "rebuilt": 1,
+ "stage": "compile"
+}

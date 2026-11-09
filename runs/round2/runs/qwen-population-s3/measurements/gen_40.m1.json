@@ -1,0 +1,6 @@
+{
+ "error": "/home/z/zhouzia/Workspace/CanMehEvolve/build/work-1095835/tree/src/fit_field_base.cpp: In member function ‘FIT_FLOAT64 fit::FieldBase::GetOffset(FIT_UINT16) const’:\n/home/z/zhouzia/Workspace/CanMehEvolve/build/work-1095835/tree/src/fit_field_base.cpp:82:11: error: ‘SubField’ does not name a type; did you mean ‘Field’?\n   82 |     const SubField* subfield = GetSubField(subFieldIndex);\n      |           ^~~~~~~~\n      |           Field\n/home/z/zhouzia/Workspace/CanMehEvolve/build/work-1095835/tree/src/fit_field_base.cpp:83:13: error: ‘subfield’ was not declared in this scope\n   83 |     return (subfield != nullptr) ? subfield->offset : 0.0;\n      |             ^~~~~~~~\n",
+ "ok": false,
+ "rebuilt": 6,
+ "stage": "compile"
+}

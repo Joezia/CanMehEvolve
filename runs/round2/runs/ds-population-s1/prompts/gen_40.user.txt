@@ -1,0 +1,20 @@
+File: src/fit_session_mesg.hpp
+Function: IsMaxSaturatedHemoglobinPercentValid (10 lines)
+One full decode of the four files takes about 358.6 ms in the stock build.
+Time of the current version of the whole library relative to stock: 0.865 (below 1.0 is faster). Best measured so far: 0.860.
+
+Current text of the function:
+```cpp
+    FIT_BOOL IsMaxSaturatedHemoglobinPercentValid(FIT_UINT8 index) const
+    {
+        const Field* field = GetField(100);
+        if( FIT_NULL == field )
+        {
+            return FIT_FALSE;
+        }
+
+        return field->IsValueValid(index);
+    }
+
+```
+Return the faster replacement now.

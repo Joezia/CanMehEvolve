@@ -1,0 +1,1 @@
+{"error":"the candidate died on signal 6 (abort, which std::terminate raises for an uncaught exception): free(): double free detected in tcache 2\n","ok":false,"rebuilt":3,"stage":"crash"}

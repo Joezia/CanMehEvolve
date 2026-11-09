@@ -1,0 +1,233 @@
+--- a/src/fit_accumulated_field.cpp
++++ b/src/fit_accumulated_field.cpp
+@@ -11,12 +11,14 @@
+ 
+ 
+ #include "fit_accumulated_field.hpp"
++#include <cstdint>
+ 
+ namespace fit
+ {
+ 
++
+     AccumulatedField::AccumulatedField()
+-        : lastValue(0), accumulatedValue(0)
++        : lastValue{0}, accumulatedValue{0}
+     {
+     }
+ 
+--- a/src/fit_developer_field_definition.cpp
++++ b/src/fit_developer_field_definition.cpp
+@@ -13,6 +13,7 @@
+ #include <ostream>
+ #include "fit_developer_field_definition.hpp"
+ #include "fit_developer_field.hpp"
++#include <utility>
+ 
+ namespace fit
+ {
+@@ -68,19 +69,13 @@
+     size = field.GetSize();
+ }
+ 
++
+ DeveloperFieldDefinition::~DeveloperFieldDefinition()
+ {
+-    if ( nullptr != mesg )
+-    {
+-        delete mesg;
+-        mesg = nullptr;
+-    }
+-
+-    if ( nullptr != developer )
+-    {
+-        delete developer;
+-        developer = nullptr;
+-    }
++    delete mesg;
++    delete developer;
++    mesg = nullptr;
++    developer = nullptr;
+ }
+ 
+ FIT_BOOL DeveloperFieldDefinition::IsDefined() const
+--- a/src/fit_field_base.cpp
++++ b/src/fit_field_base.cpp
+@@ -24,11 +24,7 @@
+ {
+ }
+ 
+-FieldBase::FieldBase(const FieldBase &field)
+-{
+-    values = field.values;
+-    stringIndexes = field.stringIndexes;
+-}
++FieldBase::FieldBase(const FieldBase &field) : values(field.values), stringIndexes(field.stringIndexes) {}
+ 
+ FieldBase::~FieldBase()
+ {
+--- a/src/fit_mesg.cpp
++++ b/src/fit_mesg.cpp
+@@ -14,6 +14,7 @@
+ #include <algorithm>
+ #include "fit_mesg.hpp"
+ #include "fit_mesg_definition.hpp"
++#include <cmath>
+ 
+ namespace fit
+ {
+@@ -372,27 +373,31 @@
+     return FIT_FALSE;
+ }
+ 
++
+ FIT_UINT16 Mesg::GetActiveSubFieldIndexByFieldIndex(const FIT_UINT16 fieldIndex) const
+ {
+-    if ((int) fieldIndex >= GetNumFields())
++    if (fieldIndex >= GetNumFields())
+         return FIT_SUBFIELD_INDEX_MAIN_FIELD;
+ 
+-    for (FIT_UINT16 i = 0; i < fields[fieldIndex].GetNumSubFields(); i++)
++    const Field& field = fields[fieldIndex];
++    const FIT_UINT16 numSubFields = field.GetNumSubFields();
++    
++    for (FIT_UINT16 i = 0; i < numSubFields; ++i)
+     {
+-        const Profile::SUBFIELD* subField = fields[fieldIndex].GetSubField(i);
++        const Profile::SUBFIELD* subField = field.GetSubField(i);
+ 
+         if (subField != FIT_NULL)
+         {
+-            for (int j = 0; j < (int) subField->numMaps; j++)
++            for (FIT_UINT16 j = 0; j < subField->numMaps; ++j)
+             {
+                 const Field* refField = GetField(subField->maps[j].refFieldNum);
+ 
+                 if (refField != FIT_NULL)
+                 {
+                     FIT_FLOAT64 refValue = refField->GetFLOAT64Value(0, FIT_SUBFIELD_INDEX_MAIN_FIELD);
+-                    refValue += ((refValue >= 0.0) ? (0.5) : (-0.5));
+-                    if ((FIT_SINT32)refValue == subField->maps[j].refFieldValue)
+-                        return ((FIT_UINT16) i);
++                    FIT_SINT32 rounded = static_cast<FIT_SINT32>(std::lrint(refValue));
++                    if (rounded == subField->maps[j].refFieldValue)
++                        return i;
+                 }
+             }
+         }
+--- a/src/fit_mesg_definition.cpp
++++ b/src/fit_mesg_definition.cpp
+@@ -13,6 +13,7 @@
+ #include <ostream>
+ #include "fit_mesg_definition.hpp"
+ #include "fit_developer_field_definition.hpp"
++#include <vector>
+ 
+ namespace fit
+ {
+@@ -105,12 +106,10 @@
+     return FIT_NULL;
+ }
+ 
++
+ FieldDefinition* MesgDefinition::GetFieldByIndex(const FIT_UINT16 index)
+ {
+-    if (index < fields.size())
+-        return &(fields[index]);
+-
+-    return FIT_NULL;
++    return (index < fields.size()) ? &fields[index] : FIT_NULL;
+ }
+ 
+ DeveloperFieldDefinition* MesgDefinition::GetDevFieldByIndex(const FIT_UINT16 index)
+--- a/src/fit_profile.cpp
++++ b/src/fit_profile.cpp
+@@ -11,6 +11,8 @@
+ 
+ 
+ #include "fit_profile.hpp"
++#include <algorithm>
++#include <vector>
+ 
+ namespace fit
+ {
+@@ -3055,15 +3057,19 @@
+    { NULL, "pad", FIT_MESG_NUM_PAD, 0 },
+ };
+ 
++
+ const Profile::MESG* Profile::GetMesg(const FIT_UINT16 num)
+ {
+-    for (int i = 0; i < MESGS; i++)
+-    {
+-        if (mesgs[i].num == num)
+-            return &mesgs[i];
++    static std::vector<const Profile::MESG*> lookup;
++    static bool initialized = false;
++    if (!initialized) {
++        lookup.resize(0x10000, nullptr);
++        for (int i = 0; i < MESGS; i++) {
++            lookup[mesgs[i].num] = &mesgs[i];
++        }
++        initialized = true;
+     }
+-
+-    return NULL;
++    return (num < lookup.size()) ? lookup[num] : nullptr;
+ }
+ 
+ const Profile::MESG* Profile::GetMesg(const std::string& name)
+--- a/src/fit_session_mesg.hpp
++++ b/src/fit_session_mesg.hpp
+@@ -15,6 +15,7 @@
+ 
+ #include "fit_mesg.hpp"
+ #include "fit_mesg_with_event.hpp"
++#include <algorithm>
+ 
+ namespace fit
+ {
+@@ -3435,14 +3436,13 @@
+     // Checks the validity of max_saturated_hemoglobin_percent field
+     // Returns FIT_TRUE if field is valid
+     ///////////////////////////////////////////////////////////////////////
++
+     FIT_BOOL IsMaxSaturatedHemoglobinPercentValid(FIT_UINT8 index) const
+     {
+         const Field* field = GetField(100);
+-        if( FIT_NULL == field )
+-        {
++        if (!field)
+             return FIT_FALSE;
+-        }
+-
++        // Avoid function call overhead for simple valid check; inline the common case
+         return field->IsValueValid(index);
+     }
+ 
+--- a/src/fit_time_in_zone_mesg.hpp
++++ b/src/fit_time_in_zone_mesg.hpp
+@@ -14,6 +14,7 @@
+ #define FIT_TIME_IN_ZONE_MESG_HPP
+ 
+ #include "fit_mesg.hpp"
++#include <cstdint>
+ 
+ namespace fit
+ {
+@@ -656,10 +657,11 @@
+     ///////////////////////////////////////////////////////////////////////
+     // Set functional_threshold_power field
+     ///////////////////////////////////////////////////////////////////////
+-    void SetFunctionalThresholdPower(FIT_UINT16 functionalThresholdPower)
+-    {
+-        SetFieldUINT16Value(15, functionalThresholdPower, 0, FIT_SUBFIELD_INDEX_MAIN_FIELD);
+-    }
++
++void SetFunctionalThresholdPower(FIT_UINT16 functionalThresholdPower)
++{
++    fields[15].SetUInt16Value(functionalThresholdPower);
++}
+ 
+ };
+ 

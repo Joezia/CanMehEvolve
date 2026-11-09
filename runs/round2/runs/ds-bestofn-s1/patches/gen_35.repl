@@ -1,0 +1,16 @@
+I inverted the cached-type branch so the common uncached/profile-lookup path falls through instead of jumping, and combined the profile validity checks into one positive condition. This reduces taken branches on the hot decode path while preserving all invalid-input behaviour.
+
+```cpp
+FIT_UINT8 Field::GetType() const
+{
+    if ( type == FIT_UINT8_INVALID )
+    {
+        if ( (profile != NULL) && (profileIndex < profile->numFields) )
+            return profile->fields[profileIndex].type;
+
+        return FIT_UINT8_INVALID;
+    }
+
+    return type;
+}
+```

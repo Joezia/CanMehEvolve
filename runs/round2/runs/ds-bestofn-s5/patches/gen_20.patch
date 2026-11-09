@@ -1,0 +1,35 @@
+--- a/src/fit_profile.cpp
++++ b/src/fit_profile.cpp
+@@ -3079,14 +3079,29 @@
+ 
+ const FIT_UINT16 Profile::GetFieldIndex(const FIT_UINT16 mesgNum, const FIT_UINT8 fieldNum)
+ {
+-    const MESG *mesg = GetMesg(mesgNum);
++    static const MESG *mesgCache[65536];
++    static bool mesgValid[65536];
++
++    const MESG *mesg;
++    if (mesgValid[mesgNum])
++    {
++        mesg = mesgCache[mesgNum];
++    }
++    else
++    {
++        mesg = GetMesg(mesgNum);
++        mesgCache[mesgNum] = mesg;
++        mesgValid[mesgNum] = true;
++    }
+ 
+     if (mesg == NULL)
+         return FIT_UINT16_INVALID;
+ 
+-    for (FIT_UINT16 i = 0; i < mesg->numFields; i++)
++    const FIELD *fields = mesg->fields;
++    const FIT_UINT16 numFields = mesg->numFields;
++    for (FIT_UINT16 i = 0; i < numFields; i++)
+     {
+-        if (mesg->fields[i].num == fieldNum)
++        if (fields[i].num == fieldNum)
+             return i;
+     }
+ 

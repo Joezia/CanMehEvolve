@@ -1,0 +1,72 @@
+template <typename T>
+T FieldBase::GetBitsValueT(const FIT_UINT16 offset, const FIT_UINT8 bits) const
+{
+    if (values.size() == 0)
+        return FitInvalid<T>::value;
+
+    if (bits == 0)
+        return 0;
+
+    if (offset == 0 && bits <= sizeof(T) * 8 && bits <= 64)
+    {
+        const FIT_UINT8 numBytes = (FIT_UINT8)((bits + 7) / 8);
+        const auto size = GetSize();
+        if (size < numBytes)
+            return FitInvalid<T>::value;
+
+        FIT_UINT64 raw = 0;
+        if (size >= 8)
+        {
+            std::memcpy(&raw, values.data(), 8);
+        }
+        else
+        {
+            for (FIT_UINT8 i = 0; i < numBytes; ++i)
+                raw |= (FIT_UINT64)values[i] << (8 * i);
+        }
+        if (bits < 64)
+            raw &= ((FIT_UINT64)1 << bits) - 1;
+        return (T)raw;
+    }
+
+    const auto size = GetSize();
+    FIT_UINT16 index = offset >> 3;
+    if (index >= size)
+        return FitInvalid<T>::value;
+
+    FIT_UINT8 newOffset = (FIT_UINT8)(offset & 7);
+    T value = 0;
+    FIT_UINT8 numValueBits = 0;
+
+    if (newOffset != 0)
+    {
+        FIT_UINT8 data = values[index] >> newOffset;
+        FIT_UINT8 numDataBitsUsed = 8 - newOffset;
+        if (numDataBitsUsed > (FIT_UINT8)(bits - numValueBits))
+            numDataBitsUsed = bits - numValueBits;
+        FIT_UINT8 mask = (FIT_UINT8)((1u << numDataBitsUsed) - 1u);
+        value |= (T)(data & mask) << numValueBits;
+        numValueBits += numDataBitsUsed;
+        ++index;
+    }
+
+    while ((FIT_UINT16)numValueBits + 8 <= bits)
+    {
+        if (index >= size)
+            return FitInvalid<T>::value;
+        value |= (T)values[index] << numValueBits;
+        numValueBits += 8;
+        ++index;
+    }
+
+    if (numValueBits < bits)
+    {
+        if (index >= size)
+            return FitInvalid<T>::value;
+        FIT_UINT8 numDataBitsUsed = bits - numValueBits;
+        FIT_UINT8 mask = (FIT_UINT8)((1u << numDataBitsUsed) - 1u);
+        value |= (T)(values[index] & mask) << numValueBits;
+    }
+
+    return value;
+}

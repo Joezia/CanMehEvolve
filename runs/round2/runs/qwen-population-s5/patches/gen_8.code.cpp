@@ -1,0 +1,5 @@
+
+    void SetSound(FIT_TONE sound)
+    {
+        SetFieldENUMValue(4, static_cast<uint8_t>(sound), 0, FIT_SUBFIELD_INDEX_MAIN_FIELD);
+    }

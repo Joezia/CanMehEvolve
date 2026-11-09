@@ -1,0 +1,15 @@
+I replaced the four separate scalar member initializations with a single `memcpy` of the derived subobject after the base copy, reducing the instruction count and improving I-cache usage. The remaining members are trivially copyable and contiguous, so behavior is unchanged.
+
+```include
+#include <cstring>
+```
+
+```cpp
+Field::Field(const Field &field)
+    : FieldBase(field)
+{
+    std::memcpy(static_cast<void*>(reinterpret_cast<char*>(this) + sizeof(FieldBase)),
+                static_cast<const void*>(reinterpret_cast<const char*>(&field) + sizeof(FieldBase)),
+                sizeof(Field) - sizeof(FieldBase));
+}
+```

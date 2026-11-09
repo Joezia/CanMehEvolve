@@ -1,0 +1,33 @@
+{
+  "api_calls": 40,
+  "best_confirmed_generation": 36,
+  "best_confirmed_speedup": 1.0582282790124915,
+  "best_ranked_generation": 0,
+  "best_ranked_speedup": 1.0,
+  "best_retained_speedup": 1.0582282790124915,
+  "complete": true,
+  "completion_tokens": 9720,
+  "confirmed_candidates": 5,
+  "elapsed_s": 2992.284409092,
+  "ended_because": "request budget reached",
+  "finished": "2026-11-08T17:23:09+0800",
+  "http_attempts": 40,
+  "improved_on_parent_candidates": 4,
+  "llm_seconds": 72.930190439,
+  "max_tokens": 4096,
+  "mode": "search",
+  "outcomes": {
+    "compile": 11,
+    "correctness": 8,
+    "measured": 19,
+    "unchanged": 2
+  },
+  "prompt_tokens": 27028,
+  "rank_updates": [],
+  "reasoning_tokens": 0,
+  "request_budget": 40,
+  "seed": 2,
+  "segments": 1,
+  "total_tokens": 36748,
+  "truncated_replies": 0
+}

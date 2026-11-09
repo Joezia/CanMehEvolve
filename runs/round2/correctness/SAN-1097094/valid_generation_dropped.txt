@@ -1,0 +1,5 @@
+dropped valid_12.fit: status 2 0 Invalid developer data index in FieldDescriptionMesg
+dropped valid_31.fit: status 2 0 Invalid developer data index in DeveloperDataIdMesg
+dropped valid_32.fit: status 2 0 Invalid developer data index in DeveloperDataIdMesg
+dropped valid_44.fit: status 2 0 Invalid developer data index in FieldDescriptionMesg
+dropped valid_46.fit: status 2 0 Invalid developer data index in FieldDescriptionMesg

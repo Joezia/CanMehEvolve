@@ -1,0 +1,5 @@
+```cpp
+#include <utility>
+
+AntRxMesg(const Mesg &mesg) : Mesg(mesg) {}
+```

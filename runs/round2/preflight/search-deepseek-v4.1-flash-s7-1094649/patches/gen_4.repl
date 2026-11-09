@@ -1,0 +1,8 @@
+I collapsed the null-check early return into a single ternary return, giving the function one exit point so the compiler can inline it more cleanly into callers and avoid the extra branch; the result is identical.
+```cpp
+    FIT_BOOL IsMinCoreTemperatureValid() const
+    {
+        const Field* field = GetField(159);
+        return (FIT_NULL != field) ? field->IsValueValid() : FIT_FALSE;
+    }
+```

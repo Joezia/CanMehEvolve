@@ -1,0 +1,50 @@
+File: src/fit_profile.cpp
+Function: Profile::GetFieldIndex (15 lines)
+One full decode of the four files takes about 358.2 ms in the stock build.
+Time of the current version of the whole library relative to stock: 0.999 (below 1.0 is faster). Best measured so far: 0.998.
+
+Your previous attempt failed:
+Stage 'correctness' rejected it: checksum a33f359e6d0de384 does not match the reference 92bebfd7f8978fc8; the decoder produced different values
+The rejected replacement was:
+```cpp
+
+const FIT_UINT16 Profile::GetFieldIndex(const FIT_UINT16 mesgNum, const FIT_UINT8 fieldNum)
+{
+    const MESG *mesg = GetMesg(mesgNum);
+
+    if (mesg == NULL)
+        return FIT_UINT16_INVALID;
+
+    // Binary search assumes fields are sorted by num (common in profile implementations)
+    // Use lower_bound for O(log n) instead of linear O(n)
+    auto it = std::lower_bound(mesg->fields, mesg->fields + mesg->numFields, fieldNum,
+        [](const FIELD& field, FIT_UINT8 num) { return field.num < num; });
+    
+    if (it != mesg->fields + mesg->numFields && it->num == fieldNum)
+        return static_cast<FIT_UINT16>(it - mesg->fields);
+    
+    return FIT_UINT16_INVALID;
+}
+
+```
+
+Current text of the function:
+```cpp
+const FIT_UINT16 Profile::GetFieldIndex(const FIT_UINT16 mesgNum, const FIT_UINT8 fieldNum)
+{
+    const MESG *mesg = GetMesg(mesgNum);
+
+    if (mesg == NULL)
+        return FIT_UINT16_INVALID;
+
+    for (FIT_UINT16 i = 0; i < mesg->numFields; i++)
+    {
+        if (mesg->fields[i].num == fieldNum)
+            return i;
+    }
+
+    return FIT_UINT16_INVALID;
+}
+
+```
+Return the faster replacement now.

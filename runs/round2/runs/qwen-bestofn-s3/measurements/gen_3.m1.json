@@ -1,0 +1,6 @@
+{
+ "error": "/home/z/zhouzia/Workspace/CanMehEvolve/build/work-1095870/tree/src/fit_profile.cpp:3061:1: error: stray ‘`’ in program\n 3061 | ```cpp\n      | ^\n/home/z/zhouzia/Workspace/CanMehEvolve/build/work-1095870/tree/src/fit_profile.cpp:3061:2: error: stray ‘`’ in program\n 3061 | ```cpp\n      |  ^\n/home/z/zhouzia/Workspace/CanMehEvolve/build/work-1095870/tree/src/fit_profile.cpp:3061:3: error: stray ‘`’ in program\n 3061 | ```cpp\n      |   ^\n/home/z/zhouzia/Workspace/CanMehEvolve/build/work-1095870/tree/src/fit_profile.cpp:3061:4: error: ‘cpp’ does not name a type\n 3061 | ```cpp\n      |    ^~~\n",
+ "ok": false,
+ "rebuilt": 4,
+ "stage": "compile"
+}

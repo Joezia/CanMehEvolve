@@ -1,0 +1,22 @@
+Replaced the linear scan with a lazily built direct lookup table indexed by message number, preserving first-match semantics for duplicates. Each lookup becomes a single array access instead of scanning all profile messages.
+
+```include
+#include <array>
+```
+```cpp
+const Profile::MESG* Profile::GetMesg(const FIT_UINT16 num)
+{
+    static const std::array<const Profile::MESG*, 65536> by_num = [] {
+        std::array<const Profile::MESG*, 65536> t{};
+        for (int i = 0; i < MESGS; ++i)
+        {
+            const FIT_UINT16 n = Profile::mesgs[i].num;
+            if (t[n] == nullptr)
+                t[n] = &Profile::mesgs[i];
+        }
+        return t;
+    }();
+
+    return by_num[num];
+}
+```

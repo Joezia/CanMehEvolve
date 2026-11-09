@@ -1,0 +1,8 @@
+Using the member-initializer list copies each vector directly into its final member, avoiding default-construction followed by copy-assignment of the vectors.
+
+```cpp
+FieldBase::FieldBase(const FieldBase &field)
+    : values(field.values), stringIndexes(field.stringIndexes)
+{
+}
+```

@@ -1,0 +1,38 @@
+
+const Profile::MESG* Profile::GetMesg(const FIT_UINT16 num)
+{
+    // Binary search assuming mesgs is sorted by num (typical in profile tables)
+    // If not sorted, fall back to linear search — but profile tables are usually sorted at build time
+    static const FIT_UINT16* sorted_nums = nullptr;
+    static const Profile::MESG* mesg_ptrs[MESGS];
+    static bool initialized = false;
+    
+    if (!initialized) {
+        for (size_t i = 0; i < MESGS; ++i) {
+            mesg_ptrs[i] = &mesgs[i];
+        }
+        std::sort(mesg_ptrs, mesg_ptrs + MESGS, [](const Profile::MESG* a, const Profile::MESG* b) {
+            return a->num < b->num;
+        });
+        // Pre-extract sorted nums for faster comparison
+        initialized = true;
+    }
+
+    const FIT_UINT16 target = num;
+    const Profile::MESG** first = mesg_ptrs;
+    const Profile::MESG** last = mesg_ptrs + MESGS;
+
+    while (first < last) {
+        const Profile::MESG** mid = first + (last - first) / 2;
+        const FIT_UINT16 val = (*mid)->num;
+        if (val < target) {
+            first = mid + 1;
+        } else if (val > target) {
+            last = mid;
+        } else {
+            return *mid;
+        }
+    }
+
+    return NULL;
+}

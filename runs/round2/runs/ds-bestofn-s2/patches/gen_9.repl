@@ -1,0 +1,8 @@
+The wrapper already compiles to a single trivial template instantiation, so there is no redundant work to remove; any manual reimplementation of the union access would risk a behavioral difference. I kept the exact `GetValue<FIT_UINT8>` call, which is the fastest correct form available from this translation unit.
+
+```cpp
+FIT_UINT8 FieldBase::GetUINT8Value(const FIT_UINT8 fieldArrayIndex) const
+{
+    return GetValue<FIT_UINT8>(fieldArrayIndex);
+}
+```

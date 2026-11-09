@@ -1,0 +1,23 @@
+--- a/src/fit_dive_gas_mesg.hpp
++++ b/src/fit_dive_gas_mesg.hpp
+@@ -14,6 +14,7 @@
+ #define FIT_DIVE_GAS_MESG_HPP
+ 
+ #include "fit_mesg.hpp"
++#include <cstdint>
+ 
+ namespace fit
+ {
+@@ -99,9 +100,11 @@
+     // Set helium_content field
+     // Units: percent
+     ///////////////////////////////////////////////////////////////////////
++
+     void SetHeliumContent(FIT_UINT8 heliumContent)
+     {
+-        SetFieldUINT8Value(0, heliumContent, 0, FIT_SUBFIELD_INDEX_MAIN_FIELD);
++        fields[0].value.u8 = heliumContent;
++        fields[0].is_valid = 1;
+     }
+ 
+     ///////////////////////////////////////////////////////////////////////

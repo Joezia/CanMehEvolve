@@ -1,0 +1,14 @@
+Cached the `Profile::MESG*` in a local and added branch hints so the common valid-field path avoids repeated member loads while keeping identical behavior for null and out-of-range cases.
+
+```cpp
+FIT_UINT16 Field::GetNumComponents(void) const
+{
+    const Profile::MESG* const p = profile;
+    if (__builtin_expect(p == NULL, 0))
+        return 0;
+    const FIT_UINT16 idx = profileIndex;
+    if (__builtin_expect(idx >= p->numFields, 0))
+        return 0;
+    return p->fields[idx].numComponents;
+}
+```

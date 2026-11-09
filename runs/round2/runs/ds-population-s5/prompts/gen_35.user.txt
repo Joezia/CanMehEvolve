@@ -1,0 +1,30 @@
+File: src/fit_field.cpp
+Function: Field::Field (8 lines)
+One full decode of the four files takes about 359.5 ms in the stock build.
+Time of the current version of the whole library relative to stock: 0.855 (below 1.0 is faster). Best measured so far: 0.855.
+
+Your previous attempt failed:
+Stage 'crash' rejected it: the candidate died on signal 6 (abort, which std::terminate raises for an uncaught exception): free(): double free detected in tcache 2
+
+The rejected replacement was:
+```cpp
+Field::Field(const Field &field)
+{
+    std::memcpy(static_cast<void *>(this), static_cast<const void *>(&field), sizeof(Field));
+}
+
+```
+
+Current text of the function:
+```cpp
+Field::Field(const Field &field)
+    : FieldBase(field)
+    , profile(field.profile)
+    , profileIndex(field.profileIndex)
+    , type(field.type)
+    , isFieldExpanded(field.isFieldExpanded)
+{
+}
+
+```
+Return the faster replacement now.

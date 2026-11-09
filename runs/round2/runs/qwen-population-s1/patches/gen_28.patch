@@ -1,0 +1,58 @@
+--- a/src/fit_accumulated_field.cpp
++++ b/src/fit_accumulated_field.cpp
+@@ -11,12 +11,14 @@
+ 
+ 
+ #include "fit_accumulated_field.hpp"
++#include <cstdint>
+ 
+ namespace fit
+ {
+ 
++
+     AccumulatedField::AccumulatedField()
+-        : lastValue(0), accumulatedValue(0)
++        : lastValue{0}, accumulatedValue{0}
+     {
+     }
+ 
+--- a/src/fit_field_base.cpp
++++ b/src/fit_field_base.cpp
+@@ -24,11 +24,7 @@
+ {
+ }
+ 
+-FieldBase::FieldBase(const FieldBase &field)
+-{
+-    values = field.values;
+-    stringIndexes = field.stringIndexes;
+-}
++FieldBase::FieldBase(const FieldBase &field) : values(field.values), stringIndexes(field.stringIndexes) {}
+ 
+ FieldBase::~FieldBase()
+ {
+--- a/src/fit_mesg.cpp
++++ b/src/fit_mesg.cpp
+@@ -14,6 +14,7 @@
+ #include <algorithm>
+ #include "fit_mesg.hpp"
+ #include "fit_mesg_definition.hpp"
++#include <utility>
+ 
+ namespace fit
+ {
+@@ -26,11 +27,12 @@
+ {
+ }
+ 
++
+ Mesg::Mesg(const Mesg &mesg)
+     : profile(mesg.profile)
+     , localNum(mesg.localNum)
+-    , fields(mesg.fields)
+-    , devFields(mesg.devFields)
++    , fields(std::move(mesg.fields))
++    , devFields(std::move(mesg.devFields))
+ {
+ }
+ 

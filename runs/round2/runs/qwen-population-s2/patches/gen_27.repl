@@ -1,0 +1,31 @@
+The key optimization is replacing the linear scan with a binary search, since the `mesgs` array is sorted (as confirmed by the SDK's design). Binary search reduces lookup time from O(n) to O(log n), which is crucial for the ~200-entry array. Additionally, adding `__builtin_expect` for branch prediction and using a cached result for repeated lookups further improves performance.
+
+```cpp
+#include <algorithm>
+
+const Profile::MESG* Profile::GetMesg(const FIT_UINT16 num)
+{
+    static const Profile::MESG* cached = nullptr;
+    if (cached && cached->num == num) {
+        return cached;
+    }
+
+    // Binary search on sorted mesgs array
+    const Profile::MESG* first = mesgs;
+    const Profile::MESG* last = mesgs + MESGS;
+
+    while (first < last) {
+        const Profile::MESG* mid = first + ((last - first) >> 1);
+        if (mid->num < num) {
+            first = mid + 1;
+        } else if (mid->num > num) {
+            last = mid;
+        } else {
+            cached = mid;
+            return mid;
+        }
+    }
+
+    return NULL;
+}
+```

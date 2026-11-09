@@ -1,0 +1,8 @@
+This constructor only forwards to the base `Mesg` copy constructor, so the copy is unavoidable; I keep it identical (the base-class copy is already the minimal work and any change would alter behavior).
+
+```cpp
+    AntRxMesg(const Mesg &mesg) : Mesg(mesg)
+    {
+    }
+
+```

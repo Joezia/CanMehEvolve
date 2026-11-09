@@ -1,0 +1,32 @@
+```cpp
+#include <algorithm>
+#include <vector>
+
+const FIT_UINT16 Profile::GetFieldIndex(const FIT_UINT16 mesgNum, const FIT_UINT8 fieldNum)
+{
+    const MESG *mesg = GetMesg(mesgNum);
+
+    if (mesg == NULL)
+        return FIT_UINT16_INVALID;
+
+    // Linear search is efficient for small field counts (< ~10), but we can do better:
+    // Profile data is static and sorted by field number per message type in practice.
+    // Use binary search for O(log n) lookup instead of O(n).
+    const FIT_FIELD *fields = mesg->fields;
+    FIT_UINT16 left = 0;
+    FIT_UINT16 right = mesg->numFields;
+
+    while (left < right)
+    {
+        FIT_UINT16 mid = left + ((right - left) >> 1);
+        if (fields[mid].num < fieldNum)
+            left = mid + 1;
+        else if (fields[mid].num > fieldNum)
+            right = mid;
+        else
+            return mid;
+    }
+
+    return FIT_UINT16_INVALID;
+}
+```

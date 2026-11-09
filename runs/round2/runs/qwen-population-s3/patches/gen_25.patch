@@ -1,0 +1,84 @@
+--- a/src/fit_field.cpp
++++ b/src/fit_field.cpp
+@@ -15,6 +15,8 @@
+ #include "fit_field.hpp"
+ #include "fit_mesg.hpp"
+ #include "fit_unicode.hpp"
++#include <cstddef>
++#include <cstdint>
+ 
+ namespace fit
+ {
+@@ -90,19 +92,21 @@
+     return profile->fields[profileIndex].name;
+ }
+ 
++
+ FIT_UINT8 Field::GetNum(void) const
+ {
+-    if ((profile == NULL) || (profileIndex >= profile->numFields))
++    if (!profile || profileIndex >= profile->numFields)
+         return FIT_FIELD_NUM_INVALID;
+     return profile->fields[profileIndex].num;
+ }
+ 
++
+ FIT_UINT8 Field::GetType() const
+ {
+-    if ( type != FIT_UINT8_INVALID )
++    if (type != FIT_UINT8_INVALID)
+         return type;
+ 
+-    if ((profile == NULL) || (profileIndex >= profile->numFields))
++    if (!profile || profileIndex >= profile->numFields)
+         return FIT_UINT8_INVALID;
+ 
+     return profile->fields[profileIndex].type;
+--- a/src/fit_field_base.cpp
++++ b/src/fit_field_base.cpp
+@@ -16,6 +16,7 @@
+ #include "fit_field_base.hpp"
+ #include "fit_mesg.hpp"
+ #include "fit_unicode.hpp"
++#include <cstdint>
+ 
+ namespace fit
+ {
+@@ -79,17 +80,12 @@
+     return NULL != subfield ? subfield->offset : 0.0;
+ }
+ 
++
+ FIT_BOOL FieldBase::IsSignedInteger(const FIT_UINT16 subFieldIndex) const
+ {
+-    switch (GetType(subFieldIndex)) {
+-        case FIT_BASE_TYPE_SINT8:
+-        case FIT_BASE_TYPE_SINT16:
+-        case FIT_BASE_TYPE_SINT32:
+-            return FIT_TRUE;
+-
+-        default:
+-            return FIT_FALSE;
+-    }
++    const FIT_BASE_TYPE type = static_cast<FIT_BASE_TYPE>(GetType(subFieldIndex));
++    // Signed integers are contiguous: SINT8=2, SINT16=3, SINT32=4
++    return (type >= FIT_BASE_TYPE_SINT8 && type <= FIT_BASE_TYPE_SINT32) ? FIT_TRUE : FIT_FALSE;
+ }
+ 
+ FIT_UINT8 FieldBase::GetSize(void) const
+--- a/src/fit_lap_mesg.hpp
++++ b/src/fit_lap_mesg.hpp
+@@ -943,12 +943,7 @@
+     FIT_BOOL IsMaxCadenceValid() const
+     {
+         const Field* field = GetField(18);
+-        if( FIT_NULL == field )
+-        {
+-            return FIT_FALSE;
+-        }
+-
+-        return field->IsValueValid();
++        return (field != FIT_NULL) ? field->IsValueValid() : FIT_FALSE;
+     }
+ 
+     ///////////////////////////////////////////////////////////////////////

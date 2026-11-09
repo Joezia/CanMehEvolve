@@ -1,0 +1,13 @@
+File: src/fit_field_base.cpp
+Function: FieldBase::~FieldBase (3 lines)
+One full decode of the four files takes about 359.1 ms in the stock build.
+Time of the current version of the whole library relative to stock: 1.000 (below 1.0 is faster). Best measured so far: 1.000.
+
+Current text of the function:
+```cpp
+FieldBase::~FieldBase()
+{
+}
+
+```
+Return the faster replacement now.

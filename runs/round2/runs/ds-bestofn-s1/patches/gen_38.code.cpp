@@ -1,0 +1,80 @@
+template <typename T>
+T FieldBase::GetBitsValueT(const FIT_UINT16 offset, const FIT_UINT8 bits) const
+{
+    if (values.size() == 0)
+        return FitInvalid<T>::value;
+
+    if (bits == 0)
+        return 0;
+
+    const FIT_UINT16 byteIndex = offset >> 3;
+    const FIT_UINT8 bitOffset = (FIT_UINT8)(offset & 7);
+    const auto size = GetSize();
+
+    if (byteIndex >= size)
+        return FitInvalid<T>::value;
+
+    const FIT_UINT8 bytesNeeded = (FIT_UINT8)((bitOffset + bits + 7) >> 3);
+    if ((FIT_UINT16)byteIndex + bytesNeeded > size)
+        return FitInvalid<T>::value;
+
+    const FIT_UINT8* p = values.data() + byteIndex;
+
+    if ((FIT_UINT16)bitOffset + bits <= 64)
+    {
+        FIT_UINT64 raw = 0;
+        switch (bytesNeeded)
+        {
+        case 8:
+            raw |= (FIT_UINT64)p[7] << 56;
+            [[fallthrough]];
+        case 7:
+            raw |= (FIT_UINT64)p[6] << 48;
+            [[fallthrough]];
+        case 6:
+            raw |= (FIT_UINT64)p[5] << 40;
+            [[fallthrough]];
+        case 5:
+            raw |= (FIT_UINT64)p[4] << 32;
+            [[fallthrough]];
+        case 4:
+            raw |= (FIT_UINT64)p[3] << 24;
+            [[fallthrough]];
+        case 3:
+            raw |= (FIT_UINT64)p[2] << 16;
+            [[fallthrough]];
+        case 2:
+            raw |= (FIT_UINT64)p[1] << 8;
+            [[fallthrough]];
+        case 1:
+            raw |= (FIT_UINT64)p[0];
+            break;
+        default:
+            break;
+        }
+
+        raw >>= bitOffset;
+        if (((FIT_UINT16)bitOffset + bits) & 7)
+            raw &= (((FIT_UINT64)1 << bits) - 1);
+        return (T)raw;
+    }
+
+    T value = 0;
+    FIT_UINT8 numValueBits = 0;
+    FIT_UINT8 idx = (FIT_UINT8)byteIndex;
+    FIT_UINT8 bitOff = bitOffset;
+    while (numValueBits < bits)
+    {
+        FIT_UINT8 data = values[idx] >> bitOff;
+        FIT_UINT8 avail = 8 - bitOff;
+        FIT_UINT8 remaining = bits - numValueBits;
+        if (avail > remaining)
+            avail = remaining;
+        FIT_UINT8 mask = (FIT_UINT8)((1u << avail) - 1u);
+        value |= (T)(data & mask) << numValueBits;
+        numValueBits += avail;
+        bitOff = 0;
+        ++idx;
+    }
+    return value;
+}

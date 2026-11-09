@@ -1,0 +1,84 @@
+Inlined the per-type setter logic into a local helper and moved rounding into only the cases that need it, avoiding redundant calls and skipping Round for 64-bit types.
+
+```cpp
+void FieldBase::AddRawValue(const FIT_FLOAT64 rawValue, const FIT_UINT8 fieldArrayIndex)
+{
+    auto setValue = [this, fieldArrayIndex](const void* value, const size_t size) {
+        const size_t offset = static_cast<size_t>(fieldArrayIndex) * size;
+        if (values.size() < offset + size)
+        {
+            values.resize(offset + size);
+        }
+        memcpy(&values[offset], value, size);
+    };
+
+    switch (GetType())
+    {
+        case FIT_BASE_TYPE_BYTE:
+        case FIT_BASE_TYPE_ENUM:
+        case FIT_BASE_TYPE_SINT8:
+        case FIT_BASE_TYPE_UINT8:
+        case FIT_BASE_TYPE_UINT8Z:
+        {
+            const FIT_UINT8 value = (FIT_UINT8)FieldBase::Round(rawValue);
+            setValue(&value, sizeof(value));
+            break;
+        }
+
+        case FIT_BASE_TYPE_SINT16:
+        case FIT_BASE_TYPE_UINT16:
+        case FIT_BASE_TYPE_UINT16Z:
+        {
+            const FIT_UINT16 value = (FIT_UINT16)FieldBase::Round(rawValue);
+            setValue(&value, sizeof(value));
+            break;
+        }
+
+        case FIT_BASE_TYPE_SINT32:
+        case FIT_BASE_TYPE_UINT32:
+        case FIT_BASE_TYPE_UINT32Z:
+        {
+            const FIT_UINT32 value = (FIT_UINT32)FieldBase::Round(rawValue);
+            setValue(&value, sizeof(value));
+            break;
+        }
+
+        case FIT_BASE_TYPE_FLOAT32:
+        {
+            const FIT_FLOAT32 float32Value = (FIT_FLOAT32)FieldBase::Round(rawValue);
+            FIT_UINT32 uint32Value;
+            memcpy(&uint32Value, &float32Value, sizeof(FIT_FLOAT32));
+            setValue(&uint32Value, sizeof(uint32Value));
+            break;
+        }
+
+        case FIT_BASE_TYPE_FLOAT64:
+        {
+            if ((FIT_UINT8)values.size() < ((fieldArrayIndex + 1) * sizeof(FIT_FLOAT64)))
+            {
+                values.resize((fieldArrayIndex + 1) * 8);
+            }
+            memcpy(&values[fieldArrayIndex * sizeof(FIT_FLOAT64)], &rawValue, sizeof(FIT_FLOAT64));
+            break;
+        }
+
+        case FIT_BASE_TYPE_SINT64:
+        {
+            const FIT_SINT64 value = (FIT_SINT64)rawValue;
+            setValue(&value, sizeof(value));
+            break;
+        }
+
+        case FIT_BASE_TYPE_UINT64:
+        case FIT_BASE_TYPE_UINT64Z:
+        {
+            const FIT_UINT64 value = (FIT_UINT64)rawValue;
+            setValue(&value, sizeof(value));
+            break;
+        }
+
+        default:
+            break;
+    }
+}
+```

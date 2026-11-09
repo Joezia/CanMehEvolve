@@ -1,0 +1,142 @@
+{
+  "115": {
+    "accepted": 1,
+    "attempts": 2,
+    "best_gain": 0.054963723773373774,
+    "file": "src/fit_field.cpp",
+    "label": "Field::Field"
+  },
+  "118": {
+    "accepted": 0,
+    "attempts": 2,
+    "best_gain": 0.0,
+    "file": "src/fit_field.cpp",
+    "label": "Field::IsValid"
+  },
+  "122": {
+    "accepted": 0,
+    "attempts": 3,
+    "best_gain": 0.0,
+    "file": "src/fit_field.cpp",
+    "label": "Field::GetNum"
+  },
+  "123": {
+    "accepted": 1,
+    "attempts": 5,
+    "best_gain": 0.0009243987773033258,
+    "file": "src/fit_field.cpp",
+    "label": "Field::GetType"
+  },
+  "125": {
+    "accepted": 0,
+    "attempts": 1,
+    "best_gain": 0.0,
+    "file": "src/fit_field.cpp",
+    "label": "Field::GetScale"
+  },
+  "127": {
+    "accepted": 0,
+    "attempts": 3,
+    "best_gain": 0.0,
+    "file": "src/fit_field.cpp",
+    "label": "Field::GetNumComponents"
+  },
+  "134": {
+    "accepted": 2,
+    "attempts": 3,
+    "best_gain": 0.05165388246797309,
+    "file": "src/fit_field_base.cpp",
+    "label": "FieldBase::FieldBase"
+  },
+  "143": {
+    "accepted": 1,
+    "attempts": 1,
+    "best_gain": 0.01783809491897348,
+    "file": "src/fit_field_base.cpp",
+    "label": "FieldBase::GetNumValues"
+  },
+  "166": {
+    "accepted": 0,
+    "attempts": 1,
+    "best_gain": 0.0,
+    "file": "src/fit_field_base.cpp",
+    "label": "FieldBase::GetFLOAT64Value"
+  },
+  "172": {
+    "accepted": 0,
+    "attempts": 1,
+    "best_gain": 0.0,
+    "file": "src/fit_field_base.cpp",
+    "label": "FieldBase::GetRawValueInternal"
+  },
+  "1864": {
+    "accepted": 0,
+    "attempts": 1,
+    "best_gain": 0.0,
+    "file": "src/fit_field_description_mesg.hpp",
+    "label": "GetFitBaseTypeId"
+  },
+  "192": {
+    "accepted": 0,
+    "attempts": 1,
+    "best_gain": 0.0,
+    "file": "src/fit_field_base.cpp",
+    "label": "FieldBase::Read"
+  },
+  "196": {
+    "accepted": 2,
+    "attempts": 2,
+    "best_gain": 0.004657646096597912,
+    "file": "src/fit_field_base.cpp",
+    "label": "FieldBase::GetValue"
+  },
+  "197": {
+    "accepted": 1,
+    "attempts": 1,
+    "best_gain": 0.004549462561278972,
+    "file": "src/fit_field_base.cpp",
+    "label": "FieldBase::ConvertBaseType"
+  },
+  "2430": {
+    "accepted": 0,
+    "attempts": 1,
+    "best_gain": 0.0,
+    "file": "src/fit_lap_mesg.hpp",
+    "label": "IsMaxCadenceValid"
+  },
+  "26": {
+    "accepted": 0,
+    "attempts": 1,
+    "best_gain": 0.0,
+    "file": "src/fit_crc.cpp",
+    "label": "CRC::Get16"
+  },
+  "50": {
+    "accepted": 0,
+    "attempts": 1,
+    "best_gain": 0.0,
+    "file": "src/fit_decode.cpp",
+    "label": "Decode::Resume"
+  },
+  "5381": {
+    "accepted": 0,
+    "attempts": 1,
+    "best_gain": 0.0,
+    "file": "src/fit_workout_step_mesg.hpp",
+    "label": "GetRepeatDistance"
+  },
+  "574": {
+    "accepted": 4,
+    "attempts": 8,
+    "best_gain": 0.058659822241960535,
+    "file": "src/fit_profile.cpp",
+    "label": "Profile::GetMesg"
+  },
+  "84": {
+    "accepted": 0,
+    "attempts": 1,
+    "best_gain": 0.0,
+    "file": "src/fit_developer_field_definition.cpp",
+    "label": "DeveloperFieldDefinition::~DeveloperFieldDefinition"
+  }
+}

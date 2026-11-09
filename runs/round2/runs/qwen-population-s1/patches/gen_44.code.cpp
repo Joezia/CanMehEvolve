@@ -1,0 +1,5 @@
+
+    FIT_UINT8 GetNumTimeMode(void) const
+    {
+        return GetFieldNumValues(4, 0);
+    }

@@ -1,0 +1,44 @@
+File: src/fit_field.cpp
+Function: Field::GetOffset (6 lines)
+One full decode of the four files takes about 359.5 ms in the stock build.
+Time of the current version of the whole library relative to stock: 0.934 (below 1.0 is faster). Best measured so far: 0.878.
+
+Your previous attempt failed:
+Stage 'compile' rejected it: /home/z/zhouzia/Workspace/CanMehEvolve/build/work-1096274/tree/src/fit_field.cpp: In member function ‘virtual FIT_FLOAT64 fit::Field::GetOffset() const’:
+/home/z/zhouzia/Workspace/CanMehEvolve/build/work-1096274/tree/src/fit_field.cpp:132:24: error: cannot convert ‘const fit::Profile::MESG* const’ to ‘const fit::Profile*’ in initialization
+  132 |     const Profile* p = profile;
+      |                        ^~~~~~~
+      |                        |
+      |                        const fit::Profile::MESG* const
+/home/z/zhouzia/Workspace/CanMehEvolve/build/work-1096274/tree/src/fit_field.cpp:135:45: error: ‘const class fit::Profile’ has no member named ‘numFields’
+  135 |     if (__builtin_expect(profileIndex >= p->numFields, 0))
+      |                                             ^~~~~~~~~
+/home/z/zhouzia/Workspace/CanMehEvolve/build/work-1096274/tree/src/fit_field.cpp:137:15: error: ‘const class fit::Profile’ has no member named ‘fields’
+  137 |     return p->fields[profileIndex].offset;
+      |               ^~~~~~
+
+The rejected replacement was:
+```cpp
+FIT_FLOAT64 Field::GetOffset() const
+{
+    const Profile* p = profile;
+    if (__builtin_expect(p == NULL, 0))
+        return 0;
+    if (__builtin_expect(profileIndex >= p->numFields, 0))
+        return 0;
+    return p->fields[profileIndex].offset;
+}
+
+```
+
+Current text of the function:
+```cpp
+FIT_FLOAT64 Field::GetOffset() const
+{
+    if ((profile == NULL) || (profileIndex >= profile->numFields))
+        return 0;
+    return profile->fields[profileIndex].offset;
+}
+
+```
+Return the faster replacement now.

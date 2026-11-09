@@ -1,0 +1,87 @@
+--- a/src/fit_decode.cpp
++++ b/src/fit_decode.cpp
+@@ -18,6 +18,8 @@
+ #include "fit_mesg_listener.hpp"
+ #include "fit_developer_data_id_mesg.hpp"
+ #include "fit_developer_field.hpp"
++#include <unordered_map>
++#include <stdexcept>
+ 
+ 
+ namespace fit
+@@ -225,6 +227,7 @@
+     pause = FIT_TRUE;
+ }
+ 
++
+ FIT_BOOL Decode::Resume(void)
+ {
+     pause = FIT_FALSE;
+@@ -244,6 +247,7 @@
+                 return FIT_FALSE;
+ 
+             decodeReturn = ReadByte((FIT_UINT8)buffer[currentByteIndex]);
++            currentByteOffset++;
+ 
+             switch (decodeReturn) {
+                 case RETURN_CONTINUE:
+@@ -278,23 +282,21 @@
+                         FIT_UINT8 index = descMesg.GetDeveloperDataIndex();
+                         FIT_UINT8 fldNum = descMesg.GetFieldDefinitionNumber();
+ 
+-                        try
++                        // Avoid exception by checking if index exists first
++                        if (index < descriptions.size() && descriptions[index].find(fldNum) != descriptions[index].end())
+                         {
+-                            descriptions.at(index)[fldNum] = descMesg;
+-                            
+-
+-                            if (descriptionListener)
+-                            {
+-                                descriptionListener->OnDeveloperFieldDescription(DeveloperFieldDescription(descMesg, developers[index]));
+-                            }
++                            descriptions[index][fldNum] = descMesg;
+                         }
+-                        catch (std::out_of_range)
++                        else
+                         {
+-                            // Description without a Developer Data Id Message
++                            descriptions[index][fldNum] = descMesg;
+                         }
+-                    }
+ 
+-                    
++                        if (descriptionListener)
++                        {
++                            descriptionListener->OnDeveloperFieldDescription(DeveloperFieldDescription(descMesg, developers[index]));
++                        }
++                    }
+ 
+                     if (mesgListener)
+                         mesgListener->OnMesg(mesg);
+@@ -309,16 +311,12 @@
+                     break;
+ 
+                 case RETURN_END_OF_FILE:
+-                     // Increment so we do not read the same byte twice in the case of a chained file
+                     currentByteIndex++;
+-                    currentByteOffset++;
+                     return FIT_TRUE;
+ 
+                 default:
+-                    currentByteOffset++;
+                     return FIT_TRUE;
+             }
+-            currentByteOffset++;
+         }
+         currentByteIndex = 0;
+     } while ( file->good() );
+@@ -346,8 +344,6 @@
+             return FIT_FALSE;
+         }
+     }
+-        // if Decoding Records section only, file should end on a complete message
+-        // (unless incomplete stream option above was also used)
+     else
+     {
+         if ((decodeReturn == RETURN_MESG) || (decodeReturn == RETURN_MESG_DEF))

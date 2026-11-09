@@ -1,0 +1,76 @@
+Looking at the function, I can identify several optimization opportunities:
+
+1. The repeated `ConvertBaseType` calls with the same destination type (`FIT_FLOAT64`) can be optimized by using a lookup table of function pointers or templates to avoid the switch statement overhead.
+
+2. The `GetFLOAT32Value` call for `FLOAT32` case can be inlined since it's likely a simple conversion.
+
+3. The final invalid check and scale/offset application can be optimized by avoiding the `memcmp` and using a direct comparison with the invalid value constant.
+
+4. The `GetScale` and `GetOffset` calls are likely simple getters that can be inlined.
+
+However, the biggest win comes from recognizing that the switch statement is checking against many similar cases that all do the same thing (convert to float64). We can use template metaprogramming or a simpler approach: since the conversion is always to `FIT_FLOAT64`, we can create a helper that handles all the base type conversions more efficiently.
+
+But given the constraint of identical behavior, the safest and most effective optimization is to:
+- Inline the invalid check using a direct comparison instead of `memcmp`
+- Reduce redundant code by factoring out common patterns
+- Use early returns where possible
+
+Here's the optimized version:
+
+```cpp
+#include <cstring>
+#include <cstdint>
+
+FIT_FLOAT64 FieldBase::GetFLOAT64Value(const FIT_UINT8 fieldArrayIndex, const FIT_UINT16 subFieldIndex) const
+{
+    if (!IsValid())
+        return FIT_FLOAT64_INVALID;
+
+    switch (GetType()) {
+        case FIT_BASE_TYPE_BYTE:
+        case FIT_BASE_TYPE_ENUM:
+        case FIT_BASE_TYPE_SINT8:
+        case FIT_BASE_TYPE_UINT8:
+        case FIT_BASE_TYPE_UINT8Z:
+        case FIT_BASE_TYPE_SINT16:
+        case FIT_BASE_TYPE_UINT16Z:
+        case FIT_BASE_TYPE_UINT16:
+        case FIT_BASE_TYPE_SINT32:
+        case FIT_BASE_TYPE_UINT32:
+        case FIT_BASE_TYPE_UINT32Z:
+        {
+            FIT_FLOAT64 value = ConvertBaseType<FIT_FLOAT64, FIT_BYTE>(fieldArrayIndex, FIT_BASE_TYPE_FLOAT64);
+            // Direct comparison avoids memcpy overhead
+            if (value == FIT_FLOAT64_INVALID) {
+                return value;
+            }
+            return value / GetScale(subFieldIndex) - GetOffset(subFieldIndex);
+        }
+
+        case FIT_BASE_TYPE_FLOAT32:
+        {
+            FIT_FLOAT32 val = GetFLOAT32Value(fieldArrayIndex, subFieldIndex);
+            if (val == FIT_FLOAT32_INVALID) {
+                return FIT_FLOAT64_INVALID;
+            }
+            return static_cast<FIT_FLOAT64>(val);
+        }
+
+        case FIT_BASE_TYPE_FLOAT64:
+        {
+            FIT_UINT64 uint64Value = GetValue<FIT_UINT64>(fieldArrayIndex);
+            FIT_FLOAT64 value;
+            std::memcpy(&value, &uint64Value, sizeof(FIT_FLOAT64));
+            
+            // Direct comparison with invalid constant is faster than memcmp
+            if (value == FIT_FLOAT64_INVALID) {
+                return value;
+            }
+            return value / GetScale(subFieldIndex) - GetOffset(subFieldIndex);
+        }
+
+        default:
+            return FIT_FLOAT64_INVALID;
+    }
+}
+```

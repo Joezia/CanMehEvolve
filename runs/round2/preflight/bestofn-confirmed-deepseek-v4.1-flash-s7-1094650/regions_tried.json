@@ -1,0 +1,37 @@
+{
+  "123": {
+    "accepted": 0,
+    "attempts": 1,
+    "best_gain": 0.0,
+    "file": "src/fit_field.cpp",
+    "label": "Field::GetType"
+  },
+  "26": {
+    "accepted": 0,
+    "attempts": 1,
+    "best_gain": 0.0,
+    "file": "src/fit_crc.cpp",
+    "label": "CRC::Get16"
+  },
+  "397": {
+    "accepted": 0,
+    "attempts": 1,
+    "best_gain": 0.0,
+    "file": "src/fit_mesg_broadcaster.cpp",
+    "label": "MesgBroadcaster::RemoveListener"
+  },
+  "574": {
+    "accepted": 1,
+    "attempts": 1,
+    "best_gain": 0.06804588105649212,
+    "file": "src/fit_profile.cpp",
+    "label": "Profile::GetMesg"
+  },
+  "576": {
+    "accepted": 1,
+    "attempts": 2,
+    "best_gain": 0.05144597425700226,
+    "file": "src/fit_profile.cpp",
+    "label": "Profile::GetFieldIndex"
+  }
+}

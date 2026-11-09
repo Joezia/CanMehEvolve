@@ -1,0 +1,18 @@
+--- a/src/fit_one_d_sensor_calibration_mesg.hpp
++++ b/src/fit_one_d_sensor_calibration_mesg.hpp
+@@ -47,13 +47,8 @@
+     ///////////////////////////////////////////////////////////////////////
+     FIT_BOOL IsTimestampValid() const
+     {
+-        const Field* field = GetField(253);
+-        if( FIT_NULL == field )
+-        {
+-            return FIT_FALSE;
+-        }
+-
+-        return field->IsValueValid();
++        const Field* const field = GetField(253);
++        return (FIT_NULL != field) ? field->IsValueValid() : FIT_FALSE;
+     }
+ 
+     ///////////////////////////////////////////////////////////////////////

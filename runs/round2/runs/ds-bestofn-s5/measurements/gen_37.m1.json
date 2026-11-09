@@ -1,0 +1,6 @@
+{
+ "error": "/home/z/zhouzia/Workspace/CanMehEvolve/build/work-1096293/tree/src/fit_field.cpp: In member function ‘virtual FIT_UINT8 fit::Field::GetType() const’:\n/home/z/zhouzia/Workspace/CanMehEvolve/build/work-1096293/tree/src/fit_field.cpp:106:28: error: cannot convert ‘const fit::Profile::MESG* const’ to ‘const fit::Profile*’ in initialization\n  106 |         const Profile* p = profile;\n      |                            ^~~~~~~\n      |                            |\n      |                            const fit::Profile::MESG* const\n/home/z/zhouzia/Workspace/CanMehEvolve/build/work-1096293/tree/src/fit_field.cpp:107:47: error: ‘const class fit::Profile’ has no member named ‘numFields’\n  107 |         if ((p != NULL) && (profileIndex < p->numFields))\n      |                                               ^~~~~~~~~\n/home/z/zhouzia/Workspace/CanMehEvolve/build/work-1096293/tree/src/fit_field.cpp:108:25: error: ‘const class fit::Profile’ has no member named ‘fields’\n  108 |             result = p->fields[profileIndex].type;\n      |                         ^~~~~~\n",
+ "ok": false,
+ "rebuilt": 4,
+ "stage": "compile"
+}

@@ -1,0 +1,9 @@
+
+void MesgBroadcaster::RemoveListener(WorkoutStepMesgListener& workoutStepMesgListener)
+{
+    auto it = std::find(workoutStepMesgListeners.begin(), workoutStepMesgListeners.end(), &workoutStepMesgListener);
+    if (it != workoutStepMesgListeners.end()) {
+        *it = std::move(workoutStepMesgListeners.back());
+        workoutStepMesgListeners.pop_back();
+    }
+}

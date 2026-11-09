@@ -1,0 +1,7 @@
+job=1096517
+host=xcnc19
+start=2026-11-08T18:14:44+08:00
+cpu=Intel(R) Xeon(R) CPU E5-2620 v3 @ 2.40GHz
+binary_sha256=84a432f57b4aa164dc70328f711c2315a6cf61807eb6b0af0071739c36f16076
+c285a9cf4b6a9c3cea469156d79c64dbf96f12f2631e6ddfc1dab3e76656a69c  /home/z/zhouzia/Workspace/CanMehEvolve/runs/round2/runs/qwen-bestofn-s5/best.patch
+end=2026-11-08T18:21:47+08:00

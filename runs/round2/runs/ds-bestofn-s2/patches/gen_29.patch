@@ -1,0 +1,15 @@
+--- a/src/fit_field.cpp
++++ b/src/fit_field.cpp
+@@ -124,9 +124,10 @@
+ 
+ FIT_FLOAT64 Field::GetOffset() const
+ {
+-    if ((profile == NULL) || (profileIndex >= profile->numFields))
++    const Profile* const p = profile;
++    if (__builtin_expect((p == NULL) || (profileIndex >= p->numFields), 0))
+         return 0;
+-    return profile->fields[profileIndex].offset;
++    return p->fields[profileIndex].offset;
+ }
+ 
+ FIT_UINT16 Field::GetNumComponents(void) const

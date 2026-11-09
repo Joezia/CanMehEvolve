@@ -1,0 +1,15 @@
+Looking at this function, the main optimization opportunity is to avoid the double pointer dereference when accessing `profile->numFields` and `profile->fields`. Since this function is called frequently during decoding, we can cache the profile pointer locally to reduce memory accesses.
+
+However, the bigger optimization is recognizing that the bounds check can be done more efficiently by checking against a cached limit, and we can avoid redundant pointer dereferences. The current implementation has two pointer dereferences for `profile` (one for the NULL check, one for accessing members), and then another for accessing the fields array.
+
+The fastest approach is to hoist the profile pointer into a local variable to eliminate redundant memory accesses, and structure the condition to minimize branches.
+
+```cpp
+FIT_UINT8 Field::GetNum(void) const
+{
+    const Profile* p = profile;
+    if (p == NULL || profileIndex >= p->numFields)
+        return FIT_FIELD_NUM_INVALID;
+    return p->fields[profileIndex].num;
+}
+```

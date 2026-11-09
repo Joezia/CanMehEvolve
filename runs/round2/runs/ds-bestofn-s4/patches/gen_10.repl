@@ -1,0 +1,9 @@
+Replaced default-construction plus copy-assignment with a member-initializer list, so each vector is copy-constructed directly (one exact-size allocation, no zero-initialization writes or assignment-path checks).
+
+```cpp
+FieldBase::FieldBase(const FieldBase &field)
+    : values(field.values),
+      stringIndexes(field.stringIndexes)
+{
+}
+```

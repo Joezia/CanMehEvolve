@@ -1,0 +1,13 @@
+Cached the `profile` pointer and index in locals and folded the bounds check into a single early-out, so the hot path performs one pointer load and one array access instead of re-reading the members through `this`.
+```cpp
+FIT_UINT8 Field::GetNum(void) const
+{
+    const Profile::MESG *p = profile;
+    if (p == NULL)
+        return FIT_FIELD_NUM_INVALID;
+    const FIT_UINT8 i = profileIndex;
+    if (i >= p->numFields)
+        return FIT_FIELD_NUM_INVALID;
+    return p->fields[i].num;
+}
+```

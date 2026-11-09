@@ -1,0 +1,121 @@
+{
+  "113": {
+    "accepted": 0,
+    "attempts": 6,
+    "best_gain": 0.0,
+    "file": "src/fit_field.cpp",
+    "label": "Field::Field"
+  },
+  "115": {
+    "accepted": 0,
+    "attempts": 1,
+    "best_gain": 0.0,
+    "file": "src/fit_field.cpp",
+    "label": "Field::Field"
+  },
+  "122": {
+    "accepted": 1,
+    "attempts": 4,
+    "best_gain": 0.008991027737920376,
+    "file": "src/fit_field.cpp",
+    "label": "Field::GetNum"
+  },
+  "123": {
+    "accepted": 0,
+    "attempts": 2,
+    "best_gain": 0.0,
+    "file": "src/fit_field.cpp",
+    "label": "Field::GetType"
+  },
+  "126": {
+    "accepted": 0,
+    "attempts": 2,
+    "best_gain": 0.0,
+    "file": "src/fit_field.cpp",
+    "label": "Field::GetOffset"
+  },
+  "134": {
+    "accepted": 1,
+    "attempts": 4,
+    "best_gain": 0.04105406429459868,
+    "file": "src/fit_field_base.cpp",
+    "label": "FieldBase::FieldBase"
+  },
+  "139": {
+    "accepted": 1,
+    "attempts": 2,
+    "best_gain": 0.000417834901927594,
+    "file": "src/fit_field_base.cpp",
+    "label": "FieldBase::GetScale"
+  },
+  "143": {
+    "accepted": 1,
+    "attempts": 2,
+    "best_gain": 0.02224483950600975,
+    "file": "src/fit_field_base.cpp",
+    "label": "FieldBase::GetNumValues"
+  },
+  "174": {
+    "accepted": 0,
+    "attempts": 1,
+    "best_gain": 0.0,
+    "file": "src/fit_field_base.cpp",
+    "label": "FieldBase::AddRawValue"
+  },
+  "192": {
+    "accepted": 1,
+    "attempts": 1,
+    "best_gain": 0.007844510627626478,
+    "file": "src/fit_field_base.cpp",
+    "label": "FieldBase::Read"
+  },
+  "196": {
+    "accepted": 1,
+    "attempts": 1,
+    "best_gain": 0.0015774562531626346,
+    "file": "src/fit_field_base.cpp",
+    "label": "FieldBase::GetValue"
+  },
+  "205": {
+    "accepted": 0,
+    "attempts": 1,
+    "best_gain": 0.0,
+    "file": "src/fit_field_definition.cpp",
+    "label": "FieldDefinition::GetType"
+  },
+  "225": {
+    "accepted": 0,
+    "attempts": 1,
+    "best_gain": 0.0,
+    "file": "src/fit_mesg.cpp",
+    "label": "Mesg::HasField"
+  },
+  "3105": {
+    "accepted": 0,
+    "attempts": 2,
+    "best_gain": 0.0,
+    "file": "src/fit_nap_event_mesg.hpp",
+    "label": "SetEndTimezoneOffset"
+  },
+  "55": {
+    "accepted": 0,
+    "attempts": 1,
+    "best_gain": 0.0,
+    "file": "src/fit_decode.cpp",
+    "label": "Decode::UpdateEndianness"
+  },
+  "574": {
+    "accepted": 3,
+    "attempts": 8,
+    "best_gain": 0.07625715988482218,
+    "file": "src/fit_profile.cpp",
+    "label": "Profile::GetMesg"
+  },
+  "576": {
+    "accepted": 1,
+    "attempts": 1,
+    "best_gain": 0.016411189870780052,
+    "file": "src/fit_profile.cpp",
+    "label": "Profile::GetFieldIndex"
+  }
+}

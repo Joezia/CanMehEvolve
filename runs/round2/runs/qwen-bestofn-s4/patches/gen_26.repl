@@ -1,0 +1,19 @@
+Looking at this function, the main optimization opportunity is to reduce the number of memory accesses and branches. The current implementation checks `type` first, and if it's invalid, it performs null pointer checks and array indexing. Since the function is called frequently during decoding, we can optimize by hoisting the common case (when type is already known) and reducing redundant checks.
+
+The key insight is that `FIT_UINT8_INVALID` is likely 0xFF, so we can use a single comparison to check both validity and avoid the extra branch. Also, we can combine the null check and index bounds check into a more efficient condition.
+
+However, since we must maintain identical behavior, we need to preserve the exact logic. The main optimization is to reduce the number of memory accesses by caching the profile pointer and using more efficient branching.
+
+```cpp
+FIT_UINT8 Field::GetType() const
+{
+    if (type != FIT_UINT8_INVALID)
+        return type;
+
+    const FIT_PROFILE* p = profile;
+    if (p && profileIndex < p->numFields)
+        return p->fields[profileIndex].type;
+
+    return FIT_UINT8_INVALID;
+}
+```

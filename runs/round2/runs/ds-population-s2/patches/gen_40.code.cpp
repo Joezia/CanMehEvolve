@@ -1,0 +1,40 @@
+const Profile::MESG* Profile::GetMesg(const FIT_UINT16 num)
+{
+    static const MESG* low[512];
+    static FIT_UINT8 high_bits[(65536 - 512 + 7) / 8];
+    static const MESG* high_mesgs[MESGS];
+    static int high_count = 0;
+    static bool initialized = false;
+    if (!initialized)
+    {
+        for (int i = MESGS - 1; i >= 0; --i)
+        {
+            const FIT_UINT16 n = mesgs[i].num;
+            if (n < 512)
+            {
+                low[n] = &mesgs[i];
+            }
+            else
+            {
+                const FIT_UINT16 idx = n - 512;
+                high_bits[idx >> 3] |= static_cast<FIT_UINT8>(1u << (idx & 7));
+                high_mesgs[high_count++] = &mesgs[i];
+            }
+        }
+        initialized = true;
+    }
+
+    if (num < 512)
+        return low[num];
+
+    const FIT_UINT16 idx = num - 512;
+    if ((high_bits[idx >> 3] & (1u << (idx & 7))) == 0)
+        return nullptr;
+
+    for (int i = high_count - 1; i >= 0; --i)
+    {
+        if (high_mesgs[i]->num == num)
+            return high_mesgs[i];
+    }
+    return nullptr;
+}

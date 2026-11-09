@@ -1,0 +1,18 @@
+Replaced the uint16 index plus per-call null check/pointer arithmetic with a direct table of `MESG*` pointers, so the hot path is a single table load. Initialization still mirrors the original reverse-order overwrite behavior for identical results.
+
+```cpp
+const Profile::MESG* Profile::GetMesg(const FIT_UINT16 num)
+{
+    static const Profile::MESG* table[65536] = { 0 };
+    static bool init = false;
+
+    if (!init)
+    {
+        for (int i = MESGS - 1; i >= 0; i--)
+            table[mesgs[i].num] = &mesgs[i];
+        init = true;
+    }
+
+    return table[num];
+}
+```

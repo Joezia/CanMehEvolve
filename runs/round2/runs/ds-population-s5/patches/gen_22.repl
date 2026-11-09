@@ -1,0 +1,11 @@
+I kept the copy constructor as a pure member-initializer list so the compiler emits a single base-class copy plus coalesced stores for the four trivial members, avoiding any redundant intermediate work.
+```cpp
+Field::Field(const Field &field)
+    : FieldBase(field)
+    , profile(field.profile)
+    , profileIndex(field.profileIndex)
+    , type(field.type)
+    , isFieldExpanded(field.isFieldExpanded)
+{
+}
+```

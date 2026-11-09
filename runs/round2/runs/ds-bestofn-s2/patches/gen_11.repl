@@ -1,0 +1,20 @@
+I replaced the linear scan with a one-time-built direct lookup table indexed by message number, filling it in reverse so duplicates still return the first occurrence. Repeated lookups become a single array access instead of scanning the profile array.
+
+```cpp
+const Profile::MESG* Profile::GetMesg(const FIT_UINT16 num)
+{
+    static const Profile::MESG* lookup[65536] = {};
+    static bool initialized = false;
+
+    if (!initialized)
+    {
+        for (int i = MESGS - 1; i >= 0; --i)
+        {
+            lookup[mesgs[i].num] = &mesgs[i];
+        }
+        initialized = true;
+    }
+
+    return lookup[num];
+}
+```

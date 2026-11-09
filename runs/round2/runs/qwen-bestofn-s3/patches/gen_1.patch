@@ -1,0 +1,25 @@
+--- a/src/fit_segment_lap_mesg.hpp
++++ b/src/fit_segment_lap_mesg.hpp
+@@ -15,6 +15,7 @@
+ 
+ #include "fit_mesg.hpp"
+ #include "fit_mesg_with_event.hpp"
++#include <cstdint>
+ 
+ namespace fit
+ {
+@@ -3288,9 +3289,13 @@
+     // Units: m
+     // Comment: fractional part of total_ascent
+     ///////////////////////////////////////////////////////////////////////
++
+     void SetTotalFractionalAscent(FIT_FLOAT32 totalFractionalAscent)
+     {
+-        SetFieldFLOAT32Value(89, totalFractionalAscent, 0, FIT_SUBFIELD_INDEX_MAIN_FIELD);
++        // Directly write to the field value without going through the full field lookup machinery
++        // since field index 89 is known at compile time and the subfield index is always 0.
++        // This avoids the overhead of virtual function calls and array lookups in SetFieldFLOAT32Value.
++        fields[89].SetFLOAT32(totalFractionalAscent, 0);
+     }
+ 
+     ///////////////////////////////////////////////////////////////////////

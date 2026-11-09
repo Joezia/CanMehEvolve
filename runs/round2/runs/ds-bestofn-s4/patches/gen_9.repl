@@ -1,0 +1,32 @@
+I added a 65536-entry cache of the message pointer keyed by `mesgNum`, so the linear `GetMesg` search runs at most once per message number instead of on every field lookup. This speeds up both repeated field lookups during decoding and full-domain profile sweeps.
+
+```cpp
+const FIT_UINT16 Profile::GetFieldIndex(const FIT_UINT16 mesgNum, const FIT_UINT8 fieldNum)
+{
+    static const MESG* mesgCache[65536];
+    static FIT_UINT8 mesgValid[65536];
+
+    const MESG *mesg;
+    if (mesgValid[mesgNum])
+    {
+        mesg = mesgCache[mesgNum];
+    }
+    else
+    {
+        mesg = GetMesg(mesgNum);
+        mesgCache[mesgNum] = mesg;
+        mesgValid[mesgNum] = 1;
+    }
+
+    if (mesg == NULL)
+        return FIT_UINT16_INVALID;
+
+    for (FIT_UINT16 i = 0; i < mesg->numFields; i++)
+    {
+        if (mesg->fields[i].num == fieldNum)
+            return i;
+    }
+
+    return FIT_UINT16_INVALID;
+}
+```

@@ -1,0 +1,10 @@
+
+FIT_FLOAT64 FieldBase::GetOffset(const FIT_UINT16 subFieldIndex) const
+{
+    const FIT_UINT16 numSubFields = GetNumSubFields();
+    if (subFieldIndex >= numSubFields)
+        return GetOffset();
+
+    const SubField* subfield = GetSubField(subFieldIndex);
+    return (subfield != nullptr) ? subfield->offset : 0.0;
+}

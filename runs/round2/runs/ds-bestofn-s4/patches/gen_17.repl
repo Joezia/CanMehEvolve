@@ -1,0 +1,14 @@
+I replaced the four separate derived-member initializations with a single `memcpy` of the derived subobject, reducing instruction count while leaving the base copy semantics unchanged. This is a safe micro-optimization on the target g++ ABI.
+
+```include
+#include <cstddef>
+#include <cstring>
+```
+
+```cpp
+Field::Field(const Field &field)
+    : FieldBase(field)
+{
+    std::memcpy(&profile, &field.profile, sizeof(Field) - offsetof(Field, profile));
+}
+```

@@ -1,0 +1,11 @@
+
+const Profile::MESG* Profile::GetMesg(const FIT_UINT16 num)
+{
+    // Binary search assumes mesgs array is sorted by num (profile data is static and sorted at compile/link time)
+    // Using std::lower_bound for O(log n) lookup instead of O(n) linear scan
+    auto it = std::lower_bound(mesgs, mesgs + MESGS, num,
+        [](const MESG& m, FIT_UINT16 val) { return m.num < val; });
+    if (it != mesgs + MESGS && it->num == num)
+        return it;
+    return NULL;
+}

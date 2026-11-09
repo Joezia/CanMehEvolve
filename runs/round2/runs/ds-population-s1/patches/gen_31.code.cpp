@@ -1,0 +1,62 @@
+Field::Field(const FIT_UINT16 mesgNum, const FIT_UINT8 fieldNum)
+    : FieldBase()
+    , profile(NULL)
+    , profileIndex(FIT_UINT8_INVALID)
+    , type(FIT_UINT8_INVALID)
+    , isFieldExpanded(FIT_FALSE)
+{
+    struct CacheEntry
+    {
+        const Profile::MESG* profile;
+        FIT_UINT16 mesgNum;
+        FIT_UINT8 fieldNum;
+        FIT_UINT8 profileIndex;
+        bool valid;
+    };
+
+    static CacheEntry cache[1024] = {};
+
+    const FIT_UINT16 hash = static_cast<FIT_UINT16>((mesgNum * 251u + fieldNum) & 1023u);
+    CacheEntry& entry = cache[hash];
+
+    if (entry.valid && entry.mesgNum == mesgNum && entry.fieldNum == fieldNum)
+    {
+        profile = entry.profile;
+        profileIndex = entry.profileIndex;
+        return;
+    }
+
+    static FIT_UINT16 lastMesgNum = 0;
+    static const Profile::MESG* lastMesg = NULL;
+    static bool lastMesgValid = false;
+
+    if (lastMesgValid && lastMesgNum == mesgNum)
+    {
+        profile = lastMesg;
+    }
+    else
+    {
+        profile = Profile::GetMesg(mesgNum);
+        lastMesgNum = mesgNum;
+        lastMesg = profile;
+        lastMesgValid = true;
+    }
+
+    if (profile != NULL)
+    {
+        for (FIT_UINT16 i = 0; i < profile->numFields; ++i)
+        {
+            if (profile->fields[i].num == fieldNum)
+            {
+                profileIndex = static_cast<FIT_UINT8>(i);
+                break;
+            }
+        }
+    }
+
+    entry.profile = profile;
+    entry.mesgNum = mesgNum;
+    entry.fieldNum = fieldNum;
+    entry.profileIndex = profileIndex;
+    entry.valid = true;
+}

@@ -1,0 +1,31 @@
+
+const FIT_UINT16 Profile::GetFieldIndex(const FIT_UINT16 mesgNum, const FIT_UINT8 fieldNum)
+{
+    const MESG *mesg = GetMesg(mesgNum);
+
+    if (mesg == NULL)
+        return FIT_UINT16_INVALID;
+
+    // Use binary search if fields are sorted by num (common in profile data)
+    // First check if the field array is sorted (we assume it is per FIT spec)
+    // Since fields are typically sorted by field number, binary search is O(log n) vs O(n)
+    // Precondition: fields are sorted ascending by num
+    const FIELD *fields = mesg->fields;
+    FIT_UINT16 left = 0;
+    FIT_UINT16 right = mesg->numFields;
+
+    while (left < right) {
+        FIT_UINT16 mid = left + ((right - left) >> 1);
+        FIT_UINT8 midNum = fields[mid].num;
+
+        if (midNum < fieldNum) {
+            left = mid + 1;
+        } else if (midNum > fieldNum) {
+            right = mid;
+        } else {
+            return mid;
+        }
+    }
+
+    return FIT_UINT16_INVALID;
+}

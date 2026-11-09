@@ -1,0 +1,42 @@
+--- a/src/fit_profile.cpp
++++ b/src/fit_profile.cpp
+@@ -3057,13 +3057,35 @@
+ 
+ const Profile::MESG* Profile::GetMesg(const FIT_UINT16 num)
+ {
+-    for (int i = 0; i < MESGS; i++)
++    static unsigned cache_tag[256] = { 0 };
++    static const Profile::MESG* cache_ptr[256] = { 0 };
++
++    const unsigned idx = num & 0xFFu;
++    const unsigned tag = static_cast<unsigned>(num) + 1u;
++    if (cache_tag[idx] == tag)
++        return cache_ptr[idx];
++
++    int low = 0;
++    int high = static_cast<int>(MESGS) - 1;
++    const Profile::MESG* result = NULL;
++    while (low <= high)
+     {
+-        if (mesgs[i].num == num)
+-            return &mesgs[i];
++        const int mid = (low + high) >> 1;
++        const FIT_UINT16 mid_num = mesgs[mid].num;
++        if (mid_num == num)
++        {
++            result = &mesgs[mid];
++            break;
++        }
++        if (mid_num < num)
++            low = mid + 1;
++        else
++            high = mid - 1;
+     }
+ 
+-    return NULL;
++    cache_tag[idx] = tag;
++    cache_ptr[idx] = result;
++    return result;
+ }
+ 
+ const Profile::MESG* Profile::GetMesg(const std::string& name)

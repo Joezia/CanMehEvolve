@@ -1,0 +1,84 @@
+File: src/fit_profile.cpp
+Function: Profile::GetFieldIndex (15 lines)
+One full decode of the four files takes about 358.2 ms in the stock build.
+Time of the current version of the whole library relative to stock: 0.971 (below 1.0 is faster). Best measured so far: 0.971.
+
+Your previous attempt failed:
+Stage 'compile' rejected it: /home/z/zhouzia/Workspace/CanMehEvolve/build/work-1096602/tree/src/fit_profile.cpp:3083:1: error: stray ‘`’ in program
+ 3083 | ```cpp
+      | ^
+/home/z/zhouzia/Workspace/CanMehEvolve/build/work-1096602/tree/src/fit_profile.cpp:3083:2: error: stray ‘`’ in program
+ 3083 | ```cpp
+      |  ^
+/home/z/zhouzia/Workspace/CanMehEvolve/build/work-1096602/tree/src/fit_profile.cpp:3083:3: error: stray ‘`’ in program
+ 3083 | ```cpp
+      |   ^
+/home/z/zhouzia/Workspace/CanMehEvolve/build/work-1096602/tree/src/fit_profile.cpp:3083:4: error: ‘cpp’ does not name a type
+ 3083 | ```cpp
+      |    ^~~
+
+The rejected replacement was:
+```cpp
+
+```cpp
+const FIT_UINT16 Profile::GetFieldIndex(const FIT_UINT16 mesgNum, const FIT_UINT8 fieldNum)
+{
+    const MESG *mesg = GetMesg(mesgNum);
+
+    if (mesg == NULL)
+        return FIT_UINT16_INVALID;
+
+    // Use binary search if fields are sorted (common in profile data)
+    // Linear search fallback if unsorted, but we assume sorted for speed
+    // Check first and last for quick early exit
+    if (mesg->numFields == 0)
+        return FIT_UINT16_INVALID;
+    
+    const FIELD *fields = mesg->fields;
+    
+    // Quick checks for min/max field numbers to skip binary search in common cases
+    if (fieldNum < fields[0].num || fieldNum > fields[mesg->numFields - 1].num)
+        return FIT_UINT16_INVALID;
+
+    // Binary search since FIT profile fields are typically sorted by field number
+    FIT_UINT16 left = 0;
+    FIT_UINT16 right = mesg->numFields - 1;
+
+    while (left <= right) {
+        FIT_UINT16 mid = (left + right) >> 1;
+        FIT_UINT8 midNum = fields[mid].num;
+
+        if (midNum == fieldNum) {
+            return mid;
+        } else if (midNum < fieldNum) {
+            left = mid + 1;
+        } else {
+            right = mid - 1;
+        }
+    }
+
+    return FIT_UINT16_INVALID;
+}
+
+```
+
+Current text of the function:
+```cpp
+const FIT_UINT16 Profile::GetFieldIndex(const FIT_UINT16 mesgNum, const FIT_UINT8 fieldNum)
+{
+    const MESG *mesg = GetMesg(mesgNum);
+
+    if (mesg == NULL)
+        return FIT_UINT16_INVALID;
+
+    for (FIT_UINT16 i = 0; i < mesg->numFields; i++)
+    {
+        if (mesg->fields[i].num == fieldNum)
+            return i;
+    }
+
+    return FIT_UINT16_INVALID;
+}
+
+```
+Return the faster replacement now.

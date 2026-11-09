@@ -1,0 +1,19 @@
+
+const Profile::MESG* Profile::GetMesg(const FIT_UINT16 num)
+{
+    static const std::vector<const Profile::MESG*> sorted_mesgs([]{
+        std::vector<const Profile::MESG*> v;
+        v.reserve(MESGS);
+        for (int i = 0; i < MESGS; ++i) v.push_back(&mesgs[i]);
+        std::sort(v.begin(), v.end(), [](const Profile::MESG* a, const Profile::MESG* b) {
+            return a->num < b->num;
+        });
+        return v;
+    }());
+
+    const Profile::MESG key;
+    key.num = num;
+    auto it = std::lower_bound(sorted_mesgs.begin(), sorted_mesgs.end(), &key,
+        [](const Profile::MESG* a, const Profile::MESG* b) { return a->num < b->num; });
+    return (it != sorted_mesgs.end() && (*it)->num == num) ? *it : NULL;
+}

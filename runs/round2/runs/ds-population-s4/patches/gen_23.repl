@@ -1,0 +1,21 @@
+Replaced the linear scan with a lazily built 65536-entry direct lookup table, preserving first-match semantics for duplicate message numbers. This makes each lookup O(1) and avoids repeated scans over the profile message array.
+
+```cpp
+const Profile::MESG* Profile::GetMesg(const FIT_UINT16 num)
+{
+    static FIT_UINT16 index[65536] = {};
+    static bool initialized = false;
+    if (!initialized)
+    {
+        for (int i = 0; i < MESGS; ++i)
+        {
+            const FIT_UINT16 n = mesgs[i].num;
+            if (index[n] == 0)
+                index[n] = static_cast<FIT_UINT16>(i + 1);
+        }
+        initialized = true;
+    }
+    const FIT_UINT16 v = index[num];
+    return v ? &mesgs[v - 1] : NULL;
+}
+```

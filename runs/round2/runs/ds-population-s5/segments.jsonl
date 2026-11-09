@@ -1,0 +1,4 @@
+{"calls_at_start":0,"event":"start","host":"xcnc4","label":"job1096274","previous_host":"","resumed":false,"segment":1,"slurm_job_id":"1096274","time":"2026-11-08T17:17:23+0800"}
+{"calls_at_end":37,"complete":false,"ended_because":"deadline","event":"end","segment":1,"time":"2026-11-08T19:50:24+0800"}
+{"calls_at_start":37,"event":"start","host":"xcnc1","label":"job1096800","previous_host":"xcnc4","resumed":true,"segment":2,"slurm_job_id":"1096800","time":"2026-11-08T20:02:18+0800"}
+{"calls_at_end":40,"complete":true,"ended_because":"request budget reached","event":"end","segment":2,"time":"2026-11-08T20:18:14+0800"}

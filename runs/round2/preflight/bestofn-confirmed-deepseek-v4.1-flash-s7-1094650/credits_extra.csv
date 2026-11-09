@@ -1,0 +1,7 @@
+generation,segment,http_attempts_total,reasoning_tokens,truncated_replies,llm_seconds
+1,1,1,1962,0,23.142085
+2,1,2,8899,0,102.795239
+3,2,3,19763,0,231.353372
+4,2,4,25844,0,301.371946
+5,2,5,32058,0,375.326224
+6,2,6,39201,0,440.783967

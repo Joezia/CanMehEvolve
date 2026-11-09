@@ -1,0 +1,7 @@
+job=1095869
+host=xcnc1
+start=2026-11-08T15:51:20+08:00
+cpu=Intel(R) Xeon(R) CPU E5-2620 v3 @ 2.40GHz
+binary_sha256=84a432f57b4aa164dc70328f711c2315a6cf61807eb6b0af0071739c36f16076
+3c44df16e0191315dffbae0e0f5e1321d579106785a86925e87e8a8513c74458  /home/z/zhouzia/Workspace/CanMehEvolve/runs/round2/runs/ds-population-s2/best.patch
+end=2026-11-08T15:58:22+08:00

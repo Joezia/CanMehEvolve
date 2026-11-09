@@ -1,0 +1,11 @@
+--- a/src/fit_hsa_body_battery_data_mesg.hpp
++++ b/src/fit_hsa_body_battery_data_mesg.hpp
+@@ -68,7 +68,7 @@
+     // Set timestamp field
+     // Units: s
+     ///////////////////////////////////////////////////////////////////////
+-    void SetTimestamp(FIT_DATE_TIME timestamp)
++    void SetTimestamp(FIT_DATE_TIME timestamp) inline
+     {
+         SetFieldUINT32Value(253, timestamp, 0, FIT_SUBFIELD_INDEX_MAIN_FIELD);
+     }

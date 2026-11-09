@@ -1,0 +1,134 @@
+--- a/src/fit_field.cpp
++++ b/src/fit_field.cpp
+@@ -92,9 +92,14 @@
+ 
+ FIT_UINT8 Field::GetNum(void) const
+ {
+-    if ((profile == NULL) || (profileIndex >= profile->numFields))
++    if (__builtin_expect(profile == NULL, 0))
+         return FIT_FIELD_NUM_INVALID;
+-    return profile->fields[profileIndex].num;
++
++    const Profile::FIELD *fields = profile->fields;
++    if (__builtin_expect((profileIndex >= profile->numFields) | (fields == NULL), 0))
++        return FIT_FIELD_NUM_INVALID;
++
++    return fields[profileIndex].num;
+ }
+ 
+ FIT_UINT8 Field::GetType() const
+@@ -102,10 +107,32 @@
+     if ( type != FIT_UINT8_INVALID )
+         return type;
+ 
+-    if ((profile == NULL) || (profileIndex >= profile->numFields))
++    const Profile::MESG* p = profile;
++    if ( p == NULL )
+         return FIT_UINT8_INVALID;
+ 
+-    return profile->fields[profileIndex].type;
++    const unsigned idx = static_cast<unsigned>(profileIndex);
++
++    static const Profile::MESG* cachedProfile[256] = {};
++    static FIT_UINT8 cachedType[256];
++
++    if ( idx < 256u )
++    {
++        if ( cachedProfile[idx] == p )
++            return cachedType[idx];
++    }
++
++    FIT_UINT8 result = FIT_UINT8_INVALID;
++    if ( idx < p->numFields )
++        result = p->fields[idx].type;
++
++    if ( idx < 256u )
++    {
++        cachedProfile[idx] = p;
++        cachedType[idx] = result;
++    }
++
++    return result;
+ }
+ 
+ std::string Field::GetUnits() const
+--- a/src/fit_field_base.cpp
++++ b/src/fit_field_base.cpp
+@@ -16,6 +16,7 @@
+ #include "fit_field_base.hpp"
+ #include "fit_mesg.hpp"
+ #include "fit_unicode.hpp"
++#include <cstring>
+ 
+ namespace fit
+ {
+@@ -25,9 +26,9 @@
+ }
+ 
+ FieldBase::FieldBase(const FieldBase &field)
++    : values(field.values),
++      stringIndexes(field.stringIndexes)
+ {
+-    values = field.values;
+-    stringIndexes = field.stringIndexes;
+ }
+ 
+ FieldBase::~FieldBase()
+@@ -1131,19 +1132,52 @@
+ template <typename T>
+ T FieldBase::GetValue(const FIT_UINT8 fieldArrayIndex) const
+ {
+-    FIT_UINT8 size = baseTypeSizes[GetType() & FIT_BASE_TYPE_NUM_MASK];
++    const FIT_UINT8 baseType = GetType() & FIT_BASE_TYPE_NUM_MASK;
+     if (fieldArrayIndex >= (FIT_UINT8)values.size())
+     {
+-        return *reinterpret_cast<const T*>(baseTypeInvalids[GetType() & FIT_BASE_TYPE_NUM_MASK]);
++        return *reinterpret_cast<const T*>(baseTypeInvalids[baseType]);
+     }
+ 
+-    T rv = 0;
++    const FIT_UINT8 size = baseTypeSizes[baseType];
++    const FIT_UINT8* p = values.data() + (fieldArrayIndex * size);
+ 
+-    for (int i = 0; i < size; i++)
++    switch (size)
+     {
+-        rv |= static_cast<T>(values[(fieldArrayIndex * size) + i]) << (i * 8);
++    case 1:
++        return static_cast<T>(p[0]);
++    case 2:
++        if constexpr (sizeof(T) >= 2)
++        {
++            FIT_UINT16 v;
++            std::memcpy(&v, p, 2);
++            return static_cast<T>(v);
++        }
++        break;
++    case 4:
++        if constexpr (sizeof(T) >= 4)
++        {
++            FIT_UINT32 v;
++            std::memcpy(&v, p, 4);
++            return static_cast<T>(v);
++        }
++        break;
++    case 8:
++        if constexpr (sizeof(T) >= 8)
++        {
++            FIT_UINT64 v;
++            std::memcpy(&v, p, 8);
++            return static_cast<T>(v);
++        }
++        break;
++    default:
++        break;
+     }
+ 
++    T rv = 0;
++    for (int i = 0; i < size; i++)
++    {
++        rv |= static_cast<T>(p[i]) << (i * 8);
++    }
+     return rv;
+ }
+ 

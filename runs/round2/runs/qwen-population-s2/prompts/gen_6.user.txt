@@ -1,0 +1,67 @@
+File: src/fit_profile.cpp
+Function: Profile::GetMesg (10 lines)
+One full decode of the four files takes about 358.6 ms in the stock build.
+Time of the current version of the whole library relative to stock: 1.002 (below 1.0 is faster). Best measured so far: 0.995.
+
+Your previous attempt failed:
+Stage 'compile' rejected it: /home/z/zhouzia/Workspace/CanMehEvolve/build/work-1096058/tree/src/fit_profile.cpp:3061:1: error: stray ‘`’ in program
+ 3061 | ```cpp
+      | ^
+/home/z/zhouzia/Workspace/CanMehEvolve/build/work-1096058/tree/src/fit_profile.cpp:3061:2: error: stray ‘`’ in program
+ 3061 | ```cpp
+      |  ^
+/home/z/zhouzia/Workspace/CanMehEvolve/build/work-1096058/tree/src/fit_profile.cpp:3061:3: error: stray ‘`’ in program
+ 3061 | ```cpp
+      |   ^
+/home/z/zhouzia/Workspace/CanMehEvolve/build/work-1096058/tree/src/fit_profile.cpp:3061:4: error: ‘cpp’ does not name a type
+ 3061 | ```cpp
+      |    ^~~
+
+The rejected replacement was:
+```cpp
+
+```cpp
+const Profile::MESG* Profile::GetMesg(const FIT_UINT16 num)
+{
+    // Profile::MESG is static and sorted by num at compile time in release builds
+    // Use binary search for O(log n) lookup instead of linear O(n)
+    static const std::vector<const Profile::MESG*> sorted_mesgs = [] {
+        std::vector<const Profile::MESG*> result;
+        result.reserve(MESGS);
+        for (int i = 0; i < MESGS; i++) {
+            result.push_back(&mesgs[i]);
+        }
+        std::sort(result.begin(), result.end(), [](const Profile::MESG* a, const Profile::MESG* b) {
+            return a->num < b->num;
+        });
+        return result;
+    }();
+
+    auto it = std::lower_bound(sorted_mesgs.begin(), sorted_mesgs.end(), num,
+        [](const Profile::MESG* mesg, FIT_UINT16 value) {
+            return mesg->num < value;
+        });
+
+    if (it != sorted_mesgs.end() && (*it)->num == num)
+        return *it;
+
+    return NULL;
+}
+
+```
+
+Current text of the function:
+```cpp
+const Profile::MESG* Profile::GetMesg(const FIT_UINT16 num)
+{
+    for (int i = 0; i < MESGS; i++)
+    {
+        if (mesgs[i].num == num)
+            return &mesgs[i];
+    }
+
+    return NULL;
+}
+
+```
+Return the faster replacement now.

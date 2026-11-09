@@ -1,0 +1,17 @@
+I kept the same logic but collapsed it into a single-return form with branch hints so the common "type already set" path and the validated profile lookup generate tighter code with fewer taken branches. This avoids redundant early-return plumbing while preserving identical results for every input.
+
+```cpp
+FIT_UINT8 Field::GetType() const
+{
+    FIT_UINT8 result = type;
+    if (__builtin_expect(result == FIT_UINT8_INVALID, 0))
+    {
+        if (__builtin_expect(profile != NULL, 1) &&
+            __builtin_expect(profileIndex < profile->numFields, 1))
+        {
+            result = profile->fields[profileIndex].type;
+        }
+    }
+    return result;
+}
+```

@@ -1,0 +1,14 @@
+File: src/fit_segment_lap_mesg.hpp
+Function: SetMaxNegVerticalSpeed (4 lines)
+One full decode of the four files takes about 358.2 ms in the stock build.
+Time of the current version of the whole library relative to stock: 0.979 (below 1.0 is faster). Best measured so far: 0.978.
+
+Current text of the function:
+```cpp
+    void SetMaxNegVerticalSpeed(FIT_FLOAT32 maxNegVerticalSpeed)
+    {
+        SetFieldFLOAT32Value(48, maxNegVerticalSpeed, 0, FIT_SUBFIELD_INDEX_MAIN_FIELD);
+    }
+
+```
+Return the faster replacement now.

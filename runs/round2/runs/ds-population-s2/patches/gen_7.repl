@@ -1,0 +1,18 @@
+Replaced the linear scan with a one-time-built 16-bit index table that preserves first-match semantics by filling in reverse order. This makes `GetMesg` O(1) per call, which is especially faster for the full-domain sweep.
+
+```cpp
+const Profile::MESG* Profile::GetMesg(const FIT_UINT16 num)
+{
+    static FIT_UINT16 lookup[65536];
+    static bool initialized = false;
+    if (!initialized)
+    {
+        for (int i = MESGS - 1; i >= 0; --i)
+            lookup[mesgs[i].num] = static_cast<FIT_UINT16>(i + 1);
+        initialized = true;
+    }
+
+    const FIT_UINT16 idx = lookup[num];
+    return idx ? &mesgs[idx - 1] : NULL;
+}
+```

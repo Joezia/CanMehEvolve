@@ -1,0 +1,1 @@
+{"error":"the candidate died on signal 6 (abort, which std::terminate raises for an uncaught exception): terminate called after throwing an instance of 'fit::RuntimeException'\n  what():  FIT decode error: File CRC failed. Error at byte: 102886\n","ok":false,"rebuilt":2,"stage":"crash"}

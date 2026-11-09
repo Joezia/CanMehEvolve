@@ -1,0 +1,508 @@
+{
+ "stock|plain": {
+  "returncode": 0,
+  "asan_errors": 0,
+  "ubsan_runtime_errors": 0,
+  "tsan_warnings": 0
+ },
+ "r2-ds-bestofn-s1|plain": {
+  "changed_units": [
+   "fit_profile"
+  ],
+  "returncode": 0,
+  "asan_errors": 0,
+  "ubsan_runtime_errors": 0,
+  "tsan_warnings": 0,
+  "files": 459,
+  "handling_differences_vs_stock": 0
+ },
+ "r2-ds-bestofn-s2|plain": {
+  "changed_units": [
+   "fit_profile"
+  ],
+  "returncode": 0,
+  "asan_errors": 0,
+  "ubsan_runtime_errors": 0,
+  "tsan_warnings": 0,
+  "files": 459,
+  "handling_differences_vs_stock": 0
+ },
+ "r2-ds-bestofn-s3|plain": {
+  "changed_units": [
+   "fit_profile"
+  ],
+  "returncode": 0,
+  "asan_errors": 0,
+  "ubsan_runtime_errors": 0,
+  "tsan_warnings": 0,
+  "files": 459,
+  "handling_differences_vs_stock": 0
+ },
+ "r2-ds-bestofn-s4|plain": {
+  "changed_units": [
+   "fit_profile"
+  ],
+  "returncode": 0,
+  "asan_errors": 0,
+  "ubsan_runtime_errors": 0,
+  "tsan_warnings": 0,
+  "files": 459,
+  "handling_differences_vs_stock": 0
+ },
+ "r2-ds-bestofn-s5|plain": {
+  "changed_units": [
+   "fit_profile"
+  ],
+  "returncode": 0,
+  "asan_errors": 0,
+  "ubsan_runtime_errors": 0,
+  "tsan_warnings": 0,
+  "files": 459,
+  "handling_differences_vs_stock": 0
+ },
+ "r2-ds-population-s1|plain": {
+  "changed_units": [
+   "fit_field",
+   "fit_field_base"
+  ],
+  "returncode": 0,
+  "asan_errors": 0,
+  "ubsan_runtime_errors": 0,
+  "tsan_warnings": 0,
+  "files": 459,
+  "handling_differences_vs_stock": 0
+ },
+ "r2-ds-population-s2|plain": {
+  "changed_units": [
+   "fit_field",
+   "fit_field_base",
+   "fit_mesg",
+   "fit_profile"
+  ],
+  "returncode": 0,
+  "asan_errors": 0,
+  "ubsan_runtime_errors": 0,
+  "tsan_warnings": 0,
+  "files": 459,
+  "handling_differences_vs_stock": 0
+ },
+ "r2-ds-population-s3|plain": {
+  "changed_units": [
+   "fit_field",
+   "fit_field_base",
+   "fit_profile"
+  ],
+  "returncode": 0,
+  "asan_errors": 0,
+  "ubsan_runtime_errors": 0,
+  "tsan_warnings": 0,
+  "files": 459,
+  "handling_differences_vs_stock": 0
+ },
+ "r2-ds-population-s4|plain": {
+  "changed_units": [
+   "fit_field",
+   "fit_field_base",
+   "fit_mesg",
+   "fit_profile"
+  ],
+  "returncode": 0,
+  "asan_errors": 0,
+  "ubsan_runtime_errors": 0,
+  "tsan_warnings": 0,
+  "files": 459,
+  "handling_differences_vs_stock": 0
+ },
+ "r2-ds-population-s5|plain": {
+  "changed_units": [
+   "fit_field",
+   "fit_field_base",
+   "fit_profile"
+  ],
+  "returncode": 0,
+  "asan_errors": 0,
+  "ubsan_runtime_errors": 0,
+  "tsan_warnings": 0,
+  "files": 459,
+  "handling_differences_vs_stock": 0
+ },
+ "r2-qwen-bestofn-s1|plain": {
+  "changed_units": [
+   "fit_profile"
+  ],
+  "returncode": 0,
+  "asan_errors": 0,
+  "ubsan_runtime_errors": 0,
+  "tsan_warnings": 0,
+  "files": 459,
+  "handling_differences_vs_stock": 0
+ },
+ "r2-qwen-bestofn-s2|plain": {
+  "changed_units": [
+   "fit_profile"
+  ],
+  "returncode": 0,
+  "asan_errors": 0,
+  "ubsan_runtime_errors": 0,
+  "tsan_warnings": 0,
+  "files": 459,
+  "handling_differences_vs_stock": 0
+ },
+ "r2-qwen-bestofn-s3|plain": {
+  "changed_units": [
+   "fit_profile"
+  ],
+  "returncode": 0,
+  "asan_errors": 0,
+  "ubsan_runtime_errors": 0,
+  "tsan_warnings": 0,
+  "files": 459,
+  "handling_differences_vs_stock": 0
+ },
+ "r2-qwen-bestofn-s4|plain": {
+  "changed_units": [
+   "fit_profile"
+  ],
+  "returncode": 0,
+  "asan_errors": 0,
+  "ubsan_runtime_errors": 0,
+  "tsan_warnings": 0,
+  "files": 459,
+  "handling_differences_vs_stock": 0
+ },
+ "r2-qwen-bestofn-s5|plain": {
+  "changed_units": [
+   "fit_profile"
+  ],
+  "returncode": 0,
+  "asan_errors": 0,
+  "ubsan_runtime_errors": 0,
+  "tsan_warnings": 0,
+  "files": 459,
+  "handling_differences_vs_stock": 0
+ },
+ "r2-qwen-population-s1|plain": {
+  "changed_units": [
+   "fit_accumulated_field",
+   "fit_crc",
+   "fit_field",
+   "fit_field_base",
+   "fit_mesg_definition",
+   "fit_profile"
+  ],
+  "returncode": 0,
+  "asan_errors": 0,
+  "ubsan_runtime_errors": 0,
+  "tsan_warnings": 0,
+  "files": 459,
+  "handling_differences_vs_stock": 0
+ },
+ "r2-qwen-population-s2|plain": {
+  "changed_units": [
+   "fit_decode",
+   "fit_field_base",
+   "fit_mesg",
+   "fit_profile"
+  ],
+  "returncode": 0,
+  "asan_errors": 0,
+  "ubsan_runtime_errors": 0,
+  "tsan_warnings": 0,
+  "files": 459,
+  "handling_differences_vs_stock": 0
+ },
+ "r2-qwen-population-s3|plain": {
+  "changed_units": [
+   "fit_field",
+   "fit_field_base",
+   "fit_profile"
+  ],
+  "returncode": 0,
+  "asan_errors": 0,
+  "ubsan_runtime_errors": 0,
+  "tsan_warnings": 0,
+  "files": 459,
+  "handling_differences_vs_stock": 0
+ },
+ "r2-qwen-population-s4|plain": {
+  "changed_units": [
+   "fit_field",
+   "fit_field_base"
+  ],
+  "returncode": 0,
+  "asan_errors": 0,
+  "ubsan_runtime_errors": 0,
+  "tsan_warnings": 0,
+  "files": 459,
+  "handling_differences_vs_stock": 0
+ },
+ "r2-qwen-population-s5|plain": {
+  "changed_units": [
+   "fit_decode",
+   "fit_field",
+   "fit_field_base",
+   "fit_mesg",
+   "fit_profile"
+  ],
+  "returncode": 0,
+  "asan_errors": 0,
+  "ubsan_runtime_errors": 0,
+  "tsan_warnings": 0,
+  "files": 459,
+  "handling_differences_vs_stock": 0
+ },
+ "stack-s1-K2-fixed|plain": {
+  "changed_units": [
+   "fit_field_base",
+   "fit_profile"
+  ],
+  "returncode": 0,
+  "asan_errors": 0,
+  "ubsan_runtime_errors": 0,
+  "tsan_warnings": 0,
+  "files": 459,
+  "handling_differences_vs_stock": 0
+ },
+ "stack-s1-K3-fixed|plain": {
+  "changed_units": [
+   "fit_field_base",
+   "fit_profile"
+  ],
+  "returncode": 0,
+  "asan_errors": 0,
+  "ubsan_runtime_errors": 0,
+  "tsan_warnings": 0,
+  "files": 459,
+  "handling_differences_vs_stock": 0
+ },
+ "stack-s1-K5-fixed|plain": {
+  "changed_units": [
+   "fit_field",
+   "fit_field_base",
+   "fit_profile"
+  ],
+  "returncode": 0,
+  "asan_errors": 0,
+  "ubsan_runtime_errors": 0,
+  "tsan_warnings": 0,
+  "files": 459,
+  "handling_differences_vs_stock": 0
+ },
+ "stack-s1-bestK9-posthoc|plain": {
+  "changed_units": [
+   "fit_field",
+   "fit_field_base",
+   "fit_mesg",
+   "fit_profile"
+  ],
+  "returncode": 0,
+  "asan_errors": 0,
+  "ubsan_runtime_errors": 0,
+  "tsan_warnings": 0,
+  "files": 459,
+  "handling_differences_vs_stock": 0
+ },
+ "stack-s2-K2-fixed|plain": {
+  "changed_units": [
+   "fit_field_base",
+   "fit_profile"
+  ],
+  "returncode": 0,
+  "asan_errors": 0,
+  "ubsan_runtime_errors": 0,
+  "tsan_warnings": 0,
+  "files": 459,
+  "handling_differences_vs_stock": 0
+ },
+ "stack-s2-K3-fixed|plain": {
+  "changed_units": [
+   "fit_field_base",
+   "fit_profile"
+  ],
+  "returncode": 0,
+  "asan_errors": 0,
+  "ubsan_runtime_errors": 0,
+  "tsan_warnings": 0,
+  "files": 459,
+  "handling_differences_vs_stock": 0
+ },
+ "stack-s2-K5-fixed|plain": {
+  "changed_units": [
+   "fit_field_base",
+   "fit_profile"
+  ],
+  "returncode": 0,
+  "asan_errors": 0,
+  "ubsan_runtime_errors": 0,
+  "tsan_warnings": 0,
+  "files": 459,
+  "handling_differences_vs_stock": 0
+ },
+ "stack-s2-bestK6-posthoc|plain": {
+  "changed_units": [
+   "fit_field",
+   "fit_field_base",
+   "fit_profile"
+  ],
+  "returncode": 0,
+  "asan_errors": 0,
+  "ubsan_runtime_errors": 0,
+  "tsan_warnings": 0,
+  "files": 459,
+  "handling_differences_vs_stock": 0
+ },
+ "stack-s3-K2-fixed|plain": {
+  "changed_units": [
+   "fit_field_base",
+   "fit_profile"
+  ],
+  "returncode": 0,
+  "asan_errors": 0,
+  "ubsan_runtime_errors": 0,
+  "tsan_warnings": 0,
+  "files": 459,
+  "handling_differences_vs_stock": 0
+ },
+ "stack-s3-K3-fixed|plain": {
+  "changed_units": [
+   "fit_field_base",
+   "fit_profile"
+  ],
+  "returncode": 0,
+  "asan_errors": 0,
+  "ubsan_runtime_errors": 0,
+  "tsan_warnings": 0,
+  "files": 459,
+  "handling_differences_vs_stock": 0
+ },
+ "stack-s3-K5-fixed|plain": {
+  "changed_units": [
+   "fit_field_base",
+   "fit_mesg",
+   "fit_profile"
+  ],
+  "returncode": 0,
+  "asan_errors": 0,
+  "ubsan_runtime_errors": 0,
+  "tsan_warnings": 0,
+  "files": 459,
+  "handling_differences_vs_stock": 0
+ },
+ "stack-s3-bestK10-posthoc|plain": {
+  "changed_units": [
+   "fit_decode",
+   "fit_field",
+   "fit_field_base",
+   "fit_mesg",
+   "fit_mesg_broadcaster",
+   "fit_profile"
+  ],
+  "returncode": 0,
+  "asan_errors": 0,
+  "ubsan_runtime_errors": 0,
+  "tsan_warnings": 0,
+  "files": 459,
+  "handling_differences_vs_stock": 0
+ },
+ "stack-s4-K2-fixed|plain": {
+  "changed_units": [
+   "fit_field_base",
+   "fit_profile"
+  ],
+  "returncode": 0,
+  "asan_errors": 0,
+  "ubsan_runtime_errors": 0,
+  "tsan_warnings": 0,
+  "files": 459,
+  "handling_differences_vs_stock": 0
+ },
+ "stack-s4-K3-fixed|plain": {
+  "changed_units": [
+   "fit_field_base",
+   "fit_profile"
+  ],
+  "returncode": 0,
+  "asan_errors": 0,
+  "ubsan_runtime_errors": 0,
+  "tsan_warnings": 0,
+  "files": 459,
+  "handling_differences_vs_stock": 0
+ },
+ "stack-s4-K5-fixed|plain": {
+  "changed_units": [
+   "fit_field_base",
+   "fit_mesg",
+   "fit_profile"
+  ],
+  "returncode": 0,
+  "asan_errors": 0,
+  "ubsan_runtime_errors": 0,
+  "tsan_warnings": 0,
+  "files": 459,
+  "handling_differences_vs_stock": 0
+ },
+ "stack-s4-bestK7-posthoc|plain": {
+  "changed_units": [
+   "fit_field",
+   "fit_field_base",
+   "fit_mesg",
+   "fit_profile"
+  ],
+  "returncode": 0,
+  "asan_errors": 0,
+  "ubsan_runtime_errors": 0,
+  "tsan_warnings": 0,
+  "files": 459,
+  "handling_differences_vs_stock": 0
+ },
+ "stack-s5-K2-fixed|plain": {
+  "changed_units": [
+   "fit_field_base",
+   "fit_profile"
+  ],
+  "returncode": 0,
+  "asan_errors": 0,
+  "ubsan_runtime_errors": 0,
+  "tsan_warnings": 0,
+  "files": 459,
+  "handling_differences_vs_stock": 0
+ },
+ "stack-s5-K3-fixed|plain": {
+  "changed_units": [
+   "fit_field_base",
+   "fit_profile"
+  ],
+  "returncode": 0,
+  "asan_errors": 0,
+  "ubsan_runtime_errors": 0,
+  "tsan_warnings": 0,
+  "files": 459,
+  "handling_differences_vs_stock": 0
+ },
+ "stack-s5-K5-fixed|plain": {
+  "changed_units": [
+   "fit_field_base",
+   "fit_mesg",
+   "fit_profile"
+  ],
+  "returncode": 0,
+  "asan_errors": 0,
+  "ubsan_runtime_errors": 0,
+  "tsan_warnings": 0,
+  "files": 459,
+  "handling_differences_vs_stock": 0
+ },
+ "stack-s5-bestK6-posthoc|plain": {
+  "changed_units": [
+   "fit_field_base",
+   "fit_mesg",
+   "fit_profile"
+  ],
+  "returncode": 0,
+  "asan_errors": 0,
+  "ubsan_runtime_errors": 0,
+  "tsan_warnings": 0,
+  "files": 459,
+  "handling_differences_vs_stock": 0
+ }
+}

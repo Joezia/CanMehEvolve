@@ -1,0 +1,10 @@
+The hot path always passes both guards, so I marked that combined test `__builtin_expect(...,0)` to push the invalid case into a cold block and let the compiler lay out the single byte load as straight-line fall-through code.
+
+```cpp
+FIT_UINT8 Field::GetNum(void) const
+{
+    if (__builtin_expect((profile == NULL) || (profileIndex >= profile->numFields), 0))
+        return FIT_FIELD_NUM_INVALID;
+    return profile->fields[profileIndex].num;
+}
+```

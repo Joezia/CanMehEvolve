@@ -1,0 +1,53 @@
+--- a/src/fit_field_base.cpp
++++ b/src/fit_field_base.cpp
+@@ -16,6 +16,7 @@
+ #include "fit_field_base.hpp"
+ #include "fit_mesg.hpp"
+ #include "fit_unicode.hpp"
++#include <cstring>
+ 
+ namespace fit
+ {
+@@ -1128,22 +1129,36 @@
+     return (value > 0.0) ? floor(value + 0.5) : ceil(value - 0.5);
+ }
+ 
++
+ template <typename T>
+ T FieldBase::GetValue(const FIT_UINT8 fieldArrayIndex) const
+ {
+-    FIT_UINT8 size = baseTypeSizes[GetType() & FIT_BASE_TYPE_NUM_MASK];
+     if (fieldArrayIndex >= (FIT_UINT8)values.size())
+     {
+         return *reinterpret_cast<const T*>(baseTypeInvalids[GetType() & FIT_BASE_TYPE_NUM_MASK]);
+     }
+ 
+-    T rv = 0;
++    const FIT_UINT8 size = baseTypeSizes[GetType() & FIT_BASE_TYPE_NUM_MASK];
++    if (size == 0) return T{};
+ 
+-    for (int i = 0; i < size; i++)
+-    {
+-        rv |= static_cast<T>(values[(fieldArrayIndex * size) + i]) << (i * 8);
++    const FIT_UINT8 offset = fieldArrayIndex * size;
++    T rv = 0;
++    
++    if constexpr (std::is_same_v<T, FIT_UINT8>) {
++        rv = static_cast<T>(values[offset]);
++    } else if constexpr (std::is_same_v<T, FIT_SINT8>) {
++        rv = static_cast<T>(static_cast<FIT_INT8>(values[offset]));
++    } else if constexpr (sizeof(T) <= 4) {
++        // For 16/32-bit types, use memcpy to avoid alignment issues
++        // and leverage compiler's optimized copy
++        const void* src = &values[offset];
++        std::memcpy(&rv, src, size);
++    } else {
++        // For 64-bit types (FIT_UINT64/FIT_SINT64)
++        const void* src = &values[offset];
++        std::memcpy(&rv, src, size);
+     }
+-
++    
+     return rv;
+ }
+ 

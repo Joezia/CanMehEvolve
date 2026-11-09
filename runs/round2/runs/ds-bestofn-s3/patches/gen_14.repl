@@ -1,0 +1,14 @@
+I kept the cached-type fast path and marked it likely, while collapsing the profile-null and bounds checks into one valid-profile test to reduce branches on the cold fallback path.
+
+```cpp
+FIT_UINT8 Field::GetType() const
+{
+    if (__builtin_expect(type != FIT_UINT8_INVALID, 1))
+        return type;
+
+    if (profile != NULL && profileIndex < profile->numFields)
+        return profile->fields[profileIndex].type;
+
+    return FIT_UINT8_INVALID;
+}
+```

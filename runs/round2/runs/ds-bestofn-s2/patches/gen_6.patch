@@ -1,0 +1,14 @@
+--- a/src/fit_field_base.cpp
++++ b/src/fit_field_base.cpp
+@@ -94,10 +94,7 @@
+ 
+ FIT_UINT8 FieldBase::GetSize(void) const
+ {
+-    if (!IsValid())
+-        return 0;
+-
+-    return (FIT_UINT8)values.size();
++    return __builtin_expect(IsValid(), 1) ? (FIT_UINT8)values.size() : (FIT_UINT8)0;
+ }
+ 
+ FIT_UINT8 FieldBase::GetNumValues(void) const

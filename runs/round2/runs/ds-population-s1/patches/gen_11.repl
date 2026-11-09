@@ -1,0 +1,10 @@
+I changed the copy constructor to default-construct `stringIndexes` and only copy it when non-empty, avoiding a vector copy-constructor call for the common case where there are no string indexes. This is faster because most fields have empty `stringIndexes`, so the branch saves work while preserving identical behavior.
+
+```cpp
+FieldBase::FieldBase(const FieldBase &field)
+    : values(field.values)
+{
+  if (!field.stringIndexes.empty())
+    stringIndexes = field.stringIndexes;
+}
+```

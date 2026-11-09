@@ -1,0 +1,17 @@
+--- a/src/fit_magnetometer_data_mesg.hpp
++++ b/src/fit_magnetometer_data_mesg.hpp
+@@ -50,13 +50,7 @@
+     ///////////////////////////////////////////////////////////////////////
+     FIT_BOOL IsTimestampValid() const
+     {
+-        const Field* field = GetField(253);
+-        if( FIT_NULL == field )
+-        {
+-            return FIT_FALSE;
+-        }
+-
+-        return field->IsValueValid();
++        return IsFieldValid(253);
+     }
+ 
+     ///////////////////////////////////////////////////////////////////////

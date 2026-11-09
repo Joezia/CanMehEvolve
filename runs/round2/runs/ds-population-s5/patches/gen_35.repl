@@ -1,0 +1,15 @@
+Copy the base with its own copy constructor and then bulk-copy only the derived scalar tail with `memcpy`, avoiding the separate member initializations while keeping the base’s dynamic members correctly managed.
+
+```include
+#include <cstring>
+```
+
+```cpp
+Field::Field(const Field &field)
+    : FieldBase(field)
+{
+    std::memcpy(reinterpret_cast<char*>(this) + sizeof(FieldBase),
+                reinterpret_cast<const char*>(&field) + sizeof(FieldBase),
+                sizeof(Field) - sizeof(FieldBase));
+}
+```

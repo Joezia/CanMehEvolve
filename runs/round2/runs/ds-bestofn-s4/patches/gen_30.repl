@@ -1,0 +1,13 @@
+The function is already minimal; I hoisted the index into a local and added branch-prediction hints so the common in-range path stays straight-line and the two guards compile to predictable fall-through checks.
+
+```cpp
+FIT_UINT16 Field::GetNumComponents(void) const
+{
+    if (__builtin_expect(profile == NULL, 0))
+        return 0;
+    const FIT_UINT16 idx = profileIndex;
+    if (__builtin_expect(idx >= profile->numFields, 0))
+        return 0;
+    return profile->fields[idx].numComponents;
+}
+```

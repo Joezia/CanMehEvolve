@@ -1,0 +1,15 @@
+Cache the type in a local and move the profile lookup into a cold branch, so the common valid-type case does one load and a single predictable branch while preserving the invalid fallback exactly.
+
+```cpp
+FIT_UINT8 Field::GetType() const
+{
+    FIT_UINT8 t = type;
+    if (__builtin_expect(t == FIT_UINT8_INVALID, 0))
+    {
+        const auto p = profile;
+        if (p != NULL && profileIndex < p->numFields)
+            t = p->fields[profileIndex].type;
+    }
+    return t;
+}
+```

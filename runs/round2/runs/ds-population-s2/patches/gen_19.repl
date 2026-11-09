@@ -1,0 +1,16 @@
+Moved the `profileIndex` load ahead of the null check and hoisted the `numFields`/`fields` loads before the range test so independent loads can issue in parallel with the comparison. This shortens the dependency chain on the hot valid-index path while preserving the exact invalid-input returns.
+
+```cpp
+FIT_UINT8 Field::GetNum(void) const
+{
+    const auto* p = profile;
+    const FIT_UINT8 index = profileIndex;
+    if (__builtin_expect(p == NULL, 0))
+        return FIT_FIELD_NUM_INVALID;
+    const auto numFields = p->numFields;
+    const auto* fields = p->fields;
+    if (__builtin_expect(index >= numFields, 0))
+        return FIT_FIELD_NUM_INVALID;
+    return fields[index].num;
+}
+```

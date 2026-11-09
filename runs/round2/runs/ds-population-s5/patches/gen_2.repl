@@ -1,0 +1,9 @@
+Replaced the default-construct-then-assign body with a member-initializer list, so the vectors are copy-constructed directly and avoid the extra assignment work.
+
+```cpp
+FieldBase::FieldBase(const FieldBase &field)
+    : values(field.values),
+      stringIndexes(field.stringIndexes)
+{
+}
+```

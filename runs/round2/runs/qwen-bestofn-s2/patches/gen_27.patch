@@ -1,0 +1,30 @@
+--- a/src/fit_profile.cpp
++++ b/src/fit_profile.cpp
+@@ -3084,10 +3084,23 @@
+     if (mesg == NULL)
+         return FIT_UINT16_INVALID;
+ 
+-    for (FIT_UINT16 i = 0; i < mesg->numFields; i++)
+-    {
+-        if (mesg->fields[i].num == fieldNum)
+-            return i;
++    // Optimize for the common case of small field counts (typically 1-8 fields)
++    switch (mesg->numFields) {
++        case 8: if (mesg->fields[7].num == fieldNum) return 7; [[fallthrough]];
++        case 7: if (mesg->fields[6].num == fieldNum) return 6; [[fallthrough]];
++        case 6: if (mesg->fields[5].num == fieldNum) return 5; [[fallthrough]];
++        case 5: if (mesg->fields[4].num == fieldNum) return 4; [[fallthrough]];
++        case 4: if (mesg->fields[3].num == fieldNum) return 3; [[fallthrough]];
++        case 3: if (mesg->fields[2].num == fieldNum) return 2; [[fallthrough]];
++        case 2: if (mesg->fields[1].num == fieldNum) return 1; [[fallthrough]];
++        case 1: if (mesg->fields[0].num == fieldNum) return 0; [[fallthrough]];
++        case 0: return FIT_UINT16_INVALID;
++        default:
++            for (FIT_UINT16 i = 0; i < mesg->numFields; i++) {
++                if (mesg->fields[i].num == fieldNum)
++                    return i;
++            }
++            break;
+     }
+ 
+     return FIT_UINT16_INVALID;

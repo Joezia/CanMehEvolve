@@ -1,0 +1,15 @@
+I collapsed the duplicate invalid returns into a single `result` initialized from `type`, so the slow path reuses the already-loaded value and avoids extra constant returns.
+
+```cpp
+FIT_UINT8 Field::GetType() const
+{
+    FIT_UINT8 result = type;
+    if (result != FIT_UINT8_INVALID)
+        return result;
+
+    if ((profile != NULL) && (profileIndex < profile->numFields))
+        result = profile->fields[profileIndex].type;
+
+    return result;
+}
+```

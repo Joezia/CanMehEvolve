@@ -1,0 +1,16 @@
+/home/z/zhouzia/.sanitize-scratch/var-asan-r2-ds-population-s5/src/fit_field_base.cpp:1169:68: runtime error: left shift of negative value -115
+    #0 0x5a317ba9b370 in signed char fit::FieldBase::GetValue<signed char>(unsigned char) const /home/z/zhouzia/.sanitize-scratch/var-asan-r2-ds-population-s5/src/fit_field_base.cpp:1169
+    #1 0x5a317ba83200 in double fit::FieldBase::ConvertBaseType<double, signed char>(unsigned char, unsigned char) const /home/z/zhouzia/.sanitize-scratch/var-asan-r2-ds-population-s5/src/fit_field_base.cpp:1180
+    #2 0x5a317ba83200 in fit::FieldBase::GetFLOAT64Value(unsigned char, unsigned short) const /home/z/zhouzia/.sanitize-scratch/var-asan-r2-ds-population-s5/src/fit_field_base.cpp:376
+    #3 0x5a317b98f5ab in fold /home/z/zhouzia/Workspace/CanMehEvolve/scripts/followup/driver.cpp:54
+    #4 0x5a317b9901e6 in OnMesg /home/z/zhouzia/Workspace/CanMehEvolve/scripts/followup/driver.cpp:37
+    #5 0x5a317ba31339 in fit::Decode::Resume() /home/z/zhouzia/.sanitize-scratch/stock/src/fit_decode.cpp:300
+    #6 0x5a317ba32daf in fit::Decode::Read(std::istream*) /home/z/zhouzia/.sanitize-scratch/stock/src/fit_decode.cpp:191
+    #7 0x5a317ba32f75 in fit::Decode::Read(std::istream*, fit::MesgListener*, fit::MesgDefinitionListener*, fit::DeveloperFieldDescriptionListener*) /home/z/zhouzia/.sanitize-scratch/stock/src/fit_decode.cpp:209
+    #8 0x5a317ba3305d in fit::Decode::Read(std::istream&, fit::MesgListener&) /home/z/zhouzia/.sanitize-scratch/stock/src/fit_decode.cpp:214
+    #9 0x5a317b997ec2 in decodeOne /home/z/zhouzia/Workspace/CanMehEvolve/scripts/followup/driver.cpp:68
+    #10 0x5a317b99bef1 in main /home/z/zhouzia/Workspace/CanMehEvolve/scripts/followup/driver.cpp:101
+    #11 0x7dd03dc2a1c9 in __libc_start_call_main ../sysdeps/nptl/libc_start_call_main.h:58
+    #12 0x7dd03dc2a28a in __libc_start_main_impl ../csu/libc-start.c:360
+    #13 0x5a317b98c444 in _start (/home/z/zhouzia/.sanitize-scratch/drv-asan-r2-ds-population-s5+0x858444) (BuildId: f5e3ed1e8fa6af6a20b023ccaecc6f2c2dd6e188)
+

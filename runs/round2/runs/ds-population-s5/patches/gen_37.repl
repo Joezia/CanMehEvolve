@@ -1,0 +1,19 @@
+Replaced the base copy constructor, which copies the entire fixed-size value buffer, with the default constructor plus a copy of only the used `size` bytes. This avoids copying up to 255 bytes for every field when most fields are much smaller.
+
+```include
+#include <cstring>
+```
+
+```cpp
+Field::Field(const Field &field)
+    : FieldBase()
+    , profile(field.profile)
+    , profileIndex(field.profileIndex)
+    , type(field.type)
+    , isFieldExpanded(field.isFieldExpanded)
+{
+    num = field.num;
+    size = field.size;
+    std::memcpy(value, field.value, size);
+}
+```

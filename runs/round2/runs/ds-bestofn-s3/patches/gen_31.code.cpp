@@ -1,0 +1,47 @@
+template <typename T>
+T FieldBase::GetValue(const FIT_UINT8 fieldArrayIndex) const
+{
+    const FIT_UINT8 type = GetType() & FIT_BASE_TYPE_NUM_MASK;
+    const FIT_UINT8 size = baseTypeSizes[type];
+    if (fieldArrayIndex >= (FIT_UINT8)values.size())
+    {
+        return *reinterpret_cast<const T*>(baseTypeInvalids[type]);
+    }
+
+    const FIT_UINT8* src = values.data() + (fieldArrayIndex * size);
+    T rv = 0;
+    switch (size)
+    {
+    case 1:
+        rv = static_cast<T>(src[0]);
+        break;
+    case 2:
+    {
+        FIT_UINT16 v;
+        std::memcpy(&v, src, 2);
+        rv = static_cast<T>(v);
+        break;
+    }
+    case 4:
+    {
+        FIT_UINT32 v;
+        std::memcpy(&v, src, 4);
+        rv = static_cast<T>(v);
+        break;
+    }
+    case 8:
+    {
+        FIT_UINT64 v;
+        std::memcpy(&v, src, 8);
+        rv = static_cast<T>(v);
+        break;
+    }
+    default:
+        for (int i = 0; i < size; i++)
+        {
+            rv |= static_cast<T>(src[i]) << (i * 8);
+        }
+        break;
+    }
+    return rv;
+}

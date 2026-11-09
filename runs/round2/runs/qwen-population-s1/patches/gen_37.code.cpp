@@ -1,0 +1,9 @@
+
+    FIT_BOOL IsMaxSaturatedHemoglobinPercentValid(FIT_UINT8 index) const
+    {
+        const Field* field = GetField(100);
+        if (!field)
+            return FIT_FALSE;
+        // Avoid function call overhead for simple valid check; inline the common case
+        return field->IsValueValid(index);
+    }

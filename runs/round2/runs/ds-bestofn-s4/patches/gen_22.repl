@@ -1,0 +1,16 @@
+I load `profile` and `profileIndex` once into locals and use `__builtin_expect` to keep the common valid-type and valid-profile branches on the fast path, avoiding redundant member loads.
+
+```cpp
+FIT_UINT8 Field::GetType() const
+{
+    if (__builtin_expect(type != FIT_UINT8_INVALID, 1))
+        return type;
+
+    const Profile *p = profile;
+    const FIT_UINT8 idx = profileIndex;
+    if (__builtin_expect(p == NULL || idx >= p->numFields, 0))
+        return FIT_UINT8_INVALID;
+
+    return p->fields[idx].type;
+}
+```

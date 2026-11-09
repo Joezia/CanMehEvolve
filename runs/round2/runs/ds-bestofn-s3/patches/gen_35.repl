@@ -1,0 +1,8 @@
+Delegates to the existing `Mesg::IsFieldValid(253)` helper, so the field lookup and validity check occur inside a single out-of-line call (where the search can be inlined) instead of issuing separate `GetField` and `IsValueValid` calls from the caller.
+
+```cpp
+    FIT_BOOL IsTimestampValid() const
+    {
+        return IsFieldValid(253);
+    }
+```

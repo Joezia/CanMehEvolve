@@ -1,0 +1,16 @@
+I cached the `type` member in a local and used `__builtin_expect` to mark the profile-lookup fallback as unlikely, letting the compiler keep the common valid-type path hot and simple. This should reduce branch and I-cache pressure without changing behavior.
+
+```cpp
+FIT_UINT8 Field::GetType() const
+{
+    const FIT_UINT8 t = type;
+    if (__builtin_expect(t != FIT_UINT8_INVALID, 1))
+        return t;
+
+    const Profile* p = profile;
+    if (__builtin_expect(p == NULL, 0) || __builtin_expect(profileIndex >= p->numFields, 0))
+        return FIT_UINT8_INVALID;
+
+    return p->fields[profileIndex].type;
+}
+```

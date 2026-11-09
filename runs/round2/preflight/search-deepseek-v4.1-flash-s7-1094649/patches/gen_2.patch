@@ -1,0 +1,39 @@
+--- a/src/fit_field.cpp
++++ b/src/fit_field.cpp
+@@ -99,13 +99,17 @@
+ 
+ FIT_UINT8 Field::GetType() const
+ {
+-    if ( type != FIT_UINT8_INVALID )
+-        return type;
++    if (__builtin_expect(type == FIT_UINT8_INVALID, 0))
++    {
++        const Profile* p = profile;
++        if (__builtin_expect(p == NULL, 0) ||
++            __builtin_expect(profileIndex >= p->numFields, 0))
++            return FIT_UINT8_INVALID;
+ 
+-    if ((profile == NULL) || (profileIndex >= profile->numFields))
+-        return FIT_UINT8_INVALID;
++        return p->fields[profileIndex].type;
++    }
+ 
+-    return profile->fields[profileIndex].type;
++    return type;
+ }
+ 
+ std::string Field::GetUnits() const
+--- a/src/fit_field_base.cpp
++++ b/src/fit_field_base.cpp
+@@ -25,9 +25,9 @@
+ }
+ 
+ FieldBase::FieldBase(const FieldBase &field)
++    : values(field.values)
++    , stringIndexes(field.stringIndexes)
+ {
+-    values = field.values;
+-    stringIndexes = field.stringIndexes;
+ }
+ 
+ FieldBase::~FieldBase()

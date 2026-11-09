@@ -1,0 +1,12 @@
+The copy constructor is already a minimal member-wise copy with an inline-friendly initializer list, so there is nothing to remove; I kept it identical to avoid any behavioural change while letting the compiler inline the trivial member copies.
+
+```cpp
+Field::Field(const Field &field)
+    : FieldBase(field)
+    , profile(field.profile)
+    , profileIndex(field.profileIndex)
+    , type(field.type)
+    , isFieldExpanded(field.isFieldExpanded)
+{
+}
+```

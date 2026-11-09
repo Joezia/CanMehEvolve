@@ -1,0 +1,16 @@
+/home/z/zhouzia/.sanitize-scratch/var-asan-stack-s4-K5-fixed/src/fit_field_base.cpp:1215:68: runtime error: left shift of negative value -115
+    #0 0x604e1b47e1d0 in signed char fit::FieldBase::GetValue<signed char>(unsigned char) const /home/z/zhouzia/.sanitize-scratch/var-asan-stack-s4-K5-fixed/src/fit_field_base.cpp:1215
+    #1 0x604e1b4670bc in double fit::FieldBase::ConvertBaseType<double, signed char>(unsigned char, unsigned char) const /home/z/zhouzia/.sanitize-scratch/var-asan-stack-s4-K5-fixed/src/fit_field_base.cpp:1226
+    #2 0x604e1b4670bc in fit::FieldBase::GetFLOAT64Value(unsigned char, unsigned short) const /home/z/zhouzia/.sanitize-scratch/var-asan-stack-s4-K5-fixed/src/fit_field_base.cpp:370
+    #3 0x604e1b3735ab in fold /home/z/zhouzia/Workspace/CanMehEvolve/scripts/followup/driver.cpp:54
+    #4 0x604e1b3741e6 in OnMesg /home/z/zhouzia/Workspace/CanMehEvolve/scripts/followup/driver.cpp:37
+    #5 0x604e1b415339 in fit::Decode::Resume() /home/z/zhouzia/.sanitize-scratch/stock/src/fit_decode.cpp:300
+    #6 0x604e1b416daf in fit::Decode::Read(std::istream*) /home/z/zhouzia/.sanitize-scratch/stock/src/fit_decode.cpp:191
+    #7 0x604e1b416f75 in fit::Decode::Read(std::istream*, fit::MesgListener*, fit::MesgDefinitionListener*, fit::DeveloperFieldDescriptionListener*) /home/z/zhouzia/.sanitize-scratch/stock/src/fit_decode.cpp:209
+    #8 0x604e1b41705d in fit::Decode::Read(std::istream&, fit::MesgListener&) /home/z/zhouzia/.sanitize-scratch/stock/src/fit_decode.cpp:214
+    #9 0x604e1b37bec2 in decodeOne /home/z/zhouzia/Workspace/CanMehEvolve/scripts/followup/driver.cpp:68
+    #10 0x604e1b37fef1 in main /home/z/zhouzia/Workspace/CanMehEvolve/scripts/followup/driver.cpp:101
+    #11 0x736d8f02a1c9 in __libc_start_call_main ../sysdeps/nptl/libc_start_call_main.h:58
+    #12 0x736d8f02a28a in __libc_start_main_impl ../csu/libc-start.c:360
+    #13 0x604e1b370444 in _start (/home/z/zhouzia/.sanitize-scratch/drv-asan-stack-s4-K5-fixed+0x856444) (BuildId: 80ff8f61221727d6b125a1ef4839923bbe5b5325)
+

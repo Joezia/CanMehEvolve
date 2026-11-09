@@ -1,0 +1,14 @@
+Replaced the indexed loop with a range-based loop over `fields`, avoiding repeated size/index arithmetic and letting the compiler use direct pointer iteration. This preserves identical lookup behavior.
+
+```cpp
+Field* Mesg::GetField(const FIT_UINT8 fieldNum)
+{
+    for (Field& field : fields)
+    {
+        if (field.GetNum() == fieldNum)
+            return &field;
+    }
+
+    return FIT_NULL;
+}
+```

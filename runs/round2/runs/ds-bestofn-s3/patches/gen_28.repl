@@ -1,0 +1,8 @@
+Replaced the indexed `operator[]` access with direct pointer arithmetic on `fields.data()`, and used a single conditional expression so the compiler emits one compare plus a conditional move instead of a branchy two-path body.
+
+```cpp
+FieldDefinition* MesgDefinition::GetFieldByIndex(const FIT_UINT16 index)
+{
+    return (index < fields.size()) ? (fields.data() + index) : FIT_NULL;
+}
+```

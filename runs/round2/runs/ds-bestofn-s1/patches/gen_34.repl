@@ -1,0 +1,18 @@
+This listener bookkeeping isn't on the hot decode path, so the gain is marginal: I replaced the generic `std::find` iterator walk with a direct pointer scan over the vector's storage and an early return on the first match, avoiding iterator abstraction overhead.
+
+```cpp
+void MesgBroadcaster::RemoveListener(HrMesgListener& hrMesgListener)
+{
+    HrMesgListener *const target = &hrMesgListener;
+    HrMesgListener **const data = hrMesgListeners.data();
+    HrMesgListener **const end = data + hrMesgListeners.size();
+    for (HrMesgListener **p = data; p != end; ++p)
+    {
+        if (*p == target)
+        {
+            hrMesgListeners.erase(hrMesgListeners.begin() + (p - data));
+            return;
+        }
+    }
+}
+```

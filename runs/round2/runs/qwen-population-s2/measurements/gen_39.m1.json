@@ -1,0 +1,6 @@
+{
+ "error": "/home/z/zhouzia/Workspace/CanMehEvolve/build/work-1096058/tree/src/fit_field_base.cpp: In member function ‘FIT_FLOAT64 fit::FieldBase::GetFLOAT64Value(FIT_UINT8, FIT_UINT16) const’:\n/home/z/zhouzia/Workspace/CanMehEvolve/build/work-1096058/tree/src/fit_field_base.cpp:371:42: error: invalid ‘static_cast’ from type ‘const FIT_UINT8*’ {aka ‘const unsigned char*’} to type ‘const FIT_FLOAT64*’ {aka ‘const double*’}\n  371 |             const FIT_FLOAT64* invalid = static_cast<const FIT_FLOAT64*>(baseTypeInvalids[FIT_BASE_TYPE_FLOAT64 & FIT_BASE_TYPE_NUM_MASK]);\n      |                                          ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n/home/z/zhouzia/Workspace/CanMehEvolve/build/work-1096058/tree/src/fit_field_base.cpp:393:42: error: invalid ‘static_cast’ from type ‘const FIT_UINT8*’ {aka ‘const unsigned char*’} to type ‘const FIT_FLOAT64*’ {aka ‘const double*’}\n  393 |             const FIT_FLOAT64* invalid = static_cast<const FIT_FLOAT64*>(baseTypeInvalids[FIT_BASE_TYPE_FLOAT64 & FIT_BASE_TYPE_NUM_MASK]);\n      |                                          ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n",
+ "ok": false,
+ "rebuilt": 2,
+ "stage": "compile"
+}

@@ -1,0 +1,17 @@
+The replacement stores the resolved `MESG*` directly in the lookup table, removing the per-call index-to-pointer conversion and the null-check branch after the lookup. This makes the common path a single pointer load and return.
+
+```cpp
+const Profile::MESG* Profile::GetMesg(const FIT_UINT16 num)
+{
+    static const MESG* lookup[65536];
+    static bool initialized = false;
+    if (!initialized)
+    {
+        for (int i = MESGS - 1; i >= 0; --i)
+            lookup[mesgs[i].num] = &mesgs[i];
+        initialized = true;
+    }
+
+    return lookup[num];
+}
+```

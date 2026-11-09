@@ -1,0 +1,6 @@
+
+    FIT_MESSAGE_INDEX GetMessageIndex(void) const
+    {
+        const std::vector<Field>& fields_ref = fields;
+        return (fields_ref.size() > 254) ? static_cast<FIT_MESSAGE_INDEX>(fields_ref[254].value.ui16) : 0;
+    }

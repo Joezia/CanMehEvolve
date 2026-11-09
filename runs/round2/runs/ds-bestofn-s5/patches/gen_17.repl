@@ -1,0 +1,8 @@
+The function is already a single 16-bit compare against a compile-time constant, so there is no algorithmic headroom; I keep the same semantics but express the comparison so the compiler emits a bare `cmp`/`setne` without any implicit widening or constant reload, and avoid an unneeded temporary.
+
+```cpp
+FIT_BOOL Field::IsValid(void) const
+{
+    return static_cast<FIT_BOOL>(profileIndex != static_cast<FIT_UINT16>(FIT_UINT16_INVALID));
+}
+```

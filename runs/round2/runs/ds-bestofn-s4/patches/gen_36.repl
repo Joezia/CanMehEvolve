@@ -1,0 +1,15 @@
+I replaced the four separate derived-member copies with a single `memcpy` of the derived subobject, reducing store instructions; the base-class copy (the dominant cost) is unchanged.
+
+```include
+#include <cstring>
+```
+
+```cpp
+Field::Field(const Field &field)
+    : FieldBase(field)
+{
+    std::memcpy(static_cast<FieldBase*>(this) + 1,
+                static_cast<const FieldBase*>(&field) + 1,
+                sizeof(Field) - sizeof(FieldBase));
+}
+```

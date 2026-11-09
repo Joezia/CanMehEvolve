@@ -1,0 +1,20 @@
+I replaced the indexed byte loop with four explicit byte stores through one pointer, which the compiler merges into a single 32-bit store on this target. The resize condition and its `FIT_UINT8` truncation semantics are preserved exactly.
+
+```cpp
+void FieldBase::SetUINT32Value(const FIT_UINT32 value, const FIT_UINT8 fieldArrayIndex)
+{
+    const size_t offset = static_cast<size_t>(fieldArrayIndex) * sizeof(FIT_UINT32);
+    const size_t required = offset + sizeof(FIT_UINT32);
+
+    if (static_cast<FIT_UINT8>(values.size()) < required)
+    {
+        values.resize(required);
+    }
+
+    FIT_BYTE* const p = values.data() + offset;
+    p[0] = static_cast<FIT_BYTE>(value);
+    p[1] = static_cast<FIT_BYTE>(value >> 8);
+    p[2] = static_cast<FIT_BYTE>(value >> 16);
+    p[3] = static_cast<FIT_BYTE>(value >> 24);
+}
+```

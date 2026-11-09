@@ -1,0 +1,43 @@
+const FIT_UINT16 Profile::GetFieldIndex(const FIT_UINT16 mesgNum, const FIT_UINT8 fieldNum)
+{
+    static FIT_UINT16 cachedMesgNum = 0;
+    static bool cached = false;
+    static const MESG* cachedMesg = NULL;
+    static FIT_UINT32 currentGen = 0;
+    static FIT_UINT32 fieldGen[256] = {0};
+    static FIT_UINT16 fieldIndex[256];
+
+    if (!cached || mesgNum != cachedMesgNum)
+    {
+        cachedMesgNum = mesgNum;
+        cached = true;
+        cachedMesg = GetMesg(mesgNum);
+
+        if (cachedMesg != NULL)
+        {
+            if (++currentGen == 0)
+            {
+                for (int i = 0; i < 256; ++i)
+                    fieldGen[i] = 0;
+                currentGen = 1;
+            }
+
+            const FIT_UINT16 n = cachedMesg->numFields;
+            const FIELD* fields = cachedMesg->fields;
+            for (FIT_UINT16 i = n; i > 0; --i)
+            {
+                const FIT_UINT8 fn = fields[i - 1].num;
+                fieldIndex[fn] = i - 1;
+                fieldGen[fn] = currentGen;
+            }
+        }
+    }
+
+    if (cachedMesg == NULL)
+        return FIT_UINT16_INVALID;
+
+    if (fieldGen[fieldNum] == currentGen)
+        return fieldIndex[fieldNum];
+
+    return FIT_UINT16_INVALID;
+}

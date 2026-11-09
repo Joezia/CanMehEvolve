@@ -1,0 +1,17 @@
+--- a/src/fit_field.cpp
++++ b/src/fit_field.cpp
+@@ -138,9 +138,12 @@
+ 
+ FIT_UINT16 Field::GetNumSubFields(void) const
+ {
+-    if ((profile == NULL) || (profileIndex >= profile->numFields))
++    const auto* const p = profile;
++    if (__builtin_expect(p == NULL, 0))
+         return 0;
+-    return profile->fields[profileIndex].numSubFields;
++    if (__builtin_expect(profileIndex >= p->numFields, 0))
++        return 0;
++    return p->fields[profileIndex].numSubFields;
+ }
+ 
+ FIT_BOOL Field::GetIsExpanded(void) const

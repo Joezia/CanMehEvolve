@@ -1,0 +1,16 @@
+File: src/fit_mesg.cpp
+Function: Mesg::GetField (10 lines)
+One full decode of the four files takes about 358.2 ms in the stock build.
+Time of the current version of the whole library relative to stock: 0.978 (below 1.0 is faster). Best measured so far: 0.978.
+
+Current text of the function:
+```cpp
+Field* Mesg::GetField(const FIT_UINT8 fieldNum)
+{
+    auto it = std::find_if(fields.begin(), fields.end(),
+        [fieldNum](const Field& f) { return f.GetNum() == fieldNum; });
+    return (it != fields.end()) ? &*it : FIT_NULL;
+}
+
+```
+Return the faster replacement now.

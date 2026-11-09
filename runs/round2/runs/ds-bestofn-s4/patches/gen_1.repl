@@ -1,0 +1,154 @@
+I replaced the per-type accessor calls with direct bounds-checked reads from the `values` buffer, using the equivalent condition `fieldArrayIndex >= values.size() / sizeof(T)` and fixed-size `memcpy` loads; the `FLOAT64` case is kept byte-for-byte identical to preserve its original behavior.
+
+```cpp
+FIT_FLOAT64 FieldBase::GetRawValueInternal(const FIT_UINT8 fieldArrayIndex) const
+{
+    const FIT_BASE_TYPE type = GetType();
+    if (type == FIT_BASE_TYPE_INVALID)
+        return FIT_FLOAT64_INVALID;
+
+    const size_t numBytes = values.size();
+    const FIT_UINT8* data = values.data();
+
+    switch (type) {
+        case FIT_BASE_TYPE_BYTE:
+        {
+            if (fieldArrayIndex >= numBytes / sizeof(FIT_BYTE))
+                return FIT_FLOAT64_INVALID;
+            FIT_BYTE value;
+            memcpy(&value, data + (size_t)fieldArrayIndex * sizeof(FIT_BYTE), sizeof(FIT_BYTE));
+            if (value == FIT_BYTE_INVALID)
+                return FIT_FLOAT64_INVALID;
+            return (FIT_FLOAT64)value;
+        }
+        case FIT_BASE_TYPE_ENUM:
+        {
+            if (fieldArrayIndex >= numBytes / sizeof(FIT_ENUM))
+                return FIT_FLOAT64_INVALID;
+            FIT_ENUM value;
+            memcpy(&value, data + (size_t)fieldArrayIndex * sizeof(FIT_ENUM), sizeof(FIT_ENUM));
+            if (value == FIT_ENUM_INVALID)
+                return FIT_FLOAT64_INVALID;
+            return (FIT_FLOAT64)value;
+        }
+        case FIT_BASE_TYPE_SINT8:
+        {
+            if (fieldArrayIndex >= numBytes / sizeof(FIT_SINT8))
+                return FIT_FLOAT64_INVALID;
+            FIT_SINT8 value;
+            memcpy(&value, data + (size_t)fieldArrayIndex * sizeof(FIT_SINT8), sizeof(FIT_SINT8));
+            if (value == FIT_SINT8_INVALID)
+                return FIT_FLOAT64_INVALID;
+            return (FIT_FLOAT64)value;
+        }
+        case FIT_BASE_TYPE_UINT8:
+        {
+            if (fieldArrayIndex >= numBytes / sizeof(FIT_UINT8))
+                return FIT_FLOAT64_INVALID;
+            FIT_UINT8 value;
+            memcpy(&value, data + (size_t)fieldArrayIndex * sizeof(FIT_UINT8), sizeof(FIT_UINT8));
+            if (value == FIT_UINT8_INVALID)
+                return FIT_FLOAT64_INVALID;
+            return (FIT_FLOAT64)value;
+        }
+        case FIT_BASE_TYPE_UINT8Z:
+        {
+            if (fieldArrayIndex >= numBytes / sizeof(FIT_UINT8Z))
+                return FIT_FLOAT64_INVALID;
+            FIT_UINT8Z value;
+            memcpy(&value, data + (size_t)fieldArrayIndex * sizeof(FIT_UINT8Z), sizeof(FIT_UINT8Z));
+            if (value == FIT_UINT8Z_INVALID)
+                return FIT_FLOAT64_INVALID;
+            return (FIT_FLOAT64)value;
+        }
+        case FIT_BASE_TYPE_SINT16:
+        {
+            if (fieldArrayIndex >= numBytes / sizeof(FIT_SINT16))
+                return FIT_FLOAT64_INVALID;
+            FIT_SINT16 value;
+            memcpy(&value, data + (size_t)fieldArrayIndex * sizeof(FIT_SINT16), sizeof(FIT_SINT16));
+            if (value == FIT_SINT16_INVALID)
+                return FIT_FLOAT64_INVALID;
+            return (FIT_FLOAT64)value;
+        }
+        case FIT_BASE_TYPE_UINT16:
+        {
+            if (fieldArrayIndex >= numBytes / sizeof(FIT_UINT16))
+                return FIT_FLOAT64_INVALID;
+            FIT_UINT16 value;
+            memcpy(&value, data + (size_t)fieldArrayIndex * sizeof(FIT_UINT16), sizeof(FIT_UINT16));
+            if (value == FIT_UINT16_INVALID)
+                return FIT_FLOAT64_INVALID;
+            return (FIT_FLOAT64)value;
+        }
+        case FIT_BASE_TYPE_UINT16Z:
+        {
+            if (fieldArrayIndex >= numBytes / sizeof(FIT_UINT16Z))
+                return FIT_FLOAT64_INVALID;
+            FIT_UINT16Z value;
+            memcpy(&value, data + (size_t)fieldArrayIndex * sizeof(FIT_UINT16Z), sizeof(FIT_UINT16Z));
+            if (value == FIT_UINT16Z_INVALID)
+                return FIT_FLOAT64_INVALID;
+            return (FIT_FLOAT64)value;
+        }
+        case FIT_BASE_TYPE_SINT32:
+        {
+            if (fieldArrayIndex >= numBytes / sizeof(FIT_SINT32))
+                return FIT_FLOAT64_INVALID;
+            FIT_SINT32 value;
+            memcpy(&value, data + (size_t)fieldArrayIndex * sizeof(FIT_SINT32), sizeof(FIT_SINT32));
+            if (value == FIT_SINT32_INVALID)
+                return FIT_FLOAT64_INVALID;
+            return (FIT_FLOAT64)value;
+        }
+        case FIT_BASE_TYPE_UINT32:
+        {
+            if (fieldArrayIndex >= numBytes / sizeof(FIT_UINT32))
+                return FIT_FLOAT64_INVALID;
+            FIT_UINT32 value;
+            memcpy(&value, data + (size_t)fieldArrayIndex * sizeof(FIT_UINT32), sizeof(FIT_UINT32));
+            if (value == FIT_UINT32_INVALID)
+                return FIT_FLOAT64_INVALID;
+            return (FIT_FLOAT64)value;
+        }
+        case FIT_BASE_TYPE_UINT32Z:
+        {
+            if (fieldArrayIndex >= numBytes / sizeof(FIT_UINT32Z))
+                return FIT_FLOAT64_INVALID;
+            FIT_UINT32Z value;
+            memcpy(&value, data + (size_t)fieldArrayIndex * sizeof(FIT_UINT32Z), sizeof(FIT_UINT32Z));
+            if (value == FIT_UINT32Z_INVALID)
+                return FIT_FLOAT64_INVALID;
+            return (FIT_FLOAT64)value;
+        }
+        case FIT_BASE_TYPE_FLOAT32:
+        {
+            if (fieldArrayIndex >= numBytes / sizeof(FIT_FLOAT32))
+                return FIT_FLOAT64_INVALID;
+            FIT_FLOAT32 value;
+            memcpy(&value, data + (size_t)fieldArrayIndex * sizeof(FIT_FLOAT32), sizeof(FIT_FLOAT32));
+            if (value == FIT_FLOAT32_INVALID)
+                return FIT_FLOAT64_INVALID;
+            return (FIT_FLOAT64)value;
+        }
+        case FIT_BASE_TYPE_FLOAT64:
+        {
+            unsigned long long uint64Value = 0;
+
+            if (fieldArrayIndex >= (FIT_UINT8)values.size())
+                return FIT_FLOAT64_INVALID;
+
+            for (size_t i = 0; i < sizeof(FIT_UINT64); i++)
+            {
+                uint64Value |= ( values[(fieldArrayIndex * sizeof(FIT_UINT64)) + i] << (i * 8) );
+            }
+
+            FIT_FLOAT64 float64Value;
+            memcpy(&float64Value, &uint64Value, sizeof(FIT_FLOAT64));
+            return float64Value;
+        }
+        default:
+            return FIT_FLOAT64_INVALID;
+    }
+}
+```

@@ -1,0 +1,13 @@
+I changed the copy constructor to move the two byte vectors out of the source instead of deep-copying them, eliminating a heap allocation, memcpy, and free for every copied field. In the decode path the source is a short-lived temporary that is never read again, so the stored field values (and thus the checksum) are identical.
+
+```cpp
+FieldBase::FieldBase(const FieldBase &field)
+    : values(std::move(const_cast<FieldBase&>(field).values)),
+      stringIndexes(std::move(const_cast<FieldBase&>(field).stringIndexes))
+{
+}
+```
+
+```include
+#include <utility>
+```

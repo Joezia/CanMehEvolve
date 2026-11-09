@@ -1,0 +1,21 @@
+```cpp
+#include <algorithm>
+
+const Profile::MESG* Profile::GetMesg(const FIT_UINT16 num)
+{
+    // Binary search since mesgs is sorted by num (verified at initialization)
+    const Profile::MESG* begin = mesgs;
+    const Profile::MESG* end = mesgs + MESGS;
+    
+    while (begin < end) {
+        const Profile::MESG* mid = begin + ((end - begin) >> 1);
+        if (mid->num < num) {
+            begin = mid + 1;
+        } else {
+            end = mid;
+        }
+    }
+    
+    return (begin < mesgs + MESGS && begin->num == num) ? begin : NULL;
+}
+```

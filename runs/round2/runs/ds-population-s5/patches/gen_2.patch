@@ -1,0 +1,29 @@
+--- a/src/fit_field.cpp
++++ b/src/fit_field.cpp
+@@ -92,9 +92,10 @@
+ 
+ FIT_UINT8 Field::GetNum(void) const
+ {
+-    if ((profile == NULL) || (profileIndex >= profile->numFields))
++    const Profile::FIELD *fields = (profile != NULL) ? profile->fields : NULL;
++    if (__builtin_expect((fields == NULL) || (profileIndex >= profile->numFields), 0))
+         return FIT_FIELD_NUM_INVALID;
+-    return profile->fields[profileIndex].num;
++    return fields[profileIndex].num;
+ }
+ 
+ FIT_UINT8 Field::GetType() const
+--- a/src/fit_field_base.cpp
++++ b/src/fit_field_base.cpp
+@@ -25,9 +25,9 @@
+ }
+ 
+ FieldBase::FieldBase(const FieldBase &field)
++    : values(field.values),
++      stringIndexes(field.stringIndexes)
+ {
+-    values = field.values;
+-    stringIndexes = field.stringIndexes;
+ }
+ 
+ FieldBase::~FieldBase()

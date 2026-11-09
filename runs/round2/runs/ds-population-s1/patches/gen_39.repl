@@ -1,0 +1,15 @@
+I collapsed the two early returns into a single result variable, so the hot path is one comparison and the profile-type load can be emitted as a conditional move instead of a second branch.
+
+```cpp
+FIT_UINT8 Field::GetType() const
+{
+    FIT_UINT8 result = type;
+    if ( result == FIT_UINT8_INVALID )
+    {
+        const auto p = profile;
+        if ( (p != NULL) && (profileIndex < p->numFields) )
+            result = p->fields[profileIndex].type;
+    }
+    return result;
+}
+```

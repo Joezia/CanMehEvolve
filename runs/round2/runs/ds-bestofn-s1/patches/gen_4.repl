@@ -1,0 +1,8 @@
+This setter is already a single inlined call with no redundant work, so there is no safe transformation that preserves exact behavior while reducing cost.
+
+```cpp
+    void SetTimestamp(FIT_DATE_TIME timestamp)
+    {
+        SetFieldUINT32Value(253, timestamp, 0, FIT_SUBFIELD_INDEX_MAIN_FIELD);
+    }
+```

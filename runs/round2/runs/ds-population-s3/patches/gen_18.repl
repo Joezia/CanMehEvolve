@@ -1,0 +1,11 @@
+The function is already minimal; I hoisted the profile pointer into a local and added a likely branch hint on the valid path so the compiler lays out the hot decode path as fall-through with the zero-return out of line.
+
+```cpp
+FIT_UINT16 Field::GetNumComponents(void) const
+{
+    const auto* p = profile;
+    if (__builtin_expect(p != NULL && profileIndex < p->numFields, 1))
+        return p->fields[profileIndex].numComponents;
+    return 0;
+}
+```

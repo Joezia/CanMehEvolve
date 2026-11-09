@@ -1,0 +1,13 @@
+Split the null and bounds checks into separate cold branches with `__builtin_expect`, keeping the common valid lookup as straight-line fall-through to reduce taken-branch pressure in the hot decode path.
+
+```cpp
+FIT_UINT8 Field::GetNum(void) const
+{
+    const Profile* p = profile;
+    if (__builtin_expect(p == NULL, 0))
+        return FIT_FIELD_NUM_INVALID;
+    if (__builtin_expect(profileIndex >= p->numFields, 0))
+        return FIT_FIELD_NUM_INVALID;
+    return p->fields[profileIndex].num;
+}
+```

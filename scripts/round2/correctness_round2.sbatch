@@ -21,7 +21,7 @@ case $PART in
     python3 scripts/followup/fuzz_diff.py --work "$W" --corpus "$C" --out "$OUT" --variants "$OUT/variants.json" --shard "$SH" > "$OUT/console.log" 2>&1
     rm -rf "$W";;
   SAN)
-    python3 scripts/round2/sanitize_v2.py --corpus "$C" --variants "$OUT/variants.json" --out "$OUT" --jobs 12 > "$OUT/console.log" 2>&1;;
+    python3 scripts/round2/sanitize_v2.py --corpus "$C" --variants "$OUT/variants.json" --out "$OUT" --jobs 12 ${CONFIGS:+--configs $CONFIGS} > "$OUT/console.log" 2>&1;;
 esac
 echo "exit=$?" >> "$OUT/node.txt"; echo "end=$(date -Is)" >> "$OUT/node.txt"
 rm -rf "$C"

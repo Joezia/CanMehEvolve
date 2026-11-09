@@ -1,0 +1,14 @@
+Cached the `profile` pointer and `profileIndex` in locals and added branch-prediction hints so the compiler keeps the common valid path straight-line without redundant member reloads. This reduces load pressure and improves branch layout for the overwhelmingly common non-NULL, in-range case.
+
+```cpp
+FIT_UINT16 Field::GetNumComponents(void) const
+{
+    const Profile* const p = profile;
+    if (__builtin_expect(p == NULL, 0))
+        return 0;
+    const FIT_UINT16 idx = profileIndex;
+    if (__builtin_expect(idx >= p->numFields, 0))
+        return 0;
+    return p->fields[idx].numComponents;
+}
+```

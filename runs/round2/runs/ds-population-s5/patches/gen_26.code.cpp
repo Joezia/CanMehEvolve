@@ -1,0 +1,44 @@
+const Profile::MESG* Profile::GetMesg(const FIT_UINT16 num)
+{
+    struct HashTable
+    {
+        static const int SIZE = 1024;
+        FIT_UINT32 entries[SIZE];
+
+        HashTable()
+        {
+            for (int i = 0; i < SIZE; ++i)
+                entries[i] = 0xFFFFFFFFu;
+
+            for (int i = 0; i < MESGS; ++i)
+            {
+                const FIT_UINT16 n = mesgs[i].num;
+                FIT_UINT16 h = n & (SIZE - 1);
+                while (true)
+                {
+                    FIT_UINT32 e = entries[h];
+                    if (e == 0xFFFFFFFFu)
+                    {
+                        entries[h] = (static_cast<FIT_UINT32>(n) << 16) | static_cast<FIT_UINT16>(i);
+                        break;
+                    }
+                    if ((e >> 16) == n)
+                        break;
+                    h = (h + 1) & (SIZE - 1);
+                }
+            }
+        }
+    };
+
+    static const HashTable table;
+    FIT_UINT16 h = num & (HashTable::SIZE - 1);
+    while (true)
+    {
+        FIT_UINT32 e = table.entries[h];
+        if (e == 0xFFFFFFFFu)
+            return NULL;
+        if ((e >> 16) == num)
+            return &mesgs[e & 0xFFFFu];
+        h = (h + 1) & (HashTable::SIZE - 1);
+    }
+}

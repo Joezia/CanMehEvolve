@@ -1,0 +1,2 @@
+terminate called after throwing an instance of 'fit::RuntimeException'
+  what():  FIT decode error: File CRC failed. Error at byte: 102886

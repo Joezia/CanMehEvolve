@@ -1,0 +1,6 @@
+
+    void SetHeliumContent(FIT_UINT8 heliumContent)
+    {
+        fields[0].value.u8 = heliumContent;
+        fields[0].is_valid = 1;
+    }

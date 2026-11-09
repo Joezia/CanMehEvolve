@@ -1,0 +1,75 @@
+File: src/fit_field_base.cpp
+Function: FieldBase::Read (73 lines)
+One full decode of the four files takes about 358.3 ms in the stock build.
+Time of the current version of the whole library relative to stock: 0.989 (below 1.0 is faster). Best measured so far: 0.988.
+
+Current text of the function:
+```cpp
+FIT_BOOL FieldBase::Read(const void *data, const FIT_UINT8 size)
+{
+    const FIT_UINT8 typeIdx = GetType() & FIT_BASE_TYPE_NUM_MASK;
+    const FIT_UINT8 typeSize = baseTypeSizes[typeIdx];
+    const FIT_BYTE* byteData = static_cast<const FIT_BYTE*>(data);
+    
+    values.clear();
+
+    if (typeIdx == FIT_BASE_TYPE_STRING)
+    {
+        // Check for all-zero buffer (empty string)
+        bool allZero = true;
+        for (FIT_UINT8 i = 0; i < size; ++i)
+        {
+            if (byteData[i] != 0)
+            {
+                allZero = false;
+                break;
+            }
+        }
+        if (allZero) return FIT_TRUE;
+
+        // Find first null terminator using memchr for speed
+        const FIT_BYTE* nullPos = static_cast<const FIT_BYTE*>(std::memchr(byteData, 0, size));
+        FIT_UINT8 copySize = (nullPos != nullptr) ? (nullPos - byteData + 1) : size;
+
+        values.assign(byteData, byteData + copySize);
+        
+        // If not null-terminated, add terminator
+        if (copySize == size && values.back() != 0)
+        {
+            values.push_back(0);
+        }
+
+        // Build string indexes
+        stringIndexes.clear();
+        FIT_UINT8 pos = 0;
+        while (pos < values.size())
+        {
+            stringIndexes.push_back(pos);
+            while (pos < values.size() && values[pos] != 0) ++pos;
+            ++pos;  // skip null terminator
+        }
+    }
+    else
+    {
+        // Non-string types: skip leading invalid entries
+        const FIT_BYTE* invalidPtr = baseTypeInvalids[typeIdx];
+        const FIT_BYTE* endPtr = byteData + size;
+        const FIT_BYTE* current = byteData;
+
+        while (current + typeSize <= endPtr)
+        {
+            if (std::memcmp(current, invalidPtr, typeSize) != 0)
+            {
+                // Found valid data; copy from original pointer to end
+                values.insert(values.end(), byteData, endPtr);
+                break;
+            }
+            current += typeSize;
+        }
+    }
+
+    return FIT_TRUE;
+}
+
+```
+Return the faster replacement now.

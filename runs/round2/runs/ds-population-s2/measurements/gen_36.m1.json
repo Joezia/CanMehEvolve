@@ -1,0 +1,6 @@
+{
+ "error": "/home/z/zhouzia/Workspace/CanMehEvolve/build/work-1095766/tree/src/fit_field.cpp: In member function ‘virtual FIT_UINT16 fit::Field::GetNumSubFields() const’:\n/home/z/zhouzia/Workspace/CanMehEvolve/build/work-1095766/tree/src/fit_field.cpp:146:20: error: ‘MESG_FIELD’ in ‘class fit::Profile’ does not name a type\n  146 |     const Profile::MESG_FIELD* f = profile ? &profile->fields[profileIndex] : NULL;\n      |                    ^~~~~~~~~~\n/home/z/zhouzia/Workspace/CanMehEvolve/build/work-1095766/tree/src/fit_field.cpp:147:10: error: ‘f’ was not declared in this scope\n  147 |     if ((f == NULL) || (profileIndex >= profile->numFields))\n      |          ^\n/home/z/zhouzia/Workspace/CanMehEvolve/build/work-1095766/tree/src/fit_field.cpp:149:12: error: ‘f’ was not declared in this scope\n  149 |     return f->numSubFields;\n      |            ^\n",
+ "ok": false,
+ "rebuilt": 4,
+ "stage": "compile"
+}

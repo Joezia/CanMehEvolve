@@ -1,0 +1,68 @@
+--- a/src/fit_field_base.cpp
++++ b/src/fit_field_base.cpp
+@@ -16,6 +16,7 @@
+ #include "fit_field_base.hpp"
+ #include "fit_mesg.hpp"
+ #include "fit_unicode.hpp"
++#include <cstring>
+ 
+ namespace fit
+ {
+@@ -1131,19 +1132,52 @@
+ template <typename T>
+ T FieldBase::GetValue(const FIT_UINT8 fieldArrayIndex) const
+ {
+-    FIT_UINT8 size = baseTypeSizes[GetType() & FIT_BASE_TYPE_NUM_MASK];
++    const FIT_UINT8 baseType = GetType() & FIT_BASE_TYPE_NUM_MASK;
++    const FIT_UINT8 size = baseTypeSizes[baseType];
+     if (fieldArrayIndex >= (FIT_UINT8)values.size())
+     {
+-        return *reinterpret_cast<const T*>(baseTypeInvalids[GetType() & FIT_BASE_TYPE_NUM_MASK]);
++        return *reinterpret_cast<const T*>(baseTypeInvalids[baseType]);
+     }
+ 
+-    T rv = 0;
++    const FIT_UINT8* p = &values[fieldArrayIndex * size];
+ 
+-    for (int i = 0; i < size; i++)
++    switch (size)
+     {
+-        rv |= static_cast<T>(values[(fieldArrayIndex * size) + i]) << (i * 8);
++    case 1:
++        return static_cast<T>(p[0]);
++    case 2:
++        if constexpr (sizeof(T) >= 2)
++        {
++            T rv = 0;
++            std::memcpy(&rv, p, 2);
++            return rv;
++        }
++        break;
++    case 4:
++        if constexpr (sizeof(T) >= 4)
++        {
++            T rv = 0;
++            std::memcpy(&rv, p, 4);
++            return rv;
++        }
++        break;
++    case 8:
++        if constexpr (sizeof(T) >= 8)
++        {
++            T rv = 0;
++            std::memcpy(&rv, p, 8);
++            return rv;
++        }
++        break;
++    default:
++        break;
+     }
+ 
++    T rv = 0;
++    for (int i = 0; i < size; i++)
++    {
++        rv |= static_cast<T>(p[i]) << (i * 8);
++    }
+     return rv;
+ }
+ 

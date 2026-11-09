@@ -1,0 +1,154 @@
+Replaced the per-type getter calls with direct bounds-checked reads from the internal `values` buffer, eliminating out-of-line function call overhead and redundant invalid-value round trips while preserving all sentinel and bounds semantics.
+
+```cpp
+FIT_FLOAT64 FieldBase::GetRawValueInternal(const FIT_UINT8 fieldArrayIndex) const
+{
+    if (!IsValid())
+        return FIT_FLOAT64_INVALID;
+
+    const size_t valuesSize = values.size();
+
+    switch (GetType()) {
+        case FIT_BASE_TYPE_BYTE:
+        {
+            if (fieldArrayIndex >= valuesSize)
+                return FIT_FLOAT64_INVALID;
+            FIT_BYTE v = (FIT_BYTE)values[fieldArrayIndex];
+            if (v == FIT_BYTE_INVALID)
+                return FIT_FLOAT64_INVALID;
+            return (FIT_FLOAT64)v;
+        }
+        case FIT_BASE_TYPE_ENUM:
+        {
+            if (fieldArrayIndex >= valuesSize)
+                return FIT_FLOAT64_INVALID;
+            FIT_ENUM v = (FIT_ENUM)values[fieldArrayIndex];
+            if (v == FIT_ENUM_INVALID)
+                return FIT_FLOAT64_INVALID;
+            return (FIT_FLOAT64)v;
+        }
+        case FIT_BASE_TYPE_SINT8:
+        {
+            if (fieldArrayIndex >= valuesSize)
+                return FIT_FLOAT64_INVALID;
+            FIT_SINT8 v = (FIT_SINT8)values[fieldArrayIndex];
+            if (v == FIT_SINT8_INVALID)
+                return FIT_FLOAT64_INVALID;
+            return (FIT_FLOAT64)v;
+        }
+        case FIT_BASE_TYPE_UINT8:
+        {
+            if (fieldArrayIndex >= valuesSize)
+                return FIT_FLOAT64_INVALID;
+            FIT_UINT8 v = values[fieldArrayIndex];
+            if (v == FIT_UINT8_INVALID)
+                return FIT_FLOAT64_INVALID;
+            return (FIT_FLOAT64)v;
+        }
+        case FIT_BASE_TYPE_UINT8Z:
+        {
+            if (fieldArrayIndex >= valuesSize)
+                return FIT_FLOAT64_INVALID;
+            FIT_UINT8Z v = values[fieldArrayIndex];
+            if (v == FIT_UINT8Z_INVALID)
+                return FIT_FLOAT64_INVALID;
+            return (FIT_FLOAT64)v;
+        }
+        case FIT_BASE_TYPE_SINT16:
+        {
+            const size_t offset = (size_t)fieldArrayIndex * sizeof(FIT_SINT16);
+            if (offset >= valuesSize)
+                return FIT_FLOAT64_INVALID;
+            FIT_SINT16 v;
+            memcpy(&v, &values[offset], sizeof(FIT_SINT16));
+            if (v == FIT_SINT16_INVALID)
+                return FIT_FLOAT64_INVALID;
+            return (FIT_FLOAT64)v;
+        }
+        case FIT_BASE_TYPE_UINT16:
+        {
+            const size_t offset = (size_t)fieldArrayIndex * sizeof(FIT_UINT16);
+            if (offset >= valuesSize)
+                return FIT_FLOAT64_INVALID;
+            FIT_UINT16 v;
+            memcpy(&v, &values[offset], sizeof(FIT_UINT16));
+            if (v == FIT_UINT16_INVALID)
+                return FIT_FLOAT64_INVALID;
+            return (FIT_FLOAT64)v;
+        }
+        case FIT_BASE_TYPE_UINT16Z:
+        {
+            const size_t offset = (size_t)fieldArrayIndex * sizeof(FIT_UINT16Z);
+            if (offset >= valuesSize)
+                return FIT_FLOAT64_INVALID;
+            FIT_UINT16Z v;
+            memcpy(&v, &values[offset], sizeof(FIT_UINT16Z));
+            if (v == FIT_UINT16Z_INVALID)
+                return FIT_FLOAT64_INVALID;
+            return (FIT_FLOAT64)v;
+        }
+        case FIT_BASE_TYPE_SINT32:
+        {
+            const size_t offset = (size_t)fieldArrayIndex * sizeof(FIT_SINT32);
+            if (offset >= valuesSize)
+                return FIT_FLOAT64_INVALID;
+            FIT_SINT32 v;
+            memcpy(&v, &values[offset], sizeof(FIT_SINT32));
+            if (v == FIT_SINT32_INVALID)
+                return FIT_FLOAT64_INVALID;
+            return (FIT_FLOAT64)v;
+        }
+        case FIT_BASE_TYPE_UINT32:
+        {
+            const size_t offset = (size_t)fieldArrayIndex * sizeof(FIT_UINT32);
+            if (offset >= valuesSize)
+                return FIT_FLOAT64_INVALID;
+            FIT_UINT32 v;
+            memcpy(&v, &values[offset], sizeof(FIT_UINT32));
+            if (v == FIT_UINT32_INVALID)
+                return FIT_FLOAT64_INVALID;
+            return (FIT_FLOAT64)v;
+        }
+        case FIT_BASE_TYPE_UINT32Z:
+        {
+            const size_t offset = (size_t)fieldArrayIndex * sizeof(FIT_UINT32Z);
+            if (offset >= valuesSize)
+                return FIT_FLOAT64_INVALID;
+            FIT_UINT32Z v;
+            memcpy(&v, &values[offset], sizeof(FIT_UINT32Z));
+            if (v == FIT_UINT32Z_INVALID)
+                return FIT_FLOAT64_INVALID;
+            return (FIT_FLOAT64)v;
+        }
+        case FIT_BASE_TYPE_FLOAT32:
+        {
+            const size_t offset = (size_t)fieldArrayIndex * sizeof(FIT_FLOAT32);
+            if (offset >= valuesSize)
+                return FIT_FLOAT64_INVALID;
+            FIT_FLOAT32 v;
+            memcpy(&v, &values[offset], sizeof(FIT_FLOAT32));
+            if (v == FIT_FLOAT32_INVALID)
+                return FIT_FLOAT64_INVALID;
+            return (FIT_FLOAT64)v;
+        }
+        case FIT_BASE_TYPE_FLOAT64:
+        {
+            if (fieldArrayIndex >= (FIT_UINT8)valuesSize)
+                return FIT_FLOAT64_INVALID;
+
+            unsigned long long uint64Value = 0;
+            const size_t offset = (size_t)fieldArrayIndex * sizeof(FIT_UINT64);
+            for (size_t i = 0; i < sizeof(FIT_UINT64); i++)
+            {
+                uint64Value |= ( values[offset + i] << (i * 8) );
+            }
+
+            FIT_FLOAT64 float64Value;
+            memcpy(&float64Value, &uint64Value, sizeof(FIT_FLOAT64));
+            return float64Value;
+        }
+        default:
+            return FIT_FLOAT64_INVALID;
+    }
+}
+```

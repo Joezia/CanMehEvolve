@@ -1,0 +1,4 @@
+    void SetText(FIT_WSTRING text)
+    {
+        SetFieldSTRINGValue(1, std::move(text), 0);
+    }

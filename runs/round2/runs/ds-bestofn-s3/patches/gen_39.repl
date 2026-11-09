@@ -1,0 +1,21 @@
+I replaced the indexed loop with a cached pointer walk over the vector’s contiguous storage, removing repeated `size()`/indexing overhead in the hot search path. The scan order and return semantics are unchanged, so behavior is identical.
+
+```cpp
+Field* Mesg::GetField(const FIT_UINT8 fieldNum)
+{
+    if (!fields.empty())
+    {
+        Field* field = &fields[0];
+        Field* const end = field + fields.size();
+
+        do
+        {
+            if (field->GetNum() == fieldNum)
+                return field;
+            ++field;
+        } while (field != end);
+    }
+
+    return FIT_NULL;
+}
+```

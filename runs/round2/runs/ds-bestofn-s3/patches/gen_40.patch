@@ -1,0 +1,17 @@
+--- a/src/fit_field.cpp
++++ b/src/fit_field.cpp
+@@ -102,10 +102,10 @@
+     if ( type != FIT_UINT8_INVALID )
+         return type;
+ 
+-    if ((profile == NULL) || (profileIndex >= profile->numFields))
+-        return FIT_UINT8_INVALID;
+-
+-    return profile->fields[profileIndex].type;
++    const Profile* const p = profile;
++    return ( p != NULL && profileIndex < p->numFields )
++               ? p->fields[profileIndex].type
++               : FIT_UINT8_INVALID;
+ }
+ 
+ std::string Field::GetUnits() const

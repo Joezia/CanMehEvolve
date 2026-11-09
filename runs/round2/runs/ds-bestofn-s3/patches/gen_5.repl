@@ -1,0 +1,9 @@
+The function is already a minimal getter; I kept the same lookup but wrote it as a single ternary so the compiler emits one branchless pointer test and no extra basic block, which is marginally cheaper when `GetField` is not inlined.
+
+```cpp
+    FIT_BOOL IsFavoriteValid() const
+    {
+        const Field* field = GetField(8);
+        return (FIT_NULL != field) ? field->IsValueValid() : FIT_FALSE;
+    }
+```

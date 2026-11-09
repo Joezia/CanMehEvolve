@@ -1,0 +1,15 @@
+
+const Profile::MESG* Profile::GetMesg(const FIT_UINT16 num)
+{
+    static const auto sorted = [] {
+        std::vector<MESG> sorted_mesgs(mesgs, mesgs + MESGS);
+        std::sort(sorted_mesgs.begin(), sorted_mesgs.end(), [](const MESG& a, const MESG& b) { return a.num < b.num; });
+        return sorted_mesgs;
+    }();
+    
+    auto it = std::lower_bound(sorted.begin(), sorted.end(), num, [](const MESG& a, FIT_UINT16 b) { return a.num < b; });
+    if (it != sorted.end() && it->num == num) {
+        return &(*it);
+    }
+    return NULL;
+}

@@ -1,0 +1,20 @@
+```cpp
+#include <algorithm>
+#include <vector>
+
+const Profile::MESG* Profile::GetMesg(const FIT_UINT16 num)
+{
+    static std::vector<const Profile::MESG*> indexed;
+    static bool initialized = false;
+    
+    if (!initialized) {
+        indexed.resize(0x10000, nullptr);
+        for (int i = 0; i < MESGS; i++) {
+            indexed[mesgs[i].num] = &mesgs[i];
+        }
+        initialized = true;
+    }
+    
+    return (num < indexed.size()) ? indexed[num] : nullptr;
+}
+```

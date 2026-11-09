@@ -1,0 +1,93 @@
+
+FIT_FLOAT64 FieldBase::GetRawValueInternal(const FIT_UINT8 fieldArrayIndex) const
+{
+    if (!IsValid())
+        return FIT_FLOAT64_INVALID;
+
+    switch (GetType()) {
+        case FIT_BASE_TYPE_BYTE:
+        case FIT_BASE_TYPE_ENUM:
+        case FIT_BASE_TYPE_SINT8:
+        case FIT_BASE_TYPE_UINT8:
+        case FIT_BASE_TYPE_UINT8Z:
+        case FIT_BASE_TYPE_SINT16:
+        case FIT_BASE_TYPE_UINT16:
+        case FIT_BASE_TYPE_UINT16Z:
+        case FIT_BASE_TYPE_SINT32:
+        case FIT_BASE_TYPE_UINT32:
+        case FIT_BASE_TYPE_UINT32Z:
+        case FIT_BASE_TYPE_FLOAT32:
+        {
+            // Use common pattern: get the raw value, check invalid, convert to float64
+            // We'll handle each case via a small helper lambda to avoid duplicated code
+            auto get_as_float64 = [this, fieldArrayIndex]() -> FIT_FLOAT64 {
+                switch (GetType()) {
+                    case FIT_BASE_TYPE_BYTE: {
+                        FIT_BYTE v = GetBYTEValue(fieldArrayIndex);
+                        return (v == FIT_BYTE_INVALID) ? FIT_FLOAT64_INVALID : static_cast<FIT_FLOAT64>(v);
+                    }
+                    case FIT_BASE_TYPE_ENUM: {
+                        FIT_ENUM v = GetENUMValue(fieldArrayIndex);
+                        return (v == FIT_ENUM_INVALID) ? FIT_FLOAT64_INVALID : static_cast<FIT_FLOAT64>(v);
+                    }
+                    case FIT_BASE_TYPE_SINT8: {
+                        FIT_SINT8 v = GetSINT8Value(fieldArrayIndex);
+                        return (v == FIT_SINT8_INVALID) ? FIT_FLOAT64_INVALID : static_cast<FIT_FLOAT64>(v);
+                    }
+                    case FIT_BASE_TYPE_UINT8: {
+                        FIT_UINT8 v = GetUINT8Value(fieldArrayIndex);
+                        return (v == FIT_UINT8_INVALID) ? FIT_FLOAT64_INVALID : static_cast<FIT_FLOAT64>(v);
+                    }
+                    case FIT_BASE_TYPE_UINT8Z: {
+                        FIT_UINT8Z v = GetUINT8ZValue(fieldArrayIndex);
+                        return (v == FIT_UINT8Z_INVALID) ? FIT_FLOAT64_INVALID : static_cast<FIT_FLOAT64>(v);
+                    }
+                    case FIT_BASE_TYPE_SINT16: {
+                        FIT_SINT16 v = GetSINT16Value(fieldArrayIndex);
+                        return (v == FIT_SINT16_INVALID) ? FIT_FLOAT64_INVALID : static_cast<FIT_FLOAT64>(v);
+                    }
+                    case FIT_BASE_TYPE_UINT16: {
+                        FIT_UINT16 v = GetUINT16Value(fieldArrayIndex);
+                        return (v == FIT_UINT16_INVALID) ? FIT_FLOAT64_INVALID : static_cast<FIT_FLOAT64>(v);
+                    }
+                    case FIT_BASE_TYPE_UINT16Z: {
+                        FIT_UINT16Z v = GetUINT16ZValue(fieldArrayIndex);
+                        return (v == FIT_UINT16Z_INVALID) ? FIT_FLOAT64_INVALID : static_cast<FIT_FLOAT64>(v);
+                    }
+                    case FIT_BASE_TYPE_SINT32: {
+                        FIT_SINT32 v = GetSINT32Value(fieldArrayIndex);
+                        return (v == FIT_SINT32_INVALID) ? FIT_FLOAT64_INVALID : static_cast<FIT_FLOAT64>(v);
+                    }
+                    case FIT_BASE_TYPE_UINT32: {
+                        FIT_UINT32 v = GetUINT32Value(fieldArrayIndex);
+                        return (v == FIT_UINT32_INVALID) ? FIT_FLOAT64_INVALID : static_cast<FIT_FLOAT64>(v);
+                    }
+                    case FIT_BASE_TYPE_UINT32Z: {
+                        FIT_UINT32Z v = GetUINT32ZValue(fieldArrayIndex);
+                        return (v == FIT_UINT32Z_INVALID) ? FIT_FLOAT64_INVALID : static_cast<FIT_FLOAT64>(v);
+                    }
+                    case FIT_BASE_TYPE_FLOAT32: {
+                        FIT_FLOAT32 v = GetFLOAT32Value(fieldArrayIndex);
+                        return (v == FIT_FLOAT32_INVALID) ? FIT_FLOAT64_INVALID : static_cast<FIT_FLOAT64>(v);
+                    }
+                    default:
+                        return FIT_FLOAT64_INVALID;
+                }
+            };
+            return get_as_float64();
+        }
+
+        case FIT_BASE_TYPE_FLOAT64:
+        {
+            if (fieldArrayIndex >= (FIT_UINT8)values.size() / sizeof(FIT_FLOAT64))
+                return FIT_FLOAT64_INVALID;
+
+            FIT_FLOAT64 result;
+            std::memcpy(&result, &values[fieldArrayIndex * sizeof(FIT_FLOAT64)], sizeof(FIT_FLOAT64));
+            return result;
+        }
+
+        default:
+            return FIT_FLOAT64_INVALID;
+    }
+}

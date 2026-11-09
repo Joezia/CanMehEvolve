@@ -1,0 +1,1 @@
+{"error":"the candidate library: /home/z/zhouzia/Workspace/CanMehEvolve/build/work-1095838/libfit_cand.so: undefined symbol: _ZN3fit9FieldBase15SetUINT64ZValueEmh","ok":false,"rebuilt":2,"stage":"load"}

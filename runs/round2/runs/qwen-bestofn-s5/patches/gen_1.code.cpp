@@ -1,0 +1,6 @@
+
+```cpp
+    void SetSensorType(FIT_SENSOR_TYPE sensorType)
+    {
+        fields[0].value.u8 = static_cast<uint8_t>(sensorType);
+    }

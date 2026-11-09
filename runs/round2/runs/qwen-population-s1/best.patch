@@ -1,0 +1,188 @@
+--- a/src/fit_accumulated_field.cpp
++++ b/src/fit_accumulated_field.cpp
+@@ -11,12 +11,14 @@
+ 
+ 
+ #include "fit_accumulated_field.hpp"
++#include <cstdint>
+ 
+ namespace fit
+ {
+ 
++
+     AccumulatedField::AccumulatedField()
+-        : lastValue(0), accumulatedValue(0)
++        : lastValue{0}, accumulatedValue{0}
+     {
+     }
+ 
+--- a/src/fit_crc.cpp
++++ b/src/fit_crc.cpp
+@@ -15,6 +15,7 @@
+ namespace fit
+ {
+ 
++
+ FIT_UINT16 CRC::Get16(FIT_UINT16 crc, FIT_UINT8 byte)
+ {
+    static const FIT_UINT16 crc_table[16] =
+@@ -22,17 +23,12 @@
+       0x0000, 0xCC01, 0xD801, 0x1400, 0xF001, 0x3C00, 0x2800, 0xE401,
+       0xA001, 0x6C00, 0x7800, 0xB401, 0x5000, 0x9C01, 0x8801, 0x4400
+    };
+-   FIT_UINT16 tmp;
+ 
+-   // compute checksum of lower four bits of byte
+-   tmp = crc_table[crc & 0xF];
+-   crc  = (crc >> 4) & 0x0FFF;
+-   crc  = crc ^ tmp ^ crc_table[byte & 0xF];
+-
+-   // now compute checksum of upper four bits of byte
+-   tmp = crc_table[crc & 0xF];
+-   crc  = (crc >> 4) & 0x0FFF;
+-   crc  = crc ^ tmp ^ crc_table[(byte >> 4) & 0xF];
++   // Combine both nibble operations using a lookup table approach
++   FIT_UINT16 tmp = crc_table[(crc ^ byte) & 0x0F];
++   crc = (crc >> 4) ^ tmp;
++   tmp = crc_table[(crc ^ (byte >> 4)) & 0x0F];
++   crc = (crc >> 4) ^ tmp;
+ 
+    return crc;
+ }
+@@ -57,4 +53,5 @@
+ #if defined(FIT_CPP_INCLUDE_C)
+     // Include C Implementation
+     #include "fit_crc.c"
++#include <cstdint>
+ #endif
+--- a/src/fit_field.cpp
++++ b/src/fit_field.cpp
+@@ -15,6 +15,7 @@
+ #include "fit_field.hpp"
+ #include "fit_mesg.hpp"
+ #include "fit_unicode.hpp"
++#include <cstddef>
+ 
+ namespace fit
+ {
+@@ -97,12 +98,13 @@
+     return profile->fields[profileIndex].num;
+ }
+ 
++
+ FIT_UINT8 Field::GetType() const
+ {
+-    if ( type != FIT_UINT8_INVALID )
++    if (type != FIT_UINT8_INVALID)
+         return type;
+ 
+-    if ((profile == NULL) || (profileIndex >= profile->numFields))
++    if (profile == nullptr || profileIndex >= profile->numFields)
+         return FIT_UINT8_INVALID;
+ 
+     return profile->fields[profileIndex].type;
+--- a/src/fit_field_base.cpp
++++ b/src/fit_field_base.cpp
+@@ -16,6 +16,7 @@
+ #include "fit_field_base.hpp"
+ #include "fit_mesg.hpp"
+ #include "fit_unicode.hpp"
++#include <algorithm>
+ 
+ namespace fit
+ {
+@@ -24,11 +25,7 @@
+ {
+ }
+ 
+-FieldBase::FieldBase(const FieldBase &field)
+-{
+-    values = field.values;
+-    stringIndexes = field.stringIndexes;
+-}
++FieldBase::FieldBase(const FieldBase &field) : values(field.values), stringIndexes(field.stringIndexes) {}
+ 
+ FieldBase::~FieldBase()
+ {
+@@ -61,13 +58,15 @@
+     return NULL != subfield ? subfield->units : "";
+ }
+ 
++
+ FIT_FLOAT64 FieldBase::GetScale(const FIT_UINT16 subFieldIndex) const
+ {
+-    if (subFieldIndex >= GetNumSubFields())
++    const auto numSubFields = GetNumSubFields();
++    if (subFieldIndex >= numSubFields)
+         return GetScale();
+ 
+-    auto subfield = GetSubField(subFieldIndex);
+-    return NULL != subfield ? subfield->scale : 1.0;
++    const auto* subfield = GetSubField(subFieldIndex);
++    return subfield ? subfield->scale : 1.0;
+ }
+ 
+ FIT_FLOAT64 FieldBase::GetOffset(const FIT_UINT16 subFieldIndex) const
+--- a/src/fit_mesg_definition.cpp
++++ b/src/fit_mesg_definition.cpp
+@@ -13,6 +13,7 @@
+ #include <ostream>
+ #include "fit_mesg_definition.hpp"
+ #include "fit_developer_field_definition.hpp"
++#include <vector>
+ 
+ namespace fit
+ {
+@@ -105,12 +106,10 @@
+     return FIT_NULL;
+ }
+ 
++
+ FieldDefinition* MesgDefinition::GetFieldByIndex(const FIT_UINT16 index)
+ {
+-    if (index < fields.size())
+-        return &(fields[index]);
+-
+-    return FIT_NULL;
++    return (index < fields.size()) ? &fields[index] : FIT_NULL;
+ }
+ 
+ DeveloperFieldDefinition* MesgDefinition::GetDevFieldByIndex(const FIT_UINT16 index)
+--- a/src/fit_profile.cpp
++++ b/src/fit_profile.cpp
+@@ -11,6 +11,9 @@
+ 
+ 
+ #include "fit_profile.hpp"
++#include <algorithm>
++#include <vector>
++#include <array>
+ 
+ namespace fit
+ {
+@@ -3055,15 +3058,18 @@
+    { NULL, "pad", FIT_MESG_NUM_PAD, 0 },
+ };
+ 
++
++
+ const Profile::MESG* Profile::GetMesg(const FIT_UINT16 num)
+ {
+-    for (int i = 0; i < MESGS; i++)
+-    {
+-        if (mesgs[i].num == num)
+-            return &mesgs[i];
+-    }
+-
+-    return NULL;
++    static std::array<const Profile::MESG*, 0x10000> lookup = []() {
++        std::array<const Profile::MESG*, 0x10000> arr{};
++        for (int i = 0; i < MESGS; i++) {
++            arr[mesgs[i].num] = &mesgs[i];
++        }
++        return arr;
++    }();
++    return (num < lookup.size()) ? lookup[num] : nullptr;
+ }
+ 
+ const Profile::MESG* Profile::GetMesg(const std::string& name)

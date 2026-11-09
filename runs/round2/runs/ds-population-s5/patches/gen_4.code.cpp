@@ -1,0 +1,25 @@
+FIT_UINT8 Field::GetType() const
+{
+    if ( type != FIT_UINT8_INVALID )
+        return type;
+
+    const Profile* p = profile;
+    if ( p != NULL )
+    {
+        static const Profile* cachedProfile[256] = {};
+        static FIT_UINT8 cachedType[256];
+
+        if ( cachedProfile[profileIndex] == p )
+            return cachedType[profileIndex];
+
+        if ( profileIndex < p->numFields )
+        {
+            const FIT_UINT8 t = p->fields[profileIndex].type;
+            cachedProfile[profileIndex] = p;
+            cachedType[profileIndex] = t;
+            return t;
+        }
+    }
+
+    return FIT_UINT8_INVALID;
+}

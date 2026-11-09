@@ -1,0 +1,5 @@
+
+    void SetDurationCalories(FIT_UINT32 durationCalories)
+    {
+        SetFieldUINT32Value(2, durationCalories, 0, Profile::WORKOUT_STEP_MESG_DURATION_VALUE_FIELD_DURATION_CALORIES);
+    }

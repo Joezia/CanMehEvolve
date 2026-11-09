@@ -1,0 +1,67 @@
+```cpp
+#include <algorithm>
+#include <cstring>
+
+FIT_BOOL FieldBase::Read(const void *data, const FIT_UINT8 size)
+{
+    FIT_UINT8 bytesLeft = size;
+    FIT_UINT8 typeIdx = GetType() & FIT_BASE_TYPE_NUM_MASK;
+    FIT_UINT8 typeSize = baseTypeSizes[typeIdx];
+    const FIT_BYTE *byteData = static_cast<const FIT_BYTE*>(data);
+
+    values.clear();
+
+    if (GetType() == FIT_BASE_TYPE_STRING)
+    {
+        // Fast path: check if entire buffer is zeros (empty string)
+        bool allZero = true;
+        for (FIT_UINT8 i = 0; i < size; ++i)
+        {
+            if (byteData[i] != 0)
+            {
+                allZero = false;
+                break;
+            }
+        }
+        if (allZero) return FIT_TRUE;
+
+        // Copy data and track string boundaries
+        FIT_BYTE *dataCopy = new FIT_BYTE[size + 1];
+        std::memcpy(dataCopy, byteData, size);
+        dataCopy[size] = 0;
+
+        values.assign(dataCopy, dataCopy + size + 1);
+
+        // Build string indexes
+        stringIndexes.clear();
+        FIT_UINT8 pos = 0;
+        while (pos <= size)
+        {
+            stringIndexes.push_back(pos);
+            while (pos <= size && values[pos] != 0) ++pos;
+            ++pos;  // skip null terminator
+        }
+
+        delete[] dataCopy;
+    }
+    else
+    {
+        // Non-string types: skip all-invalid entries
+        const FIT_BYTE* invalidPtr = baseTypeInvalids[typeIdx];
+        const FIT_BYTE* endPtr = byteData + bytesLeft;
+
+        while (byteData + typeSize <= endPtr)
+        {
+            if (std::memcmp(byteData, invalidPtr, typeSize) != 0)
+            {
+                // Found valid data, copy remaining bytes
+                values.insert(values.end(), byteData, endPtr);
+                break;
+            }
+            byteData += typeSize;
+        }
+    }
+
+    return FIT_TRUE;
+}
+```

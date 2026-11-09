@@ -1,0 +1,5 @@
+The destructor is already empty, so the only safe change is to define it as defaulted out-of-line, which lets the compiler elide any implicit member-destruction work and emit a minimal body while keeping the exact virtual-dispatch semantics.
+
+```cpp
+FieldBase::~FieldBase() = default;
+```

@@ -1,0 +1,8 @@
+wrote 459 files to /home/z/zhouzia/.corpus-dev
+valid files kept=55 dropped=5
+0000
+0001
+0002
+Traceback (most recent call last):
+  File "<string>", line 1, in <module>
+NameError: name 'coll' is not defined

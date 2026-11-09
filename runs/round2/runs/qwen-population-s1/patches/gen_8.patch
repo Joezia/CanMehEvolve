@@ -1,0 +1,67 @@
+--- a/src/fit_accumulated_field.cpp
++++ b/src/fit_accumulated_field.cpp
+@@ -11,12 +11,14 @@
+ 
+ 
+ #include "fit_accumulated_field.hpp"
++#include <cstdint>
+ 
+ namespace fit
+ {
+ 
++
+     AccumulatedField::AccumulatedField()
+-        : lastValue(0), accumulatedValue(0)
++        : lastValue{0}, accumulatedValue{0}
+     {
+     }
+ 
+--- a/src/fit_field_base.cpp
++++ b/src/fit_field_base.cpp
+@@ -24,11 +24,7 @@
+ {
+ }
+ 
+-FieldBase::FieldBase(const FieldBase &field)
+-{
+-    values = field.values;
+-    stringIndexes = field.stringIndexes;
+-}
++FieldBase::FieldBase(const FieldBase &field) : values(field.values), stringIndexes(field.stringIndexes) {}
+ 
+ FieldBase::~FieldBase()
+ {
+--- a/src/fit_profile.cpp
++++ b/src/fit_profile.cpp
+@@ -11,6 +11,7 @@
+ 
+ 
+ #include "fit_profile.hpp"
++#include <algorithm>
+ 
+ namespace fit
+ {
+@@ -3055,14 +3056,17 @@
+    { NULL, "pad", FIT_MESG_NUM_PAD, 0 },
+ };
+ 
++
+ const Profile::MESG* Profile::GetMesg(const FIT_UINT16 num)
+ {
+-    for (int i = 0; i < MESGS; i++)
+-    {
+-        if (mesgs[i].num == num)
+-            return &mesgs[i];
+-    }
+-
++    // Binary search since mesgs array is sorted by num (per FIT spec)
++    const Profile::MESG* begin = mesgs;
++    const Profile::MESG* end = mesgs + MESGS;
++    const Profile::MESG* it = std::lower_bound(begin, end, num,
++        [](const Profile::MESG& mesg, FIT_UINT16 value) { return mesg.num < value; });
++    
++    if (it != end && it->num == num)
++        return it;
+     return NULL;
+ }
+ 

@@ -1,0 +1,67 @@
+--- a/src/fit_crc.cpp
++++ b/src/fit_crc.cpp
+@@ -15,6 +15,7 @@
+ namespace fit
+ {
+ 
++
+ FIT_UINT16 CRC::Get16(FIT_UINT16 crc, FIT_UINT8 byte)
+ {
+    static const FIT_UINT16 crc_table[16] =
+@@ -22,17 +23,14 @@
+       0x0000, 0xCC01, 0xD801, 0x1400, 0xF001, 0x3C00, 0x2800, 0xE401,
+       0xA001, 0x6C00, 0x7800, 0xB401, 0x5000, 0x9C01, 0x8801, 0x4400
+    };
+-   FIT_UINT16 tmp;
+ 
+-   // compute checksum of lower four bits of byte
+-   tmp = crc_table[crc & 0xF];
+-   crc  = (crc >> 4) & 0x0FFF;
+-   crc  = crc ^ tmp ^ crc_table[byte & 0xF];
+-
+-   // now compute checksum of upper four bits of byte
+-   tmp = crc_table[crc & 0xF];
+-   crc  = (crc >> 4) & 0x0FFF;
+-   crc  = crc ^ tmp ^ crc_table[(byte >> 4) & 0xF];
++   // Process lower 4 bits
++   FIT_UINT16 crc_low = crc_table[crc & 0xF];
++   crc = ((crc >> 4) ^ crc_low) & 0x0FFF;
++
++   // Process upper 4 bits
++   crc = crc ^ crc_table[(crc & 0xF) ^ (byte & 0xF)];
++   crc = ((crc >> 4) ^ crc_table[((crc >> 4) & 0xF) ^ ((byte >> 4) & 0xF)]) & 0x0FFF;
+ 
+    return crc;
+ }
+@@ -57,4 +55,5 @@
+ #if defined(FIT_CPP_INCLUDE_C)
+     // Include C Implementation
+     #include "fit_crc.c"
++#include <cstdint>
+ #endif
+--- a/src/fit_field.cpp
++++ b/src/fit_field.cpp
+@@ -15,6 +15,7 @@
+ #include "fit_field.hpp"
+ #include "fit_mesg.hpp"
+ #include "fit_unicode.hpp"
++#include <cstddef>
+ 
+ namespace fit
+ {
+@@ -97,12 +98,13 @@
+     return profile->fields[profileIndex].num;
+ }
+ 
++
+ FIT_UINT8 Field::GetType() const
+ {
+-    if ( type != FIT_UINT8_INVALID )
++    if (type != FIT_UINT8_INVALID)
+         return type;
+ 
+-    if ((profile == NULL) || (profileIndex >= profile->numFields))
++    if (!profile || profileIndex >= profile->numFields)
+         return FIT_UINT8_INVALID;
+ 
+     return profile->fields[profileIndex].type;

@@ -1,0 +1,35 @@
+I cached the base-type lookup, replaced the byte-by-byte shift/OR assembly with a single constant-size `memcpy` for the common case where the requested type width matches the field's base-type size, and kept the original loop as a fallback for any other width.
+
+```include
+#include <cstring>
+```
+
+```cpp
+template <typename T>
+T FieldBase::GetValue(const FIT_UINT8 fieldArrayIndex) const
+{
+    const FIT_UINT8 type = static_cast<FIT_UINT8>(GetType() & FIT_BASE_TYPE_NUM_MASK);
+    const FIT_UINT8 size = baseTypeSizes[type];
+
+    if (fieldArrayIndex >= static_cast<FIT_UINT8>(values.size()))
+    {
+        return *reinterpret_cast<const T*>(baseTypeInvalids[type]);
+    }
+
+    const FIT_UINT8* src = values.data() + (fieldArrayIndex * size);
+
+    if (size == sizeof(T))
+    {
+        T rv;
+        std::memcpy(&rv, src, sizeof(T));
+        return rv;
+    }
+
+    T rv = 0;
+    for (int i = 0; i < size; i++)
+    {
+        rv |= static_cast<T>(src[i]) << (i * 8);
+    }
+    return rv;
+}
+```

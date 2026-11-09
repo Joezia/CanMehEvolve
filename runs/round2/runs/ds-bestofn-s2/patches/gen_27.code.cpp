@@ -1,0 +1,39 @@
+const FIT_UINT16 Profile::GetFieldIndex(const FIT_UINT16 mesgNum, const FIT_UINT8 fieldNum)
+{
+    struct FieldTable
+    {
+        FIT_UINT16 idx[256];
+    };
+
+    static FieldTable* tables[65536] = {};
+    static FieldTable notFound;
+
+    FieldTable* t = tables[mesgNum];
+    if (t == nullptr)
+    {
+        const MESG* mesg = GetMesg(mesgNum);
+        if (mesg == NULL)
+        {
+            tables[mesgNum] = &notFound;
+            return FIT_UINT16_INVALID;
+        }
+
+        t = new FieldTable;
+        for (int i = 0; i < 256; i++)
+            t->idx[i] = FIT_UINT16_INVALID;
+
+        for (FIT_UINT16 i = 0; i < mesg->numFields; i++)
+        {
+            const FIT_UINT8 n = mesg->fields[i].num;
+            if (t->idx[n] == FIT_UINT16_INVALID)
+                t->idx[n] = i;
+        }
+        tables[mesgNum] = t;
+    }
+    else if (t == &notFound)
+    {
+        return FIT_UINT16_INVALID;
+    }
+
+    return t->idx[fieldNum];
+}

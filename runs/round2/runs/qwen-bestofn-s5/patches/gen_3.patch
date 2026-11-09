@@ -1,0 +1,28 @@
+--- a/src/fit_field_base.cpp
++++ b/src/fit_field_base.cpp
+@@ -16,6 +16,7 @@
+ #include "fit_field_base.hpp"
+ #include "fit_mesg.hpp"
+ #include "fit_unicode.hpp"
++#include <algorithm>
+ 
+ namespace fit
+ {
+@@ -70,13 +71,12 @@
+     return NULL != subfield ? subfield->scale : 1.0;
+ }
+ 
++
+ FIT_FLOAT64 FieldBase::GetOffset(const FIT_UINT16 subFieldIndex) const
+ {
+-    if (subFieldIndex >= GetNumSubFields())
+-        return GetOffset();
+-
+-    auto subfield = GetSubField(subFieldIndex);
+-    return NULL != subfield ? subfield->offset : 0.0;
++    if (subFieldIndex >= GetNumSubFields()) return GetOffset();
++    auto* subfield = GetSubField(subFieldIndex);
++    return subfield ? subfield->offset : 0.0;
+ }
+ 
+ FIT_BOOL FieldBase::IsSignedInteger(const FIT_UINT16 subFieldIndex) const

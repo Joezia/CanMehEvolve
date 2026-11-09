@@ -1,0 +1,6 @@
+{
+ "error": "/home/z/zhouzia/Workspace/CanMehEvolve/build/work-1095838/tree/src/fit_field_base.cpp: In member function ‘T fit::FieldBase::GetValue(FIT_UINT8) const’:\n/home/z/zhouzia/Workspace/CanMehEvolve/build/work-1095838/tree/src/fit_field_base.cpp:1150:41: error: ‘FIT_INT8’ does not name a type; did you mean ‘FIT_UINT8’?\n 1150 |         rv = static_cast<T>(static_cast<FIT_INT8>(values[offset]));\n      |                                         ^~~~~~~~\n      |                                         FIT_UINT8\n",
+ "ok": false,
+ "rebuilt": 2,
+ "stage": "compile"
+}

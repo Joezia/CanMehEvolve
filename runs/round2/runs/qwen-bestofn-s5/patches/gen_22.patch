@@ -1,0 +1,36 @@
+--- a/src/fit_profile.cpp
++++ b/src/fit_profile.cpp
+@@ -11,6 +11,8 @@
+ 
+ 
+ #include "fit_profile.hpp"
++#include <algorithm>
++#include <cstddef>
+ 
+ namespace fit
+ {
+@@ -3055,14 +3057,18 @@
+    { NULL, "pad", FIT_MESG_NUM_PAD, 0 },
+ };
+ 
++
+ const Profile::MESG* Profile::GetMesg(const FIT_UINT16 num)
+ {
+-    for (int i = 0; i < MESGS; i++)
+-    {
+-        if (mesgs[i].num == num)
+-            return &mesgs[i];
+-    }
+-
++    // Use binary search since mesgs array is sorted by num (per FIT spec and implementation)
++    // Binary search reduces O(n) to O(log n), which is faster for typical MESG counts (~50-100)
++    const auto* first = mesgs;
++    const auto* last = mesgs + MESGS;
++    const auto* it = std::lower_bound(first, last, num, 
++        [](const Profile::MESG& mesg, FIT_UINT16 value) { return mesg.num < value; });
++    
++    if (it != last && it->num == num)
++        return &(*it);
+     return NULL;
+ }
+ 

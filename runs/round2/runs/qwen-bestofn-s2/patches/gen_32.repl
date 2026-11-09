@@ -1,0 +1,5 @@
+The destructor is empty, so removing it entirely allows the compiler to generate a trivial destructor, which is faster than an explicit empty one due to better optimization opportunities and reduced symbol overhead.
+
+```cpp
+FieldBase::~FieldBase() = default;
+```

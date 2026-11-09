@@ -1,0 +1,42 @@
+[run] mode=bestofn-confirmed host=xcnc6 model_probe={"http_status":200,"model":"deepseek-v4.1-flash-1017","ok":true,"requested_model":"deepseek-v4.1-flash","usage":{"completion_tokens":33,"completion_tokens_details":{"reasoning_tokens":30},"prompt_tokens":36,"prompt_tokens_details":{"cached_tokens":0,"created_cache_tokens":0,"multimodal_tokens":null},"total_tokens":69}}
+[gen 1/40] region 172 FieldBase::GetRawValueInternal parent=0 stage=compile best_confirmed_speedup=1 tokens=28513 t=475s
+[gen 2/40] region 574 Profile::GetMesg parent=0 ratio=0.940687 CONFIRMED best_confirmed_speedup=1.06305 tokens=33690 t=739s
+[gen 3/40] region 234 Mesg::GetField parent=0 ratio=0.993261 best_confirmed_speedup=1.06305 tokens=35726 t=868s
+[gen 4/40] region 118 Field::IsValid parent=0 stage=unchanged best_confirmed_speedup=1.06305 tokens=36275 t=876s
+[gen 5/40] region 26 CRC::Get16 parent=0 ratio=1.003927 best_confirmed_speedup=1.06305 tokens=44180 t=1036s
+[gen 6/40] region 574 Profile::GetMesg parent=0 ratio=0.939111 CONFIRMED best_confirmed_speedup=1.06484 tokens=46717 t=1261s
+[gen 7/40] region 574 Profile::GetMesg parent=0 ratio=0.932335 CONFIRMED best_confirmed_speedup=1.07258 tokens=50654 t=1502s
+[gen 8/40] region 192 FieldBase::Read parent=0 ratio=0.999366 best_confirmed_speedup=1.07258 tokens=60303 t=1712s
+[gen 9/40] region 576 Profile::GetFieldIndex parent=0 ratio=0.968660 CONFIRMED best_confirmed_speedup=1.07258 tokens=77759 t=2133s
+[gen 10/40] region 134 FieldBase::FieldBase parent=0 ratio=0.945747 CONFIRMED best_confirmed_speedup=1.07258 tokens=80960 t=2360s
+[gen 11/40] region 26 CRC::Get16 parent=0 ratio=1.002240 best_confirmed_speedup=1.07258 tokens=89780 t=2528s
+[gen 12/40] region 123 Field::GetType parent=0 ratio=1.002080 best_confirmed_speedup=1.07258 tokens=103516 t=2784s
+[gen 13/40] region 576 Profile::GetFieldIndex parent=0 ratio=0.947431 CONFIRMED best_confirmed_speedup=1.07258 tokens=118134 t=3140s
+[gen 14/40] region 50 Decode::Resume parent=0 ratio=0.995295 best_confirmed_speedup=1.07258 tokens=137866 t=3434s
+[gen 15/40] region 4335 GetEnhancedAvgAltitude parent=0 stage=unchanged best_confirmed_speedup=1.07258 tokens=158575 t=3666s
+[gen 16/40] region 134 FieldBase::FieldBase parent=0 ratio=0.946311 CONFIRMED best_confirmed_speedup=1.07258 tokens=160884 t=3873s
+[gen 17/40] region 113 Field::Field parent=0 ratio=0.996095 best_confirmed_speedup=1.07258 tokens=177391 t=4156s
+[gen 18/40] region 122 Field::GetNum parent=0 ratio=0.997803 best_confirmed_speedup=1.07258 tokens=178441 t=4256s
+[gen 19/40] region 248 Mesg::GetFieldUINT8Value parent=0 ratio=0.999822 best_confirmed_speedup=1.07258 tokens=182466 t=4385s
+[gen 20/40] region 574 Profile::GetMesg parent=0 ratio=0.932399 CONFIRMED best_confirmed_speedup=1.07258 tokens=186166 t=4625s
+[gen 21/40] region 574 Profile::GetMesg parent=0 ratio=0.937914 CONFIRMED best_confirmed_speedup=1.07258 tokens=192582 t=4899s
+[gen 22/40] region 123 Field::GetType parent=0 stage=compile best_confirmed_speedup=1.07258 tokens=197335 t=4957s
+[gen 23/40] region 872 IsIdValid parent=0 stage=llm_http best_confirmed_speedup=1.07258 tokens=197335 t=5257s
+[gen 24/40] region 122 Field::GetNum parent=0 stage=compile best_confirmed_speedup=1.07258 tokens=199703 t=5287s
+[gen 25/40] region 199 FieldBase::GetBitsValueT parent=0 ratio=0.993785 best_confirmed_speedup=1.07258 tokens=222197 t=5672s
+[gen 26/40] region 123 Field::GetType parent=0 stage=compile best_confirmed_speedup=1.07258 tokens=230378 t=5781s
+[gen 27/40] region 134 FieldBase::FieldBase parent=0 ratio=0.945465 CONFIRMED best_confirmed_speedup=1.07258 tokens=235665 t=6021s
+[gen 28/40] region 123 Field::GetType parent=0 ratio=1.003972 best_confirmed_speedup=1.07258 tokens=244958 t=6237s
+[gen 29/40] region 122 Field::GetNum parent=0 stage=compile best_confirmed_speedup=1.07258 tokens=249498 t=6290s
+[gen 30/40] region 127 Field::GetNumComponents parent=0 ratio=0.999914 best_confirmed_speedup=1.07258 tokens=250919 t=6393s
+[gen 31/40] region 234 Mesg::GetField parent=0 ratio=0.983147 best_confirmed_speedup=1.07258 tokens=255784 t=6546s
+[gen 32/40] region 113 Field::Field parent=0 stage=crash best_confirmed_speedup=1.07258 tokens=276425 t=6798s
+[gen 33/40] region 197 FieldBase::ConvertBaseType parent=0 stage=llm_http best_confirmed_speedup=1.07258 tokens=276425 t=7101s
+[gen 34/40] region 574 Profile::GetMesg parent=0 stage=correctness best_confirmed_speedup=1.07258 tokens=279110 t=7149s
+[gen 35/40] region 199 FieldBase::GetBitsValueT parent=0 ratio=0.971008 CONFIRMED best_confirmed_speedup=1.07258 tokens=304128 t=7621s
+[gen 36/40] region 113 Field::Field parent=0 ratio=0.996941 best_confirmed_speedup=1.07258 tokens=325169 t=7958s
+[gen 37/40] region 1006 IsTimestampValid parent=0 ratio=0.998499 best_confirmed_speedup=1.07258 tokens=337208 t=8228s
+[gen 38/40] region 574 Profile::GetMesg parent=0 ratio=0.933038 CONFIRMED best_confirmed_speedup=1.07258 tokens=346579 t=8567s
+[gen 39/40] region 574 Profile::GetMesg parent=0 ratio=0.933420 CONFIRMED best_confirmed_speedup=1.07258 tokens=352220 t=8834s
+[gen 40/40] region 234 Mesg::GetField parent=0 ratio=0.984711 best_confirmed_speedup=1.07258 tokens=354938 t=8967s
+[done] {"api_calls":40,"best_confirmed_generation":7,"best_confirmed_speedup":1.0725754129852316,"best_ranked_generation":0,"best_ranked_speedup":1.0,"best_retained_speedup":1.0725754129852316,"complete":true,"completion_tokens":335516,"confirmed_candidates":13,"elapsed_s":8967.64210496,"ended_because":"request budget reached","finished":"2026-11-08T16:14:30+0800","http_attempts":40,"improved_on_parent_candidates":13,"llm_seconds":4753.287873114999,"max_tokens":32768,"mode":"bestofn-confirmed","outcomes":{"compile":5,"correctness":1,"crash":1,"llm_http":2,"measured":29,"unchanged":2},"prompt_tokens":19422,"rank_updates":[],"reasoning_tokens":322404,"request_budget":40,"seed":4,"segments":1,"total_tokens":354938,"truncated_replies":0}

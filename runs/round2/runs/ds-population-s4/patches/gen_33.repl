@@ -1,0 +1,12 @@
+Merged the null and bounds checks into one unlikely guard so the hot path executes a single conditional branch. Also kept the member loads minimal and preserved the original short-circuit null safety.
+
+```cpp
+FIT_UINT16 Field::GetNumComponents(void) const
+{
+    const auto* p = profile;
+    const auto idx = profileIndex;
+    if (__builtin_expect(p == NULL || idx >= p->numFields, 0))
+        return 0;
+    return p->fields[idx].numComponents;
+}
+```

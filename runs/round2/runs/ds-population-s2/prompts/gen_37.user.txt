@@ -1,0 +1,40 @@
+File: src/fit_field.cpp
+Function: Field::GetNumSubFields (6 lines)
+One full decode of the four files takes about 358.4 ms in the stock build.
+Time of the current version of the whole library relative to stock: 0.906 (below 1.0 is faster). Best measured so far: 0.880.
+
+Your previous attempt failed:
+Stage 'compile' rejected it: /home/z/zhouzia/Workspace/CanMehEvolve/build/work-1095766/tree/src/fit_field.cpp: In member function ‘virtual FIT_UINT16 fit::Field::GetNumSubFields() const’:
+/home/z/zhouzia/Workspace/CanMehEvolve/build/work-1095766/tree/src/fit_field.cpp:146:20: error: ‘MESG_FIELD’ in ‘class fit::Profile’ does not name a type
+  146 |     const Profile::MESG_FIELD* f = profile ? &profile->fields[profileIndex] : NULL;
+      |                    ^~~~~~~~~~
+/home/z/zhouzia/Workspace/CanMehEvolve/build/work-1095766/tree/src/fit_field.cpp:147:10: error: ‘f’ was not declared in this scope
+  147 |     if ((f == NULL) || (profileIndex >= profile->numFields))
+      |          ^
+/home/z/zhouzia/Workspace/CanMehEvolve/build/work-1095766/tree/src/fit_field.cpp:149:12: error: ‘f’ was not declared in this scope
+  149 |     return f->numSubFields;
+      |            ^
+
+The rejected replacement was:
+```cpp
+FIT_UINT16 Field::GetNumSubFields(void) const
+{
+    const Profile::MESG_FIELD* f = profile ? &profile->fields[profileIndex] : NULL;
+    if ((f == NULL) || (profileIndex >= profile->numFields))
+        return 0;
+    return f->numSubFields;
+}
+
+```
+
+Current text of the function:
+```cpp
+FIT_UINT16 Field::GetNumSubFields(void) const
+{
+    if ((profile == NULL) || (profileIndex >= profile->numFields))
+        return 0;
+    return profile->fields[profileIndex].numSubFields;
+}
+
+```
+Return the faster replacement now.

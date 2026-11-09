@@ -1,0 +1,41 @@
+Looking at this function, it's a linear search through a vector of fields to find one with a matching field number. Since this is called frequently during decoding, we can optimize it by:
+
+1. Using a more efficient search if the fields are kept sorted (which they likely are in FIT mesg implementations)
+2. Or using a hash-based lookup if we can afford the memory tradeoff
+
+However, given the constraints and that we need exact behavioral equivalence, the safest optimization is to use `std::find_if` with a lambda which can be inlined more efficiently, or better yet, since the fields are typically small and the search is linear anyway, we can unroll the loop slightly or use range-based for.
+
+But the biggest win here is likely to use `std::find_if` which compilers optimize better, or if we know the fields are sorted by number (which is typical in FIT), we could use binary search. However, without knowing the container is sorted, linear search is correct.
+
+Actually, the most impactful change is to use a reference to avoid copying in the loop and make the comparison more efficient:
+
+```cpp
+#include <algorithm>
+
+FIT_BOOL Mesg::HasField(const int fieldNum) const
+{
+    return std::find_if(fields.begin(), fields.end(), [fieldNum](const Field& f) {
+        return f.GetNum() == fieldNum;
+    }) != fields.end();
+}
+```
+
+Wait - but we need to check if this is truly faster. Another approach: if the fields vector is typically small (FIT mesgs have few fields), the current code might be fine, but we can avoid the cast and make it more efficient.
+
+Actually, the original has a signed/unsigned comparison issue (comparing int i with size()). Let's fix that and use range-based for:
+
+```cpp
+#include <algorithm>
+
+FIT_BOOL Mesg::HasField(const int fieldNum) const
+{
+    for (const auto& field : fields) {
+        if (field.GetNum() == fieldNum) {
+            return FIT_TRUE;
+        }
+    }
+    return FIT_FALSE;
+}
+```
+
+This avoids the size() cast and the index management, and range-based for loops are generally more efficient for the compiler to optimize.

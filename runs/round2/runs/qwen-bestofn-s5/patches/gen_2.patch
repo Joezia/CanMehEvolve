@@ -1,0 +1,11 @@
+--- a/src/fit_field.cpp
++++ b/src/fit_field.cpp
+@@ -131,7 +131,7 @@
+ 
+ FIT_UINT16 Field::GetNumComponents(void) const
+ {
+-    if ((profile == NULL) || (profileIndex >= profile->numFields))
++    if (!profile || profileIndex >= profile->numFields)
+         return 0;
+     return profile->fields[profileIndex].numComponents;
+ }

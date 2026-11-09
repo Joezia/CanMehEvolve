@@ -1,0 +1,8 @@
+The function is already a single inlined forwarding call with no redundant work, so the minimal form is kept unchanged; any manual expansion would duplicate base-class logic without reducing the actual decode cost.
+
+```cpp
+    void SetHeliumContent(FIT_UINT8 heliumContent)
+    {
+        SetFieldUINT8Value(0, heliumContent, 0, FIT_SUBFIELD_INDEX_MAIN_FIELD);
+    }
+```

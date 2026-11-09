@@ -1,0 +1,11 @@
+Removed the redundant null fallback and made the common no-subfield case fall through to the base scale, avoiding an extra branch on every lookup.
+
+```cpp
+FIT_FLOAT64 FieldBase::GetScale(const FIT_UINT16 subFieldIndex) const
+{
+    if (subFieldIndex < GetNumSubFields())
+        return GetSubField(subFieldIndex)->scale;
+
+    return GetScale();
+}
+```

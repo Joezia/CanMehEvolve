@@ -1,0 +1,6 @@
+{
+ "error": "/home/z/zhouzia/Workspace/CanMehEvolve/build/work-1096274/tree/src/fit_field_base.cpp: In member function ‘FIT_FLOAT64 fit::FieldBase::GetScale(FIT_UINT16) const’:\n/home/z/zhouzia/Workspace/CanMehEvolve/build/work-1096274/tree/src/fit_field_base.cpp:67:26: error: ‘num_subfields_’ was not declared in this scope\n   67 |     if (subFieldIndex >= num_subfields_)\n      |                          ^~~~~~~~~~~~~~\n/home/z/zhouzia/Workspace/CanMehEvolve/build/work-1096274/tree/src/fit_field_base.cpp:68:16: error: ‘scale_’ was not declared in this scope; did you mean ‘scalbn’?\n   68 |         return scale_;\n      |                ^~~~~~\n      |                scalbn\n/home/z/zhouzia/Workspace/CanMehEvolve/build/work-1096274/tree/src/fit_field_base.cpp:70:11: error: ‘SubFieldBase’ does not name a type; did you mean ‘FieldBase’?\n   70 |     const SubFieldBase* subfield = subfields_ + subFieldIndex;\n      |           ^~~~~~~~~~~~\n      |           FieldBase\n/home/z/zhouzia/Workspace/CanMehEvolve/build/work-1096274/tree/src/fit_field_base.cpp:71:20: error: ‘subfield’ was not declared in this scope\n   71 |     return NULL != subfield ? subfield->scale : 1.0;\n      |                    ^~~~~~~~\n",
+ "ok": false,
+ "rebuilt": 4,
+ "stage": "compile"
+}

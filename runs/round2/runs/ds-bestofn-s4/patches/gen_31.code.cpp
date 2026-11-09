@@ -1,0 +1,12 @@
+Field* Mesg::GetField(const FIT_UINT8 fieldNum)
+{
+    Field* const base = fields.data();
+    const int n = (int)fields.size();
+    for (int i = 0; i < n; ++i)
+    {
+        if (base[i].GetNum() == fieldNum)
+            return &base[i];
+    }
+
+    return FIT_NULL;
+}

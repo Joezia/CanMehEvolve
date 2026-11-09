@@ -1,0 +1,7 @@
+job=1096301
+host=xcnc3
+start=2026-11-08T17:23:10+08:00
+cpu=Intel(R) Xeon(R) CPU E5-2620 v3 @ 2.40GHz
+binary_sha256=84a432f57b4aa164dc70328f711c2315a6cf61807eb6b0af0071739c36f16076
+27e99a2dc4d9ee1d041eaa1d7f83b5a15ceee18f8b089dcba90a96c7f67196b7  /home/z/zhouzia/Workspace/CanMehEvolve/runs/round2/runs/qwen-population-s2/best.patch
+end=2026-11-08T17:31:12+08:00

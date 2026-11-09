@@ -1,0 +1,8 @@
+Using the member-initializer list constructs both vectors directly from the source vectors, avoiding default-construction followed by assignment.
+
+```cpp
+FieldBase::FieldBase(const FieldBase &field)
+    : values(field.values), stringIndexes(field.stringIndexes)
+{
+}
+```

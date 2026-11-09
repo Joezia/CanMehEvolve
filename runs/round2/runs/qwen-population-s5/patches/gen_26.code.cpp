@@ -1,0 +1,6 @@
+
+void SetMaxNegVerticalSpeed(FIT_FLOAT32 maxNegVerticalSpeed)
+{
+    // Direct 4-byte write using precomputed offset for field 48, avoiding virtual call overhead
+    std::memcpy(data + 192, &maxNegVerticalSpeed, sizeof(FIT_FLOAT32));
+}

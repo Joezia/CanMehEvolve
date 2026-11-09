@@ -1,0 +1,15 @@
+I removed the ternary/null-store and check `profile` first, then combine the field-null and bounds tests with a bitwise OR so the common path has fewer branches. This preserves all outcomes while reducing instructions and branch pressure.
+
+```cpp
+FIT_UINT8 Field::GetNum(void) const
+{
+    if (__builtin_expect(profile == NULL, 0))
+        return FIT_FIELD_NUM_INVALID;
+
+    const Profile::FIELD *fields = profile->fields;
+    if (__builtin_expect((profileIndex >= profile->numFields) | (fields == NULL), 0))
+        return FIT_FIELD_NUM_INVALID;
+
+    return fields[profileIndex].num;
+}
+```

@@ -1,0 +1,7 @@
+The destructor is already empty, so the only safe optimization is to keep it exactly as-is; any change to exception specification or virtualness would alter behaviour or break the declaration match.
+
+```cpp
+FieldBase::~FieldBase()
+{
+}
+```

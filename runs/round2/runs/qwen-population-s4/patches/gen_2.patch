@@ -1,0 +1,36 @@
+--- a/src/fit_profile.cpp
++++ b/src/fit_profile.cpp
+@@ -11,6 +11,7 @@
+ 
+ 
+ #include "fit_profile.hpp"
++#include <algorithm>
+ 
+ namespace fit
+ {
+@@ -3077,6 +3078,7 @@
+     return NULL;
+ }
+ 
++
+ const FIT_UINT16 Profile::GetFieldIndex(const FIT_UINT16 mesgNum, const FIT_UINT8 fieldNum)
+ {
+     const MESG *mesg = GetMesg(mesgNum);
+@@ -3084,11 +3086,12 @@
+     if (mesg == NULL)
+         return FIT_UINT16_INVALID;
+ 
+-    for (FIT_UINT16 i = 0; i < mesg->numFields; i++)
+-    {
+-        if (mesg->fields[i].num == fieldNum)
+-            return i;
+-    }
++    // Binary search since fields are sorted by num in the profile
++    auto it = std::lower_bound(mesg->fields, mesg->fields + mesg->numFields, fieldNum,
++        [](const FIELD& a, FIT_UINT8 b) { return a.num < b; });
++
++    if (it != mesg->fields + mesg->numFields && it->num == fieldNum)
++        return static_cast<FIT_UINT16>(it - mesg->fields);
+ 
+     return FIT_UINT16_INVALID;
+ }

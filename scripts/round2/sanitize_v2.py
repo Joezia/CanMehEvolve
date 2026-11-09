@@ -15,6 +15,7 @@ ap.add_argument("--corpus", required=True)
 ap.add_argument("--variants", required=True)
 ap.add_argument("--out", required=True)
 ap.add_argument("--jobs", type=int, default=12)
+ap.add_argument("--configs", default="plain,asan,tsan", help="comma separated subset of plain,asan,tsan")
 ap.add_argument("--stock-src", default="build/FITSDK-prefix/src/FITSDK/src")
 ap.add_argument("--project-src", default="src")
 ap.add_argument("--scratch", default=str(Path.home() / ".sanitize-scratch"))
@@ -30,7 +31,7 @@ COMMON = ["-std=c++17", "-O1", "-g", "-fno-omit-frame-pointer"]
 
 
 def sh(cmd, **kw):
-    return subprocess.run(cmd, capture_output=True, text=True, **kw)
+    return subprocess.run(cmd, capture_output=True, text=True, errors="replace", **kw)
 
 
 def subset(name, ids):
@@ -69,7 +70,7 @@ def build_base(cfg):
     bad = [r for r in res if r[1]]
     if bad:
         sys.exit("stock build failed under %s: %s" % (cfg, bad[0]))
-    r = sh(["g++", *COMMON, *flags, "-I", str(Path(a.project_src).resolve()), "-I", str(stock / "src"), "-c", str(Path(__file__).with_name("driver.cpp")), "-o", str(od / "driver.o")])
+    r = sh(["g++", *COMMON, *flags, "-I", str(Path(a.project_src).resolve()), "-I", str(stock / "src"), "-c", str(Path(__file__).resolve().parent.parent / "followup" / "driver.cpp"), "-o", str(od / "driver.o")])
     if r.returncode:
         sys.exit("driver build failed: " + r.stderr[-500:])
     return od
@@ -88,7 +89,22 @@ def counts(txt):
 def run_mode(cfg, exe):
     if cfg == "plain":
         # every corpus file, one line each: status (0 ok, 1 Decode::Read returned false, 2 exception) and the exception text
-        r = sh([str(exe), "classify", SUB["plain"]], timeout=3000)
+        # one process per file: a stock or candidate library that dies on a hostile file must not hide the files after it. A line per file:
+        # "<path> <status> <messages> <text>", status 0 ok, 1 Decode::Read false, 2 exception, 3 killed by a signal or timeout (text says which)
+        lines, errs, rc = [], [], 0
+        for d in sorted(Path(SUB["plain"]).iterdir()):
+            f = str(d.resolve() / "x.fit")
+            try:
+                q = sh([str(exe), "classify", str(d)], timeout=60)
+            except subprocess.TimeoutExpired:
+                lines.append("%s 3 0 timeout" % f)
+                continue
+            if q.returncode != 0:
+                lines.append("%s 3 0 returncode_%d" % (f, q.returncode))
+                errs.append(q.stderr[-200:])
+            else:
+                lines.extend(l.replace("\n", " ") for l in q.stdout.splitlines() if l.strip())
+        return subprocess.CompletedProcess([], 0, "\n".join(lines) + "\n", "\n".join(errs))
     elif cfg == "asan":
         r = sh([str(exe), "single", SUB["asan"]], env=dict(os.environ, ASAN_OPTIONS="detect_leaks=0", UBSAN_OPTIONS="print_stacktrace=1"))
     else:
@@ -98,7 +114,7 @@ def run_mode(cfg, exe):
 
 
 results = {}
-for cfg in ("plain", "asan", "tsan"):
+for cfg in [c for c in ("plain", "asan", "tsan") if c in a.configs.split(",")]:
     base = build_base(cfg)
     # stock reference run
     exe = SC / ("drv-stock-" + cfg)

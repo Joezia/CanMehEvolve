@@ -1,0 +1,22 @@
+```cpp
+#include <algorithm>
+
+const Profile::MESG* Profile::GetMesg(const FIT_UINT16 num)
+{
+    static const Profile::MESG* cached = nullptr;
+    static FIT_UINT16 cached_num = 0xFFFF;
+
+    if (cached && cached->num == num)
+        return cached;
+
+    const Profile::MESG* result = std::find_if(mesgs, mesgs + MESGS,
+        [num](const Profile::MESG& m) { return m.num == num; });
+
+    if (result != mesgs + MESGS) {
+        cached = result;
+        cached_num = num;
+    }
+
+    return result;
+}
+```

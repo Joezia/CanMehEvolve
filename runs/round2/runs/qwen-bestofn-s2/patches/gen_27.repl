@@ -1,0 +1,65 @@
+Looking at this function, I can see it's performing a linear search through an array of fields to find a matching field number. Since the number of fields per message is typically small (often 1-10 fields), the current O(n) linear search is acceptable but can be optimized.
+
+The key insight is that field numbers are typically small integers and the fields array is likely sorted by field number (as is common in profile definitions). However, since we need to maintain identical behavior and the code doesn't assume sorting, the best optimization is to unroll the loop for small arrays or use a lookup table approach.
+
+Given that FIT profile messages usually have very few fields (typically ≤ 16), the fastest approach is to use a small fixed-size lookup table (like an array or hash-like structure) that can be precomputed or indexed directly if field numbers are dense.
+
+However, since we can't change the data structures and must work with the existing `MESG` structure, the most practical optimization is to manually unroll the loop for the common small case (e.g., up to 4 fields) since the average number of fields is small.
+
+But actually, the most significant optimization for such a hot function (being called during decoding) is to use a precomputed hash table or direct indexing. Looking at typical FIT profiles, field numbers are often sequential or close together.
+
+The fastest approach that maintains correctness is to replace the linear search with a direct lookup using a mapping array, but since we can't change the data structures, we need to optimize the search itself.
+
+Wait - the real optimization is to recognize that for very small arrays (typically 1-8 fields), a simple linear search with early returns and branch prediction hints can be faster than more complex structures.
+
+However, the biggest win comes from using a lookup table approach. In the FIT SDK, the profile data is typically static and can be mapped more efficiently.
+
+But given the constraints (can only change this function, keep identical behavior), the best optimization is to unroll the loop for the common case where messages have few fields, and add likely branch prediction hints.
+
+Actually, the most effective optimization for this specific use case is to use a direct indexing approach if we can assume field numbers are small and dense. But since we don't know the field number range, the best we can do is optimize the linear search.
+
+Let me reconsider: the most common optimization for this pattern in performance-critical code is to use a lookup table. In the FIT SDK, there's often a mapping from (mesgNum, fieldNum) to field index that can be precomputed.
+
+But given the constraints, I'll optimize the linear search by:
+1. Using likely/unlikely hints for branch prediction
+2. Unrolling for small field counts
+3. Using pointer arithmetic instead of array indexing
+
+However, the real answer for maximum speed with identical behavior is to use a hash map or direct lookup, but since the data structure is fixed, I'll optimize the search.
+
+Wait - looking at typical implementations, the fastest approach is often to precompute a lookup table for each message type. But since we can't change the data structures, the best we can do is optimize the search.
+
+Actually, the simplest and most effective optimization for this hot loop is to use a small fixed-size lookup when the number of fields is small, and fall back to linear search for larger arrays.
+
+But given the constraints, the most practical optimization is to unroll the loop and use early returns.
+
+```cpp
+const FIT_UINT16 Profile::GetFieldIndex(const FIT_UINT16 mesgNum, const FIT_UINT8 fieldNum)
+{
+    const MESG *mesg = GetMesg(mesgNum);
+
+    if (mesg == NULL)
+        return FIT_UINT16_INVALID;
+
+    // Optimize for the common case of small field counts (typically 1-8 fields)
+    switch (mesg->numFields) {
+        case 8: if (mesg->fields[7].num == fieldNum) return 7; [[fallthrough]];
+        case 7: if (mesg->fields[6].num == fieldNum) return 6; [[fallthrough]];
+        case 6: if (mesg->fields[5].num == fieldNum) return 5; [[fallthrough]];
+        case 5: if (mesg->fields[4].num == fieldNum) return 4; [[fallthrough]];
+        case 4: if (mesg->fields[3].num == fieldNum) return 3; [[fallthrough]];
+        case 3: if (mesg->fields[2].num == fieldNum) return 2; [[fallthrough]];
+        case 2: if (mesg->fields[1].num == fieldNum) return 1; [[fallthrough]];
+        case 1: if (mesg->fields[0].num == fieldNum) return 0; [[fallthrough]];
+        case 0: return FIT_UINT16_INVALID;
+        default:
+            for (FIT_UINT16 i = 0; i < mesg->numFields; i++) {
+                if (mesg->fields[i].num == fieldNum)
+                    return i;
+            }
+            break;
+    }
+
+    return FIT_UINT16_INVALID;
+}
+```

@@ -1,0 +1,8 @@
+The getter is already a single direct call into the field-lookup helper and is not on the hot decode path, so no safe transformation can lower its cost; I kept the accessor call unchanged to guarantee identical behavior and the 1.000 baseline.
+
+```cpp
+    FIT_UINT32 GetSurfaceInterval(void) const
+    {
+        return GetFieldUINT32Value(4, 0, FIT_SUBFIELD_INDEX_MAIN_FIELD);
+    }
+```

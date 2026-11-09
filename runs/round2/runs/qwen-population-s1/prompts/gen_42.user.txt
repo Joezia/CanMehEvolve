@@ -1,0 +1,65 @@
+File: src/fit_profile.cpp
+Function: Profile::GetField (14 lines)
+One full decode of the four files takes about 357.9 ms in the stock build.
+Time of the current version of the whole library relative to stock: 0.898 (below 1.0 is faster). Best measured so far: 0.898.
+
+Your previous attempt failed:
+Stage 'compile' rejected it: /home/z/zhouzia/Workspace/CanMehEvolve/build/work-1095979/tree/src/fit_profile.cpp: In static member function ‘static const fit::Profile::FIELD* fit::Profile::GetField(FIT_UINT16, FIT_UINT8)’:
+/home/z/zhouzia/Workspace/CanMehEvolve/build/work-1095979/tree/src/fit_profile.cpp:3133:31: error: could not convert ‘fieldNum’ from ‘const FIT_UINT8’ {aka ‘const unsigned char’} to ‘std::string’ {aka ‘std::__cxx11::basic_string<char>’}
+ 3133 |     const FIELD key = { 0, 0, fieldNum };
+      |                               ^~~~~~~~
+      |                               |
+      |                               const FIT_UINT8 {aka const unsigned char}
+/home/z/zhouzia/Workspace/CanMehEvolve/build/work-1095979/tree/src/fit_profile.cpp: In lambda function:
+/home/z/zhouzia/Workspace/CanMehEvolve/build/work-1095979/tree/src/fit_profile.cpp:3137:55: error: ‘const struct fit::Profile::FIELD’ has no member named ‘fieldNum’
+ 3137 |         [](const FIELD& a, const FIELD& b) { return a.fieldNum < b.fieldNum; });
+      |                                                       ^~~~~~~~
+/home/z/zhouzia/Workspace/CanMehEvolve/build/work-1095979/tree/src/fit_profile.cpp:3137:68: error: ‘const struct fit::Profile::FIELD’ has no member named ‘fieldNum’
+ 3137 |         [](const FIELD& a, const FIELD& b) { return a.fieldNum < b.fieldNum; });
+      |                                                                    ^~~~~~~~
+/home/z/zhouzia/Workspace/CanMehEvolve/build/w
+... [truncated]
+The rejected replacement was:
+```cpp
+
+const Profile::FIELD* Profile::GetField(const FIT_UINT16 mesgNum, const FIT_UINT8 fieldNum)
+{
+    const MESG *mesg = GetMesg(mesgNum);
+
+    if (mesg == nullptr)
+        return nullptr;
+
+    // Use binary search since fields are stored sorted by fieldNum per message
+    const FIELD key = { 0, 0, fieldNum };
+    const FIELD* begin = mesg->fields;
+    const FIELD* end = mesg->fields + mesg->numFields;
+    const FIELD* it = std::lower_bound(begin, end, key,
+        [](const FIELD& a, const FIELD& b) { return a.fieldNum < b.fieldNum; });
+
+    if (it == end || it->fieldNum != fieldNum)
+        return nullptr;
+
+    return it;
+}
+
+```
+
+Current text of the function:
+```cpp
+const Profile::FIELD* Profile::GetField(const FIT_UINT16 mesgNum, const FIT_UINT8 fieldNum)
+{
+    const MESG *mesg = GetMesg(mesgNum);
+
+    if (mesg == NULL)
+        return NULL;
+
+    FIT_UINT16 fieldIndex = GetFieldIndex(mesgNum, fieldNum);
+
+    if (fieldIndex >= mesg->numFields)
+        return NULL;
+
+    return &(mesg->fields[fieldIndex]);
+}
+
+```
+Return the faster replacement now.

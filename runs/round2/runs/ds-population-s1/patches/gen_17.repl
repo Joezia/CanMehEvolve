@@ -1,0 +1,8 @@
+Directly initialize `stringIndexes` in the member-initializer list instead of default-constructing it and conditionally assigning, removing a branch and an assignment. This is faster because the vector copy is constructed in place.
+
+```cpp
+FieldBase::FieldBase(const FieldBase &field)
+    : values(field.values), stringIndexes(field.stringIndexes)
+{
+}
+```

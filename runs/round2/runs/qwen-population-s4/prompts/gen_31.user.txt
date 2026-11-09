@@ -1,0 +1,51 @@
+File: src/fit_profile.cpp
+Function: Profile::GetMesg (10 lines)
+One full decode of the four files takes about 358.7 ms in the stock build.
+Time of the current version of the whole library relative to stock: 0.972 (below 1.0 is faster). Best measured so far: 0.972.
+
+Your previous attempt failed:
+Stage 'compile' rejected it: In file included from /usr/include/c++/13/algorithm:61,
+                 from /home/z/zhouzia/Workspace/CanMehEvolve/build/work-1096083/tree/src/fit_profile.cpp:14:
+/usr/include/c++/13/bits/stl_algo.h: In instantiation of ‘void std::__insertion_sort(_RandomAccessIterator, _RandomAccessIterator, _Compare) [with _RandomAccessIterator = const fit::Profile::MESG*; _Compare = __gnu_cxx::__ops::_Iter_comp_iter<fit::Profile::GetMesg(FIT_UINT16)::<lambda(const fit::Profile::MESG&, const fit::Profile::MESG&)> >]’:
+/usr/include/c++/13/bits/stl_algo.h:1859:25:   required from ‘void std::__final_insertion_sort(_RandomAccessIterator, _RandomAccessIterator, _Compare) [with _RandomAccessIterator = const fit::Profile::MESG*; _Compare = __gnu_cxx::__ops::_Iter_comp_iter<fit::Profile::GetMesg(FIT_UINT16)::<lambda(const fit::Profile::MESG&, const fit::Profile::MESG&)> >]’
+/usr/include/c++/13/bits/stl_algo.h:1950:31:   required from ‘void std::__sort(_RandomAccessIterator, _RandomAccessIterator, _Compare) [with _RandomAccessIterator = const fit::Profile::MESG*; _Compare = __gnu_cxx::__ops::_Iter_comp_iter<fit::Profile::GetMesg(FIT_UINT16)::<lambda(const fit::Profile::MESG&, const fit::Profile::MESG&)> >]’
+/usr/include/c++/13/bits/stl_algo.h:4894:18:   required from ‘void std::sort(_RAIter, _RAIter, _Compare) [with _RAIter = const fit::Profile::MESG*; _Compare = fit::Profile::GetMesg(FIT_UINT16)::<lambda(const fit::Profile::MESG&, const fit::Profile::MESG&)>]’
+/home/z/zhouzia/Work
+... [truncated]
+The rejected replacement was:
+```cpp
+
+const Profile::MESG* Profile::GetMesg(const FIT_UINT16 num)
+{
+    // Assume mesgs is sorted by num (common in profile data); if not, pre-sort once
+    static bool sorted = false;
+    if (!sorted) {
+        std::sort(mesgs, mesgs + MESGS, [](const MESG& a, const MESG& b) { return a.num < b.num; });
+        sorted = true;
+    }
+    
+    // Binary search for O(log n) lookup instead of O(n) linear search
+    auto it = std::lower_bound(mesgs, mesgs + MESGS, num, [](const MESG& a, FIT_UINT16 val) { return a.num < val; });
+    if (it != mesgs + MESGS && it->num == num) {
+        return it;
+    }
+    return NULL;
+}
+
+```
+
+Current text of the function:
+```cpp
+const Profile::MESG* Profile::GetMesg(const FIT_UINT16 num)
+{
+    for (int i = 0; i < MESGS; i++)
+    {
+        if (mesgs[i].num == num)
+            return &mesgs[i];
+    }
+
+    return NULL;
+}
+
+```
+Return the faster replacement now.

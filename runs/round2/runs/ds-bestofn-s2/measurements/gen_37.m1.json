@@ -1,0 +1,6 @@
+{
+ "error": "/home/z/zhouzia/Workspace/CanMehEvolve/build/work-1095415/tree/src/fit_decode.cpp: In member function ‘FIT_BOOL fit::Decode::Resume()’:\n/home/z/zhouzia/Workspace/CanMehEvolve/build/work-1095415/tree/src/fit_decode.cpp:241:39: error: invalid conversion from ‘char*’ to ‘const FIT_UINT8*’ {aka ‘const unsigned char*’} [-fpermissive]\n  241 |         const FIT_UINT8* const data = buffer;\n      |                                       ^~~~~~\n      |                                       |\n      |                                       char*\n",
+ "ok": false,
+ "rebuilt": 2,
+ "stage": "compile"
+}

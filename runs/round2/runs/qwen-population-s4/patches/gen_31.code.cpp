@@ -1,0 +1,11 @@
+
+const Profile::MESG* Profile::GetMesg(const FIT_UINT16 num)
+{
+    // Binary search over sorted array: pre-sorted at compile time in profile data
+    auto it = std::lower_bound(mesgs, mesgs + MESGS, num,
+        [](const MESG& a, FIT_UINT16 val) { return a.num < val; });
+    if (it != mesgs + MESGS && it->num == num)
+        return it;
+    return NULL;
+}
+

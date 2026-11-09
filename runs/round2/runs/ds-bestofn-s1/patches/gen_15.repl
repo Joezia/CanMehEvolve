@@ -1,0 +1,19 @@
+Added GCC branch-prediction hints and hoisted the profile pointer/index so the common cached-type path stays fall-through while invalid and profile-lookup paths are laid out cold. This reduces taken branches and keeps the hot return path minimal without changing behavior.
+
+```cpp
+FIT_UINT8 Field::GetType() const
+{
+    if (__builtin_expect(type != FIT_UINT8_INVALID, 1))
+        return type;
+
+    const auto* p = profile;
+    if (__builtin_expect(p == NULL, 0))
+        return FIT_UINT8_INVALID;
+
+    const auto idx = profileIndex;
+    if (__builtin_expect(idx >= p->numFields, 0))
+        return FIT_UINT8_INVALID;
+
+    return p->fields[idx].type;
+}
+```

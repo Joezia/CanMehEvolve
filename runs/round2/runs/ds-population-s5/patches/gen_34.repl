@@ -1,0 +1,10 @@
+The copy constructor was calling FieldBase's out-of-line copy constructor and then doing four separate stores; replacing it with a single whole-object `memcpy` avoids the call and lets the compiler emit one or two vector moves, which is identical bitwise for this POD-like value type.
+```include
+#include <cstring>
+```
+```cpp
+Field::Field(const Field &field)
+{
+    std::memcpy(static_cast<void *>(this), static_cast<const void *>(&field), sizeof(Field));
+}
+```

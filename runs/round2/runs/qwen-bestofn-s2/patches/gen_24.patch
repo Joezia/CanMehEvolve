@@ -1,0 +1,42 @@
+--- a/src/fit_field_base.cpp
++++ b/src/fit_field_base.cpp
+@@ -16,6 +16,8 @@
+ #include "fit_field_base.hpp"
+ #include "fit_mesg.hpp"
+ #include "fit_unicode.hpp"
++#include <cstring>
++#include <limits>
+ 
+ namespace fit
+ {
+@@ -1128,22 +1130,20 @@
+     return (value > 0.0) ? floor(value + 0.5) : ceil(value - 0.5);
+ }
+ 
++
+ template <typename T>
+ T FieldBase::GetValue(const FIT_UINT8 fieldArrayIndex) const
+ {
+-    FIT_UINT8 size = baseTypeSizes[GetType() & FIT_BASE_TYPE_NUM_MASK];
+-    if (fieldArrayIndex >= (FIT_UINT8)values.size())
+-    {
+-        return *reinterpret_cast<const T*>(baseTypeInvalids[GetType() & FIT_BASE_TYPE_NUM_MASK]);
+-    }
+-
+-    T rv = 0;
+-
+-    for (int i = 0; i < size; i++)
++    const FIT_UINT8 typeIdx = GetType() & FIT_BASE_TYPE_NUM_MASK;
++    const FIT_UINT8 size = baseTypeSizes[typeIdx];
++    
++    if (fieldArrayIndex >= (FIT_UINT8)values.size() / size)
+     {
+-        rv |= static_cast<T>(values[(fieldArrayIndex * size) + i]) << (i * 8);
++        return *reinterpret_cast<const T*>(baseTypeInvalids[typeIdx]);
+     }
+ 
++    T rv;
++    std::memcpy(&rv, &values[fieldArrayIndex * size], size);
+     return rv;
+ }
+ 

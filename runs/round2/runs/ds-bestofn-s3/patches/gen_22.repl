@@ -1,0 +1,21 @@
+Replaced the linear search with a lazily built direct lookup table indexed by message number, making every lookup O(1). The table is initialized once and preserves first-match semantics for duplicate message numbers.
+
+```cpp
+const Profile::MESG* Profile::GetMesg(const FIT_UINT16 num)
+{
+    static const MESG* table[65536] = {};
+    static bool initialized = false;
+
+    if (!initialized)
+    {
+        for (int i = 0; i < MESGS; i++)
+        {
+            if (table[mesgs[i].num] == NULL)
+                table[mesgs[i].num] = &mesgs[i];
+        }
+        initialized = true;
+    }
+
+    return table[num];
+}
+```

@@ -1,0 +1,29 @@
+--- a/src/fit_event_mesg.hpp
++++ b/src/fit_event_mesg.hpp
+@@ -15,6 +15,7 @@
+ 
+ #include "fit_mesg.hpp"
+ #include "fit_mesg_with_event.hpp"
++#include <cstddef>
+ 
+ namespace fit
+ {
+@@ -1163,15 +1164,11 @@
+     // Checks the validity of opponent_score field
+     // Returns FIT_TRUE if field is valid
+     ///////////////////////////////////////////////////////////////////////
++
++```cpp
+     FIT_BOOL IsOpponentScoreValid() const
+     {
+-        const Field* field = GetField(8);
+-        if( FIT_NULL == field )
+-        {
+-            return FIT_FALSE;
+-        }
+-
+-        return field->IsValueValid();
++        return (GetField(8) != FIT_NULL) && GetField(8)->IsValueValid();
+     }
+ 
+     ///////////////////////////////////////////////////////////////////////

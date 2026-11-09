@@ -1,0 +1,113 @@
+--- a/src/fit_field_base.cpp
++++ b/src/fit_field_base.cpp
+@@ -25,9 +25,9 @@
+ }
+ 
+ FieldBase::FieldBase(const FieldBase &field)
++    : values(field.values),
++      stringIndexes(field.stringIndexes)
+ {
+-    values = field.values;
+-    stringIndexes = field.stringIndexes;
+ }
+ 
+ FieldBase::~FieldBase()
+--- a/src/fit_mesg.cpp
++++ b/src/fit_mesg.cpp
+@@ -685,15 +685,50 @@
+ 
+ void Mesg::SetFieldSINT16Value(const FIT_UINT8 fieldNum, const FIT_SINT16 value, const FIT_UINT8 fieldArrayIndex, const FIT_UINT16 subFieldIndex)
+ {
+-    if (!CanSupportSubField(fieldNum, subFieldIndex))
++    if (subFieldIndex != FIT_SUBFIELD_INDEX_MAIN_FIELD)
++    {
++        auto mesgProfile = Profile::GetMesg(mesgNum);
++        if (mesgProfile == FIT_NULL)
++            return;
++
++        auto fieldProfile = Profile::GetMesgField(mesgProfile, fieldNum);
++        if (fieldProfile == FIT_NULL)
++            return;
++
++        if (subFieldIndex >= fieldProfile->numSubFields)
++            return;
++
++        auto fieldIterator = fields.lower_bound(fieldNum);
++        if (fieldIterator != fields.end() && fieldIterator->first == fieldNum)
++        {
++            fieldIterator->second.SetSINT16Value(value, fieldArrayIndex);
++            return;
++        }
++
++        Field field(fieldNum, *fieldProfile);
++        fieldIterator = fields.emplace_hint(fieldIterator, fieldNum, field);
++        fieldIterator->second.SetSINT16Value(value, fieldArrayIndex);
+         return;
++    }
+ 
+-    Field *field = AddField(fieldNum);
++    auto fieldIterator = fields.lower_bound(fieldNum);
++    if (fieldIterator != fields.end() && fieldIterator->first == fieldNum)
++    {
++        fieldIterator->second.SetSINT16Value(value, fieldArrayIndex);
++        return;
++    }
++
++    auto mesgProfile = Profile::GetMesg(mesgNum);
++    if (mesgProfile == FIT_NULL)
++        return;
+ 
+-    if (field == FIT_NULL)
++    auto fieldProfile = Profile::GetMesgField(mesgProfile, fieldNum);
++    if (fieldProfile == FIT_NULL)
+         return;
+ 
+-    return field->SetSINT16Value(value, fieldArrayIndex);
++    Field field(fieldNum, *fieldProfile);
++    fieldIterator = fields.emplace_hint(fieldIterator, fieldNum, field);
++    fieldIterator->second.SetSINT16Value(value, fieldArrayIndex);
+ }
+ 
+ void Mesg::SetFieldUINT16Value(const FIT_UINT8 fieldNum, const FIT_UINT16 value, const FIT_UINT8 fieldArrayIndex, const FIT_UINT16 subFieldIndex)
+--- a/src/fit_profile.cpp
++++ b/src/fit_profile.cpp
+@@ -3079,18 +3079,32 @@
+ 
+ const FIT_UINT16 Profile::GetFieldIndex(const FIT_UINT16 mesgNum, const FIT_UINT8 fieldNum)
+ {
+-    const MESG *mesg = GetMesg(mesgNum);
++    static FIT_UINT64 fieldIndexCache[2048];
++
++    const FIT_UINT32 keyPlus = (((FIT_UINT32)mesgNum << 8) | fieldNum) + 1u;
++    const FIT_UINT32 hash = keyPlus & 2047u;
++    const FIT_UINT64 cached = fieldIndexCache[hash];
+ 
+-    if (mesg == NULL)
+-        return FIT_UINT16_INVALID;
++    if ((FIT_UINT32)cached == keyPlus)
++        return (FIT_UINT16)(cached >> 32);
++
++    const MESG *mesg = GetMesg(mesgNum);
++    FIT_UINT16 index = FIT_UINT16_INVALID;
+ 
+-    for (FIT_UINT16 i = 0; i < mesg->numFields; i++)
++    if (mesg != NULL)
+     {
+-        if (mesg->fields[i].num == fieldNum)
+-            return i;
++        for (FIT_UINT16 i = 0; i < mesg->numFields; i++)
++        {
++            if (mesg->fields[i].num == fieldNum)
++            {
++                index = i;
++                break;
++            }
++        }
+     }
+ 
+-    return FIT_UINT16_INVALID;
++    fieldIndexCache[hash] = ((FIT_UINT64)index << 32) | keyPlus;
++    return index;
+ }
+ 
+ const FIT_UINT16 Profile::GetFieldIndex(const std::string& mesgName, const std::string& fieldName)

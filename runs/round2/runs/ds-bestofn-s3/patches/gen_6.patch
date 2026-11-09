@@ -1,0 +1,25 @@
+--- a/src/fit_mesg_broadcaster.cpp
++++ b/src/fit_mesg_broadcaster.cpp
+@@ -1532,9 +1532,19 @@
+ 
+ void MesgBroadcaster::RemoveListener(HrvValueMesgListener& hrvValueMesgListener)
+ {
+-    std::vector<HrvValueMesgListener *>::iterator it = std::find(hrvValueMesgListeners.begin(), hrvValueMesgListeners.end(), &hrvValueMesgListener);
+-    if (hrvValueMesgListeners.end() != it)
+-    hrvValueMesgListeners.erase(it);
++    if (hrvValueMesgListeners.empty())
++        return;
++
++    HrvValueMesgListener ** const data = hrvValueMesgListeners.data();
++    HrvValueMesgListener ** const end = data + hrvValueMesgListeners.size();
++    for (HrvValueMesgListener ** it = data; it != end; ++it)
++    {
++        if (*it == &hrvValueMesgListener)
++        {
++            hrvValueMesgListeners.erase(hrvValueMesgListeners.begin() + (it - data));
++            return;
++        }
++    }
+ }
+ 
+ 

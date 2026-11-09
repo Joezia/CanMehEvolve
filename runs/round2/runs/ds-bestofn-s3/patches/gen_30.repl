@@ -1,0 +1,11 @@
+This copy constructor is already at the minimum work required — the member-wise copies of the two vectors and the two scalars are exactly what the compiler would emit, and at -O2 it is inlined into callers — so the replacement is functionally and performance-wise identical (any "optimization" would change behavior).
+
+```cpp
+Mesg::Mesg(const Mesg &mesg)
+    : profile(mesg.profile)
+    , localNum(mesg.localNum)
+    , fields(mesg.fields)
+    , devFields(mesg.devFields)
+{
+}
+```

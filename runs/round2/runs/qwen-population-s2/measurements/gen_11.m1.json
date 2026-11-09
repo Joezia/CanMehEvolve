@@ -1,0 +1,6 @@
+{
+ "error": "/home/z/zhouzia/Workspace/CanMehEvolve/build/work-1096058/tree/src/fit_field_base.cpp: In destructor ‘virtual fit::FieldBase::~FieldBase()’:\n/home/z/zhouzia/Workspace/CanMehEvolve/build/work-1096058/tree/src/fit_field_base.cpp:39:5: error: ‘m_values’ was not declared in this scope; did you mean ‘values’?\n   39 |     m_values.clear();\n      |     ^~~~~~~~\n      |     values\n",
+ "ok": false,
+ "rebuilt": 1,
+ "stage": "compile"
+}

@@ -1,0 +1,162 @@
+[
+ {
+  "name": "r2-ds-bestofn-s1",
+  "patch": "/home/z/zhouzia/Workspace/CanMehEvolve/runs/round2/runs/ds-bestofn-s1/best.patch"
+ },
+ {
+  "name": "r2-ds-bestofn-s2",
+  "patch": "/home/z/zhouzia/Workspace/CanMehEvolve/runs/round2/runs/ds-bestofn-s2/best.patch"
+ },
+ {
+  "name": "r2-ds-bestofn-s3",
+  "patch": "/home/z/zhouzia/Workspace/CanMehEvolve/runs/round2/runs/ds-bestofn-s3/best.patch"
+ },
+ {
+  "name": "r2-ds-bestofn-s4",
+  "patch": "/home/z/zhouzia/Workspace/CanMehEvolve/runs/round2/runs/ds-bestofn-s4/best.patch"
+ },
+ {
+  "name": "r2-ds-bestofn-s5",
+  "patch": "/home/z/zhouzia/Workspace/CanMehEvolve/runs/round2/runs/ds-bestofn-s5/best.patch"
+ },
+ {
+  "name": "r2-ds-population-s1",
+  "patch": "/home/z/zhouzia/Workspace/CanMehEvolve/runs/round2/runs/ds-population-s1/best.patch"
+ },
+ {
+  "name": "r2-ds-population-s2",
+  "patch": "/home/z/zhouzia/Workspace/CanMehEvolve/runs/round2/runs/ds-population-s2/best.patch"
+ },
+ {
+  "name": "r2-ds-population-s3",
+  "patch": "/home/z/zhouzia/Workspace/CanMehEvolve/runs/round2/runs/ds-population-s3/best.patch"
+ },
+ {
+  "name": "r2-ds-population-s4",
+  "patch": "/home/z/zhouzia/Workspace/CanMehEvolve/runs/round2/runs/ds-population-s4/best.patch"
+ },
+ {
+  "name": "r2-ds-population-s5",
+  "patch": "/home/z/zhouzia/Workspace/CanMehEvolve/runs/round2/runs/ds-population-s5/best.patch"
+ },
+ {
+  "name": "r2-qwen-bestofn-s1",
+  "patch": "/home/z/zhouzia/Workspace/CanMehEvolve/runs/round2/runs/qwen-bestofn-s1/best.patch"
+ },
+ {
+  "name": "r2-qwen-bestofn-s2",
+  "patch": "/home/z/zhouzia/Workspace/CanMehEvolve/runs/round2/runs/qwen-bestofn-s2/best.patch"
+ },
+ {
+  "name": "r2-qwen-bestofn-s3",
+  "patch": "/home/z/zhouzia/Workspace/CanMehEvolve/runs/round2/runs/qwen-bestofn-s3/best.patch"
+ },
+ {
+  "name": "r2-qwen-bestofn-s4",
+  "patch": "/home/z/zhouzia/Workspace/CanMehEvolve/runs/round2/runs/qwen-bestofn-s4/best.patch"
+ },
+ {
+  "name": "r2-qwen-bestofn-s5",
+  "patch": "/home/z/zhouzia/Workspace/CanMehEvolve/runs/round2/runs/qwen-bestofn-s5/best.patch"
+ },
+ {
+  "name": "r2-qwen-population-s1",
+  "patch": "/home/z/zhouzia/Workspace/CanMehEvolve/runs/round2/runs/qwen-population-s1/best.patch"
+ },
+ {
+  "name": "r2-qwen-population-s2",
+  "patch": "/home/z/zhouzia/Workspace/CanMehEvolve/runs/round2/runs/qwen-population-s2/best.patch"
+ },
+ {
+  "name": "r2-qwen-population-s3",
+  "patch": "/home/z/zhouzia/Workspace/CanMehEvolve/runs/round2/runs/qwen-population-s3/best.patch"
+ },
+ {
+  "name": "r2-qwen-population-s4",
+  "patch": "/home/z/zhouzia/Workspace/CanMehEvolve/runs/round2/runs/qwen-population-s4/best.patch"
+ },
+ {
+  "name": "r2-qwen-population-s5",
+  "patch": "/home/z/zhouzia/Workspace/CanMehEvolve/runs/round2/runs/qwen-population-s5/best.patch"
+ },
+ {
+  "name": "stack-s1-K2-fixed",
+  "patch": "/home/z/zhouzia/Workspace/CanMehEvolve/runs/followup/stack-bestofn-s1-1088425/stacks/stack_02.patch"
+ },
+ {
+  "name": "stack-s1-K3-fixed",
+  "patch": "/home/z/zhouzia/Workspace/CanMehEvolve/runs/followup/stack-bestofn-s1-1088425/stacks/stack_03.patch"
+ },
+ {
+  "name": "stack-s1-K5-fixed",
+  "patch": "/home/z/zhouzia/Workspace/CanMehEvolve/runs/followup/stack-bestofn-s1-1088425/stacks/stack_05.patch"
+ },
+ {
+  "name": "stack-s1-bestK9-posthoc",
+  "patch": "/home/z/zhouzia/Workspace/CanMehEvolve/runs/followup/stack-bestofn-s1-1088425/stacks/stack_09.patch"
+ },
+ {
+  "name": "stack-s2-K2-fixed",
+  "patch": "/home/z/zhouzia/Workspace/CanMehEvolve/runs/followup/stack-bestofn-s2-1088426/stacks/stack_02.patch"
+ },
+ {
+  "name": "stack-s2-K3-fixed",
+  "patch": "/home/z/zhouzia/Workspace/CanMehEvolve/runs/followup/stack-bestofn-s2-1088426/stacks/stack_03.patch"
+ },
+ {
+  "name": "stack-s2-K5-fixed",
+  "patch": "/home/z/zhouzia/Workspace/CanMehEvolve/runs/followup/stack-bestofn-s2-1088426/stacks/stack_05.patch"
+ },
+ {
+  "name": "stack-s2-bestK6-posthoc",
+  "patch": "/home/z/zhouzia/Workspace/CanMehEvolve/runs/followup/stack-bestofn-s2-1088426/stacks/stack_06.patch"
+ },
+ {
+  "name": "stack-s3-K2-fixed",
+  "patch": "/home/z/zhouzia/Workspace/CanMehEvolve/runs/followup/stack-bestofn-s3-1088427/stacks/stack_02.patch"
+ },
+ {
+  "name": "stack-s3-K3-fixed",
+  "patch": "/home/z/zhouzia/Workspace/CanMehEvolve/runs/followup/stack-bestofn-s3-1088427/stacks/stack_03.patch"
+ },
+ {
+  "name": "stack-s3-K5-fixed",
+  "patch": "/home/z/zhouzia/Workspace/CanMehEvolve/runs/followup/stack-bestofn-s3-1088427/stacks/stack_05.patch"
+ },
+ {
+  "name": "stack-s3-bestK10-posthoc",
+  "patch": "/home/z/zhouzia/Workspace/CanMehEvolve/runs/followup/stack-bestofn-s3-1088427/stacks/stack_10.patch"
+ },
+ {
+  "name": "stack-s4-K2-fixed",
+  "patch": "/home/z/zhouzia/Workspace/CanMehEvolve/runs/followup/stack-bestofn-s4-1088428/stacks/stack_02.patch"
+ },
+ {
+  "name": "stack-s4-K3-fixed",
+  "patch": "/home/z/zhouzia/Workspace/CanMehEvolve/runs/followup/stack-bestofn-s4-1088428/stacks/stack_03.patch"
+ },
+ {
+  "name": "stack-s4-K5-fixed",
+  "patch": "/home/z/zhouzia/Workspace/CanMehEvolve/runs/followup/stack-bestofn-s4-1088428/stacks/stack_05.patch"
+ },
+ {
+  "name": "stack-s4-bestK7-posthoc",
+  "patch": "/home/z/zhouzia/Workspace/CanMehEvolve/runs/followup/stack-bestofn-s4-1088428/stacks/stack_07.patch"
+ },
+ {
+  "name": "stack-s5-K2-fixed",
+  "patch": "/home/z/zhouzia/Workspace/CanMehEvolve/runs/followup/stack-bestofn-s5-1088429/stacks/stack_02.patch"
+ },
+ {
+  "name": "stack-s5-K3-fixed",
+  "patch": "/home/z/zhouzia/Workspace/CanMehEvolve/runs/followup/stack-bestofn-s5-1088429/stacks/stack_03.patch"
+ },
+ {
+  "name": "stack-s5-K5-fixed",
+  "patch": "/home/z/zhouzia/Workspace/CanMehEvolve/runs/followup/stack-bestofn-s5-1088429/stacks/stack_05.patch"
+ },
+ {
+  "name": "stack-s5-bestK6-posthoc",
+  "patch": "/home/z/zhouzia/Workspace/CanMehEvolve/runs/followup/stack-bestofn-s5-1088429/stacks/stack_06.patch"
+ }
+]

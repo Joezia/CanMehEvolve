@@ -1,0 +1,12 @@
+Reordered the two guards into one short-circuited, branch-predicted condition so the common valid path stays on the fall-through and both zero-return cases are laid out cold. This trims the hot path's instruction footprint without changing any behavior.
+
+```cpp
+FIT_UINT16 Field::GetNumSubFields(void) const
+{
+    auto* const p = profile;
+    const FIT_UINT16 idx = profileIndex;
+    if (__builtin_expect((p != nullptr) && (idx < p->numFields), 1))
+        return p->fields[idx].numSubFields;
+    return 0;
+}
+```

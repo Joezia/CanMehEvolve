@@ -1,0 +1,16 @@
+Inlined the field-number lookup directly in `AddField` and return immediately on a match, avoiding the extra `GetField` call and pointer handling. This preserves identical behavior while reducing overhead in the hot decode path.
+
+```cpp
+void Mesg::AddField(const Field& field)
+{
+    const auto fieldNum = field.GetNum();
+
+    for (auto& existingField : fields)
+    {
+        if (existingField.GetNum() == fieldNum)
+            return;
+    }
+
+    fields.push_back(field);
+}
+```

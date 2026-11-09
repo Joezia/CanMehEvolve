@@ -1,0 +1,144 @@
+--- a/src/fit_field_base.cpp
++++ b/src/fit_field_base.cpp
+@@ -16,6 +16,8 @@
+ #include "fit_field_base.hpp"
+ #include "fit_mesg.hpp"
+ #include "fit_unicode.hpp"
++#include <cstring>
++#include <algorithm>
+ 
+ namespace fit
+ {
+@@ -1005,75 +1007,81 @@
+     values[idx + i] = 0; // null terminate
+ }
+ 
++
++```cpp
+ FIT_BOOL FieldBase::Read(const void *data, const FIT_UINT8 size)
+ {
+     FIT_UINT8 bytesLeft = size;
+-    FIT_UINT8 typeSize = baseTypeSizes[GetType() & FIT_BASE_TYPE_NUM_MASK];
+-    FIT_BYTE *byteData = (FIT_BYTE *) data;
++    FIT_UINT8 typeIdx = GetType() & FIT_BASE_TYPE_NUM_MASK;
++    FIT_UINT8 typeSize = baseTypeSizes[typeIdx];
++    const FIT_BYTE *byteData = static_cast<const FIT_BYTE*>(data);
+ 
+     values.clear();
+ 
+-    switch (GetType())
++    if (GetType() == FIT_BASE_TYPE_STRING)
+     {
+-        case FIT_BASE_TYPE_STRING:
+-        {
+-            FIT_BOOL hasData = FIT_FALSE;
+-            FIT_UINT8 stringPos = 0;
+-            FIT_UINT8 index = 0;
+-
+-            // Check if the string is empty
+-            while (index < bytesLeft)
++        // Fast path: check if entire buffer is zeros
++        const FIT_BYTE *end = byteData + bytesLeft;
++        const FIT_BYTE *nullPos = std::find(byteData, end, 0);
++        
++        if (nullPos == end) // No null terminator → full string data
++        {
++            values.assign(byteData, end);
++            values.push_back(0); // Null-terminate
++            stringIndexes.clear();
++            stringIndexes.push_back(0);
++        }
++        else if (nullPos == byteData) // Empty string
++        {
++            // Do nothing, values remains empty
++        }
++        else // Has embedded nulls
++        {
++            // Copy up to and including first null
++            values.assign(byteData, nullPos + 1);
++            stringIndexes.clear();
++            stringIndexes.push_back(0);
++            stringIndexes.push_back(static_cast<FIT_UINT8>(nullPos - byteData + 1));
++            
++            // Process remaining bytes for additional strings
++            const FIT_BYTE *cur = nullPos + 1;
++            while (cur < end)
+             {
+-                if (byteData[index] != 0)
++                nullPos = std::find(cur, end, 0);
++                if (nullPos == cur)
+                 {
+-                    hasData = FIT_TRUE;
+-                    break;
++                    // Consecutive nulls → skip
++                    cur++;
++                    continue;
+                 }
+-                index++;
+-            }
+-
+-            if (!hasData)
+-                break;
+-
+-            stringIndexes.push_back(stringPos);
+-
+-            while (bytesLeft-- > 0)
+-            {
+-                FIT_BYTE byte = *byteData++;
+-                values.push_back(byte);
+-                stringPos++;
+-
+-                if ( ( byte == 0 ) && ( stringPos + 1 < size ) )
++                
++                FIT_UINT8 strLen = static_cast<FIT_UINT8>(nullPos - cur);
++                if (strLen > 0)
+                 {
+-                    stringIndexes.push_back(stringPos);
++                    values.insert(values.end(), cur, nullPos + 1);
++                    stringIndexes.push_back(static_cast<FIT_UINT8>(values.size() - strLen - 1));
+                 }
+-            }
+-
+-            // Null terminate if not already null terminated
+-            if ( values.back() != 0 )
+-            {
+-                values.push_back(0);
++                cur = nullPos + 1;
+             }
+         }
+-            break;
+-
+-        default:
++    }
++    else
++    {
++        // Non-string: copy first non-invalid value block
++        const FIT_BYTE *p = byteData;
++        const FIT_BYTE *invalid = baseTypeInvalids[typeIdx];
++        FIT_UINT8 remaining = bytesLeft;
++        
++        while (remaining >= typeSize)
+         {
+-            int bytes = bytesLeft;
+-            FIT_BYTE *point = byteData;
+-
+-            while (bytes > 0)
++            if (std::memcmp(p, invalid, typeSize) != 0)
+             {
+-                if (memcmp(point, baseTypeInvalids[GetType() & FIT_BASE_TYPE_NUM_MASK], typeSize) != 0)
+-                {
+-                    values.insert(values.end(), byteData, byteData + bytesLeft);
+-                    break;
+-                }
+-                point += typeSize;
+-                bytes -= typeSize;
++                values.assign(byteData, byteData + bytesLeft);
++                break;
+             }
++            p += typeSize;
++            remaining -= typeSize;
+         }
+-            break;
+     }
+ 
+     return FIT_TRUE;

@@ -1,0 +1,9 @@
+The conditional copy of `stringIndexes` adds a branch and a default-construct-plus-assign; replacing it with an unconditional member-initializer copy removes the branch and is cheaper for the common empty case.
+
+```cpp
+FieldBase::FieldBase(const FieldBase &field)
+    : values(field.values),
+      stringIndexes(field.stringIndexes)
+{
+}
+```

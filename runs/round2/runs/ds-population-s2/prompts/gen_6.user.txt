@@ -1,0 +1,50 @@
+File: src/fit_field_base.cpp
+Function: FieldBase::GetNumValues (10 lines)
+One full decode of the four files takes about 358.6 ms in the stock build.
+Time of the current version of the whole library relative to stock: 0.991 (below 1.0 is faster). Best measured so far: 0.991.
+
+Your previous attempt failed:
+Stage 'compile' rejected it: /home/z/zhouzia/Workspace/CanMehEvolve/build/work-1095223/tree/src/fit_field_base.cpp: In member function ‘FIT_UINT8 fit::FieldBase::GetNumValues() const’:
+/home/z/zhouzia/Workspace/CanMehEvolve/build/work-1095223/tree/src/fit_field_base.cpp:105:9: error: ‘num’ was not declared in this scope; did you mean ‘enum’?
+  105 |     if (num == FIT_UINT8_INVALID)
+      |         ^~~
+      |         enum
+/home/z/zhouzia/Workspace/CanMehEvolve/build/work-1095223/tree/src/fit_field_base.cpp:108:9: error: ‘type’ was not declared in this scope; did you mean ‘wctype’?
+  108 |     if (type != FIT_BASE_TYPE_STRING)
+      |         ^~~~
+      |         wctype
+
+The rejected replacement was:
+```cpp
+FIT_UINT8 FieldBase::GetNumValues(void) const
+{
+    if (num == FIT_UINT8_INVALID)
+        return 0;
+
+    if (type != FIT_BASE_TYPE_STRING)
+    {
+        static constexpr FIT_UINT8 shifts[17] =
+            {0, 0, 0, 1, 1, 2, 2, 0, 2, 3, 0, 1, 2, 0, 3, 3, 3};
+        return (FIT_UINT8)(values.size() >> shifts[type & FIT_BASE_TYPE_NUM_MASK]);
+    }
+
+    return (FIT_UINT8)stringIndexes.size();
+}
+
+```
+
+Current text of the function:
+```cpp
+FIT_UINT8 FieldBase::GetNumValues(void) const
+{
+    if (!IsValid())
+        return 0;
+
+    if (GetType() != FIT_BASE_TYPE_STRING)
+        return (FIT_UINT8)(values.size() / baseTypeSizes[GetType() & FIT_BASE_TYPE_NUM_MASK]);
+
+    return (FIT_UINT8)stringIndexes.size();
+}
+
+```
+Return the faster replacement now.

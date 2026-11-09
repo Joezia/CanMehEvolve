@@ -1,0 +1,23 @@
+I changed the hot path to load the table entry once and use it as the initialization check, avoiding a separate `init` flag load on every valid lookup. The slow path still initializes exactly once, preserving identical behavior for all inputs.
+
+```cpp
+const Profile::MESG* Profile::GetMesg(const FIT_UINT16 num)
+{
+    static const Profile::MESG* table[65536] = { 0 };
+    static bool init = false;
+
+    const Profile::MESG* mesg = table[num];
+    if (mesg == nullptr)
+    {
+        if (!init)
+        {
+            for (int i = MESGS - 1; i >= 0; i--)
+                table[mesgs[i].num] = &mesgs[i];
+            init = true;
+        }
+        mesg = table[num];
+    }
+
+    return mesg;
+}
+```

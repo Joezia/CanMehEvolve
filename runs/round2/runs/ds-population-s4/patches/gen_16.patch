@@ -1,0 +1,93 @@
+--- a/src/fit_field_base.cpp
++++ b/src/fit_field_base.cpp
+@@ -16,6 +16,8 @@
+ #include "fit_field_base.hpp"
+ #include "fit_mesg.hpp"
+ #include "fit_unicode.hpp"
++#include <cstdint>
++#include <cstring>
+ 
+ namespace fit
+ {
+@@ -25,9 +27,9 @@
+ }
+ 
+ FieldBase::FieldBase(const FieldBase &field)
++    : values(field.values),
++      stringIndexes(field.stringIndexes)
+ {
+-    values = field.values;
+-    stringIndexes = field.stringIndexes;
+ }
+ 
+ FieldBase::~FieldBase()
+@@ -1151,10 +1153,24 @@
+ template <typename TTo, typename TFrom>
+ TTo FieldBase::ConvertBaseType(const FIT_UINT8 fieldArrayIndex, const FIT_UINT8 toBaseType) const
+ {
+-    FIT_CONST_UINT8_PTR invalid = baseTypeInvalids[GetType() & FIT_BASE_TYPE_NUM_MASK];
+-    TFrom value = GetValue<TFrom>(fieldArrayIndex);
++    const FIT_UINT8 type = GetType() & FIT_BASE_TYPE_NUM_MASK;
++    const void* const invalid = baseTypeInvalids[type];
++    const TFrom value = GetValue<TFrom>(fieldArrayIndex);
++
++    bool isInvalid;
++    if constexpr (std::is_integral<TFrom>::value) {
++        isInvalid = value == *reinterpret_cast<const TFrom*>(invalid);
++    } else if constexpr (sizeof(TFrom) <= 8) {
++        std::uint64_t valueBits = 0;
++        std::uint64_t invalidBits = 0;
++        std::memcpy(&valueBits, &value, sizeof(TFrom));
++        std::memcpy(&invalidBits, invalid, sizeof(TFrom));
++        isInvalid = valueBits == invalidBits;
++    } else {
++        isInvalid = std::memcmp(&value, invalid, sizeof(TFrom)) == 0;
++    }
+ 
+-    if (memcmp(&value, invalid, sizeof(TFrom)) == 0)
++    if (__builtin_expect(isInvalid, 0))
+         return *reinterpret_cast<const TTo*>(baseTypeInvalids[toBaseType & FIT_BASE_TYPE_NUM_MASK]);
+ 
+     return static_cast<TTo>(value);
+--- a/src/fit_profile.cpp
++++ b/src/fit_profile.cpp
+@@ -3079,18 +3079,32 @@
+ 
+ const FIT_UINT16 Profile::GetFieldIndex(const FIT_UINT16 mesgNum, const FIT_UINT8 fieldNum)
+ {
+-    const MESG *mesg = GetMesg(mesgNum);
++    static FIT_UINT64 fieldIndexCache[2048];
++
++    const FIT_UINT32 keyPlus = (((FIT_UINT32)mesgNum << 8) | fieldNum) + 1u;
++    const FIT_UINT32 hash = keyPlus & 2047u;
++    const FIT_UINT64 cached = fieldIndexCache[hash];
+ 
+-    if (mesg == NULL)
+-        return FIT_UINT16_INVALID;
++    if ((FIT_UINT32)cached == keyPlus)
++        return (FIT_UINT16)(cached >> 32);
++
++    const MESG *mesg = GetMesg(mesgNum);
++    FIT_UINT16 index = FIT_UINT16_INVALID;
+ 
+-    for (FIT_UINT16 i = 0; i < mesg->numFields; i++)
++    if (mesg != NULL)
+     {
+-        if (mesg->fields[i].num == fieldNum)
+-            return i;
++        for (FIT_UINT16 i = 0; i < mesg->numFields; i++)
++        {
++            if (mesg->fields[i].num == fieldNum)
++            {
++                index = i;
++                break;
++            }
++        }
+     }
+ 
+-    return FIT_UINT16_INVALID;
++    fieldIndexCache[hash] = ((FIT_UINT64)index << 32) | keyPlus;
++    return index;
+ }
+ 
+ const FIT_UINT16 Profile::GetFieldIndex(const std::string& mesgName, const std::string& fieldName)

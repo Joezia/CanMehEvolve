@@ -1,0 +1,10 @@
+[run] mode=search host=xcnc4 model_probe={"http_status":200,"model":"deepseek-v4.1-flash-1017","ok":true,"requested_model":"deepseek-v4.1-flash","usage":{"completion_tokens":14,"completion_tokens_details":{"reasoning_tokens":11},"prompt_tokens":36,"prompt_tokens_details":{"cached_tokens":0,"created_cache_tokens":0,"multimodal_tokens":null},"total_tokens":50}}
+[resume] segment 2 continues after generation 33 with 33 requests already sent
+[gen 34/40] region 127 Field::GetNumComponents parent=31 stage=compile best_confirmed_speedup=1.16336 tokens=273719 t=706s
+[gen 35/40] region 127 Field::GetNumComponents parent=31 ratio=0.860575 CONFIRMED best_confirmed_speedup=1.16336 tokens=275287 t=893s
+[gen 36/40] region 134 FieldBase::FieldBase parent=23 ratio=0.866371 CONFIRMED best_confirmed_speedup=1.16336 tokens=277362 t=1104s
+[gen 37/40] region 85 DeveloperFieldDefinition::IsDefined parent=25 ratio=0.866917 CONFIRMED best_confirmed_speedup=1.16336 tokens=283776 t=1372s
+[gen 38/40] region 134 FieldBase::FieldBase parent=31 stage=unchanged best_confirmed_speedup=1.16336 tokens=302402 t=1585s
+[gen 39/40] region 123 Field::GetType parent=23 ratio=0.860614 CONFIRMED best_confirmed_speedup=1.16336 tokens=305734 t=1819s
+[gen 40/40] region 4260 IsMaxSaturatedHemoglobinPercentValid parent=27 stage=llm_http best_confirmed_speedup=1.16336 tokens=305734 t=2120s
+[done] {"api_calls":40,"best_confirmed_generation":31,"best_confirmed_speedup":1.1633601870153867,"best_ranked_generation":0,"best_ranked_speedup":1.0,"best_retained_speedup":1.1633601870153867,"complete":true,"completion_tokens":289203,"confirmed_candidates":21,"elapsed_s":11480.446108709999,"ended_because":"request budget reached","finished":"2026-11-08T13:26:08+0800","http_attempts":40,"improved_on_parent_candidates":13,"llm_seconds":5730.088113273003,"max_tokens":32768,"mode":"search","outcomes":{"CanMehHarness":1,"compile":4,"correctness":2,"llm_http":8,"measured":22,"unchanged":3},"prompt_tokens":16531,"rank_updates":[],"reasoning_tokens":281853,"request_budget":40,"seed":1,"segments":2,"total_tokens":305734,"truncated_replies":0}

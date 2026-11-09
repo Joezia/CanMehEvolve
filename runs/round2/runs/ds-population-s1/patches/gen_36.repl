@@ -1,0 +1,9 @@
+Using the vector copy constructors directly avoids the range-constructor's iterator-distance dispatch and lets libstdc++ take its tightest trivial-copy path.
+
+```cpp
+FieldBase::FieldBase(const FieldBase &field)
+    : values(field.values),
+      stringIndexes(field.stringIndexes)
+{
+}
+```

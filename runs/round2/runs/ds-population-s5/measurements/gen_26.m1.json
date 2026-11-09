@@ -1,0 +1,6 @@
+{
+ "error": "/home/z/zhouzia/Workspace/CanMehEvolve/build/work-1096274/tree/src/fit_profile.cpp: In static member function ‘static const fit::Profile::MESG* fit::Profile::GetMesg(FIT_UINT16)’:\n/home/z/zhouzia/Workspace/CanMehEvolve/build/work-1096274/tree/src/fit_profile.cpp:3062:26: error: local class ‘struct fit::Profile::GetMesg(FIT_UINT16)::HashTable’ shall not have static data member ‘const int fit::Profile::GetMesg(FIT_UINT16)::HashTable::SIZE’ [-fpermissive]\n 3062 |         static const int SIZE = 1024;\n      |                          ^~~~\n",
+ "ok": false,
+ "rebuilt": 3,
+ "stage": "compile"
+}

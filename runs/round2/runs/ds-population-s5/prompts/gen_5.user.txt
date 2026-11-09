@@ -1,0 +1,64 @@
+File: src/fit_field.cpp
+Function: Field::GetType (10 lines)
+One full decode of the four files takes about 359.5 ms in the stock build.
+Time of the current version of the whole library relative to stock: 0.950 (below 1.0 is faster). Best measured so far: 0.950.
+
+Your previous attempt failed:
+Stage 'compile' rejected it: /home/z/zhouzia/Workspace/CanMehEvolve/build/work-1096274/tree/src/fit_field.cpp: In member function ‘virtual FIT_UINT8 fit::Field::GetType() const’:
+/home/z/zhouzia/Workspace/CanMehEvolve/build/work-1096274/tree/src/fit_field.cpp:110:24: error: cannot convert ‘const fit::Profile::MESG* const’ to ‘const fit::Profile*’ in initialization
+  110 |     const Profile* p = profile;
+      |                        ^~~~~~~
+      |                        |
+      |                        const fit::Profile::MESG* const
+/home/z/zhouzia/Workspace/CanMehEvolve/build/work-1096274/tree/src/fit_field.cpp:119:32: error: ‘const class fit::Profile’ has no member named ‘numFields’
+  119 |         if ( profileIndex < p->numFields )
+      |                                ^~~~~~~~~
+/home/z/zhouzia/Workspace/CanMehEvolve/build/work-1096274/tree/src/fit_field.cpp:121:36: error: ‘const class fit::Profile’ has no member named ‘fields’
+  121 |             const FIT_UINT8 t = p->fields[profileIndex].type;
+      |                                    ^~~~~~
+
+The rejected replacement was:
+```cpp
+FIT_UINT8 Field::GetType() const
+{
+    if ( type != FIT_UINT8_INVALID )
+        return type;
+
+    const Profile* p = profile;
+    if ( p != NULL )
+    {
+        static const Profile* cachedProfile[256] = {};
+        static FIT_UINT8 cachedType[256];
+
+        if ( cachedProfile[profileIndex] == p )
+            return cachedType[profileIndex];
+
+        if ( profileIndex < p->numFields )
+        {
+            const FIT_UINT8 t = p->fields[profileIndex].type;
+            cachedProfile[profileIndex] = p;
+            cachedType[profileIndex] = t;
+            return t;
+        }
+    }
+
+    return FIT_UINT8_INVALID;
+}
+
+```
+
+Current text of the function:
+```cpp
+FIT_UINT8 Field::GetType() const
+{
+    if ( type != FIT_UINT8_INVALID )
+        return type;
+
+    if ((profile == NULL) || (profileIndex >= profile->numFields))
+        return FIT_UINT8_INVALID;
+
+    return profile->fields[profileIndex].type;
+}
+
+```
+Return the faster replacement now.

@@ -1,0 +1,5 @@
+
+void SetFunctionalThresholdPower(FIT_UINT16 functionalThresholdPower)
+{
+    SetFieldUInt16Value(15, functionalThresholdPower, 0, FIT_SUBFIELD_INDEX_MAIN_FIELD);
+}

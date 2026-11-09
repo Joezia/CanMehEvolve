@@ -1,0 +1,5 @@
+[run] mode=search host=xcnc3 model_probe={"http_status":200,"model":"qwen3-coder-next","ok":true,"requested_model":"qwen3-coder-next","usage":{"completion_tokens":2,"prompt_tokens":14,"prompt_tokens_details":null,"total_tokens":16}}
+[resume] segment 2 continues after generation 4 with 4 requests already sent
+[gen 5/6] region 134 FieldBase::FieldBase parent=2 ratio=0.999952 best_confirmed_speedup=1 tokens=2764 t=111s
+[gen 6/6] region 122 Field::GetNum parent=4 ratio=0.999051 best_confirmed_speedup=1 tokens=3214 t=218s
+[done] {"api_calls":6,"best_confirmed_generation":0,"best_confirmed_speedup":1.0,"best_ranked_generation":0,"best_ranked_speedup":1.0,"best_retained_speedup":1.0009581261275893,"complete":true,"completion_tokens":332,"confirmed_candidates":0,"elapsed_s":692.307429921,"ended_because":"request budget reached","finished":"2026-11-08T09:52:18+0800","http_attempts":6,"improved_on_parent_candidates":0,"llm_seconds":4.283505375000001,"max_tokens":4096,"mode":"search","outcomes":{"compile":1,"measured":5},"prompt_tokens":2882,"rank_updates":[],"reasoning_tokens":0,"request_budget":6,"seed":7,"segments":2,"total_tokens":3214,"truncated_replies":0}

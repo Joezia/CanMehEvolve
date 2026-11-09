@@ -1,0 +1,12 @@
+Hoisted the profile pointer/index into locals and marked the invalid path as unlikely so the common valid lookup stays on the fast path.
+
+```cpp
+FIT_UINT8 Field::GetNum(void) const
+{
+    const auto* p = profile;
+    const auto index = profileIndex;
+    if (__builtin_expect((p == NULL) || (index >= p->numFields), 0))
+        return FIT_FIELD_NUM_INVALID;
+    return p->fields[index].num;
+}
+```

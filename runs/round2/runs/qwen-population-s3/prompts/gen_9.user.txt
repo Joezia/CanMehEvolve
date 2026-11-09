@@ -1,0 +1,143 @@
+File: src/fit_field_base.cpp
+Function: FieldBase::AddRawValue (61 lines)
+One full decode of the four files takes about 358.3 ms in the stock build.
+Time of the current version of the whole library relative to stock: 1.000 (below 1.0 is faster). Best measured so far: 0.999.
+
+Your previous attempt failed:
+Stage 'compile' rejected it: /home/z/zhouzia/Workspace/CanMehEvolve/build/work-1095835/tree/src/fit_field_base.cpp: In member function ‘void fit::FieldBase::AddRawValue(FIT_FLOAT64, FIT_UINT8)’:
+/home/z/zhouzia/Workspace/CanMehEvolve/build/work-1095835/tree/src/fit_field_base.cpp:762:65: error: invalid ‘static_cast’ from type ‘FIT_FLOAT64*’ {aka ‘double*’} to type ‘const FIT_FLOAT32*’ {aka ‘const float*’}
+  762 |             SetUINT32Value(*reinterpret_cast<const FIT_UINT32*>(static_cast<const FIT_FLOAT32*>(&roundedValue)), fieldArrayIndex);
+      |                                                                 ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+The rejected replacement was:
+```cpp
+
+void FieldBase::AddRawValue(const FIT_FLOAT64 rawValue, const FIT_UINT8 fieldArrayIndex)
+{
+    FIT_FLOAT64 roundedValue = FieldBase::Round(rawValue);
+    
+    // Use switch lowering and bitmasking for faster type dispatch
+    const FIT_UINT8 baseType = GetType();
+    const FIT_UINT8 typeGroup = baseType & 0x0F;
+    
+    switch (baseType)
+    {
+        case FIT_BASE_TYPE_BYTE:
+        case FIT_BASE_TYPE_ENUM:
+        case FIT_BASE_TYPE_SINT8:
+        case FIT_BASE_TYPE_UINT8:
+        case FIT_BASE_TYPE_UINT8Z:
+            SetUINT8Value((FIT_UINT8)roundedValue, fieldArrayIndex);
+            break;
+
+        case FIT_BASE_TYPE_SINT16:
+        case FIT_BASE_TYPE_UINT16:
+        case FIT_BASE_TYPE_UINT16Z:
+            SetUINT16Value((FIT_UINT16)roundedValue, fieldArrayIndex);
+            break;
+
+        case FIT_BASE_TYPE_SINT32:
+        case FIT_BASE_TYPE_UINT32:
+        case FIT_BASE_TYPE_UINT32Z:
+            SetUINT32Value((FIT_UINT32)roundedValue, fieldArrayIndex);
+            break;
+
+        case FIT_BASE_TYPE_FLOAT32:
+            SetUINT32Value(*reinterpret_cast<const FIT_UINT32*>(static_cast<const FIT_FLOAT32*>(&roundedValue)), fieldArrayIndex);
+            break;
+
+        case FIT_BASE_TYPE_FLOAT64:
+        {
+            // Optimize resize condition with precomputed size
+            const size_t neededSize = (fieldArrayIndex + 1) * 8;
+            if (values.size() < neededSize)
+            {
+                values.resize(neededSize);
+            }
+            // Use memcpy for reliable and fast byte copying
+            std::memcpy(&values[fieldArrayIndex * 8], &rawValue, 8);
+            break;
+        }
+
+        case FIT_BASE_TYPE_SINT64:
+            SetSINT64Value(*reinterpret_cast<const FIT_SINT64*>(&rawValue), fieldArrayIndex);
+            break;
+
+        case FIT_BASE_TYPE_UINT64:
+        case FIT_BASE_TYPE_UINT64Z:
+            SetUINT64Value(*reinterpret_cast<const FIT_UINT64*>(&rawValue), fieldArrayIndex);
+            break;
+
+        default:
+            break;
+    }
+}
+
+```
+
+Current text of the function:
+```cpp
+void FieldBase::AddRawValue(const FIT_FLOAT64 rawValue, const FIT_UINT8 fieldArrayIndex)
+{
+    FIT_FLOAT64 roundedValue = FieldBase::Round(rawValue);
+    switch ( GetType() )
+    {
+        case FIT_BASE_TYPE_BYTE:
+        case FIT_BASE_TYPE_ENUM:
+        case FIT_BASE_TYPE_SINT8:
+        case FIT_BASE_TYPE_UINT8:
+        case FIT_BASE_TYPE_UINT8Z:
+            SetUINT8Value((FIT_UINT8)roundedValue, fieldArrayIndex);
+            break;
+
+        case FIT_BASE_TYPE_SINT16:
+        case FIT_BASE_TYPE_UINT16:
+        case FIT_BASE_TYPE_UINT16Z:
+            SetUINT16Value((FIT_UINT16)roundedValue, fieldArrayIndex);
+            break;
+
+        case FIT_BASE_TYPE_SINT32:
+        case FIT_BASE_TYPE_UINT32:
+        case FIT_BASE_TYPE_UINT32Z:
+            SetUINT32Value((FIT_UINT32)roundedValue, fieldArrayIndex);
+            break;
+
+        case FIT_BASE_TYPE_FLOAT32:
+        {
+            FIT_FLOAT32 float32Value = (FIT_FLOAT32)roundedValue;
+            FIT_UINT32 uint32Value;
+            memcpy(&uint32Value, &float32Value, sizeof(FIT_FLOAT32));
+            SetUINT32Value(uint32Value, fieldArrayIndex);
+            break;
+        }
+
+        case FIT_BASE_TYPE_FLOAT64:
+        {
+            if ((FIT_UINT8)values.size() < ((fieldArrayIndex + 1) * sizeof(FIT_FLOAT64)))
+            {
+                values.resize((fieldArrayIndex + 1) * 8);
+            }
+
+            for (size_t i = 0; i < sizeof(FIT_FLOAT64); i++)
+            {
+                values[(fieldArrayIndex * sizeof(FIT_FLOAT64) + i)] = (*(((FIT_BYTE *)&rawValue) + i));
+            }
+            break;
+        }
+
+        case FIT_BASE_TYPE_SINT64:
+            SetSINT64Value((FIT_SINT64)rawValue, fieldArrayIndex);
+            break;
+
+        case FIT_BASE_TYPE_UINT64:
+        case FIT_BASE_TYPE_UINT64Z:
+            SetUINT64Value((FIT_UINT64)rawValue, fieldArrayIndex);
+            break;
+
+        default:
+            break;
+    }
+}
+
+```
+Return the faster replacement now.

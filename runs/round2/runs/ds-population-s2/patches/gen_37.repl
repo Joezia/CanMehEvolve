@@ -1,0 +1,11 @@
+Cached the profile pointer in a local and combined the null/range checks into one short-circuit condition, reducing repeated member loads on the hot path.
+
+```cpp
+FIT_UINT16 Field::GetNumSubFields(void) const
+{
+    const Profile* p = profile;
+    if ((p == NULL) || (profileIndex >= p->numFields))
+        return 0;
+    return p->fields[profileIndex].numSubFields;
+}
+```

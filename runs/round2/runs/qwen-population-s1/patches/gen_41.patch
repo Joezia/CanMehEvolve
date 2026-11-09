@@ -1,0 +1,180 @@
+--- a/src/fit_accumulated_field.cpp
++++ b/src/fit_accumulated_field.cpp
+@@ -11,12 +11,14 @@
+ 
+ 
+ #include "fit_accumulated_field.hpp"
++#include <cstdint>
+ 
+ namespace fit
+ {
+ 
++
+     AccumulatedField::AccumulatedField()
+-        : lastValue(0), accumulatedValue(0)
++        : lastValue{0}, accumulatedValue{0}
+     {
+     }
+ 
+--- a/src/fit_field.cpp
++++ b/src/fit_field.cpp
+@@ -15,6 +15,7 @@
+ #include "fit_field.hpp"
+ #include "fit_mesg.hpp"
+ #include "fit_unicode.hpp"
++#include <cstddef>
+ 
+ namespace fit
+ {
+@@ -97,12 +98,13 @@
+     return profile->fields[profileIndex].num;
+ }
+ 
++
+ FIT_UINT8 Field::GetType() const
+ {
+-    if ( type != FIT_UINT8_INVALID )
++    if (type != FIT_UINT8_INVALID)
+         return type;
+ 
+-    if ((profile == NULL) || (profileIndex >= profile->numFields))
++    if (profile == nullptr || profileIndex >= profile->numFields)
+         return FIT_UINT8_INVALID;
+ 
+     return profile->fields[profileIndex].type;
+--- a/src/fit_field_base.cpp
++++ b/src/fit_field_base.cpp
+@@ -16,6 +16,7 @@
+ #include "fit_field_base.hpp"
+ #include "fit_mesg.hpp"
+ #include "fit_unicode.hpp"
++#include <algorithm>
+ 
+ namespace fit
+ {
+@@ -24,11 +25,7 @@
+ {
+ }
+ 
+-FieldBase::FieldBase(const FieldBase &field)
+-{
+-    values = field.values;
+-    stringIndexes = field.stringIndexes;
+-}
++FieldBase::FieldBase(const FieldBase &field) : values(field.values), stringIndexes(field.stringIndexes) {}
+ 
+ FieldBase::~FieldBase()
+ {
+@@ -61,13 +58,15 @@
+     return NULL != subfield ? subfield->units : "";
+ }
+ 
++
+ FIT_FLOAT64 FieldBase::GetScale(const FIT_UINT16 subFieldIndex) const
+ {
+-    if (subFieldIndex >= GetNumSubFields())
++    const auto numSubFields = GetNumSubFields();
++    if (subFieldIndex >= numSubFields)
+         return GetScale();
+ 
+-    auto subfield = GetSubField(subFieldIndex);
+-    return NULL != subfield ? subfield->scale : 1.0;
++    const auto* subfield = GetSubField(subFieldIndex);
++    return subfield ? subfield->scale : 1.0;
+ }
+ 
+ FIT_FLOAT64 FieldBase::GetOffset(const FIT_UINT16 subFieldIndex) const
+--- a/src/fit_mesg_definition.cpp
++++ b/src/fit_mesg_definition.cpp
+@@ -13,6 +13,7 @@
+ #include <ostream>
+ #include "fit_mesg_definition.hpp"
+ #include "fit_developer_field_definition.hpp"
++#include <vector>
+ 
+ namespace fit
+ {
+@@ -105,12 +106,10 @@
+     return FIT_NULL;
+ }
+ 
++
+ FieldDefinition* MesgDefinition::GetFieldByIndex(const FIT_UINT16 index)
+ {
+-    if (index < fields.size())
+-        return &(fields[index]);
+-
+-    return FIT_NULL;
++    return (index < fields.size()) ? &fields[index] : FIT_NULL;
+ }
+ 
+ DeveloperFieldDefinition* MesgDefinition::GetDevFieldByIndex(const FIT_UINT16 index)
+--- a/src/fit_profile.cpp
++++ b/src/fit_profile.cpp
+@@ -11,6 +11,8 @@
+ 
+ 
+ #include "fit_profile.hpp"
++#include <algorithm>
++#include <vector>
+ 
+ namespace fit
+ {
+@@ -3055,15 +3057,19 @@
+    { NULL, "pad", FIT_MESG_NUM_PAD, 0 },
+ };
+ 
++
+ const Profile::MESG* Profile::GetMesg(const FIT_UINT16 num)
+ {
+-    for (int i = 0; i < MESGS; i++)
+-    {
+-        if (mesgs[i].num == num)
+-            return &mesgs[i];
++    static std::vector<const Profile::MESG*> lookup;
++    static bool initialized = false;
++    if (!initialized) {
++        lookup.resize(0x10000, nullptr);
++        for (int i = 0; i < MESGS; i++) {
++            lookup[mesgs[i].num] = &mesgs[i];
++        }
++        initialized = true;
+     }
+-
+-    return NULL;
++    return (num < lookup.size()) ? lookup[num] : nullptr;
+ }
+ 
+ const Profile::MESG* Profile::GetMesg(const std::string& name)
+@@ -3115,19 +3121,25 @@
+     return FIT_UINT16_INVALID;
+ }
+ 
++
+ const Profile::FIELD* Profile::GetField(const FIT_UINT16 mesgNum, const FIT_UINT8 fieldNum)
+ {
+     const MESG *mesg = GetMesg(mesgNum);
+ 
+-    if (mesg == NULL)
+-        return NULL;
++    if (mesg == nullptr)
++        return nullptr;
+ 
+-    FIT_UINT16 fieldIndex = GetFieldIndex(mesgNum, fieldNum);
++    // Use binary search since fields are stored sorted by fieldNum per message
++    const FIELD key = { 0, 0, fieldNum };
++    const FIELD* begin = mesg->fields;
++    const FIELD* end = mesg->fields + mesg->numFields;
++    const FIELD* it = std::lower_bound(begin, end, key,
++        [](const FIELD& a, const FIELD& b) { return a.fieldNum < b.fieldNum; });
+ 
+-    if (fieldIndex >= mesg->numFields)
+-        return NULL;
++    if (it == end || it->fieldNum != fieldNum)
++        return nullptr;
+ 
+-    return &(mesg->fields[fieldIndex]);
++    return it;
+ }
+ 
+ const Profile::FIELD* Profile::GetField(const std::string& mesgName, const std::string& fieldName)

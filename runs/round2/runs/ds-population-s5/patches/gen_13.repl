@@ -1,0 +1,8 @@
+I replaced the type-specific wrapper call with a direct `SetFieldValue` call, passing the parameter by address. This eliminates one function call and a temporary array copy while preserving the exact field/subfield semantics.
+
+```cpp
+    void SetEndTimezoneOffset(FIT_SINT16 endTimezoneOffset)
+    {
+        SetFieldValue(3, 0, &endTimezoneOffset, 1);
+    }
+```

@@ -1,0 +1,64 @@
+File: src/fit_profile.cpp
+Function: Profile::GetMesg (10 lines)
+One full decode of the four files takes about 358.6 ms in the stock build.
+Time of the current version of the whole library relative to stock: 0.993 (below 1.0 is faster). Best measured so far: 0.978.
+
+Your previous attempt failed:
+Stage 'compile' rejected it: /home/z/zhouzia/Workspace/CanMehEvolve/build/work-1096058/tree/src/fit_profile.cpp:3061:1: error: stray ‘`’ in program
+ 3061 | ```cpp
+      | ^
+/home/z/zhouzia/Workspace/CanMehEvolve/build/work-1096058/tree/src/fit_profile.cpp:3061:2: error: stray ‘`’ in program
+ 3061 | ```cpp
+      |  ^
+/home/z/zhouzia/Workspace/CanMehEvolve/build/work-1096058/tree/src/fit_profile.cpp:3061:3: error: stray ‘`’ in program
+ 3061 | ```cpp
+      |   ^
+/home/z/zhouzia/Workspace/CanMehEvolve/build/work-1096058/tree/src/fit_profile.cpp:3061:4: error: ‘cpp’ does not name a type
+ 3061 | ```cpp
+      |    ^~~
+
+The rejected replacement was:
+```cpp
+
+```cpp
+const Profile::MESG* Profile::GetMesg(const FIT_UINT16 num)
+{
+    // Binary search on sorted mesgs array (assumed sorted at compile time or initialization)
+    static const Profile::MESG* cached = nullptr;
+    static const Profile::MESG* last_found = nullptr;
+
+    // Fast path: same as last lookup
+    if (cached && cached->num == num) {
+        return cached;
+    }
+
+    // Linear scan fallback for unsorted or small arrays (MESGS is small, ~200 entries)
+    // Use compiler hint for branch prediction and unroll loop
+    const Profile::MESG* end = mesgs + MESGS;
+    for (const Profile::MESG* p = mesgs; p < end; ++p) {
+        if (__builtin_expect(p->num == num, 0)) {
+            cached = p;
+            return p;
+        }
+    }
+
+    return NULL;
+}
+
+```
+
+Current text of the function:
+```cpp
+const Profile::MESG* Profile::GetMesg(const FIT_UINT16 num)
+{
+    for (int i = 0; i < MESGS; i++)
+    {
+        if (mesgs[i].num == num)
+            return &mesgs[i];
+    }
+
+    return NULL;
+}
+
+```
+Return the faster replacement now.

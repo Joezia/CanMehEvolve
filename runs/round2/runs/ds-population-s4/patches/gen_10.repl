@@ -1,0 +1,9 @@
+I removed the redundant null checks and post-delete pointer stores: `delete` already handles null safely, and the members need no reset during destruction. This cuts branches and memory writes in a destructor that is called very frequently.
+
+```cpp
+DeveloperFieldDefinition::~DeveloperFieldDefinition()
+{
+    delete mesg;
+    delete developer;
+}
+```

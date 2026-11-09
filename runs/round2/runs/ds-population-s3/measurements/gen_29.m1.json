@@ -1,0 +1,6 @@
+{
+ "error": "/home/z/zhouzia/Workspace/CanMehEvolve/build/work-1094749/tree/src/fit_field.cpp: In member function ‘virtual FIT_UINT16 fit::Field::GetNumComponents() const’:\n/home/z/zhouzia/Workspace/CanMehEvolve/build/work-1094749/tree/src/fit_field.cpp:143:20: error: ‘Message’ in ‘class fit::Profile’ does not name a type\n  143 |     const Profile::Message* p = profile;\n      |                    ^~~~~~~\n/home/z/zhouzia/Workspace/CanMehEvolve/build/work-1094749/tree/src/fit_field.cpp:144:26: error: ‘p’ was not declared in this scope\n  144 |     if (__builtin_expect(p == NULL, 0))\n      |                          ^\n/home/z/zhouzia/Workspace/CanMehEvolve/build/work-1094749/tree/src/fit_field.cpp:147:35: error: ‘p’ was not declared in this scope\n  147 |     if (__builtin_expect(index >= p->numFields, 0))\n      |                                   ^\n/home/z/zhouzia/Workspace/CanMehEvolve/build/work-1094749/tree/src/fit_field.cpp:149:12: error: ‘p’ was not declared in this scope\n  149 |     return p->fields[index].numComponents;\n      |            ^\n",
+ "ok": false,
+ "rebuilt": 6,
+ "stage": "compile"
+}

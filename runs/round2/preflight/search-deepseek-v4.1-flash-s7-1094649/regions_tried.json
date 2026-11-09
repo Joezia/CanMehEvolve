@@ -1,0 +1,44 @@
+{
+  "122": {
+    "accepted": 0,
+    "attempts": 2,
+    "best_gain": 0.0,
+    "file": "src/fit_field.cpp",
+    "label": "Field::GetNum"
+  },
+  "123": {
+    "accepted": 0,
+    "attempts": 2,
+    "best_gain": 0.0,
+    "file": "src/fit_field.cpp",
+    "label": "Field::GetType"
+  },
+  "134": {
+    "accepted": 1,
+    "attempts": 3,
+    "best_gain": 0.05390539909382963,
+    "file": "src/fit_field_base.cpp",
+    "label": "FieldBase::FieldBase"
+  },
+  "166": {
+    "accepted": 1,
+    "attempts": 1,
+    "best_gain": 0.021770359642120818,
+    "file": "src/fit_field_base.cpp",
+    "label": "FieldBase::GetFLOAT64Value"
+  },
+  "2756": {
+    "accepted": 1,
+    "attempts": 1,
+    "best_gain": 0.0012988944344398679,
+    "file": "src/fit_lap_mesg.hpp",
+    "label": "IsMinCoreTemperatureValid"
+  },
+  "4139": {
+    "accepted": 0,
+    "attempts": 1,
+    "best_gain": 0.0,
+    "file": "src/fit_session_mesg.hpp",
+    "label": "SetAvgPosGrade"
+  }
+}

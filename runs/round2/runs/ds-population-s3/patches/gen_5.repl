@@ -1,0 +1,11 @@
+Cached the profile pointer locally and hinted that the invalid-profile/index path is unlikely, keeping the common decode path straight-line and branch-predictable.
+
+```cpp
+FIT_UINT8 Field::GetNum(void) const
+{
+    const auto* p = profile;
+    if (__builtin_expect((p == NULL) || (profileIndex >= p->numFields), 0))
+        return FIT_FIELD_NUM_INVALID;
+    return p->fields[profileIndex].num;
+}
+```

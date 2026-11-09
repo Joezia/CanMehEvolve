@@ -1,0 +1,12 @@
+I replaced the member-wise copy (which forces an out-of-line `FieldBase` copy-constructor call plus several scalar stores) with a single inlined `memcpy` of the whole trivially-copyable object, cutting the copy down to a couple of vector moves.
+
+```include
+#include <cstring>
+```
+
+```cpp
+Field::Field(const Field &field)
+{
+    std::memcpy(static_cast<void *>(this), static_cast<const void *>(&field), sizeof(Field));
+}
+```

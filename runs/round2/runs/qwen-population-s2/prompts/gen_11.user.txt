@@ -1,0 +1,39 @@
+File: src/fit_field_base.cpp
+Function: FieldBase::~FieldBase (3 lines)
+One full decode of the four files takes about 358.6 ms in the stock build.
+Time of the current version of the whole library relative to stock: 0.995 (below 1.0 is faster). Best measured so far: 0.995.
+
+Your previous attempt failed:
+Stage 'compile' rejected it: /home/z/zhouzia/Workspace/CanMehEvolve/build/work-1096058/tree/src/fit_field_base.cpp: In destructor ‘virtual fit::FieldBase::~FieldBase()’:
+/home/z/zhouzia/Workspace/CanMehEvolve/build/work-1096058/tree/src/fit_field_base.cpp:41:28: error: ‘Value’ is not a member of ‘fit::FieldBase’
+   41 |     std::vector<FieldBase::Value>().swap(m_values);
+      |                            ^~~~~
+/home/z/zhouzia/Workspace/CanMehEvolve/build/work-1096058/tree/src/fit_field_base.cpp:41:33: error: template argument 1 is invalid
+   41 |     std::vector<FieldBase::Value>().swap(m_values);
+      |                                 ^
+/home/z/zhouzia/Workspace/CanMehEvolve/build/work-1096058/tree/src/fit_field_base.cpp:41:33: error: template argument 2 is invalid
+/home/z/zhouzia/Workspace/CanMehEvolve/build/work-1096058/tree/src/fit_field_base.cpp:41:42: error: ‘m_values’ was not declared in this scope; did you mean ‘values’?
+   41 |     std::vector<FieldBase::Value>().swap(m_values);
+      |                                          ^~~~~~~~
+      |                                          values
+
+The rejected replacement was:
+```cpp
+
+FieldBase::~FieldBase()
+{
+    // Explicitly swap m_values with an empty vector to ensure immediate deallocation
+    // and avoid potential heap fragmentation from delayed destructor cleanup
+    std::vector<FieldBase::Value>().swap(m_values);
+}
+
+```
+
+Current text of the function:
+```cpp
+FieldBase::~FieldBase()
+{
+}
+
+```
+Return the faster replacement now.

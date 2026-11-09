@@ -1,0 +1,14 @@
+This function is cold during decoding, so the change is a micro-optimization: scanning the raw `data()` pointer array avoids iterator wrappers and lets `erase` work from a pointer offset, shaving a few instructions off the search/erase path while preserving the exact ordering semantics.
+
+```cpp
+void MesgBroadcaster::RemoveListener(WorkoutStepMesgListener& workoutStepMesgListener)
+{
+    WorkoutStepMesgListener ** const begin = workoutStepMesgListeners.data();
+    WorkoutStepMesgListener ** const end   = begin + workoutStepMesgListeners.size();
+    WorkoutStepMesgListener ** it = begin;
+    while (it != end && *it != &workoutStepMesgListener)
+        ++it;
+    if (it != end)
+        workoutStepMesgListeners.erase(workoutStepMesgListeners.begin() + (it - begin));
+}
+```

@@ -1,0 +1,88 @@
+FIT_FLOAT64 FieldBase::GetFLOAT64Value(const FIT_UINT8 fieldArrayIndex, const FIT_UINT16 subFieldIndex) const
+{
+    if (!IsValid())
+        return FIT_FLOAT64_INVALID;
+
+    const FIT_UINT8 type = GetType();
+    const FIT_UINT8 typeMasked = type & FIT_BASE_TYPE_NUM_MASK;
+
+    auto convertInteger = [&](auto value) -> FIT_FLOAT64
+    {
+        if (memcmp(&value, baseTypeInvalids[typeMasked], sizeof(value)) == 0)
+        {
+            FIT_FLOAT64 invalidValue;
+            memcpy(&invalidValue, baseTypeInvalids[FIT_BASE_TYPE_FLOAT64 & FIT_BASE_TYPE_NUM_MASK], sizeof(invalidValue));
+            return invalidValue;
+        }
+
+        FIT_FLOAT64 result = static_cast<FIT_FLOAT64>(value);
+        const FIT_FLOAT64 scale = GetScale(subFieldIndex);
+        if (scale != 1.0)
+            result /= scale;
+
+        const FIT_FLOAT64 offset = GetOffset(subFieldIndex);
+        if (offset != 0.0)
+            result -= offset;
+
+        return result;
+    };
+
+    switch (type)
+    {
+        case FIT_BASE_TYPE_BYTE:
+            return convertInteger(GetValue<FIT_BYTE>(fieldArrayIndex));
+
+        case FIT_BASE_TYPE_ENUM:
+            return convertInteger(GetValue<FIT_ENUM>(fieldArrayIndex));
+
+        case FIT_BASE_TYPE_SINT8:
+            return convertInteger(GetValue<FIT_SINT8>(fieldArrayIndex));
+
+        case FIT_BASE_TYPE_UINT8:
+        case FIT_BASE_TYPE_UINT8Z:
+            return convertInteger(GetValue<FIT_UINT8>(fieldArrayIndex));
+
+        case FIT_BASE_TYPE_SINT16:
+            return convertInteger(GetValue<FIT_SINT16>(fieldArrayIndex));
+
+        case FIT_BASE_TYPE_UINT16Z:
+        case FIT_BASE_TYPE_UINT16:
+            return convertInteger(GetValue<FIT_UINT16>(fieldArrayIndex));
+
+        case FIT_BASE_TYPE_SINT32:
+            return convertInteger(GetValue<FIT_SINT32>(fieldArrayIndex));
+
+        case FIT_BASE_TYPE_UINT32:
+        case FIT_BASE_TYPE_UINT32Z:
+            return convertInteger(GetValue<FIT_UINT32>(fieldArrayIndex));
+
+        case FIT_BASE_TYPE_FLOAT32:
+        {
+            FIT_FLOAT32 val = GetFLOAT32Value(fieldArrayIndex, subFieldIndex);
+
+            if (FIT_FLOAT32_INVALID == val)
+            {
+                return FIT_FLOAT64_INVALID;
+            }
+
+            return static_cast<FIT_FLOAT64>(val);
+        }
+
+        case FIT_BASE_TYPE_FLOAT64:
+        {
+            FIT_UINT64 uint64Value = GetValue<FIT_UINT64>(fieldArrayIndex);
+            FIT_FLOAT64 float64Value;
+            memcpy(&float64Value, &uint64Value, sizeof(FIT_FLOAT64));
+
+            if (memcmp(&float64Value, baseTypeInvalids[FIT_BASE_TYPE_FLOAT64 & FIT_BASE_TYPE_NUM_MASK], sizeof(FIT_FLOAT64)) == 0)
+            {
+                return float64Value;
+            }
+
+            return float64Value / GetScale(subFieldIndex) - GetOffset(subFieldIndex);
+        }
+
+        default:
+            return FIT_FLOAT64_INVALID;
+    }
+}

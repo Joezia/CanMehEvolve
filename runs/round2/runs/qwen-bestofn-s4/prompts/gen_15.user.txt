@@ -1,0 +1,14 @@
+File: src/fit_session_mesg.hpp
+Function: GetEnhancedAvgAltitude (4 lines)
+One full decode of the four files takes about 358.2 ms in the stock build.
+Time of the current version of the whole library relative to stock: 1.000 (below 1.0 is faster). Best measured so far: 1.000.
+
+Current text of the function:
+```cpp
+    FIT_FLOAT32 GetEnhancedAvgAltitude(void) const
+    {
+        return GetFieldFLOAT32Value(126, 0, FIT_SUBFIELD_INDEX_MAIN_FIELD);
+    }
+
+```
+Return the faster replacement now.

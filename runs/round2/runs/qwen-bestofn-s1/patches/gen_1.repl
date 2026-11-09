@@ -1,0 +1,31 @@
+```cpp
+#include <cmath>
+
+FIT_UINT16 Mesg::GetActiveSubFieldIndexByFieldIndex(const FIT_UINT16 fieldIndex) const
+{
+    if ((int) fieldIndex >= GetNumFields())
+        return FIT_SUBFIELD_INDEX_MAIN_FIELD;
+
+    const auto& field = fields[fieldIndex];
+    const FIT_UINT16 numSubFields = field.GetNumSubFields();
+
+    for (FIT_UINT16 i = 0; i < numSubFields; i++)
+    {
+        const Profile::SUBFIELD* subField = field.GetSubField(i);
+        if (subField == FIT_NULL) continue;
+
+        for (FIT_UINT16 j = 0; j < subField->numMaps; j++)
+        {
+            const Field* refField = GetField(subField->maps[j].refFieldNum);
+            if (refField == FIT_NULL) continue;
+
+            FIT_FLOAT64 refValue = refField->GetFLOAT64Value(0, FIT_SUBFIELD_INDEX_MAIN_FIELD);
+            // Use std::nearbyint for correct rounding (rounds to nearest integer, ties to even)
+            if (static_cast<FIT_SINT32>(std::nearbyint(refValue)) == subField->maps[j].refFieldValue)
+                return i;
+        }
+    }
+
+    return FIT_SUBFIELD_INDEX_MAIN_FIELD;
+}
+```

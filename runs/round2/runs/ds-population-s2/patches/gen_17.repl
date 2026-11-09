@@ -1,0 +1,7 @@
+The destructor is already the minimal empty leaf function, so I kept the body empty; g++ emits a bare `ret` with no frame or exception machinery, which is the cheapest possible code for every per-Field virtual teardown and adds nothing to the decode path.
+
+```cpp
+FieldBase::~FieldBase()
+{
+}
+```

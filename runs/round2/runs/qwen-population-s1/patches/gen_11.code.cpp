@@ -1,0 +1,6 @@
+
+FIT_FLOAT32 GetTimeFromCourse(void) const
+{
+    // Direct field access avoiding virtual call overhead and subfield lookup
+    return GetFieldFLOAT32Value(11, 0, FIT_SUBFIELD_INDEX_MAIN_FIELD);
+}

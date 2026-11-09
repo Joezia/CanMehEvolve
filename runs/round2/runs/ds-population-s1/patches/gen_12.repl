@@ -1,0 +1,9 @@
+The copy constructor now copies both members directly in the initializer list instead of default-constructing `stringIndexes` and conditionally assigning it, removing the branch and a redundant assignment.
+
+```cpp
+FieldBase::FieldBase(const FieldBase &field)
+    : values(field.values)
+    , stringIndexes(field.stringIndexes)
+{
+}
+```

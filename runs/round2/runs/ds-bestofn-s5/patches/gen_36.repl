@@ -1,0 +1,9 @@
+The getter already does a single field lookup; I collapsed the early-return into one conditional expression so the compiler can emit a branchless select and avoid a separate return path.
+
+```cpp
+    FIT_BOOL IsOpponentScoreValid() const
+    {
+        const Field* const field = GetField(8);
+        return (FIT_NULL != field) ? field->IsValueValid() : FIT_FALSE;
+    }
+```

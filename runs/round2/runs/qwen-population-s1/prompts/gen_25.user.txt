@@ -1,0 +1,18 @@
+File: src/fit_field.cpp
+Function: Field::Field (8 lines)
+One full decode of the four files takes about 357.9 ms in the stock build.
+Time of the current version of the whole library relative to stock: 0.898 (below 1.0 is faster). Best measured so far: 0.898.
+
+Current text of the function:
+```cpp
+Field::Field(const Field &field)
+    : FieldBase(field)
+    , profile(field.profile)
+    , profileIndex(field.profileIndex)
+    , type(field.type)
+    , isFieldExpanded(field.isFieldExpanded)
+{
+}
+
+```
+Return the faster replacement now.

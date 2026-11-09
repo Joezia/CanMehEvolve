@@ -1,0 +1,9 @@
+The optimization simplifies the logic by removing the explicit null-check branch and directly using the ternary operator, which allows better compiler optimization (e.g., branchless execution). Also, `field->IsValueValid()` already returns a `FIT_BOOL`, so casting via ternary is redundant.
+
+```cpp
+    FIT_BOOL IsOdometerRolloverValid() const
+    {
+        const Field* field = GetField(7);
+        return (field && field->IsValueValid()) ? FIT_TRUE : FIT_FALSE;
+    }
+```

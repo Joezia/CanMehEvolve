@@ -1,0 +1,89 @@
+--- a/src/fit_accumulated_field.cpp
++++ b/src/fit_accumulated_field.cpp
+@@ -11,12 +11,14 @@
+ 
+ 
+ #include "fit_accumulated_field.hpp"
++#include <cstdint>
+ 
+ namespace fit
+ {
+ 
++
+     AccumulatedField::AccumulatedField()
+-        : lastValue(0), accumulatedValue(0)
++        : lastValue{0}, accumulatedValue{0}
+     {
+     }
+ 
+--- a/src/fit_field_base.cpp
++++ b/src/fit_field_base.cpp
+@@ -24,11 +24,7 @@
+ {
+ }
+ 
+-FieldBase::FieldBase(const FieldBase &field)
+-{
+-    values = field.values;
+-    stringIndexes = field.stringIndexes;
+-}
++FieldBase::FieldBase(const FieldBase &field) : values(field.values), stringIndexes(field.stringIndexes) {}
+ 
+ FieldBase::~FieldBase()
+ {
+--- a/src/fit_mesg.cpp
++++ b/src/fit_mesg.cpp
+@@ -14,6 +14,7 @@
+ #include <algorithm>
+ #include "fit_mesg.hpp"
+ #include "fit_mesg_definition.hpp"
++#include <vector>
+ 
+ namespace fit
+ {
+@@ -248,15 +249,11 @@
+     return FIT_NULL;
+ }
+ 
++
+ Field* Mesg::GetField(const FIT_UINT8 fieldNum)
+ {
+-    for (int i = 0; i < (int)fields.size(); i++)
+-    {
+-        if (fields[i].GetNum() == fieldNum)
+-            return &fields[i];
+-    }
+-
+-    return FIT_NULL;
++    auto it = std::find_if(fields.begin(), fields.end(), [fieldNum](const Field& f) { return f.GetNum() == fieldNum; });
++    return (it != fields.end()) ? &*it : FIT_NULL;
+ }
+ 
+ Field* Mesg::GetField(const std::string& name)
+--- a/src/fit_record_mesg.hpp
++++ b/src/fit_record_mesg.hpp
+@@ -14,6 +14,7 @@
+ #define FIT_RECORD_MESG_HPP
+ 
+ #include "fit_mesg.hpp"
++#include <type_traits>
+ 
+ namespace fit
+ {
+@@ -540,10 +541,12 @@
+     // Returns time_from_course field
+     // Units: s
+     ///////////////////////////////////////////////////////////////////////
+-    FIT_FLOAT32 GetTimeFromCourse(void) const
+-    {
+-        return GetFieldFLOAT32Value(11, 0, FIT_SUBFIELD_INDEX_MAIN_FIELD);
+-    }
++
++FIT_FLOAT32 GetTimeFromCourse(void) const
++{
++    // Direct field access avoiding virtual call overhead and subfield lookup
++    return GetFieldFLOAT32Value(11, 0, FIT_SUBFIELD_INDEX_MAIN_FIELD);
++}
+ 
+     ///////////////////////////////////////////////////////////////////////
+     // Set time_from_course field

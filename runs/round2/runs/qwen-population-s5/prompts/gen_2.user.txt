@@ -1,0 +1,43 @@
+File: src/fit_field.cpp
+Function: Field::GetNum (6 lines)
+One full decode of the four files takes about 358.2 ms in the stock build.
+Time of the current version of the whole library relative to stock: 1.000 (below 1.0 is faster). Best measured so far: 1.000.
+
+Your previous attempt failed:
+Stage 'compile' rejected it: /home/z/zhouzia/Workspace/CanMehEvolve/build/work-1096602/tree/src/fit_field.cpp:95:1: error: stray ‘`’ in program
+   95 | ```cpp
+      | ^
+/home/z/zhouzia/Workspace/CanMehEvolve/build/work-1096602/tree/src/fit_field.cpp:95:2: error: stray ‘`’ in program
+   95 | ```cpp
+      |  ^
+/home/z/zhouzia/Workspace/CanMehEvolve/build/work-1096602/tree/src/fit_field.cpp:95:3: error: stray ‘`’ in program
+   95 | ```cpp
+      |   ^
+/home/z/zhouzia/Workspace/CanMehEvolve/build/work-1096602/tree/src/fit_field.cpp:95:4: error: ‘cpp’ does not name a type
+   95 | ```cpp
+      |    ^~~
+
+The rejected replacement was:
+```cpp
+
+```cpp
+FIT_UINT8 Field::GetNum(void) const
+{
+    return (profile && profileIndex < profile->numFields)
+        ? profile->fields[profileIndex].num
+        : FIT_FIELD_NUM_INVALID;
+}
+
+```
+
+Current text of the function:
+```cpp
+FIT_UINT8 Field::GetNum(void) const
+{
+    if ((profile == NULL) || (profileIndex >= profile->numFields))
+        return FIT_FIELD_NUM_INVALID;
+    return profile->fields[profileIndex].num;
+}
+
+```
+Return the faster replacement now.

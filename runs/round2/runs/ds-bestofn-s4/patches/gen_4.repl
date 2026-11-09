@@ -1,0 +1,8 @@
+The function is already a single comparison against a constant, so there is no meaningful optimization available; I keep it as-is to preserve exact behavior.
+
+```cpp
+FIT_BOOL Field::IsValid(void) const
+{
+    return profileIndex != FIT_UINT16_INVALID;
+}
+```

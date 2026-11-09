@@ -1,0 +1,28 @@
+File: src/fit_field.cpp
+Function: Field::GetType (10 lines)
+One full decode of the four files takes about 358.0 ms in the stock build.
+Time of the current version of the whole library relative to stock: 0.849 (below 1.0 is faster). Best measured so far: 0.851.
+
+Current text of the function:
+```cpp
+FIT_UINT8 Field::GetType() const
+{
+    FIT_UINT8 cachedType = type;
+    if (__builtin_expect(cachedType != FIT_UINT8_INVALID, 1))
+        return cachedType;
+
+    const Profile::MESG* const p = profile;
+    if (__builtin_expect(p == NULL, 0))
+        return FIT_UINT8_INVALID;
+
+    const FIT_UINT8 index = profileIndex;
+    if (__builtin_expect(index >= p->numFields, 0))
+        return FIT_UINT8_INVALID;
+
+    cachedType = p->fields[index].type;
+    const_cast<FIT_UINT8&>(type) = cachedType;
+    return cachedType;
+}
+
+```
+Return the faster replacement now.

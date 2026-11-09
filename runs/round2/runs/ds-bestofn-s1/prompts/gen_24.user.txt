@@ -1,0 +1,14 @@
+File: src/fit_field.cpp
+Function: Field::GetIsAccumulated (4 lines)
+One full decode of the four files takes about 359.0 ms in the stock build.
+Time of the current version of the whole library relative to stock: 1.000 (below 1.0 is faster). Best measured so far: 1.000.
+
+Current text of the function:
+```cpp
+FIT_BOOL Field::GetIsAccumulated() const
+{
+    return profile->fields[profileIndex].isAccumulated;
+}
+
+```
+Return the faster replacement now.

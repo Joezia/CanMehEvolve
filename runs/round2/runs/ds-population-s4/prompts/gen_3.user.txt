@@ -1,0 +1,48 @@
+File: src/fit_field.cpp
+Function: Field::Field (8 lines)
+One full decode of the four files takes about 358.3 ms in the stock build.
+Time of the current version of the whole library relative to stock: 0.949 (below 1.0 is faster). Best measured so far: 0.949.
+
+Your previous attempt failed:
+Stage 'compile' rejected it: /home/z/zhouzia/Workspace/CanMehEvolve/build/work-1095171/tree/src/fit_field.cpp: In constructor ‘fit::Field::Field(FIT_UINT16, FIT_UINT8)’:
+/home/z/zhouzia/Workspace/CanMehEvolve/build/work-1095171/tree/src/fit_field.cpp:55:39: error: request for member ‘numFields’ in ‘((fit::Field*)this)->fit::Field::profile’, which is of pointer type ‘const fit::Profile::MESG*’ (maybe you meant to use ‘->’ ?)
+   55 |     for (FIT_UINT8 i = 0; i < profile.numFields; i++)
+      |                                       ^~~~~~~~~
+/home/z/zhouzia/Workspace/CanMehEvolve/build/work-1095171/tree/src/fit_field.cpp:57:21: error: request for member ‘fields’ in ‘((fit::Field*)this)->fit::Field::profile’, which is of pointer type ‘const fit::Profile::MESG*’ (maybe you meant to use ‘->’ ?)
+   57 |         if (profile.fields[i].num == fieldNum)
+      |                     ^~~~~~
+
+The rejected replacement was:
+```cpp
+Field::Field(const FIT_UINT16 mesgNum, const FIT_UINT8 fieldNum)
+    : FieldBase()
+    , profile(Profile::GetMesg(mesgNum))
+    , profileIndex(FIT_UINT8_INVALID)
+    , type(FIT_UINT8_INVALID)
+    , isFieldExpanded(FIT_FALSE)
+{
+    for (FIT_UINT8 i = 0; i < profile.numFields; i++)
+    {
+        if (profile.fields[i].num == fieldNum)
+        {
+            profileIndex = i;
+            break;
+        }
+    }
+}
+
+```
+
+Current text of the function:
+```cpp
+Field::Field(const FIT_UINT16 mesgNum, const FIT_UINT8 fieldNum)
+    : FieldBase()
+    , profile(Profile::GetMesg(mesgNum))
+    , profileIndex(Profile::GetFieldIndex(mesgNum, fieldNum))
+    , type(FIT_UINT8_INVALID)
+    , isFieldExpanded(FIT_FALSE)
+{
+}
+
+```
+Return the faster replacement now.

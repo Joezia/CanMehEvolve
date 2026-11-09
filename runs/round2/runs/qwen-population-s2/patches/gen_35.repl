@@ -1,0 +1,24 @@
+```cpp
+#include <algorithm>
+
+const FIT_UINT16 Profile::GetFieldIndex(const FIT_UINT16 mesgNum, const FIT_UINT8 fieldNum)
+{
+    const MESG *mesg = GetMesg(mesgNum);
+
+    if (mesg == NULL)
+        return FIT_UINT16_INVALID;
+
+    // Preload mesg->numFields to avoid repeated memory access
+    const FIT_UINT16 numFields = mesg->numFields;
+    
+    // Use a small linear search with early exit - optimized for typical small field counts (< 20)
+    // Branch prediction friendly: compare against fieldNum directly in loop
+    for (FIT_UINT16 i = 0; i < numFields; ++i)
+    {
+        if (mesg->fields[i].num == fieldNum)
+            return i;
+    }
+
+    return FIT_UINT16_INVALID;
+}
+```

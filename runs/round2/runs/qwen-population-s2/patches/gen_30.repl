@@ -1,0 +1,12 @@
+Looking at this function, it's a simple getter that retrieves a UINT16 field value. The performance bottleneck is likely in the `GetFieldUINT16Value` call, which probably involves virtual function overhead and field lookup logic.
+
+Since this is a known field index (254) and subfield index (0), we can optimize by caching the field index or using direct array access if the message structure is fixed. However, given the constraints of keeping identical behavior and not changing other parts of the codebase, the best optimization is to inline the field access pattern directly.
+
+The most effective optimization is to replace the virtual function call with a direct field access using the known field index, assuming the underlying `fields` array structure is accessible and consistent.
+
+```cpp
+    FIT_MESSAGE_INDEX GetMessageIndex(void) const
+    {
+        return (fields.size() > 254) ? static_cast<FIT_MESSAGE_INDEX>(fields[254].value.ui16) : 0;
+    }
+```

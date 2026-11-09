@@ -1,0 +1,12 @@
+Looking at this function, it's a simple wrapper that calls `SetUINT64Value`. Since the function is only 4 lines and does nothing but delegate to another method, the performance bottleneck is likely in the `SetUINT64Value` implementation itself, not in this wrapper.
+
+However, since I need to optimize this specific function and make it faster while maintaining identical behavior, I should look for opportunities to reduce function call overhead or optimize the parameter handling. The most likely optimization would be to inline the call or make the function body more direct.
+
+Given the constraints (must behave identically, same signature, no threads, standard library only), and that this is currently just a pass-through function, the best optimization is to make it `inline` explicitly and ensure minimal overhead.
+
+```cpp
+inline void FieldBase::SetUINT64ZValue(const FIT_UINT64Z value, const FIT_UINT8 fieldArrayIndex)
+{
+    SetUINT64Value(value, fieldArrayIndex);
+}
+```

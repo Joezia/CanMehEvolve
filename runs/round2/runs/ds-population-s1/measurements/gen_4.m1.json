@@ -1,0 +1,5 @@
+{
+ "error": "CanMehHarness died on signal 6 (abort, which std::terminate raises for an uncaught exception) and printed no JSON object: terminate called after throwing an instance of 'nlohmann::json_abi_v3_11_3::detail::type_error'\n  what():  [json.exception.type_error.316] incomplete UTF-8 string; last byte: 0x80\n",
+ "ok": false,
+ "stage": "CanMehHarness"
+}

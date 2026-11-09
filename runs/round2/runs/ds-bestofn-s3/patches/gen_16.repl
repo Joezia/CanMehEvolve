@@ -1,0 +1,5 @@
+The destructor is an empty user-provided function, so callers must emit a real call to it; defining it as explicitly defaulted makes it non-user-provided, letting the compiler treat it as a no-op and elide the call from derived destructors compiled in this TU.
+
+```cpp
+FieldBase::~FieldBase() = default;
+```

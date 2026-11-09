@@ -1,0 +1,19 @@
+const Profile::MESG* Profile::GetMesg(const FIT_UINT16 num)
+{
+    static FIT_UINT16 index[65536] = {};
+    static bool initialized = false;
+
+    if (!initialized)
+    {
+        for (int i = 0; i < MESGS; i++)
+        {
+            const FIT_UINT16 n = mesgs[i].num;
+            if (index[n] == 0)
+                index[n] = static_cast<FIT_UINT16>(i + 1);
+        }
+        initialized = true;
+    }
+
+    const FIT_UINT16 idx = index[num];
+    return idx ? &mesgs[idx - 1] : NULL;
+}

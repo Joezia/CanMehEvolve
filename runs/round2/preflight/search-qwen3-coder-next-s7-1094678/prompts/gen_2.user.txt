@@ -1,0 +1,20 @@
+File: src/fit_field.cpp
+Function: Field::GetType (10 lines)
+One full decode of the four files takes about 359.4 ms in the stock build.
+Time of the current version of the whole library relative to stock: 1.001 (below 1.0 is faster). Best measured so far: 1.000.
+
+Current text of the function:
+```cpp
+FIT_UINT8 Field::GetType() const
+{
+    if ( type != FIT_UINT8_INVALID )
+        return type;
+
+    if ((profile == NULL) || (profileIndex >= profile->numFields))
+        return FIT_UINT8_INVALID;
+
+    return profile->fields[profileIndex].type;
+}
+
+```
+Return the faster replacement now.

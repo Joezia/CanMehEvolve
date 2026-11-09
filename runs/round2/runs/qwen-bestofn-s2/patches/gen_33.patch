@@ -1,0 +1,47 @@
+--- a/src/fit_profile.cpp
++++ b/src/fit_profile.cpp
+@@ -11,6 +11,9 @@
+ 
+ 
+ #include "fit_profile.hpp"
++#include <algorithm>
++#include <cstddef>
++#include "mesg_num.def"
+ 
+ namespace fit
+ {
+@@ -3055,15 +3058,27 @@
+    { NULL, "pad", FIT_MESG_NUM_PAD, 0 },
+ };
+ 
++
+ const Profile::MESG* Profile::GetMesg(const FIT_UINT16 num)
+ {
+-    for (int i = 0; i < MESGS; i++)
+-    {
+-        if (mesgs[i].num == num)
+-            return &mesgs[i];
+-    }
+-
+-    return NULL;
++    static const FIT_UINT16 sorted_nums[MESGS] = {
++#define X(n) n,
++#undef X
++    };
++    static const Profile::MESG* mesg_ptrs[MESGS];
++    static bool initialized = []() {
++        for (size_t i = 0; i < MESGS; ++i) {
++            mesg_ptrs[i] = &mesgs[i];
++        }
++        std::sort(mesg_ptrs, mesg_ptrs + MESGS,
++            [](const Profile::MESG* a, const Profile::MESG* b) { return a->num < b->num; });
++        return true;
++    }();
++    
++    const Profile::MESG** found = std::lower_bound(mesg_ptrs, mesg_ptrs + MESGS, num,
++        [](const Profile::MESG* m, FIT_UINT16 target) { return m->num < target; });
++    
++    return (found != mesg_ptrs + MESGS && (*found)->num == num) ? *found : NULL;
+ }
+ 
+ const Profile::MESG* Profile::GetMesg(const std::string& name)

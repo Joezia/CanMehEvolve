@@ -1,0 +1,6 @@
+{
+ "error": "/home/z/zhouzia/Workspace/CanMehEvolve/build/work-1096274/tree/src/fit_field_base.cpp: In member function ‘FIT_UINT8 fit::FieldBase::GetNumValues() const’:\n/home/z/zhouzia/Workspace/CanMehEvolve/build/work-1096274/tree/src/fit_field_base.cpp:105:9: error: ‘num’ was not declared in this scope; did you mean ‘enum’?\n  105 |     if (num == FIT_UINT8_INVALID)\n      |         ^~~\n      |         enum\n/home/z/zhouzia/Workspace/CanMehEvolve/build/work-1096274/tree/src/fit_field_base.cpp:108:11: error: ‘FIT_BASE_TYPE’ does not name a type; did you mean ‘FIT_BASE_TYPES’?\n  108 |     const FIT_BASE_TYPE fieldType = GetType();\n      |           ^~~~~~~~~~~~~\n      |           FIT_BASE_TYPES\n/home/z/zhouzia/Workspace/CanMehEvolve/build/work-1096274/tree/src/fit_field_base.cpp:109:9: error: ‘fieldType’ was not declared in this scope\n  109 |     if (fieldType != FIT_BASE_TYPE_STRING)\n      |         ^~~~~~~~~\n",
+ "ok": false,
+ "rebuilt": 3,
+ "stage": "compile"
+}

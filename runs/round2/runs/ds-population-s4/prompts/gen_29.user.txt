@@ -1,0 +1,91 @@
+File: src/fit_mesg.cpp
+Function: Mesg::SetFieldSINT16Value (12 lines)
+One full decode of the four files takes about 358.3 ms in the stock build.
+Time of the current version of the whole library relative to stock: 0.894 (below 1.0 is faster). Best measured so far: 0.871.
+
+Your previous attempt failed:
+Stage 'compile' rejected it: /home/z/zhouzia/Workspace/CanMehEvolve/build/work-1095171/tree/src/fit_mesg.cpp: In member function ‘void fit::Mesg::SetFieldSINT16Value(FIT_UINT8, FIT_SINT16, FIT_UINT8, FIT_UINT16)’:
+/home/z/zhouzia/Workspace/CanMehEvolve/build/work-1095171/tree/src/fit_mesg.cpp:690:45: error: ‘mesgNum’ was not declared in this scope
+  690 |         auto mesgProfile = Profile::GetMesg(mesgNum);
+      |                                             ^~~~~~~
+/home/z/zhouzia/Workspace/CanMehEvolve/build/work-1095171/tree/src/fit_mesg.cpp:694:38: error: ‘GetMesgField’ is not a member of ‘fit::Profile’
+  694 |         auto fieldProfile = Profile::GetMesgField(mesgProfile, fieldNum);
+      |                                      ^~~~~~~~~~~~
+/home/z/zhouzia/Workspace/CanMehEvolve/build/work-1095171/tree/src/fit_mesg.cpp:701:37: error: ‘class std::vector<fit::Field>’ has no member named ‘lower_bound’
+  701 |         auto fieldIterator = fields.lower_bound(fieldNum);
+      |                                     ^~~~~~~~~~~
+/home/z/zhouzia/Workspace/CanMehEvolve/build/work-1095171/tree/src/fit_mesg.cpp:709:32: error: ‘class std::vector<fit::Field>’ has no member named ‘emplace_hint’; did you mean ‘emplace_back’?
+  709 |         fieldIterator = fields.emplace_hint(fieldIterator, fieldNum, field);
+      |                                ^~~~~~~~~~~~
+      |                                emplace_back
+/home/z/zhouzia/Workspace/CanMehEvolve/build/work-1095171/tree/src/fit_m
+... [truncated]
+The rejected replacement was:
+```cpp
+void Mesg::SetFieldSINT16Value(const FIT_UINT8 fieldNum, const FIT_SINT16 value, const FIT_UINT8 fieldArrayIndex, const FIT_UINT16 subFieldIndex)
+{
+    if (subFieldIndex != FIT_SUBFIELD_INDEX_MAIN_FIELD)
+    {
+        auto mesgProfile = Profile::GetMesg(mesgNum);
+        if (mesgProfile == FIT_NULL)
+            return;
+
+        auto fieldProfile = Profile::GetMesgField(mesgProfile, fieldNum);
+        if (fieldProfile == FIT_NULL)
+            return;
+
+        if (subFieldIndex >= fieldProfile->numSubFields)
+            return;
+
+        auto fieldIterator = fields.lower_bound(fieldNum);
+        if (fieldIterator != fields.end() && fieldIterator->first == fieldNum)
+        {
+            fieldIterator->second.SetSINT16Value(value, fieldArrayIndex);
+            return;
+        }
+
+        Field field(fieldNum, *fieldProfile);
+        fieldIterator = fields.emplace_hint(fieldIterator, fieldNum, field);
+        fieldIterator->second.SetSINT16Value(value, fieldArrayIndex);
+        return;
+    }
+
+    auto fieldIterator = fields.lower_bound(fieldNum);
+    if (fieldIterator != fields.end() && fieldIterator->first == fieldNum)
+    {
+        fieldIterator->second.SetSINT16Value(value, fieldArrayIndex);
+        return;
+    }
+
+    auto mesgProfile = Profile::GetMesg(mesgNum);
+    if (mesgProfile == FIT_NULL)
+        return;
+
+    auto fieldProfile = Profile::GetMesgField(mesgProfile, fieldNum);
+    if (fieldProfile == FIT_NULL)
+        return;
+
+    Field field(fieldNum, *fieldProfile);
+    fieldIterator = fields.emplace_hint(fieldIterator, fieldNum, field);
+    fieldIterator->second.SetSINT16Value(value, fieldArrayIndex);
+}
+
+```
+
+Current text of the function:
+```cpp
+void Mesg::SetFieldSINT16Value(const FIT_UINT8 fieldNum, const FIT_SINT16 value, const FIT_UINT8 fieldArrayIndex, const FIT_UINT16 subFieldIndex)
+{
+    if (!CanSupportSubField(fieldNum, subFieldIndex))
+        return;
+
+    Field *field = AddField(fieldNum);
+
+    if (field == FIT_NULL)
+        return;
+
+    return field->SetSINT16Value(value, fieldArrayIndex);
+}
+
+```
+Return the faster replacement now.

@@ -1,0 +1,10 @@
+I added a `__builtin_expect` branch hint so the compiler lays out the common valid-field path as fall-through while keeping the null/out-of-range guard identical, reducing taken-branch overhead on the hot decode path.
+
+```cpp
+FIT_UINT8 Field::GetNum(void) const
+{
+    if (__builtin_expect((profile == NULL) || (profileIndex >= profile->numFields), 0))
+        return FIT_FIELD_NUM_INVALID;
+    return profile->fields[profileIndex].num;
+}
+```

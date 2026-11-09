@@ -1,0 +1,38 @@
+template <typename TTo, typename TFrom>
+TTo FieldBase::ConvertBaseType(const FIT_UINT8 fieldArrayIndex, const FIT_UINT8 toBaseType) const
+{
+    const FIT_UINT8 type = GetType();
+    TFrom value = GetValue<TFrom>(fieldArrayIndex);
+
+    if (std::is_same<TTo, TFrom>::value && toBaseType == type)
+        return value;
+
+    FIT_CONST_UINT8_PTR invalid = baseTypeInvalids[type & FIT_BASE_TYPE_NUM_MASK];
+
+    bool isInvalid;
+    if (sizeof(TFrom) == 1) {
+        isInvalid = *reinterpret_cast<const FIT_UINT8*>(&value) == *invalid;
+    } else if (sizeof(TFrom) == 2) {
+        FIT_UINT16 v, i;
+        std::memcpy(&v, &value, 2);
+        std::memcpy(&i, invalid, 2);
+        isInvalid = (v == i);
+    } else if (sizeof(TFrom) == 4) {
+        FIT_UINT32 v, i;
+        std::memcpy(&v, &value, 4);
+        std::memcpy(&i, invalid, 4);
+        isInvalid = (v == i);
+    } else if (sizeof(TFrom) == 8) {
+        std::uint64_t v, i;
+        std::memcpy(&v, &value, 8);
+        std::memcpy(&i, invalid, 8);
+        isInvalid = (v == i);
+    } else {
+        isInvalid = (std::memcmp(&value, invalid, sizeof(TFrom)) == 0);
+    }
+
+    if (isInvalid)
+        return *reinterpret_cast<const TTo*>(baseTypeInvalids[toBaseType & FIT_BASE_TYPE_NUM_MASK]);
+
+    return static_cast<TTo>(value);
+}

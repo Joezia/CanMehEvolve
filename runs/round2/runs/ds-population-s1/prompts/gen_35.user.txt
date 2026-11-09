@@ -1,0 +1,45 @@
+File: src/fit_field.cpp
+Function: Field::GetNumComponents (6 lines)
+One full decode of the four files takes about 358.6 ms in the stock build.
+Time of the current version of the whole library relative to stock: 0.859 (below 1.0 is faster). Best measured so far: 0.860.
+
+Your previous attempt failed:
+Stage 'compile' rejected it: /home/z/zhouzia/Workspace/CanMehEvolve/build/work-1095286/tree/src/fit_field.cpp: In member function ‘virtual FIT_UINT16 fit::Field::GetNumComponents() const’:
+/home/z/zhouzia/Workspace/CanMehEvolve/build/work-1095286/tree/src/fit_field.cpp:188:30: error: cannot convert ‘const fit::Profile::MESG* const’ to ‘const fit::Profile* const’ in initialization
+  188 |     const Profile* const p = profile;
+      |                              ^~~~~~~
+      |                              |
+      |                              const fit::Profile::MESG* const
+/home/z/zhouzia/Workspace/CanMehEvolve/build/work-1095286/tree/src/fit_field.cpp:192:36: error: ‘const class fit::Profile’ has no member named ‘numFields’
+  192 |     if (__builtin_expect(idx >= p->numFields, 0))
+      |                                    ^~~~~~~~~
+/home/z/zhouzia/Workspace/CanMehEvolve/build/work-1095286/tree/src/fit_field.cpp:194:15: error: ‘const class fit::Profile’ has no member named ‘fields’
+  194 |     return p->fields[idx].numComponents;
+      |               ^~~~~~
+
+The rejected replacement was:
+```cpp
+FIT_UINT16 Field::GetNumComponents(void) const
+{
+    const Profile* const p = profile;
+    if (__builtin_expect(p == NULL, 0))
+        return 0;
+    const FIT_UINT16 idx = profileIndex;
+    if (__builtin_expect(idx >= p->numFields, 0))
+        return 0;
+    return p->fields[idx].numComponents;
+}
+
+```
+
+Current text of the function:
+```cpp
+FIT_UINT16 Field::GetNumComponents(void) const
+{
+    if ((profile == NULL) || (profileIndex >= profile->numFields))
+        return 0;
+    return profile->fields[profileIndex].numComponents;
+}
+
+```
+Return the faster replacement now.

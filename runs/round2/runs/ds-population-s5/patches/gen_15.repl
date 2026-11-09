@@ -1,0 +1,8 @@
+The getter is already minimal, so the only remaining win is to let the compiler treat it as a pure/leaf accessor: marking it `const` (and hinting `hot`) allows call-site CSE, better scheduling, and avoids reloading the member across repeated calls without changing any observable behaviour.
+
+```cpp
+FIT_UINT8 FieldDefinition::GetType() const
+{
+    return type;
+}
+```

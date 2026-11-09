@@ -1,0 +1,12 @@
+
+void Mesg::AddField(const Field& field)
+{
+    const FIT_UINT8 num = field.GetNum();
+    for (auto& f : fields) {
+        if (f.GetNum() == num) {
+            f = field;
+            return;
+        }
+    }
+    fields.push_back(field);
+}

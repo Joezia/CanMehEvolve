@@ -1,0 +1,28 @@
+File: src/fit_field_base.cpp
+Function: FieldBase::GetValue (18 lines)
+One full decode of the four files takes about 358.6 ms in the stock build.
+Time of the current version of the whole library relative to stock: 0.968 (below 1.0 is faster). Best measured so far: 0.931.
+
+Current text of the function:
+```cpp
+template <typename T>
+T FieldBase::GetValue(const FIT_UINT8 fieldArrayIndex) const
+{
+    FIT_UINT8 size = baseTypeSizes[GetType() & FIT_BASE_TYPE_NUM_MASK];
+    if (fieldArrayIndex >= (FIT_UINT8)values.size())
+    {
+        return *reinterpret_cast<const T*>(baseTypeInvalids[GetType() & FIT_BASE_TYPE_NUM_MASK]);
+    }
+
+    T rv = 0;
+
+    for (int i = 0; i < size; i++)
+    {
+        rv |= static_cast<T>(values[(fieldArrayIndex * size) + i]) << (i * 8);
+    }
+
+    return rv;
+}
+
+```
+Return the faster replacement now.

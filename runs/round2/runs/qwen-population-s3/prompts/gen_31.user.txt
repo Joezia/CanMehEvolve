@@ -1,0 +1,44 @@
+File: src/fit_video_description_mesg.hpp
+Function: SetText (4 lines)
+One full decode of the four files takes about 358.3 ms in the stock build.
+Time of the current version of the whole library relative to stock: 0.992 (below 1.0 is faster). Best measured so far: 0.988.
+
+Your previous attempt failed:
+Stage 'compile' rejected it: In file included from /home/z/zhouzia/Workspace/CanMehEvolve/build/work-1095835/tree/src/fit_video_description_mesg_listener.hpp:16,
+                 from /home/z/zhouzia/Workspace/CanMehEvolve/build/work-1095835/tree/src/fit_mesg_broadcaster.hpp:81,
+                 from /home/z/zhouzia/Workspace/CanMehEvolve/build/work-1095835/tree/src/fit_buffered_mesg_broadcaster.hpp:17,
+                 from /home/z/zhouzia/Workspace/CanMehEvolve/build/work-1095835/tree/src/fit_buffered_mesg_broadcaster.cpp:14:
+/home/z/zhouzia/Workspace/CanMehEvolve/build/work-1095835/tree/src/fit_video_description_mesg.hpp:135:1: error: stray ‘`’ in program
+  135 | ```cpp
+      | ^
+/home/z/zhouzia/Workspace/CanMehEvolve/build/work-1095835/tree/src/fit_video_description_mesg.hpp:135:2: error: stray ‘`’ in program
+  135 | ```cpp
+      |  ^
+/home/z/zhouzia/Workspace/CanMehEvolve/build/work-1095835/tree/src/fit_video_description_mesg.hpp:135:3: error: stray ‘`’ in program
+  135 | ```cpp
+      |   ^
+/home/z/zhouzia/Workspace/CanMehEvolve/build/work-1095835/tree/src/fit_video_description_mesg.hpp:135:4: error: ‘cpp’ does not name a type
+  135 | ```cpp
+      |    ^~~
+
+The rejected replacement was:
+```cpp
+
+```cpp
+    void SetText(FIT_WSTRING text)
+    {
+        const FIT_WSTRING& ref = text;
+        SetFieldSTRINGValue(1, ref, 0);
+    }
+
+```
+
+Current text of the function:
+```cpp
+    void SetText(FIT_WSTRING text)
+    {
+        SetFieldSTRINGValue(1, text, 0);
+    }
+
+```
+Return the faster replacement now.

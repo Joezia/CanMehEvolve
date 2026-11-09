@@ -1,0 +1,13 @@
+The generic `GetFieldUINT16Value` performs subfield dispatch for a fixed main field; accessing field 61 directly avoids that extra lookup while preserving the same invalid/type checks.
+
+```cpp
+    FIT_UINT16 GetRepetitionNum(void) const
+    {
+        const Field* field = GetField(61);
+        if (field && (field->GetType() == FIT_BASE_TYPE_UINT16))
+        {
+            return field->GetValueUINT16(0);
+        }
+        return FIT_UINT16_INVALID;
+    }
+```

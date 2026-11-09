@@ -1,0 +1,41 @@
+I replaced the indexed loop with a pointer walk unrolled four fields at a time plus a switch for the remaining 0–3 fields, cutting loop overhead for the short field lists typical of FIT messages.
+
+```cpp
+FIT_BOOL Mesg::HasField(const int fieldNum) const
+{
+    const int n = (int)fields.size();
+    if (n <= 0)
+        return FIT_FALSE;
+
+    const Field* p = fields.data();
+    const Field* const end = p + n;
+
+    while (end - p >= 4)
+    {
+        if (p[0].GetNum() == fieldNum) return FIT_TRUE;
+        if (p[1].GetNum() == fieldNum) return FIT_TRUE;
+        if (p[2].GetNum() == fieldNum) return FIT_TRUE;
+        if (p[3].GetNum() == fieldNum) return FIT_TRUE;
+        p += 4;
+    }
+
+    switch (end - p)
+    {
+    case 3:
+        if (p[0].GetNum() == fieldNum) return FIT_TRUE;
+        ++p;
+        // fall through
+    case 2:
+        if (p[0].GetNum() == fieldNum) return FIT_TRUE;
+        ++p;
+        // fall through
+    case 1:
+        if (p[0].GetNum() == fieldNum) return FIT_TRUE;
+        // fall through
+    default:
+        break;
+    }
+
+    return FIT_FALSE;
+}
+```

@@ -1,0 +1,12 @@
+I hoisted the `profile` pointer into a local and added `__builtin_expect` hints so the compiler lays out the common valid-field path as straight-line fall-through, keeping the two dependent loads on the hot path and pushing the rare invalid branches out of line.
+
+```cpp
+FIT_UINT8 Field::GetNum(void) const
+{
+    const auto p = profile;
+    if (__builtin_expect(p == NULL, 0) ||
+        __builtin_expect(profileIndex >= p->numFields, 0))
+        return FIT_FIELD_NUM_INVALID;
+    return p->fields[profileIndex].num;
+}
+```

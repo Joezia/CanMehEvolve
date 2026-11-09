@@ -1,0 +1,13 @@
+Cached the profile pointer and added `__builtin_expect` hints so the rare null/out-of-range returns are placed out of line, keeping the hot decode path straight-line.
+
+```cpp
+FIT_FLOAT64 Field::GetScale() const
+{
+    const auto* p = profile;
+    if (__builtin_expect(p == NULL, 0))
+        return 1.0;
+    if (__builtin_expect(profileIndex >= p->numFields, 0))
+        return 1.0;
+    return p->fields[profileIndex].scale;
+}
+```

@@ -1,0 +1,8 @@
+The setter is already a minimal inline wrapper around `SetFieldFLOAT32Value` with constant subfield arguments, so there is no redundant work to remove; keeping it identical preserves behavior and the compiler already inlines it into callers.
+
+```cpp
+    void SetTotalFractionalAscent(FIT_FLOAT32 totalFractionalAscent)
+    {
+        SetFieldFLOAT32Value(89, totalFractionalAscent, 0, FIT_SUBFIELD_INDEX_MAIN_FIELD);
+    }
+```

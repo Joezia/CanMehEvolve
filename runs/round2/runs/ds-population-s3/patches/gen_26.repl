@@ -1,0 +1,8 @@
+The function is already a single compare-and-set with no branches or loads beyond the member; the only safe micro-change is to make the boolean-to-`FIT_BOOL` conversion explicit so the compiler emits one `cmp`/`setne` (plus `movzx` if needed) without any implicit-conversion warning paths, keeping identical semantics for every input.
+
+```cpp
+FIT_BOOL Field::IsValid(void) const
+{
+    return static_cast<FIT_BOOL>(profileIndex != FIT_UINT16_INVALID);
+}
+```

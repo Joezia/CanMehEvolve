@@ -1,0 +1,177 @@
+{
+  "113": {
+    "accepted": 0,
+    "attempts": 3,
+    "best_gain": 0.0,
+    "file": "src/fit_field.cpp",
+    "label": "Field::Field"
+  },
+  "122": {
+    "accepted": 0,
+    "attempts": 1,
+    "best_gain": 0.0,
+    "file": "src/fit_field.cpp",
+    "label": "Field::GetNum"
+  },
+  "123": {
+    "accepted": 1,
+    "attempts": 2,
+    "best_gain": 0.0007401099847716974,
+    "file": "src/fit_field.cpp",
+    "label": "Field::GetType"
+  },
+  "127": {
+    "accepted": 0,
+    "attempts": 2,
+    "best_gain": 0.0,
+    "file": "src/fit_field.cpp",
+    "label": "Field::GetNumComponents"
+  },
+  "1270": {
+    "accepted": 0,
+    "attempts": 1,
+    "best_gain": 0.0,
+    "file": "src/fit_device_settings_mesg.hpp",
+    "label": "GetNumTimeMode"
+  },
+  "128": {
+    "accepted": 0,
+    "attempts": 1,
+    "best_gain": 0.0,
+    "file": "src/fit_field.cpp",
+    "label": "Field::GetNumSubFields"
+  },
+  "134": {
+    "accepted": 1,
+    "attempts": 18,
+    "best_gain": 0.053884449801616774,
+    "file": "src/fit_field_base.cpp",
+    "label": "FieldBase::FieldBase"
+  },
+  "139": {
+    "accepted": 1,
+    "attempts": 1,
+    "best_gain": 0.0005638885296702645,
+    "file": "src/fit_field_base.cpp",
+    "label": "FieldBase::GetScale"
+  },
+  "143": {
+    "accepted": 1,
+    "attempts": 2,
+    "best_gain": 0.013711968415763054,
+    "file": "src/fit_field_base.cpp",
+    "label": "FieldBase::GetNumValues"
+  },
+  "174": {
+    "accepted": 0,
+    "attempts": 1,
+    "best_gain": 0.0,
+    "file": "src/fit_field_base.cpp",
+    "label": "FieldBase::AddRawValue"
+  },
+  "192": {
+    "accepted": 0,
+    "attempts": 1,
+    "best_gain": 0.0,
+    "file": "src/fit_field_base.cpp",
+    "label": "FieldBase::Read"
+  },
+  "213": {
+    "accepted": 2,
+    "attempts": 2,
+    "best_gain": 0.0008988516005832281,
+    "file": "src/fit_mesg.cpp",
+    "label": "Mesg::Mesg"
+  },
+  "2186": {
+    "accepted": 0,
+    "attempts": 1,
+    "best_gain": 0.0,
+    "file": "src/fit_hsa_body_battery_data_mesg.hpp",
+    "label": "SetTimestamp"
+  },
+  "234": {
+    "accepted": 0,
+    "attempts": 1,
+    "best_gain": 0.0,
+    "file": "src/fit_mesg.cpp",
+    "label": "Mesg::GetField"
+  },
+  "242": {
+    "accepted": 1,
+    "attempts": 2,
+    "best_gain": 0.002735396251571376,
+    "file": "src/fit_mesg.cpp",
+    "label": "Mesg::GetActiveSubFieldIndexByFieldIndex"
+  },
+  "26": {
+    "accepted": 1,
+    "attempts": 1,
+    "best_gain": 4.703168803465996e-05,
+    "file": "src/fit_crc.cpp",
+    "label": "CRC::Get16"
+  },
+  "3270": {
+    "accepted": 0,
+    "attempts": 1,
+    "best_gain": 0.0,
+    "file": "src/fit_record_mesg.hpp",
+    "label": "GetTimeFromCourse"
+  },
+  "4260": {
+    "accepted": 1,
+    "attempts": 1,
+    "best_gain": 0.0011611969010846268,
+    "file": "src/fit_session_mesg.hpp",
+    "label": "IsMaxSaturatedHemoglobinPercentValid"
+  },
+  "4885": {
+    "accepted": 0,
+    "attempts": 2,
+    "best_gain": 0.0,
+    "file": "src/fit_time_in_zone_mesg.hpp",
+    "label": "SetFunctionalThresholdPower"
+  },
+  "5": {
+    "accepted": 0,
+    "attempts": 1,
+    "best_gain": 0.0,
+    "file": "src/fit_accumulated_field.cpp",
+    "label": "AccumulatedField::AccumulatedField"
+  },
+  "555": {
+    "accepted": 0,
+    "attempts": 1,
+    "best_gain": 0.0,
+    "file": "src/fit_mesg_definition.cpp",
+    "label": "MesgDefinition::GetFieldByIndex"
+  },
+  "574": {
+    "accepted": 2,
+    "attempts": 4,
+    "best_gain": 0.04757339434126551,
+    "file": "src/fit_profile.cpp",
+    "label": "Profile::GetMesg"
+  },
+  "576": {
+    "accepted": 0,
+    "attempts": 2,
+    "best_gain": 0.0,
+    "file": "src/fit_profile.cpp",
+    "label": "Profile::GetFieldIndex"
+  },
+  "578": {
+    "accepted": 0,
+    "attempts": 2,
+    "best_gain": 0.0,
+    "file": "src/fit_profile.cpp",
+    "label": "Profile::GetField"
+  },
+  "84": {
+    "accepted": 0,
+    "attempts": 2,
+    "best_gain": 0.0,
+    "file": "src/fit_developer_field_definition.cpp",
+    "label": "DeveloperFieldDefinition::~DeveloperFieldDefinition"
+  }
+}

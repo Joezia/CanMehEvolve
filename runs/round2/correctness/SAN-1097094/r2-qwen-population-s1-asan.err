@@ -1,0 +1,16 @@
+/home/z/zhouzia/.sanitize-scratch/var-asan-r2-qwen-population-s1/src/fit_field_base.cpp:1143:68: runtime error: left shift of negative value -115
+    #0 0x57c750ad013e in signed char fit::FieldBase::GetValue<signed char>(unsigned char) const /home/z/zhouzia/.sanitize-scratch/var-asan-r2-qwen-population-s1/src/fit_field_base.cpp:1143
+    #1 0x57c750ab8018 in double fit::FieldBase::ConvertBaseType<double, signed char>(unsigned char, unsigned char) const /home/z/zhouzia/.sanitize-scratch/var-asan-r2-qwen-population-s1/src/fit_field_base.cpp:1154
+    #2 0x57c750ab8018 in fit::FieldBase::GetFLOAT64Value(unsigned char, unsigned short) const /home/z/zhouzia/.sanitize-scratch/var-asan-r2-qwen-population-s1/src/fit_field_base.cpp:369
+    #3 0x57c7509c45eb in fold /home/z/zhouzia/Workspace/CanMehEvolve/scripts/followup/driver.cpp:54
+    #4 0x57c7509c5226 in OnMesg /home/z/zhouzia/Workspace/CanMehEvolve/scripts/followup/driver.cpp:37
+    #5 0x57c750a66295 in fit::Decode::Resume() /home/z/zhouzia/.sanitize-scratch/stock/src/fit_decode.cpp:300
+    #6 0x57c750a67d0b in fit::Decode::Read(std::istream*) /home/z/zhouzia/.sanitize-scratch/stock/src/fit_decode.cpp:191
+    #7 0x57c750a67ed1 in fit::Decode::Read(std::istream*, fit::MesgListener*, fit::MesgDefinitionListener*, fit::DeveloperFieldDescriptionListener*) /home/z/zhouzia/.sanitize-scratch/stock/src/fit_decode.cpp:209
+    #8 0x57c750a67fb9 in fit::Decode::Read(std::istream&, fit::MesgListener&) /home/z/zhouzia/.sanitize-scratch/stock/src/fit_decode.cpp:214
+    #9 0x57c7509ccf02 in decodeOne /home/z/zhouzia/Workspace/CanMehEvolve/scripts/followup/driver.cpp:68
+    #10 0x57c7509d0f31 in main /home/z/zhouzia/Workspace/CanMehEvolve/scripts/followup/driver.cpp:101
+    #11 0x74183e02a1c9 in __libc_start_call_main ../sysdeps/nptl/libc_start_call_main.h:58
+    #12 0x74183e02a28a in __libc_start_main_impl ../csu/libc-start.c:360
+    #13 0x57c7509c1484 in _start (/home/z/zhouzia/.sanitize-scratch/drv-asan-r2-qwen-population-s1+0x857484) (BuildId: 88df57ad3caa78ce9d52a9fac886e695bad325c9)
+

@@ -1,0 +1,30 @@
+--- a/src/fit_profile.cpp
++++ b/src/fit_profile.cpp
+@@ -11,6 +11,7 @@
+ 
+ 
+ #include "fit_profile.hpp"
++#include <algorithm>
+ 
+ namespace fit
+ {
+@@ -3055,14 +3056,13 @@
+    { NULL, "pad", FIT_MESG_NUM_PAD, 0 },
+ };
+ 
++
+ const Profile::MESG* Profile::GetMesg(const FIT_UINT16 num)
+ {
+-    for (int i = 0; i < MESGS; i++)
+-    {
+-        if (mesgs[i].num == num)
+-            return &mesgs[i];
+-    }
+-
++    static const auto comp = [](const Profile::MESG& a, FIT_UINT16 b) { return a.num < b; };
++    auto it = std::lower_bound(mesgs, mesgs + MESGS, num, comp);
++    if (it != mesgs + MESGS && it->num == num)
++        return &(*it);
+     return NULL;
+ }
+ 

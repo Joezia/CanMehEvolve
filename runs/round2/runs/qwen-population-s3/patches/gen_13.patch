@@ -1,0 +1,114 @@
+--- a/src/fit_field.cpp
++++ b/src/fit_field.cpp
+@@ -15,6 +15,7 @@
+ #include "fit_field.hpp"
+ #include "fit_mesg.hpp"
+ #include "fit_unicode.hpp"
++#include <cstddef>
+ 
+ namespace fit
+ {
+@@ -97,12 +98,13 @@
+     return profile->fields[profileIndex].num;
+ }
+ 
++
+ FIT_UINT8 Field::GetType() const
+ {
+-    if ( type != FIT_UINT8_INVALID )
++    if (type != FIT_UINT8_INVALID)
+         return type;
+ 
+-    if ((profile == NULL) || (profileIndex >= profile->numFields))
++    if (!profile || profileIndex >= profile->numFields)
+         return FIT_UINT8_INVALID;
+ 
+     return profile->fields[profileIndex].type;
+--- a/src/fit_field_base.cpp
++++ b/src/fit_field_base.cpp
+@@ -16,6 +16,7 @@
+ #include "fit_field_base.hpp"
+ #include "fit_mesg.hpp"
+ #include "fit_unicode.hpp"
++#include <cstring>
+ 
+ namespace fit
+ {
+@@ -726,10 +727,11 @@
+ 
+ // rawValue is already the correct quantity (scale/offsets applied) but possibly not the
+ // correct underlying type
++
+ void FieldBase::AddRawValue(const FIT_FLOAT64 rawValue, const FIT_UINT8 fieldArrayIndex)
+ {
+     FIT_FLOAT64 roundedValue = FieldBase::Round(rawValue);
+-    switch ( GetType() )
++    switch (GetType())
+     {
+         case FIT_BASE_TYPE_BYTE:
+         case FIT_BASE_TYPE_ENUM:
+@@ -753,34 +755,31 @@
+ 
+         case FIT_BASE_TYPE_FLOAT32:
+         {
+-            FIT_FLOAT32 float32Value = (FIT_FLOAT32)roundedValue;
++            FIT_FLOAT32 float32Value = static_cast<FIT_FLOAT32>(roundedValue);
+             FIT_UINT32 uint32Value;
+-            memcpy(&uint32Value, &float32Value, sizeof(FIT_FLOAT32));
++            std::memcpy(&uint32Value, &float32Value, sizeof(FIT_FLOAT32));
+             SetUINT32Value(uint32Value, fieldArrayIndex);
+             break;
+         }
+ 
+         case FIT_BASE_TYPE_FLOAT64:
+         {
+-            if ((FIT_UINT8)values.size() < ((fieldArrayIndex + 1) * sizeof(FIT_FLOAT64)))
+-            {
+-                values.resize((fieldArrayIndex + 1) * 8);
+-            }
+-
+-            for (size_t i = 0; i < sizeof(FIT_FLOAT64); i++)
++            const size_t neededSize = (fieldArrayIndex + 1) * 8;
++            if (values.size() < neededSize)
+             {
+-                values[(fieldArrayIndex * sizeof(FIT_FLOAT64) + i)] = (*(((FIT_BYTE *)&rawValue) + i));
++                values.resize(neededSize);
+             }
++            std::memcpy(&values[fieldArrayIndex * 8], &rawValue, 8);
+             break;
+         }
+ 
+         case FIT_BASE_TYPE_SINT64:
+-            SetSINT64Value((FIT_SINT64)rawValue, fieldArrayIndex);
++            SetSINT64Value(*reinterpret_cast<const FIT_SINT64*>(&rawValue), fieldArrayIndex);
+             break;
+ 
+         case FIT_BASE_TYPE_UINT64:
+         case FIT_BASE_TYPE_UINT64Z:
+-            SetUINT64Value((FIT_UINT64)rawValue, fieldArrayIndex);
++            SetUINT64Value(*reinterpret_cast<const FIT_UINT64*>(&rawValue), fieldArrayIndex);
+             break;
+ 
+         default:
+--- a/src/fit_workout_step_mesg.hpp
++++ b/src/fit_workout_step_mesg.hpp
+@@ -14,6 +14,7 @@
+ #define FIT_WORKOUT_STEP_MESG_HPP
+ 
+ #include "fit_mesg.hpp"
++#include <cstdint>
+ 
+ namespace fit
+ {
+@@ -770,9 +771,10 @@
+     // Returns repeat_distance field
+     // Units: m
+     ///////////////////////////////////////////////////////////////////////
++
+     FIT_FLOAT32 GetRepeatDistance(void) const
+     {
+-        return GetFieldFLOAT32Value(4, 0, (FIT_UINT16) Profile::WORKOUT_STEP_MESG_TARGET_VALUE_FIELD_REPEAT_DISTANCE);
++        return GetFieldFLOAT32Value(4, 0, 203);
+     }
+ 
+     ///////////////////////////////////////////////////////////////////////

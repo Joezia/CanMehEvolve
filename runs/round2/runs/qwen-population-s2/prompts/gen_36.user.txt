@@ -1,0 +1,14 @@
+File: src/fit_segment_file_mesg.hpp
+Function: GetNumLeaderType (4 lines)
+One full decode of the four files takes about 358.6 ms in the stock build.
+Time of the current version of the whole library relative to stock: 0.946 (below 1.0 is faster). Best measured so far: 0.946.
+
+Current text of the function:
+```cpp
+    FIT_UINT8 GetNumLeaderType(void) const
+    {
+        return GetFieldNumValues(7, FIT_SUBFIELD_INDEX_MAIN_FIELD);
+    }
+
+```
+Return the faster replacement now.

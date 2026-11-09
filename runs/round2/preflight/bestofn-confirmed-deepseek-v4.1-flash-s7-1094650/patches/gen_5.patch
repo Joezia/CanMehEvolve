@@ -1,0 +1,21 @@
+--- a/src/fit_mesg_broadcaster.cpp
++++ b/src/fit_mesg_broadcaster.cpp
+@@ -765,9 +765,15 @@
+ 
+ void MesgBroadcaster::RemoveListener(NmeaSentenceMesgListener& nmeaSentenceMesgListener)
+ {
+-    std::vector<NmeaSentenceMesgListener *>::iterator it = std::find(nmeaSentenceMesgListeners.begin(), nmeaSentenceMesgListeners.end(), &nmeaSentenceMesgListener);
+-    if (nmeaSentenceMesgListeners.end() != it)
+-    nmeaSentenceMesgListeners.erase(it);
++    std::vector<NmeaSentenceMesgListener *>::iterator it = nmeaSentenceMesgListeners.begin();
++    const std::vector<NmeaSentenceMesgListener *>::iterator end = nmeaSentenceMesgListeners.end();
++    while (it != end && *it != &nmeaSentenceMesgListener)
++        ++it;
++    if (it != end)
++    {
++        std::move(it + 1, end, it);
++        nmeaSentenceMesgListeners.pop_back();
++    }
+ }
+ 
+ 

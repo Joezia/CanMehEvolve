@@ -1,0 +1,6 @@
+{
+ "error": "/home/z/zhouzia/Workspace/CanMehEvolve/build/work-1096028/tree/src/fit_profile.cpp:15:10: fatal error: mesg_nums.in: No such file or directory\n   15 | #include \"mesg_nums.in\"\n      |          ^~~~~~~~~~~~~~\ncompilation terminated.\n",
+ "ok": false,
+ "rebuilt": 1,
+ "stage": "compile"
+}

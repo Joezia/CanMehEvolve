@@ -1,0 +1,10 @@
+```cpp
+#include <utility>
+
+FieldBase::~FieldBase()
+{
+    // Explicitly swap m_values with an empty vector to ensure immediate deallocation
+    // and avoid potential heap fragmentation from delayed destructor cleanup
+    std::vector<FieldBase::Value>().swap(m_values);
+}
+```

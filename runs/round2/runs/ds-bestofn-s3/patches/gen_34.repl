@@ -1,0 +1,8 @@
+Using `fields.data()` with a single conditional pointer expression avoids forming a vector reference and gives the compiler a simpler, more predictable pointer-return path.
+
+```cpp
+FieldDefinition* MesgDefinition::GetFieldByIndex(const FIT_UINT16 index)
+{
+    return (index < fields.size()) ? (fields.data() + index) : FIT_NULL;
+}
+```

@@ -1,0 +1,15 @@
+Cached `GetType()` in a local so the profile lookup runs once instead of twice (the array index previously recomputed it), and reused that value for both the string check and the `baseTypeSizes` lookup.
+
+```cpp
+FIT_UINT8 FieldBase::GetNumValues(void) const
+{
+    if (!IsValid())
+        return 0;
+
+    const FIT_UINT8 type = GetType();
+    if (type != FIT_BASE_TYPE_STRING)
+        return (FIT_UINT8)(values.size() / baseTypeSizes[type & FIT_BASE_TYPE_NUM_MASK]);
+
+    return (FIT_UINT8)stringIndexes.size();
+}
+```

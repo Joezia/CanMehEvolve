@@ -1,0 +1,5 @@
+
+    FIT_UINT8 GetNumLeaderType(void) const
+    {
+        return GetFieldNumValues(7, 0);
+    }

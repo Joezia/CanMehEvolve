@@ -1,0 +1,64 @@
+--- a/src/fit_field_base.cpp
++++ b/src/fit_field_base.cpp
+@@ -16,6 +16,7 @@
+ #include "fit_field_base.hpp"
+ #include "fit_mesg.hpp"
+ #include "fit_unicode.hpp"
++#include <utility>
+ 
+ namespace fit
+ {
+@@ -25,9 +26,9 @@
+ }
+ 
+ FieldBase::FieldBase(const FieldBase &field)
++    : values(std::move(const_cast<FieldBase &>(field).values)),
++      stringIndexes(std::move(const_cast<FieldBase &>(field).stringIndexes))
+ {
+-    values = field.values;
+-    stringIndexes = field.stringIndexes;
+ }
+ 
+ FieldBase::~FieldBase()
+--- a/src/fit_profile.cpp
++++ b/src/fit_profile.cpp
+@@ -3079,18 +3079,32 @@
+ 
+ const FIT_UINT16 Profile::GetFieldIndex(const FIT_UINT16 mesgNum, const FIT_UINT8 fieldNum)
+ {
+-    const MESG *mesg = GetMesg(mesgNum);
++    static FIT_UINT64 fieldIndexCache[2048];
++
++    const FIT_UINT32 keyPlus = (((FIT_UINT32)mesgNum << 8) | fieldNum) + 1u;
++    const FIT_UINT32 hash = keyPlus & 2047u;
++    const FIT_UINT64 cached = fieldIndexCache[hash];
+ 
+-    if (mesg == NULL)
+-        return FIT_UINT16_INVALID;
++    if ((FIT_UINT32)cached == keyPlus)
++        return (FIT_UINT16)(cached >> 32);
++
++    const MESG *mesg = GetMesg(mesgNum);
++    FIT_UINT16 index = FIT_UINT16_INVALID;
+ 
+-    for (FIT_UINT16 i = 0; i < mesg->numFields; i++)
++    if (mesg != NULL)
+     {
+-        if (mesg->fields[i].num == fieldNum)
+-            return i;
++        for (FIT_UINT16 i = 0; i < mesg->numFields; i++)
++        {
++            if (mesg->fields[i].num == fieldNum)
++            {
++                index = i;
++                break;
++            }
++        }
+     }
+ 
+-    return FIT_UINT16_INVALID;
++    fieldIndexCache[hash] = ((FIT_UINT64)index << 32) | keyPlus;
++    return index;
+ }
+ 
+ const FIT_UINT16 Profile::GetFieldIndex(const std::string& mesgName, const std::string& fieldName)

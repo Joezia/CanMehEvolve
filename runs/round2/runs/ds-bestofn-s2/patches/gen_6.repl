@@ -1,0 +1,8 @@
+The check and cast are already minimal, so I collapsed the early-return into a single conditional expression and hinted the valid path as likely, letting the compiler emit a branchless select on the hot decode path.
+
+```cpp
+FIT_UINT8 FieldBase::GetSize(void) const
+{
+    return __builtin_expect(IsValid(), 1) ? (FIT_UINT8)values.size() : (FIT_UINT8)0;
+}
+```

@@ -1,0 +1,9 @@
+The two members are standard vectors, and the member-initializer list already selects each vector's copy constructor, which does exactly one allocation plus a bulk element copy with no temporaries or reallocation. I kept that minimal form (rather than default-constructing and then assigning in the body, which adds a capacity check and redundant pointer setup), so the compiler emits the tightest possible two-vector copy.
+
+```cpp
+FieldBase::FieldBase(const FieldBase &field)
+    : values(field.values)
+    , stringIndexes(field.stringIndexes)
+{
+}
+```

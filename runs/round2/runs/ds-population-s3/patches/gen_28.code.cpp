@@ -1,0 +1,42 @@
+const Profile::MESG* Profile::GetMesg(const FIT_UINT16 num)
+{
+    static FIT_UINT16 index[65536] = { 0 };
+    static FIT_UINT16 max_normal = 0xFFFF;
+
+    auto init = [&]()
+    {
+        FIT_UINT16 mn = 0;
+        for (int i = MESGS - 1; i >= 0; i--)
+        {
+            const FIT_UINT16 n = mesgs[i].num;
+            index[n] = (FIT_UINT16)(i + 1);
+            if (n < 0xFF00 && n > mn) mn = n;
+        }
+        max_normal = mn;
+    };
+
+    if (num < 0xFF00)
+    {
+        if (num <= max_normal)
+        {
+            FIT_UINT16 v = index[num];
+            if (v == 0 && max_normal == 0xFFFF)
+            {
+                init();
+                v = index[num];
+            }
+            return v ? &mesgs[v - 1] : NULL;
+        }
+        return NULL;
+    }
+    else
+    {
+        FIT_UINT16 v = index[num];
+        if (v == 0 && max_normal == 0xFFFF)
+        {
+            init();
+            v = index[num];
+        }
+        return v ? &mesgs[v - 1] : NULL;
+    }
+}

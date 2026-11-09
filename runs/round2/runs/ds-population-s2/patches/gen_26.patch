@@ -1,0 +1,107 @@
+--- a/src/fit_field.cpp
++++ b/src/fit_field.cpp
+@@ -75,7 +75,8 @@
+ 
+ FIT_BOOL Field::GetIsAccumulated() const
+ {
+-    return profile->fields[profileIndex].isAccumulated;
++    const auto* p = profile;
++    return p->fields[profileIndex].isAccumulated;
+ }
+ 
+ FIT_UINT16 Field::GetIndex(void) const
+@@ -92,9 +93,13 @@
+ 
+ FIT_UINT8 Field::GetNum(void) const
+ {
+-    if ((profile == NULL) || (profileIndex >= profile->numFields))
++    const auto* p = profile;
++    if (__builtin_expect(p == NULL, 0))
++        return FIT_FIELD_NUM_INVALID;
++    const FIT_UINT8 index = profileIndex;
++    if (__builtin_expect(index >= p->numFields, 0))
+         return FIT_FIELD_NUM_INVALID;
+-    return profile->fields[profileIndex].num;
++    return p->fields[index].num;
+ }
+ 
+ FIT_UINT8 Field::GetType() const
+--- a/src/fit_field_base.cpp
++++ b/src/fit_field_base.cpp
+@@ -105,8 +105,9 @@
+     if (!IsValid())
+         return 0;
+ 
+-    if (GetType() != FIT_BASE_TYPE_STRING)
+-        return (FIT_UINT8)(values.size() / baseTypeSizes[GetType() & FIT_BASE_TYPE_NUM_MASK]);
++    const FIT_UINT8 type = GetType();
++    if (type != FIT_BASE_TYPE_STRING)
++        return (FIT_UINT8)(values.size() / baseTypeSizes[type & FIT_BASE_TYPE_NUM_MASK]);
+ 
+     return (FIT_UINT8)stringIndexes.size();
+ }
+@@ -849,15 +850,19 @@
+ 
+ void FieldBase::SetUINT32Value(const FIT_UINT32 value, const FIT_UINT8 fieldArrayIndex)
+ {
+-    if ((FIT_UINT8)values.size() < ((fieldArrayIndex + 1) * sizeof(FIT_UINT32)))
+-    {
+-        values.resize((fieldArrayIndex + 1) * sizeof(FIT_UINT32));
+-    }
++    const size_t offset = static_cast<size_t>(fieldArrayIndex) * sizeof(FIT_UINT32);
++    const size_t required = offset + sizeof(FIT_UINT32);
+ 
+-    for (size_t i = 0; i < sizeof(FIT_UINT32); i++)
++    if (static_cast<FIT_UINT8>(values.size()) < required)
+     {
+-        values[(fieldArrayIndex * sizeof(FIT_UINT32)) + i] = ((FIT_BYTE)(value >> (8 * i)));
++        values.resize(required);
+     }
++
++    FIT_BYTE* const p = values.data() + offset;
++    p[0] = static_cast<FIT_BYTE>(value);
++    p[1] = static_cast<FIT_BYTE>(value >> 8);
++    p[2] = static_cast<FIT_BYTE>(value >> 16);
++    p[3] = static_cast<FIT_BYTE>(value >> 24);
+ }
+ 
+ void FieldBase::SetUINT32ZValue(const FIT_UINT32Z value, const FIT_UINT8 fieldArrayIndex)
+--- a/src/fit_goal_mesg.hpp
++++ b/src/fit_goal_mesg.hpp
+@@ -68,7 +68,12 @@
+     ///////////////////////////////////////////////////////////////////////
+     FIT_MESSAGE_INDEX GetMessageIndex(void) const
+     {
+-        return GetFieldUINT16Value(254, 0, FIT_SUBFIELD_INDEX_MAIN_FIELD);
++        const FIT_UINT8 fieldArrayIndex = GetFieldArrayIndex(254, FIT_SUBFIELD_INDEX_MAIN_FIELD);
++        if (fieldArrayIndex != FIT_UINT8_INVALID)
++        {
++            return GetFieldUINT16ValueByIndex(fieldArrayIndex, 0);
++        }
++        return FIT_UINT16_INVALID;
+     }
+ 
+     ///////////////////////////////////////////////////////////////////////
+--- a/src/fit_profile.cpp
++++ b/src/fit_profile.cpp
+@@ -3057,13 +3057,16 @@
+ 
+ const Profile::MESG* Profile::GetMesg(const FIT_UINT16 num)
+ {
+-    for (int i = 0; i < MESGS; i++)
++    static const MESG* lookup[65536];
++    static bool initialized = false;
++    if (!initialized)
+     {
+-        if (mesgs[i].num == num)
+-            return &mesgs[i];
++        for (int i = MESGS - 1; i >= 0; --i)
++            lookup[mesgs[i].num] = &mesgs[i];
++        initialized = true;
+     }
+ 
+-    return NULL;
++    return lookup[num];
+ }
+ 
+ const Profile::MESG* Profile::GetMesg(const std::string& name)

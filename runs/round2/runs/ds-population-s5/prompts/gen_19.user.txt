@@ -1,0 +1,16 @@
+File: src/fit_field.cpp
+Function: Field::GetOffset (6 lines)
+One full decode of the four files takes about 359.5 ms in the stock build.
+Time of the current version of the whole library relative to stock: 0.934 (below 1.0 is faster). Best measured so far: 0.878.
+
+Current text of the function:
+```cpp
+FIT_FLOAT64 Field::GetOffset() const
+{
+    if ((profile == NULL) || (profileIndex >= profile->numFields))
+        return 0;
+    return profile->fields[profileIndex].offset;
+}
+
+```
+Return the faster replacement now.

@@ -1,0 +1,9 @@
+The function is already a single pointer-chase load with no arithmetic to remove, so I kept the exact same access but hoisted the array base into a local to give the compiler a clean single dependent load and avoid any redundant re-evaluation of the member chain.
+
+```cpp
+FIT_BOOL Field::GetIsAccumulated() const
+{
+    const Profile::Field* fields = profile->fields;
+    return fields[profileIndex].isAccumulated;
+}
+```

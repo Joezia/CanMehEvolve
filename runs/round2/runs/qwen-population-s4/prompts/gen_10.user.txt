@@ -1,0 +1,14 @@
+File: src/fit_mesg_broadcaster.cpp
+Function: MesgBroadcaster::AddListener (4 lines)
+One full decode of the four files takes about 358.7 ms in the stock build.
+Time of the current version of the whole library relative to stock: 1.001 (below 1.0 is faster). Best measured so far: 0.986.
+
+Current text of the function:
+```cpp
+void MesgBroadcaster::AddListener(RecordMesgListener& recordMesgListener)
+{
+   recordMesgListeners.push_back(&recordMesgListener);
+}
+
+```
+Return the faster replacement now.

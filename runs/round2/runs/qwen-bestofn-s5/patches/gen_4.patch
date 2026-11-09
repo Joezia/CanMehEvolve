@@ -1,0 +1,24 @@
+--- a/src/fit_field_base.cpp
++++ b/src/fit_field_base.cpp
+@@ -16,6 +16,7 @@
+ #include "fit_field_base.hpp"
+ #include "fit_mesg.hpp"
+ #include "fit_unicode.hpp"
++#include <utility>
+ 
+ namespace fit
+ {
+@@ -24,10 +25,11 @@
+ {
+ }
+ 
++
+ FieldBase::FieldBase(const FieldBase &field)
+ {
+-    values = field.values;
+-    stringIndexes = field.stringIndexes;
++    values = std::move(field.values);
++    stringIndexes = std::move(field.stringIndexes);
+ }
+ 
+ FieldBase::~FieldBase()

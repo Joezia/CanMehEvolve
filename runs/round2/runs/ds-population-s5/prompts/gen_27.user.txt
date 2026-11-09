@@ -1,0 +1,90 @@
+File: src/fit_profile.cpp
+Function: Profile::GetMesg (10 lines)
+One full decode of the four files takes about 359.5 ms in the stock build.
+Time of the current version of the whole library relative to stock: 0.878 (below 1.0 is faster). Best measured so far: 0.876.
+
+Your previous attempt failed:
+Stage 'compile' rejected it: /home/z/zhouzia/Workspace/CanMehEvolve/build/work-1096274/tree/src/fit_profile.cpp: In static member function ‘static const fit::Profile::MESG* fit::Profile::GetMesg(FIT_UINT16)’:
+/home/z/zhouzia/Workspace/CanMehEvolve/build/work-1096274/tree/src/fit_profile.cpp:3062:26: error: local class ‘struct fit::Profile::GetMesg(FIT_UINT16)::HashTable’ shall not have static data member ‘const int fit::Profile::GetMesg(FIT_UINT16)::HashTable::SIZE’ [-fpermissive]
+ 3062 |         static const int SIZE = 1024;
+      |                          ^~~~
+
+The rejected replacement was:
+```cpp
+const Profile::MESG* Profile::GetMesg(const FIT_UINT16 num)
+{
+    struct HashTable
+    {
+        static const int SIZE = 1024;
+        FIT_UINT32 entries[SIZE];
+
+        HashTable()
+        {
+            for (int i = 0; i < SIZE; ++i)
+                entries[i] = 0xFFFFFFFFu;
+
+            for (int i = 0; i < MESGS; ++i)
+            {
+                const FIT_UINT16 n = mesgs[i].num;
+                FIT_UINT16 h = n & (SIZE - 1);
+                while (true)
+                {
+                    FIT_UINT32 e = entries[h];
+                    if (e == 0xFFFFFFFFu)
+                    {
+                        entries[h] = (static_cast<FIT_UINT32>(n) << 16) | static_cast<FIT_UINT16>(i);
+                        break;
+                    }
+                    if ((e >> 16) == n)
+                        break;
+                    h = (h + 1) & (SIZE - 1);
+                }
+            }
+        }
+    };
+
+    static const HashTable table;
+    FIT_UINT16 h = num & (HashTable::SIZE - 1);
+    while (true)
+    {
+        FIT_UINT32 e = table.entries[h];
+        if (e == 0xFFFFFFFFu)
+            return NULL;
+        if ((e >> 16) == num)
+            return &mesgs[e & 0xFFFFu];
+        h = (h + 1) & (HashTable::SIZE - 1);
+    }
+}
+
+```
+
+Current text of the function:
+```cpp
+const Profile::MESG* Profile::GetMesg(const FIT_UINT16 num)
+{
+    struct MesgTable
+    {
+        FIT_UINT16 idx[65536];
+
+        MesgTable()
+        {
+            for (int i = 0; i < 65536; ++i)
+                idx[i] = 0xFFFFu;
+
+            for (int i = 0; i < MESGS; ++i)
+            {
+                const FIT_UINT16 n = mesgs[i].num;
+                if (idx[n] == 0xFFFFu)
+                    idx[n] = static_cast<FIT_UINT16>(i);
+            }
+        }
+    };
+
+    static const MesgTable table;
+    const FIT_UINT16 i = table.idx[num];
+
+    return (i == 0xFFFFu) ? NULL : &mesgs[i];
+}
+
+```
+Return the faster replacement now.

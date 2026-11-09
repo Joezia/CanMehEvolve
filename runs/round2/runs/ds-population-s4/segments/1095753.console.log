@@ -1,0 +1,12 @@
+[run] mode=search host=xcnc1 model_probe={"http_status":200,"model":"deepseek-v4.1-flash-1017","ok":true,"requested_model":"deepseek-v4.1-flash","usage":{"completion_tokens":17,"completion_tokens_details":{"reasoning_tokens":14},"prompt_tokens":36,"prompt_tokens_details":{"cached_tokens":0,"created_cache_tokens":0,"multimodal_tokens":null},"total_tokens":53}}
+[resume] segment 2 continues after generation 31 with 31 requests already sent
+[gen 32/40] region 123 Field::GetType parent=31 ratio=0.882261 CONFIRMED best_confirmed_speedup=1.14973 tokens=312172 t=250s
+[gen 33/40] region 127 Field::GetNumComponents parent=30 ratio=0.869105 CONFIRMED best_confirmed_speedup=1.15061 tokens=315446 t=485s
+[gen 34/40] region 574 Profile::GetMesg parent=33 stage=llm_http best_confirmed_speedup=1.15061 tokens=315446 t=786s
+[gen 35/40] region 134 FieldBase::FieldBase parent=27 stage=llm_http best_confirmed_speedup=1.15061 tokens=315446 t=1087s
+[gen 36/40] region 26 CRC::Get16 parent=33 ratio=0.873962 CONFIRMED best_confirmed_speedup=1.15061 tokens=324213 t=1369s
+[gen 37/40] region 226 Mesg::AddField parent=27 stage=compile best_confirmed_speedup=1.15061 tokens=335602 t=1527s
+[gen 38/40] region 226 Mesg::AddField parent=27 ratio=0.859688 CONFIRMED best_confirmed_speedup=1.16321 tokens=346206 t=1859s
+[gen 39/40] region 2549 GetRepetitionNum parent=27 stage=compile best_confirmed_speedup=1.16321 tokens=358000 t=2009s
+[gen 40/40] region 2549 GetRepetitionNum parent=27 stage=compile best_confirmed_speedup=1.16321 tokens=362359 t=2060s
+[done] {"api_calls":40,"best_confirmed_generation":38,"best_confirmed_speedup":1.1632130383956483,"best_ranked_generation":0,"best_ranked_speedup":1.0,"best_retained_speedup":1.1632130383956483,"complete":true,"completion_tokens":343035,"confirmed_candidates":24,"elapsed_s":11453.39499678,"ended_because":"request budget reached","finished":"2026-11-08T15:43:57+0800","http_attempts":40,"improved_on_parent_candidates":12,"llm_seconds":6522.510566550001,"max_tokens":32768,"mode":"search","outcomes":{"compile":7,"correctness":1,"llm_http":8,"measured":24},"prompt_tokens":19324,"rank_updates":[],"reasoning_tokens":333804,"request_budget":40,"seed":4,"segments":2,"total_tokens":362359,"truncated_replies":0}

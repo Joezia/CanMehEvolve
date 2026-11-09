@@ -1,0 +1,9 @@
+Use the member initializer list so the vectors are copy-constructed directly instead of default-constructed and then assigned, avoiding redundant construction and assignment overhead.
+
+```cpp
+FieldBase::FieldBase(const FieldBase &field)
+    : values(field.values),
+      stringIndexes(field.stringIndexes)
+{
+}
+```

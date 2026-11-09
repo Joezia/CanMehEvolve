@@ -1,0 +1,20 @@
+Replaced the linear scan with a lazily built direct-index lookup table keyed by message number, preserving first-match semantics for duplicates and returning `NULL` for unknown numbers. This makes `GetMesg` O(1) instead of O(MESGS), which is much faster for the full-domain sweep and repeated decode lookups.
+
+```cpp
+const Profile::MESG* Profile::GetMesg(const FIT_UINT16 num)
+{
+    static const MESG* table[65536] = {};
+    static bool initialized = false;
+
+    if (!initialized)
+    {
+        for (int i = MESGS - 1; i >= 0; --i)
+        {
+            table[mesgs[i].num] = &mesgs[i];
+        }
+        initialized = true;
+    }
+
+    return table[num];
+}
+```

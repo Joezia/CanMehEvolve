@@ -1,0 +1,16 @@
+```cpp
+#include <vector>
+#include <algorithm>
+
+Field* Mesg::GetField(const FIT_UINT8 fieldNum)
+{
+    // Since fields are typically small and fieldNum is small, use direct iteration
+    // which avoids std::function overhead and enables inlining better than std::find_if with lambda
+    for (auto& field : fields) {
+        if (field.GetNum() == fieldNum) {
+            return &field;
+        }
+    }
+    return FIT_NULL;
+}
+```

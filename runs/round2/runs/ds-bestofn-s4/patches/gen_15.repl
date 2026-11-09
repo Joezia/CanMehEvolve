@@ -1,0 +1,8 @@
+This getter is already a single constant-argument typed-field lookup, so there is no safe transformation that avoids new calls or changes scale/offset rounding; I kept the exact call path to preserve bit-identical results.
+
+```cpp
+    FIT_FLOAT32 GetEnhancedAvgAltitude(void) const
+    {
+        return GetFieldFLOAT32Value(126, 0, FIT_SUBFIELD_INDEX_MAIN_FIELD);
+    }
+```

@@ -1,0 +1,20 @@
+File: src/fit_field.cpp
+Function: Field::GetNum (6 lines)
+One full decode of the four files takes about 358.6 ms in the stock build.
+Time of the current version of the whole library relative to stock: 0.931 (below 1.0 is faster). Best measured so far: 0.922.
+
+Current text of the function:
+```cpp
+FIT_UINT8 Field::GetNum(void) const
+{
+    const auto* p = profile;
+    if (__builtin_expect(p == NULL, 0))
+        return FIT_FIELD_NUM_INVALID;
+    const FIT_UINT8 index = profileIndex;
+    if (__builtin_expect(index >= p->numFields, 0))
+        return FIT_FIELD_NUM_INVALID;
+    return p->fields[index].num;
+}
+
+```
+Return the faster replacement now.

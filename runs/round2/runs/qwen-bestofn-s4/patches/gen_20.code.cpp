@@ -1,0 +1,9 @@
+
+const Profile::MESG* Profile::GetMesg(const FIT_UINT16 num)
+{
+    static const auto comp = [](const Profile::MESG& a, FIT_UINT16 b) { return a.num < b; };
+    auto it = std::lower_bound(mesgs, mesgs + MESGS, num, comp);
+    if (it != mesgs + MESGS && it->num == num)
+        return &(*it);
+    return NULL;
+}

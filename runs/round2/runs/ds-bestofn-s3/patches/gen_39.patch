@@ -1,0 +1,23 @@
+--- a/src/fit_mesg.cpp
++++ b/src/fit_mesg.cpp
+@@ -250,10 +250,17 @@
+ 
+ Field* Mesg::GetField(const FIT_UINT8 fieldNum)
+ {
+-    for (int i = 0; i < (int)fields.size(); i++)
++    if (!fields.empty())
+     {
+-        if (fields[i].GetNum() == fieldNum)
+-            return &fields[i];
++        Field* field = &fields[0];
++        Field* const end = field + fields.size();
++
++        do
++        {
++            if (field->GetNum() == fieldNum)
++                return field;
++            ++field;
++        } while (field != end);
+     }
+ 
+     return FIT_NULL;

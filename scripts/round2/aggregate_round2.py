@@ -227,7 +227,7 @@ diff = {}
 for f in glob.glob(str(R2 / "correctness/DIFF*/summary.json")):
     diff.update(J(f, {}) or {})
 san = {}
-for f in glob.glob(str(R2 / "correctness/SAN*/summary.json")):
+for f in sorted(glob.glob(str(R2 / "correctness/SAN*/summary.json"))):
     san.update(J(f, {}) or {})
 
 
@@ -250,10 +250,46 @@ def err_text(name, cfg):
 
 
 stock_ub = norm(err_text("stock", "asan") or "")
+
+
+def plain_load(name):
+    f = next(iter(sorted(glob.glob(str(R2 / ("correctness/SAN*/%s-plain.out" % name))))[::-1]), None)
+    o = {}
+    if f:
+        for l in open(f, errors="replace"):
+            m = re.search(r"/(\d{4})/x\.fit (\d) (\d+) ?(.*)", l)
+            if m:
+                o[m.group(1)] = (m.group(2), m.group(3), re.sub(r"\d+", "N", m.group(4)))
+    return o
+
+
+plain_stock = plain_load("stock")
+
+
+def plain_cmp(name):
+    c = plain_load(name)
+    if not c or not plain_stock:
+        return "-"
+    diff = [k for k in plain_stock if c.get(k) != plain_stock[k]]
+    kills = [k for k in diff if c.get(k, ("",))[0] == "3" and plain_stock[k][0] != "3"]
+    return "%d of %d files handled differently (%d newly killed by a signal)" % (len(diff), len(plain_stock), len(kills))
 L += ["", "### Extended checks per patch and test condition (not ranked; counts of warnings are not a severity measure)", "",
       "| patch | legal encoder files: differential (compared/identical) | mutants (not legal): differential (compared/identical, crash in both, crash only in candidate) | how files are handled, vs stock (plain build) | ASan | UBSan: messages not in stock | TSan (4 threads): distinct race locations, digest mismatches, run result |",
       "|---|---|---|---|---|---|---|"]
 names = sorted({k.split("|")[0] for k in san if "|" in k} | set(diff))
+# legal (SDK-encoder-written) files versus mutants, recomputed from the raw per-file records of the differential test
+_idxf = next(iter(sorted(glob.glob(str(R2 / "correctness/DIFF*/index.json")))), None)
+_kind = {r["id"]: r["kind"] for r in J(_idxf)} if _idxf else {}
+legal = {}
+for rawf in glob.glob(str(R2 / "correctness/DIFF*/*/raw.jsonl")):
+    rows = [json.loads(l) for l in open(rawf) if l.strip()]
+    done_ = {r["i"]: r for r in rows if "ref" in r}
+    crash_ = {r["i"]: r for r in rows if "crash" in r}
+    lv = [i for i in done_ if _kind.get(i) == "valid"]
+    legal[Path(rawf).parent.name] = {"compared": len(lv), "identical": sum(1 for i in lv if done_[i]["ref"] == done_[i]["cand"]),
+                                     "crash": sum(1 for i in crash_ if _kind.get(i) == "valid"),
+                                     "mut_compared": sum(1 for i in done_ if _kind.get(i) != "valid"),
+                                     "mut_identical": sum(1 for i in done_ if _kind.get(i) != "valid" and done_[i]["ref"] == done_[i]["cand"])}
 for nme in names:
     dv = diff.get(nme, {})
     sa = san.get(nme + "|asan", {})
@@ -264,24 +300,27 @@ for nme in names:
     rc = races(tt)
     mm = re.search(r"digest_mismatches (\d+)", stt.get("output", "") or "")
     L.append("| %s | %s | %s | %s | %s | %s | %s |" % (
-        nme, "see per-class file (legal subset reported in the differential raw)" if dv else "-",
-        ("%s/%s, both %s, cand-only %s" % (dv.get("compared"), dv.get("identical"), dv.get("n_crash_in_both"), dv.get("n_crash_in_candidate"))) if dv else "-",
-        ("%s differences in %s files" % (sp.get("handling_differences_vs_stock"), sp.get("files"))) if sp else "-",
+        nme, ("%s/%s%s" % (legal[nme]["compared"], legal[nme]["identical"], (", crashes %d" % legal[nme]["crash"]) if legal[nme]["crash"] else "")) if nme in legal else "-",
+        ("%s/%s, both-crash %s, cand-only crash %s" % (legal[nme]["mut_compared"], legal[nme]["mut_identical"], dv.get("n_crash_in_both"), dv.get("n_crash_in_candidate"))) if (dv and nme in legal) else "-",
+        plain_cmp(nme) if sp else "-",
         ("%s ASan errors, %s digest differences" % (sa.get("asan_errors"), sa.get("digest_differences_vs_stock"))) if sa else "-",
         (str(len(ub)) + (": " + "; ".join(sorted(ub))[:160] if ub else "")) if sa else "-",
         ("%d locations; mismatches %s; returncode %s" % (len(rc), mm.group(1) if mm else "n/a (no output)", stt.get("returncode"))) if stt else "-"))
 S["correctness"] = {"diff": diff, "san": {k: v for k, v in san.items()}}
 # how the stock library handles each corpus file
-cls_file = next(iter(sorted(glob.glob(str(R2 / "correctness/SAN*/stock-plain.out")))), None)
+cls_file = next(iter(sorted(glob.glob(str(R2 / "correctness/SAN*/stock-plain.out")))[::-1]), None)
 idxf = next(iter(sorted(glob.glob(str(R2 / "correctness/SAN*/index.json")))), None)
 if cls_file and idxf:
     idx = {("%04d" % r["id"]): r for r in J(idxf)}
     cnt = {}
     for line in open(cls_file):
         parts = line.rstrip("\n").split(" ", 3)
+        if len(parts) < 2:
+            continue
         m = re.search(r"/(\d{4})/", parts[0])
         kind = idx[m.group(1)]["kind"] if m else "?"
-        status = {"0": "decoded", "1": "Decode::Read returned false", "2": "exception: " + (parts[3] if len(parts) > 3 else "")}.get(parts[1], parts[1])
+        parts = parts[:3] + [re.sub(r"\d+", "N", re.sub(r"[^\x20-\x7e]", "?", parts[3]))] if len(parts) > 3 else parts   # byte offsets and raw bytes out of the message
+        status = {"0": "decoded", "1": "Decode::Read returned false", "2": "exception: " + (parts[3] if len(parts) > 3 else ""), "3": "killed/timeout: " + (parts[3] if len(parts) > 3 else "")}.get(parts[1], parts[1])
         cnt[(kind, status)] = cnt.get((kind, status), 0) + 1
     L += ["", "### How the stock library handles the corpus (plain build, exceptions caught)", "", "| file kind | outcome | files |", "|---|---|---|"]
     for (kind, status), n in sorted(cnt.items()):

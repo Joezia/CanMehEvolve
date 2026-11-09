@@ -1,0 +1,9 @@
+Replaced the default-construct-then-copy-assign body with direct member copy-initialization, avoiding the extra assignment path for both vectors. This preserves identical semantics while letting the vector copy constructors allocate and copy in one step.
+
+```cpp
+FieldBase::FieldBase(const FieldBase &field)
+    : values(field.values),
+      stringIndexes(field.stringIndexes)
+{
+}
+```

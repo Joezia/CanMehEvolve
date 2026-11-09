@@ -1,0 +1,10 @@
+Restructured the guard into a single branch with a `__builtin_expect` hint so the common in-range case falls through as straight-line code and the two error paths share one cold return, reducing branch/code-layout overhead on the hot decode path.
+
+```cpp
+FIT_UINT16 Field::GetNumSubFields(void) const
+{
+    if (__builtin_expect((profile == NULL) || (profileIndex >= profile->numFields), 0))
+        return 0;
+    return profile->fields[profileIndex].numSubFields;
+}
+```

@@ -1,0 +1,14 @@
+Replaced the indexed loop with a range-based loop, which hoists the end pointer and avoids repeated size/index arithmetic. This reduces loop overhead while preserving identical behavior.
+
+```cpp
+FIT_BOOL Mesg::HasField(const int fieldNum) const
+{
+    for (const Field& field : fields)
+    {
+        if (field.GetNum() == fieldNum)
+            return FIT_TRUE;
+    }
+
+    return FIT_FALSE;
+}
+```

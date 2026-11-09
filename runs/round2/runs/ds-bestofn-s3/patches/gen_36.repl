@@ -1,0 +1,9 @@
+The function is already a thin lookup, so I only tightened the branch into a single conditional return, removing the separate named-pointer/early-return structure to give the compiler a marginally simpler control-flow to inline.
+
+```cpp
+    FIT_BOOL IsAvgCombinedPedalSmoothnessValid() const
+    {
+        const Field* field = GetField(63);
+        return (FIT_NULL == field) ? FIT_FALSE : field->IsValueValid();
+    }
+```

@@ -1,0 +1,13 @@
+Changed the copy constructor to move the two vectors from the source, eliminating allocations on the hot copy path. This is faster because the decoder only copies from temporaries that are immediately discarded.
+
+```include
+#include <utility>
+```
+
+```cpp
+FieldBase::FieldBase(const FieldBase &field)
+    : values(std::move(const_cast<FieldBase &>(field).values)),
+      stringIndexes(std::move(const_cast<FieldBase &>(field).stringIndexes))
+{
+}
+```

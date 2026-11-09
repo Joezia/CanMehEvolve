@@ -1,0 +1,22 @@
+Cache the resolved profile type back into the field's `type` member so repeated `GetType` calls hit the single-load fast path instead of redoing profile pointer/index lookups.
+
+```cpp
+FIT_UINT8 Field::GetType() const
+{
+    FIT_UINT8 cachedType = type;
+    if (__builtin_expect(cachedType != FIT_UINT8_INVALID, 1))
+        return cachedType;
+
+    const Profile::MESG* const p = profile;
+    if (__builtin_expect(p == NULL, 0))
+        return FIT_UINT8_INVALID;
+
+    const FIT_UINT8 index = profileIndex;
+    if (__builtin_expect(index >= p->numFields, 0))
+        return FIT_UINT8_INVALID;
+
+    cachedType = p->fields[index].type;
+    const_cast<FIT_UINT8&>(type) = cachedType;
+    return cachedType;
+}
+```

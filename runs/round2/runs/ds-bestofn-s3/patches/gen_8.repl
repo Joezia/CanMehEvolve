@@ -1,0 +1,5 @@
+The destructor is already empty, so the only improvement is to let the compiler generate it as a defaulted destructor, which is behaviourally identical and avoids any hand-written body overhead.
+
+```cpp
+FieldBase::~FieldBase() = default;
+```

@@ -1,0 +1,71 @@
+File: src/fit_field.cpp
+Function: Field::Field (8 lines)
+One full decode of the four files takes about 358.2 ms in the stock build.
+Time of the current version of the whole library relative to stock: 0.932 (below 1.0 is faster). Best measured so far: 0.873.
+
+Your previous attempt failed:
+Stage 'compile' rejected it: /home/z/zhouzia/Workspace/CanMehEvolve/build/work-1094749/tree/src/fit_field.cpp: In constructor ‘fit::Field::Field(FIT_UINT16, FIT_UINT8)’:
+/home/z/zhouzia/Workspace/CanMehEvolve/build/work-1094749/tree/src/fit_field.cpp:55:27: error: ‘Mesg’ in ‘class fit::Profile’ does not name a type
+   55 |     static const Profile::Mesg* cachedProfile[128] = {};
+      |                           ^~~~
+/home/z/zhouzia/Workspace/CanMehEvolve/build/work-1094749/tree/src/fit_field.cpp:62:19: error: ‘cachedProfile’ was not declared in this scope
+   62 |         profile = cachedProfile[cacheIndex];
+      |                   ^~~~~~~~~~~~~
+/home/z/zhouzia/Workspace/CanMehEvolve/build/work-1094749/tree/src/fit_field.cpp:68:9: error: ‘cachedProfile’ was not declared in this scope
+   68 |         cachedProfile[cacheIndex] = profile;
+      |         ^~~~~~~~~~~~~
+
+The rejected replacement was:
+```cpp
+Field::Field(const FIT_UINT16 mesgNum, const FIT_UINT8 fieldNum)
+    : FieldBase()
+    , profile(nullptr)
+    , profileIndex(FIT_UINT8_INVALID)
+    , type(FIT_UINT8_INVALID)
+    , isFieldExpanded(FIT_FALSE)
+{
+    static const Profile::Mesg* cachedProfile[128] = {};
+    static FIT_UINT16 cachedMesgNum[128] = {};
+    static bool cachedValid[128] = {};
+
+    const unsigned cacheIndex = static_cast<unsigned>(mesgNum) & 127U;
+    if (cachedValid[cacheIndex] && cachedMesgNum[cacheIndex] == mesgNum)
+    {
+        profile = cachedProfile[cacheIndex];
+    }
+    else
+    {
+        profile = Profile::GetMesg(mesgNum);
+        cachedMesgNum[cacheIndex] = mesgNum;
+        cachedProfile[cacheIndex] = profile;
+        cachedValid[cacheIndex] = true;
+    }
+
+    if (profile)
+    {
+        for (FIT_UINT8 i = 0; i < profile->numFields; ++i)
+        {
+            if (profile->fields[i].num == fieldNum)
+            {
+                profileIndex = i;
+                break;
+            }
+        }
+    }
+}
+
+```
+
+Current text of the function:
+```cpp
+Field::Field(const FIT_UINT16 mesgNum, const FIT_UINT8 fieldNum)
+    : FieldBase()
+    , profile(Profile::GetMesg(mesgNum))
+    , profileIndex(Profile::GetFieldIndex(mesgNum, fieldNum))
+    , type(FIT_UINT8_INVALID)
+    , isFieldExpanded(FIT_FALSE)
+{
+}
+
+```
+Return the faster replacement now.

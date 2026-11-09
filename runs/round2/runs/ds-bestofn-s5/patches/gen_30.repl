@@ -1,0 +1,9 @@
+I collapsed the null check into a single short-circuit return so the common (field present) path avoids the extra branch and duplicated return, letting the compiler emit tighter code.
+
+```cpp
+    FIT_BOOL IsTimestampValid() const
+    {
+        const Field* const field = GetField(253);
+        return (FIT_NULL != field) ? field->IsValueValid() : FIT_FALSE;
+    }
+```

@@ -1,0 +1,12 @@
+Hoisted the profile pointer into a correctly typed local (`Profile::MESG*`) and added likely hints so the common non-null, in-range path stays straight-line. This avoids redundant member loads while preserving the null/out-of-range fallback exactly.
+
+```cpp
+FIT_FLOAT64 Field::GetOffset() const
+{
+    const Profile::MESG* p = profile;
+    if (__builtin_expect(p != NULL, 1) &&
+        __builtin_expect(profileIndex < p->numFields, 1))
+        return p->fields[profileIndex].offset;
+    return 0;
+}
+```

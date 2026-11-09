@@ -1,0 +1,8 @@
+The function is already a single minimal call into the out-of-line `SetFieldUINT16Value`, so I kept the body byte-identical—this guarantees exact behavior and cannot be slower (no safe local optimization exists without the base-class internals).
+
+```cpp
+    void SetMessageIndex(FIT_MESSAGE_INDEX messageIndex)
+    {
+        SetFieldUINT16Value(254, messageIndex, 0, FIT_SUBFIELD_INDEX_MAIN_FIELD);
+    }
+```

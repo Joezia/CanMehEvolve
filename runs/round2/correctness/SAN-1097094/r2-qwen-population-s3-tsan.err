@@ -1,0 +1,140 @@
+lation-s3+0x9a29)
+    #10 __invoke<main(int, char**)::<lambda()> > /usr/include/c++/13/bits/invoke.h:96 (drv-tsan-r2-qwen-population-s3+0x9a29)
+    #11 _M_invoke<0> /usr/include/c++/13/bits/std_thread.h:292 (drv-tsan-r2-qwen-population-s3+0x9a29)
+    #12 operator() /usr/include/c++/13/bits/std_thread.h:299 (drv-tsan-r2-qwen-population-s3+0x9a29)
+    #13 _M_run /usr/include/c++/13/bits/std_thread.h:244 (drv-tsan-r2-qwen-population-s3+0x9a29)
+    #14 <null> <null> (libstdc++.so.6+0xecdb3) (BuildId: 753c6c8608b61d4e67be8f0c890e03e0aa046b8b)
+
+  Previous write of size 1 at 0x555555649b00 by thread T3:
+    #0 fit::Profile::GetMesg(unsigned short) /home/z/zhouzia/.sanitize-scratch/var-tsan-r2-qwen-population-s3/src/fit_profile.cpp:3071 (drv-tsan-r2-qwen-population-s3+0xcf092) (BuildId: a48f6812d0ed61830399fb223030732879f08407)
+    #1 fit::Mesg::Mesg(unsigned short) /home/z/zhouzia/.sanitize-scratch/stock/src/fit_mesg.cpp:54 (drv-tsan-r2-qwen-population-s3+0x70d70) (BuildId: a48f6812d0ed61830399fb223030732879f08407)
+    #2 fit::Decode::ReadByte(unsigned char) /home/z/zhouzia/.sanitize-scratch/stock/src/fit_decode.cpp:611 (drv-tsan-r2-qwen-population-s3+0x215b7) (BuildId: a48f6812d0ed61830399fb223030732879f08407)
+    #3 fit::Decode::Resume() /home/z/zhouzia/.sanitize-scratch/stock/src/fit_decode.cpp:246 (drv-tsan-r2-qwen-population-s3+0x24e47) (BuildId: a48f6812d0ed61830399fb223030732879f08407)
+    #4 fit::Decode::Read(std::istream*) /home/z/zhouzia/.sanitize-scratch/stock/src/fit_decode.cpp:191 (drv-tsan-r2-qwen-population-s3+0x25293) (BuildId: a48f6812d0ed61830399fb223030732879f08407)
+    #5 fit::Decode::Read(std::istream*, fit::MesgListener*, fit::MesgDefinitionListener*, fit::DeveloperFieldDescriptionListener*) /home/z/zhouzia/.sanitize-scratch/stock/src/fit_decode.cpp:209 (drv-tsan-r2-qwen-population-s3+0x25360) (BuildId: a48f6812d0ed61830399fb223030732879f08407)
+    #6 fit::Decode::Read(std::istream&, fit::MesgListener&) /home/z/zhouzia/.sanitize-scratch/stock/src/fit_decode.cpp:214 (drv-tsan-r2-qwen-population-s3+0x253cb) (BuildId: a48f6812d0ed61830399fb223030732879f08407)
+    #7 decodeOne /home/z/zhouzia/Workspace/CanMehEvolve/scripts/followup/driver.cpp:68 (drv-tsan-r2-qwen-population-s3+0x941d) (BuildId: a48f6812d0ed61830399fb223030732879f08407)
+    #8 operator() /home/z/zhouzia/Workspace/CanMehEvolve/scripts/followup/driver.cpp:117 (drv-tsan-r2-qwen-population-s3+0x9a29) (BuildId: a48f6812d0ed61830399fb223030732879f08407)
+    #9 __invoke_impl<void, main(int, char**)::<lambda()> > /usr/include/c++/13/bits/invoke.h:61 (drv-tsan-r2-qwen-population-s3+0x9a29)
+    #10 __invoke<main(int, char**)::<lambda()> > /usr/include/c++/13/bits/invoke.h:96 (drv-tsan-r2-qwen-population-s3+0x9a29)
+    #11 _M_invoke<0> /usr/include/c++/13/bits/std_thread.h:292 (drv-tsan-r2-qwen-population-s3+0x9a29)
+    #12 operator() /usr/include/c++/13/bits/std_thread.h:299 (drv-tsan-r2-qwen-population-s3+0x9a29)
+    #13 _M_run /usr/include/c++/13/bits/std_thread.h:244 (drv-tsan-r2-qwen-population-s3+0x9a29)
+    #14 <null> <null> (libstdc++.so.6+0xecdb3) (BuildId: 753c6c8608b61d4e67be8f0c890e03e0aa046b8b)
+
+  Location is global 'fit::Profile::GetMesg(unsigned short)::initialized' of size 1 at 0x555555649b00 (drv-tsan-r2-qwen-population-s3+0xf5b00)
+
+  Thread T4 (tid=93493, running) created by main thread at:
+    #0 pthread_create ../../../../src/libsanitizer/tsan/tsan_interceptors_posix.cpp:1022 (libtsan.so.2+0x5ac1a) (BuildId: 2a13a7710e361d06f7babbea53065ca2be93f738)
+    #1 std::thread::_M_start_thread(std::unique_ptr<std::thread::_State, std::default_delete<std::thread::_State> >, void (*)()) <null> (libstdc++.so.6+0xeceb0) (BuildId: 753c6c8608b61d4e67be8f0c890e03e0aa046b8b)
+    #2 __libc_start_call_main ../sysdeps/nptl/libc_start_call_main.h:58 (libc.so.6+0x2a1c9) (BuildId: a4a7992a8e66555c8141ab2a08a8465ff6e0ea65)
+
+  Thread T3 (tid=93492, running) created by main thread at:
+    #0 pthread_create ../../../../src/libsanitizer/tsan/tsan_interceptors_posix.cpp:1022 (libtsan.so.2+0x5ac1a) (BuildId: 2a13a7710e361d06f7babbea53065ca2be93f738)
+    #1 std::thread::_M_start_thread(std::unique_ptr<std::thread::_State, std::default_delete<std::thread::_State> >, void (*)()) <null> (libstdc++.so.6+0xeceb0) (BuildId: 753c6c8608b61d4e67be8f0c890e03e0aa046b8b)
+    #2 __libc_start_call_main ../sysdeps/nptl/libc_start_call_main.h:58 (libc.so.6+0x2a1c9) (BuildId: a4a7992a8e66555c8141ab2a08a8465ff6e0ea65)
+
+SUMMARY: ThreadSanitizer: data race /home/z/zhouzia/.sanitize-scratch/var-tsan-r2-qwen-population-s3/src/fit_profile.cpp:3071 in fit::Profile::GetMesg(unsigned short)
+==================
+==================
+WARNING: ThreadSanitizer: data race (pid=93488)
+  Read of size 8 at 0x7ffff49800a0 by thread T2:
+    #0 fit::Profile::GetMesg(unsigned short) /home/z/zhouzia/.sanitize-scratch/var-tsan-r2-qwen-population-s3/src/fit_profile.cpp:3074 (drv-tsan-r2-qwen-population-s3+0xcef2b) (BuildId: a48f6812d0ed61830399fb223030732879f08407)
+    #1 fit::Field::Field(unsigned short, unsigned char) /home/z/zhouzia/.sanitize-scratch/var-tsan-r2-qwen-population-s3/src/fit_field.cpp:52 (drv-tsan-r2-qwen-population-s3+0x39885) (BuildId: a48f6812d0ed61830399fb223030732879f08407)
+    #2 fit::Decode::ReadByte(unsigned char) /home/z/zhouzia/.sanitize-scratch/stock/src/fit_decode.cpp:814 (drv-tsan-r2-qwen-population-s3+0x229b9) (BuildId: a48f6812d0ed61830399fb223030732879f08407)
+    #3 fit::Decode::Resume() /home/z/zhouzia/.sanitize-scratch/stock/src/fit_decode.cpp:246 (drv-tsan-r2-qwen-population-s3+0x24e47) (BuildId: a48f6812d0ed61830399fb223030732879f08407)
+    #4 fit::Decode::Read(std::istream*) /home/z/zhouzia/.sanitize-scratch/stock/src/fit_decode.cpp:191 (drv-tsan-r2-qwen-population-s3+0x25293) (BuildId: a48f6812d0ed61830399fb223030732879f08407)
+    #5 fit::Decode::Read(std::istream*, fit::MesgListener*, fit::MesgDefinitionListener*, fit::DeveloperFieldDescriptionListener*) /home/z/zhouzia/.sanitize-scratch/stock/src/fit_decode.cpp:209 (drv-tsan-r2-qwen-population-s3+0x25360) (BuildId: a48f6812d0ed61830399fb223030732879f08407)
+    #6 fit::Decode::Read(std::istream&, fit::MesgListener&) /home/z/zhouzia/.sanitize-scratch/stock/src/fit_decode.cpp:214 (drv-tsan-r2-qwen-population-s3+0x253cb) (BuildId: a48f6812d0ed61830399fb223030732879f08407)
+    #7 decodeOne /home/z/zhouzia/Workspace/CanMehEvolve/scripts/followup/driver.cpp:68 (drv-tsan-r2-qwen-population-s3+0x941d) (BuildId: a48f6812d0ed61830399fb223030732879f08407)
+    #8 operator() /home/z/zhouzia/Workspace/CanMehEvolve/scripts/followup/driver.cpp:117 (drv-tsan-r2-qwen-population-s3+0x9a29) (BuildId: a48f6812d0ed61830399fb223030732879f08407)
+    #9 __invoke_impl<void, main(int, char**)::<lambda()> > /usr/include/c++/13/bits/invoke.h:61 (drv-tsan-r2-qwen-population-s3+0x9a29)
+    #10 __invoke<main(int, char**)::<lambda()> > /usr/include/c++/13/bits/invoke.h:96 (drv-tsan-r2-qwen-population-s3+0x9a29)
+    #11 _M_invoke<0> /usr/include/c++/13/bits/std_thread.h:292 (drv-tsan-r2-qwen-population-s3+0x9a29)
+    #12 operator() /usr/include/c++/13/bits/std_thread.h:299 (drv-tsan-r2-qwen-population-s3+0x9a29)
+    #13 _M_run /usr/include/c++/13/bits/std_thread.h:244 (drv-tsan-r2-qwen-population-s3+0x9a29)
+    #14 <null> <null> (libstdc++.so.6+0xecdb3) (BuildId: 753c6c8608b61d4e67be8f0c890e03e0aa046b8b)
+
+  Previous write of size 8 at 0x7ffff49800a0 by thread T4:
+    #0 operator new(unsigned long) ../../../../src/libsanitizer/tsan/tsan_new_delete.cpp:64 (libtsan.so.2+0xa6fae) (BuildId: 2a13a7710e361d06f7babbea53065ca2be93f738)
+    #1 std::__new_allocator<fit::Profile::MESG const*>::allocate(unsigned long, void const*) /usr/include/c++/13/bits/new_allocator.h:151 (drv-tsan-r2-qwen-population-s3+0xcf7dc) (BuildId: a48f6812d0ed61830399fb223030732879f08407)
+    #2 std::allocator_traits<std::allocator<fit::Profile::MESG const*> >::allocate(std::allocator<fit::Profile::MESG const*>&, unsigned long) /usr/include/c++/13/bits/alloc_traits.h:482 (drv-tsan-r2-qwen-population-s3+0xcf7dc)
+    #3 std::_Vector_base<fit::Profile::MESG const*, std::allocator<fit::Profile::MESG const*> >::_M_allocate(unsigned long) /usr/include/c++/13/bits/stl_vector.h:381 (drv-tsan-r2-qwen-population-s3+0xcf7dc)
+    #4 std::vector<fit::Profile::MESG const*, std::allocator<fit::Profile::MESG const*> >::_M_fill_insert(__gnu_cxx::__normal_iterator<fit::Profile::MESG const**, std::vector<fit::Profile::MESG const*, std::allocator<fit::Profile::MESG const*> > >, unsigned long, fit::Profile::MESG const* const&) /usr/include/c++/13/bits/vector.tcc:587 (drv-tsan-r2-qwen-population-s3+0xcf7dc)
+    #5 std::vector<fit::Profile::MESG const*, std::allocator<fit::Profile::MESG const*> >::resize(unsigned long, fit::Profile::MESG const* const&) /usr/include/c++/13/bits/stl_vector.h:1037 (drv-tsan-r2-qwen-population-s3+0xcf0bd) (BuildId: a48f6812d0ed61830399fb223030732879f08407)
+    #6 fit::Profile::GetMesg(unsigned short) /home/z/zhouzia/.sanitize-scratch/var-tsan-r2-qwen-population-s3/src/fit_profile.cpp:3067 (drv-tsan-r2-qwen-population-s3+0xcf0bd)
+    #7 fit::Mesg::Mesg(unsigned short) /home/z/zhouzia/.sanitize-scratch/stock/src/fit_mesg.cpp:54 (drv-tsan-r2-qwen-population-s3+0x70d70) (BuildId: a48f6812d0ed61830399fb223030732879f08407)
+    #8 fit::Decode::ReadByte(unsigned char) /home/z/zhouzia/.sanitize-scratch/stock/src/fit_decode.cpp:611 (drv-tsan-r2-qwen-population-s3+0x215b7) (BuildId: a48f6812d0ed61830399fb223030732879f08407)
+    #9 fit::Decode::Resume() /home/z/zhouzia/.sanitize-scratch/stock/src/fit_decode.cpp:246 (drv-tsan-r2-qwen-population-s3+0x24e47) (BuildId: a48f6812d0ed61830399fb223030732879f08407)
+    #10 fit::Decode::Read(std::istream*) /home/z/zhouzia/.sanitize-scratch/stock/src/fit_decode.cpp:191 (drv-tsan-r2-qwen-population-s3+0x25293) (BuildId: a48f6812d0ed61830399fb223030732879f08407)
+    #11 fit::Decode::Read(std::istream*, fit::MesgListener*, fit::MesgDefinitionListener*, fit::DeveloperFieldDescriptionListener*) /home/z/zhouzia/.sanitize-scratch/stock/src/fit_decode.cpp:209 (drv-tsan-r2-qwen-population-s3+0x25360) (BuildId: a48f6812d0ed61830399fb223030732879f08407)
+    #12 fit::Decode::Read(std::istream&, fit::MesgListener&) /home/z/zhouzia/.sanitize-scratch/stock/src/fit_decode.cpp:214 (drv-tsan-r2-qwen-population-s3+0x253cb) (BuildId: a48f6812d0ed61830399fb223030732879f08407)
+    #13 decodeOne /home/z/zhouzia/Workspace/CanMehEvolve/scripts/followup/driver.cpp:68 (drv-tsan-r2-qwen-population-s3+0x941d) (BuildId: a48f6812d0ed61830399fb223030732879f08407)
+    #14 operator() /home/z/zhouzia/Workspace/CanMehEvolve/scripts/followup/driver.cpp:117 (drv-tsan-r2-qwen-population-s3+0x9a29) (BuildId: a48f6812d0ed61830399fb223030732879f08407)
+    #15 __invoke_impl<void, main(int, char**)::<lambda()> > /usr/include/c++/13/bits/invoke.h:61 (drv-tsan-r2-qwen-population-s3+0x9a29)
+    #16 __invoke<main(int, char**)::<lambda()> > /usr/include/c++/13/bits/invoke.h:96 (drv-tsan-r2-qwen-population-s3+0x9a29)
+    #17 _M_invoke<0> /usr/include/c++/13/bits/std_thread.h:292 (drv-tsan-r2-qwen-population-s3+0x9a29)
+    #18 operator() /usr/include/c++/13/bits/std_thread.h:299 (drv-tsan-r2-qwen-population-s3+0x9a29)
+    #19 _M_run /usr/include/c++/13/bits/std_thread.h:244 (drv-tsan-r2-qwen-population-s3+0x9a29)
+    #20 <null> <null> (libstdc++.so.6+0xecdb3) (BuildId: 753c6c8608b61d4e67be8f0c890e03e0aa046b8b)
+
+  Location is heap block of size 524288 at 0x7ffff4980000 allocated by thread T4:
+    #0 operator new(unsigned long) ../../../../src/libsanitizer/tsan/tsan_new_delete.cpp:64 (libtsan.so.2+0xa6fae) (BuildId: 2a13a7710e361d06f7babbea53065ca2be93f738)
+    #1 std::__new_allocator<fit::Profile::MESG const*>::allocate(unsigned long, void const*) /usr/include/c++/13/bits/new_allocator.h:151 (drv-tsan-r2-qwen-population-s3+0xcf7dc) (BuildId: a48f6812d0ed61830399fb223030732879f08407)
+    #2 std::allocator_traits<std::allocator<fit::Profile::MESG const*> >::allocate(std::allocator<fit::Profile::MESG const*>&, unsigned long) /usr/include/c++/13/bits/alloc_traits.h:482 (drv-tsan-r2-qwen-population-s3+0xcf7dc)
+    #3 std::_Vector_base<fit::Profile::MESG const*, std::allocator<fit::Profile::MESG const*> >::_M_allocate(unsigned long) /usr/include/c++/13/bits/stl_vector.h:381 (drv-tsan-r2-qwen-population-s3+0xcf7dc)
+    #4 std::vector<fit::Profile::MESG const*, std::allocator<fit::Profile::MESG const*> >::_M_fill_insert(__gnu_cxx::__normal_iterator<fit::Profile::MESG const**, std::vector<fit::Profile::MESG const*, std::allocator<fit::Profile::MESG const*> > >, unsigned long, fit::Profile::MESG const* const&) /usr/include/c++/13/bits/vector.tcc:587 (drv-tsan-r2-qwen-population-s3+0xcf7dc)
+    #5 std::vector<fit::Profile::MESG const*, std::allocator<fit::Profile::MESG const*> >::resize(unsigned long, fit::Profile::MESG const* const&) /usr/include/c++/13/bits/stl_vector.h:1037 (drv-tsan-r2-qwen-population-s3+0xcf0bd) (BuildId: a48f6812d0ed61830399fb223030732879f08407)
+    #6 fit::Profile::GetMesg(unsigned short) /home/z/zhouzia/.sanitize-scratch/var-tsan-r2-qwen-population-s3/src/fit_profile.cpp:3067 (drv-tsan-r2-qwen-population-s3+0xcf0bd)
+    #7 fit::Mesg::Mesg(unsigned short) /home/z/zhouzia/.sanitize-scratch/stock/src/fit_mesg.cpp:54 (drv-tsan-r2-qwen-population-s3+0x70d70) (BuildId: a48f6812d0ed61830399fb223030732879f08407)
+    #8 fit::Decode::ReadByte(unsigned char) /home/z/zhouzia/.sanitize-scratch/stock/src/fit_decode.cpp:611 (drv-tsan-r2-qwen-population-s3+0x215b7) (BuildId: a48f6812d0ed61830399fb223030732879f08407)
+    #9 fit::Decode::Resume() /home/z/zhouzia/.sanitize-scratch/stock/src/fit_decode.cpp:246 (drv-tsan-r2-qwen-population-s3+0x24e47) (BuildId: a48f6812d0ed61830399fb223030732879f08407)
+    #10 fit::Decode::Read(std::istream*) /home/z/zhouzia/.sanitize-scratch/stock/src/fit_decode.cpp:191 (drv-tsan-r2-qwen-population-s3+0x25293) (BuildId: a48f6812d0ed61830399fb223030732879f08407)
+    #11 fit::Decode::Read(std::istream*, fit::MesgListener*, fit::MesgDefinitionListener*, fit::DeveloperFieldDescriptionListener*) /home/z/zhouzia/.sanitize-scratch/stock/src/fit_decode.cpp:209 (drv-tsan-r2-qwen-population-s3+0x25360) (BuildId: a48f6812d0ed61830399fb223030732879f08407)
+    #12 fit::Decode::Read(std::istream&, fit::MesgListener&) /home/z/zhouzia/.sanitize-scratch/stock/src/fit_decode.cpp:214 (drv-tsan-r2-qwen-population-s3+0x253cb) (BuildId: a48f6812d0ed61830399fb223030732879f08407)
+    #13 decodeOne /home/z/zhouzia/Workspace/CanMehEvolve/scripts/followup/driver.cpp:68 (drv-tsan-r2-qwen-population-s3+0x941d) (BuildId: a48f6812d0ed61830399fb223030732879f08407)
+    #14 operator() /home/z/zhouzia/Workspace/CanMehEvolve/scripts/followup/driver.cpp:117 (drv-tsan-r2-qwen-population-s3+0x9a29) (BuildId: a48f6812d0ed61830399fb223030732879f08407)
+    #15 __invoke_impl<void, main(int, char**)::<lambda()> > /usr/include/c++/13/bits/invoke.h:61 (drv-tsan-r2-qwen-population-s3+0x9a29)
+    #16 __invoke<main(int, char**)::<lambda()> > /usr/include/c++/13/bits/invoke.h:96 (drv-tsan-r2-qwen-population-s3+0x9a29)
+    #17 _M_invoke<0> /usr/include/c++/13/bits/std_thread.h:292 (drv-tsan-r2-qwen-population-s3+0x9a29)
+    #18 operator() /usr/include/c++/13/bits/std_thread.h:299 (drv-tsan-r2-qwen-population-s3+0x9a29)
+    #19 _M_run /usr/include/c++/13/bits/std_thread.h:244 (drv-tsan-r2-qwen-population-s3+0x9a29)
+    #20 <null> <null> (libstdc++.so.6+0xecdb3) (BuildId: 753c6c8608b61d4e67be8f0c890e03e0aa046b8b)
+
+  Thread T2 (tid=93491, running) created by main thread at:
+    #0 pthread_create ../../../../src/libsanitizer/tsan/tsan_interceptors_posix.cpp:1022 (libtsan.so.2+0x5ac1a) (BuildId: 2a13a7710e361d06f7babbea53065ca2be93f738)
+    #1 std::thread::_M_start_thread(std::unique_ptr<std::thread::_State, std::default_delete<std::thread::_State> >, void (*)()) <null> (libstdc++.so.6+0xeceb0) (BuildId: 753c6c8608b61d4e67be8f0c890e03e0aa046b8b)
+    #2 __libc_start_call_main ../sysdeps/nptl/libc_start_call_main.h:58 (libc.so.6+0x2a1c9) (BuildId: a4a7992a8e66555c8141ab2a08a8465ff6e0ea65)
+
+  Thread T4 (tid=93493, running) created by main thread at:
+    #0 pthread_create ../../../../src/libsanitizer/tsan/tsan_interceptors_posix.cpp:1022 (libtsan.so.2+0x5ac1a) (BuildId: 2a13a7710e361d06f7babbea53065ca2be93f738)
+    #1 std::thread::_M_start_thread(std::unique_ptr<std::thread::_State, std::default_delete<std::thread::_State> >, void (*)()) <null> (libstdc++.so.6+0xeceb0) (BuildId: 753c6c8608b61d4e67be8f0c890e03e0aa046b8b)
+    #2 __libc_start_call_main ../sysdeps/nptl/libc_start_call_main.h:58 (libc.so.6+0x2a1c9) (BuildId: a4a7992a8e66555c8141ab2a08a8465ff6e0ea65)
+
+SUMMARY: ThreadSanitizer: data race /home/z/zhouzia/.sanitize-scratch/var-tsan-r2-qwen-population-s3/src/fit_profile.cpp:3074 in fit::Profile::GetMesg(unsigned short)
+==================
+ThreadSanitizer:DEADLYSIGNAL
+==93488==ERROR: ThreadSanitizer: SEGV on unknown address 0x000000000000 (pc 0x55555558d0d2 bp 0x7ffff1ffa5c0 sp 0x7ffff1ffa5b0 T93492)
+==93488==The signal is caused by a READ memory access.
+==93488==Hint: address points to the zero page.
+    #0 fit::Field::GetIsAccumulated() const /home/z/zhouzia/.sanitize-scratch/var-tsan-r2-qwen-population-s3/src/fit_field.cpp:80 (drv-tsan-r2-qwen-population-s3+0x390d2) (BuildId: a48f6812d0ed61830399fb223030732879f08407)
+    #1 fit::Decode::ReadByte(unsigned char) /home/z/zhouzia/.sanitize-scratch/stock/src/fit_decode.cpp:846 (drv-tsan-r2-qwen-population-s3+0x22a99) (BuildId: a48f6812d0ed61830399fb223030732879f08407)
+    #2 fit::Decode::Resume() /home/z/zhouzia/.sanitize-scratch/stock/src/fit_decode.cpp:246 (drv-tsan-r2-qwen-population-s3+0x24e47) (BuildId: a48f6812d0ed61830399fb223030732879f08407)
+    #3 fit::Decode::Read(std::istream*) /home/z/zhouzia/.sanitize-scratch/stock/src/fit_decode.cpp:191 (drv-tsan-r2-qwen-population-s3+0x25293) (BuildId: a48f6812d0ed61830399fb223030732879f08407)
+    #4 fit::Decode::Read(std::istream*, fit::MesgListener*, fit::MesgDefinitionListener*, fit::DeveloperFieldDescriptionListener*) /home/z/zhouzia/.sanitize-scratch/stock/src/fit_decode.cpp:209 (drv-tsan-r2-qwen-population-s3+0x25360) (BuildId: a48f6812d0ed61830399fb223030732879f08407)
+    #5 fit::Decode::Read(std::istream&, fit::MesgListener&) /home/z/zhouzia/.sanitize-scratch/stock/src/fit_decode.cpp:214 (drv-tsan-r2-qwen-population-s3+0x253cb) (BuildId: a48f6812d0ed61830399fb223030732879f08407)
+    #6 decodeOne /home/z/zhouzia/Workspace/CanMehEvolve/scripts/followup/driver.cpp:68 (drv-tsan-r2-qwen-population-s3+0x941d) (BuildId: a48f6812d0ed61830399fb223030732879f08407)
+    #7 operator() /home/z/zhouzia/Workspace/CanMehEvolve/scripts/followup/driver.cpp:117 (drv-tsan-r2-qwen-population-s3+0x9a29) (BuildId: a48f6812d0ed61830399fb223030732879f08407)
+    #8 __invoke_impl<void, main(int, char**)::<lambda()> > /usr/include/c++/13/bits/invoke.h:61 (drv-tsan-r2-qwen-population-s3+0x9a29)
+    #9 __invoke<main(int, char**)::<lambda()> > /usr/include/c++/13/bits/invoke.h:96 (drv-tsan-r2-qwen-population-s3+0x9a29)
+    #10 _M_invoke<0> /usr/include/c++/13/bits/std_thread.h:292 (drv-tsan-r2-qwen-population-s3+0x9a29)
+    #11 operator() /usr/include/c++/13/bits/std_thread.h:299 (drv-tsan-r2-qwen-population-s3+0x9a29)
+    #12 _M_run /usr/include/c++/13/bits/std_thread.h:244 (drv-tsan-r2-qwen-population-s3+0x9a29)
+    #13 <null> <null> (libstdc++.so.6+0xecdb3) (BuildId: 753c6c8608b61d4e67be8f0c890e03e0aa046b8b)
+    #14 __tsan_thread_start_func ../../../../src/libsanitizer/tsan/tsan_interceptors_posix.cpp:1012 (libtsan.so.2+0x4edee) (BuildId: 2a13a7710e361d06f7babbea53065ca2be93f738)
+    #15 start_thread nptl/pthread_create.c:447 (libc.so.6+0x9cb83) (BuildId: a4a7992a8e66555c8141ab2a08a8465ff6e0ea65)
+    #16 clone3 ../sysdeps/unix/sysv/linux/x86_64/clone3.S:78 (libc.so.6+0x129ecb) (BuildId: a4a7992a8e66555c8141ab2a08a8465ff6e0ea65)
+
+ThreadSanitizer can not provide additional info.
+SUMMARY: ThreadSanitizer: SEGV /home/z/zhouzia/.sanitize-scratch/var-tsan-r2-qwen-population-s3/src/fit_field.cpp:80 in fit::Field::GetIsAccumulated() const
+==93488==ABORTING

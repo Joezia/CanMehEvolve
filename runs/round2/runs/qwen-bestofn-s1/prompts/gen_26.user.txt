@@ -1,0 +1,14 @@
+File: src/fit_field_base.cpp
+Function: FieldBase::SetUINT64ZValue (4 lines)
+One full decode of the four files takes about 358.3 ms in the stock build.
+Time of the current version of the whole library relative to stock: 1.000 (below 1.0 is faster). Best measured so far: 1.000.
+
+Current text of the function:
+```cpp
+void FieldBase::SetUINT64ZValue(const FIT_UINT64Z value, const FIT_UINT8 fieldArrayIndex)
+{
+    SetUINT64Value(value, fieldArrayIndex);
+}
+
+```
+Return the faster replacement now.

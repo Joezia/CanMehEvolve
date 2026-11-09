@@ -1,0 +1,10 @@
+The function is already minimal, so I only added a branch-prediction hint on the cold invalid-path test, letting the compiler lay out the common valid-field case as the fall-through path.
+
+```cpp
+FIT_UINT8 Field::GetNum(void) const
+{
+    if (__builtin_expect((profile == NULL) || (profileIndex >= profile->numFields), 0))
+        return FIT_FIELD_NUM_INVALID;
+    return profile->fields[profileIndex].num;
+}
+```

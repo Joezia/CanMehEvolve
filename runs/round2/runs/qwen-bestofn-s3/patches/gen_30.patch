@@ -1,0 +1,22 @@
+--- a/src/fit_mesg.cpp
++++ b/src/fit_mesg.cpp
+@@ -161,15 +161,12 @@
+         localNum = newLocalNum;
+ }
+ 
++
+ FIT_BOOL Mesg::HasField(const int fieldNum) const
+ {
+-    for (int i = 0; i < (int)fields.size(); i++)
+-    {
+-        if (fields[i].GetNum() == fieldNum)
+-            return FIT_TRUE;
+-    }
+-
+-    return FIT_FALSE;
++    return std::find_if(fields.begin(), fields.end(), [fieldNum](const Field& f) {
++        return f.GetNum() == fieldNum;
++    }) != fields.end();
+ }
+ 
+ void Mesg::AddField(const Field& field)

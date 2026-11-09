@@ -1,0 +1,24 @@
+subsets: {'asan': 126, 'tsan': 24, 'plain': 459}
+Traceback (most recent call last):
+  File "/home/z/zhouzia/Workspace/CanMehEvolve/scripts/round2/sanitize_v2.py", line 108, in <module>
+    ref = run_mode(cfg, exe)
+          ^^^^^^^^^^^^^^^^^^
+  File "/home/z/zhouzia/Workspace/CanMehEvolve/scripts/round2/sanitize_v2.py", line 91, in run_mode
+    r = sh([str(exe), "classify", SUB["plain"]], timeout=3000)
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/z/zhouzia/Workspace/CanMehEvolve/scripts/round2/sanitize_v2.py", line 33, in sh
+    return subprocess.run(cmd, capture_output=True, text=True, **kw)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3.12/subprocess.py", line 550, in run
+    stdout, stderr = process.communicate(input, timeout=timeout)
+                     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3.12/subprocess.py", line 1209, in communicate
+    stdout, stderr = self._communicate(input, endtime, timeout)
+                     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3.12/subprocess.py", line 2153, in _communicate
+    stdout = self._translate_newlines(stdout,
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3.12/subprocess.py", line 1086, in _translate_newlines
+    data = data.decode(encoding, errors)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+UnicodeDecodeError: 'utf-8' codec can't decode byte 0xd0 in position 899: invalid continuation byte

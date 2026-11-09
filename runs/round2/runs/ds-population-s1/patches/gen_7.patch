@@ -1,0 +1,38 @@
+--- a/src/fit_field.cpp
++++ b/src/fit_field.cpp
+@@ -102,10 +102,10 @@
+     if ( type != FIT_UINT8_INVALID )
+         return type;
+ 
+-    if ((profile == NULL) || (profileIndex >= profile->numFields))
+-        return FIT_UINT8_INVALID;
++    if ( (profile != NULL) && (profileIndex < profile->numFields) )
++        return profile->fields[profileIndex].type;
+ 
+-    return profile->fields[profileIndex].type;
++    return type;
+ }
+ 
+ std::string Field::GetUnits() const
+--- a/src/fit_field_base.cpp
++++ b/src/fit_field_base.cpp
+@@ -16,6 +16,7 @@
+ #include "fit_field_base.hpp"
+ #include "fit_mesg.hpp"
+ #include "fit_unicode.hpp"
++#include <utility>
+ 
+ namespace fit
+ {
+@@ -25,9 +26,9 @@
+ }
+ 
+ FieldBase::FieldBase(const FieldBase &field)
++    : values(std::move(const_cast<FieldBase&>(field).values)),
++      stringIndexes(std::move(const_cast<FieldBase&>(field).stringIndexes))
+ {
+-    values = field.values;
+-    stringIndexes = field.stringIndexes;
+ }
+ 
+ FieldBase::~FieldBase()

@@ -1,0 +1,15 @@
+I read `baseType` directly instead of calling `IsValid()`/`GetType()`, and replaced the variable-size division with a shift using `__builtin_ctz`, since all FIT base type sizes are powers of two. This removes redundant calls and the expensive integer division from the hot path.
+
+```cpp
+FIT_UINT8 FieldBase::GetNumValues(void) const
+{
+    if (baseType == FIT_BASE_TYPE_INVALID)
+        return 0;
+
+    const FIT_UINT8 type = (FIT_UINT8)(baseType & FIT_BASE_TYPE_NUM_MASK);
+    if (type != FIT_BASE_TYPE_STRING)
+        return (FIT_UINT8)(values.size() >> __builtin_ctz(baseTypeSizes[type]));
+
+    return (FIT_UINT8)stringIndexes.size();
+}
+```

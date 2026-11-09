@@ -1,0 +1,9 @@
+Using the vectors' own copy constructors lets libstdc++ take its optimized bulk-copy path (and memcpy for the trivially copyable byte vector) instead of the generic iterator-range instantiation, with no change in behaviour.
+
+```cpp
+FieldBase::FieldBase(const FieldBase &field)
+    : values(field.values),
+      stringIndexes(field.stringIndexes)
+{
+}
+```

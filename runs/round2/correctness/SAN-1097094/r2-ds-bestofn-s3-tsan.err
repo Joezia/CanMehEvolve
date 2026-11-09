@@ -1,0 +1,101 @@
+==================
+WARNING: ThreadSanitizer: data race (pid=93137)
+  Read of size 1 at 0x555555649b00 by thread T3:
+    #0 fit::Profile::GetMesg(unsigned short) /home/z/zhouzia/.sanitize-scratch/var-tsan-r2-ds-bestofn-s3/src/fit_profile.cpp:3063 (drv-tsan-r2-ds-bestofn-s3+0x7d88e) (BuildId: 5899439de46eb2484e27a717baeef1ffba74913c)
+    #1 fit::Mesg::Mesg(unsigned short) /home/z/zhouzia/.sanitize-scratch/stock/src/fit_mesg.cpp:54 (drv-tsan-r2-ds-bestofn-s3+0x70b7e) (BuildId: 5899439de46eb2484e27a717baeef1ffba74913c)
+    #2 fit::Decode::ReadByte(unsigned char) /home/z/zhouzia/.sanitize-scratch/stock/src/fit_decode.cpp:611 (drv-tsan-r2-ds-bestofn-s3+0x21557) (BuildId: 5899439de46eb2484e27a717baeef1ffba74913c)
+    #3 fit::Decode::Resume() /home/z/zhouzia/.sanitize-scratch/stock/src/fit_decode.cpp:246 (drv-tsan-r2-ds-bestofn-s3+0x24de7) (BuildId: 5899439de46eb2484e27a717baeef1ffba74913c)
+    #4 fit::Decode::Read(std::istream*) /home/z/zhouzia/.sanitize-scratch/stock/src/fit_decode.cpp:191 (drv-tsan-r2-ds-bestofn-s3+0x25233) (BuildId: 5899439de46eb2484e27a717baeef1ffba74913c)
+    #5 fit::Decode::Read(std::istream*, fit::MesgListener*, fit::MesgDefinitionListener*, fit::DeveloperFieldDescriptionListener*) /home/z/zhouzia/.sanitize-scratch/stock/src/fit_decode.cpp:209 (drv-tsan-r2-ds-bestofn-s3+0x25300) (BuildId: 5899439de46eb2484e27a717baeef1ffba74913c)
+    #6 fit::Decode::Read(std::istream&, fit::MesgListener&) /home/z/zhouzia/.sanitize-scratch/stock/src/fit_decode.cpp:214 (drv-tsan-r2-ds-bestofn-s3+0x2536b) (BuildId: 5899439de46eb2484e27a717baeef1ffba74913c)
+    #7 decodeOne /home/z/zhouzia/Workspace/CanMehEvolve/scripts/followup/driver.cpp:68 (drv-tsan-r2-ds-bestofn-s3+0x93bd) (BuildId: 5899439de46eb2484e27a717baeef1ffba74913c)
+    #8 operator() /home/z/zhouzia/Workspace/CanMehEvolve/scripts/followup/driver.cpp:117 (drv-tsan-r2-ds-bestofn-s3+0x99c9) (BuildId: 5899439de46eb2484e27a717baeef1ffba74913c)
+    #9 __invoke_impl<void, main(int, char**)::<lambda()> > /usr/include/c++/13/bits/invoke.h:61 (drv-tsan-r2-ds-bestofn-s3+0x99c9)
+    #10 __invoke<main(int, char**)::<lambda()> > /usr/include/c++/13/bits/invoke.h:96 (drv-tsan-r2-ds-bestofn-s3+0x99c9)
+    #11 _M_invoke<0> /usr/include/c++/13/bits/std_thread.h:292 (drv-tsan-r2-ds-bestofn-s3+0x99c9)
+    #12 operator() /usr/include/c++/13/bits/std_thread.h:299 (drv-tsan-r2-ds-bestofn-s3+0x99c9)
+    #13 _M_run /usr/include/c++/13/bits/std_thread.h:244 (drv-tsan-r2-ds-bestofn-s3+0x99c9)
+    #14 <null> <null> (libstdc++.so.6+0xecdb3) (BuildId: 753c6c8608b61d4e67be8f0c890e03e0aa046b8b)
+
+  Previous write of size 1 at 0x555555649b00 by thread T4:
+    #0 fit::Profile::GetMesg(unsigned short) /home/z/zhouzia/.sanitize-scratch/var-tsan-r2-ds-bestofn-s3/src/fit_profile.cpp:3070 (drv-tsan-r2-ds-bestofn-s3+0x7d8f7) (BuildId: 5899439de46eb2484e27a717baeef1ffba74913c)
+    #1 fit::Mesg::Mesg(unsigned short) /home/z/zhouzia/.sanitize-scratch/stock/src/fit_mesg.cpp:54 (drv-tsan-r2-ds-bestofn-s3+0x70b7e) (BuildId: 5899439de46eb2484e27a717baeef1ffba74913c)
+    #2 fit::Decode::ReadByte(unsigned char) /home/z/zhouzia/.sanitize-scratch/stock/src/fit_decode.cpp:611 (drv-tsan-r2-ds-bestofn-s3+0x21557) (BuildId: 5899439de46eb2484e27a717baeef1ffba74913c)
+    #3 fit::Decode::Resume() /home/z/zhouzia/.sanitize-scratch/stock/src/fit_decode.cpp:246 (drv-tsan-r2-ds-bestofn-s3+0x24de7) (BuildId: 5899439de46eb2484e27a717baeef1ffba74913c)
+    #4 fit::Decode::Read(std::istream*) /home/z/zhouzia/.sanitize-scratch/stock/src/fit_decode.cpp:191 (drv-tsan-r2-ds-bestofn-s3+0x25233) (BuildId: 5899439de46eb2484e27a717baeef1ffba74913c)
+    #5 fit::Decode::Read(std::istream*, fit::MesgListener*, fit::MesgDefinitionListener*, fit::DeveloperFieldDescriptionListener*) /home/z/zhouzia/.sanitize-scratch/stock/src/fit_decode.cpp:209 (drv-tsan-r2-ds-bestofn-s3+0x25300) (BuildId: 5899439de46eb2484e27a717baeef1ffba74913c)
+    #6 fit::Decode::Read(std::istream&, fit::MesgListener&) /home/z/zhouzia/.sanitize-scratch/stock/src/fit_decode.cpp:214 (drv-tsan-r2-ds-bestofn-s3+0x2536b) (BuildId: 5899439de46eb2484e27a717baeef1ffba74913c)
+    #7 decodeOne /home/z/zhouzia/Workspace/CanMehEvolve/scripts/followup/driver.cpp:68 (drv-tsan-r2-ds-bestofn-s3+0x93bd) (BuildId: 5899439de46eb2484e27a717baeef1ffba74913c)
+    #8 operator() /home/z/zhouzia/Workspace/CanMehEvolve/scripts/followup/driver.cpp:117 (drv-tsan-r2-ds-bestofn-s3+0x99c9) (BuildId: 5899439de46eb2484e27a717baeef1ffba74913c)
+    #9 __invoke_impl<void, main(int, char**)::<lambda()> > /usr/include/c++/13/bits/invoke.h:61 (drv-tsan-r2-ds-bestofn-s3+0x99c9)
+    #10 __invoke<main(int, char**)::<lambda()> > /usr/include/c++/13/bits/invoke.h:96 (drv-tsan-r2-ds-bestofn-s3+0x99c9)
+    #11 _M_invoke<0> /usr/include/c++/13/bits/std_thread.h:292 (drv-tsan-r2-ds-bestofn-s3+0x99c9)
+    #12 operator() /usr/include/c++/13/bits/std_thread.h:299 (drv-tsan-r2-ds-bestofn-s3+0x99c9)
+    #13 _M_run /usr/include/c++/13/bits/std_thread.h:244 (drv-tsan-r2-ds-bestofn-s3+0x99c9)
+    #14 <null> <null> (libstdc++.so.6+0xecdb3) (BuildId: 753c6c8608b61d4e67be8f0c890e03e0aa046b8b)
+
+  Location is global 'fit::Profile::GetMesg(unsigned short)::initialized' of size 1 at 0x555555649b00 (drv-tsan-r2-ds-bestofn-s3+0xf5b00)
+
+  Thread T3 (tid=93141, running) created by main thread at:
+    #0 pthread_create ../../../../src/libsanitizer/tsan/tsan_interceptors_posix.cpp:1022 (libtsan.so.2+0x5ac1a) (BuildId: 2a13a7710e361d06f7babbea53065ca2be93f738)
+    #1 std::thread::_M_start_thread(std::unique_ptr<std::thread::_State, std::default_delete<std::thread::_State> >, void (*)()) <null> (libstdc++.so.6+0xeceb0) (BuildId: 753c6c8608b61d4e67be8f0c890e03e0aa046b8b)
+    #2 __libc_start_call_main ../sysdeps/nptl/libc_start_call_main.h:58 (libc.so.6+0x2a1c9) (BuildId: a4a7992a8e66555c8141ab2a08a8465ff6e0ea65)
+
+  Thread T4 (tid=93142, running) created by main thread at:
+    #0 pthread_create ../../../../src/libsanitizer/tsan/tsan_interceptors_posix.cpp:1022 (libtsan.so.2+0x5ac1a) (BuildId: 2a13a7710e361d06f7babbea53065ca2be93f738)
+    #1 std::thread::_M_start_thread(std::unique_ptr<std::thread::_State, std::default_delete<std::thread::_State> >, void (*)()) <null> (libstdc++.so.6+0xeceb0) (BuildId: 753c6c8608b61d4e67be8f0c890e03e0aa046b8b)
+    #2 __libc_start_call_main ../sysdeps/nptl/libc_start_call_main.h:58 (libc.so.6+0x2a1c9) (BuildId: a4a7992a8e66555c8141ab2a08a8465ff6e0ea65)
+
+SUMMARY: ThreadSanitizer: data race /home/z/zhouzia/.sanitize-scratch/var-tsan-r2-ds-bestofn-s3/src/fit_profile.cpp:3063 in fit::Profile::GetMesg(unsigned short)
+==================
+==================
+WARNING: ThreadSanitizer: data race (pid=93137)
+  Read of size 8 at 0x555555649b20 by thread T2:
+    #0 fit::Profile::GetMesg(unsigned short) /home/z/zhouzia/.sanitize-scratch/var-tsan-r2-ds-bestofn-s3/src/fit_profile.cpp:3073 (drv-tsan-r2-ds-bestofn-s3+0x7d912) (BuildId: 5899439de46eb2484e27a717baeef1ffba74913c)
+    #1 fit::Mesg::Mesg(unsigned short) /home/z/zhouzia/.sanitize-scratch/stock/src/fit_mesg.cpp:54 (drv-tsan-r2-ds-bestofn-s3+0x70b7e) (BuildId: 5899439de46eb2484e27a717baeef1ffba74913c)
+    #2 fit::Decode::ReadByte(unsigned char) /home/z/zhouzia/.sanitize-scratch/stock/src/fit_decode.cpp:611 (drv-tsan-r2-ds-bestofn-s3+0x21557) (BuildId: 5899439de46eb2484e27a717baeef1ffba74913c)
+    #3 fit::Decode::Resume() /home/z/zhouzia/.sanitize-scratch/stock/src/fit_decode.cpp:246 (drv-tsan-r2-ds-bestofn-s3+0x24de7) (BuildId: 5899439de46eb2484e27a717baeef1ffba74913c)
+    #4 fit::Decode::Read(std::istream*) /home/z/zhouzia/.sanitize-scratch/stock/src/fit_decode.cpp:191 (drv-tsan-r2-ds-bestofn-s3+0x25233) (BuildId: 5899439de46eb2484e27a717baeef1ffba74913c)
+    #5 fit::Decode::Read(std::istream*, fit::MesgListener*, fit::MesgDefinitionListener*, fit::DeveloperFieldDescriptionListener*) /home/z/zhouzia/.sanitize-scratch/stock/src/fit_decode.cpp:209 (drv-tsan-r2-ds-bestofn-s3+0x25300) (BuildId: 5899439de46eb2484e27a717baeef1ffba74913c)
+    #6 fit::Decode::Read(std::istream&, fit::MesgListener&) /home/z/zhouzia/.sanitize-scratch/stock/src/fit_decode.cpp:214 (drv-tsan-r2-ds-bestofn-s3+0x2536b) (BuildId: 5899439de46eb2484e27a717baeef1ffba74913c)
+    #7 decodeOne /home/z/zhouzia/Workspace/CanMehEvolve/scripts/followup/driver.cpp:68 (drv-tsan-r2-ds-bestofn-s3+0x93bd) (BuildId: 5899439de46eb2484e27a717baeef1ffba74913c)
+    #8 operator() /home/z/zhouzia/Workspace/CanMehEvolve/scripts/followup/driver.cpp:117 (drv-tsan-r2-ds-bestofn-s3+0x99c9) (BuildId: 5899439de46eb2484e27a717baeef1ffba74913c)
+    #9 __invoke_impl<void, main(int, char**)::<lambda()> > /usr/include/c++/13/bits/invoke.h:61 (drv-tsan-r2-ds-bestofn-s3+0x99c9)
+    #10 __invoke<main(int, char**)::<lambda()> > /usr/include/c++/13/bits/invoke.h:96 (drv-tsan-r2-ds-bestofn-s3+0x99c9)
+    #11 _M_invoke<0> /usr/include/c++/13/bits/std_thread.h:292 (drv-tsan-r2-ds-bestofn-s3+0x99c9)
+    #12 operator() /usr/include/c++/13/bits/std_thread.h:299 (drv-tsan-r2-ds-bestofn-s3+0x99c9)
+    #13 _M_run /usr/include/c++/13/bits/std_thread.h:244 (drv-tsan-r2-ds-bestofn-s3+0x99c9)
+    #14 <null> <null> (libstdc++.so.6+0xecdb3) (BuildId: 753c6c8608b61d4e67be8f0c890e03e0aa046b8b)
+
+  Previous write of size 8 at 0x555555649b20 by thread T4:
+    #0 fit::Profile::GetMesg(unsigned short) /home/z/zhouzia/.sanitize-scratch/var-tsan-r2-ds-bestofn-s3/src/fit_profile.cpp:3068 (drv-tsan-r2-ds-bestofn-s3+0x7d8e1) (BuildId: 5899439de46eb2484e27a717baeef1ffba74913c)
+    #1 fit::Mesg::Mesg(unsigned short) /home/z/zhouzia/.sanitize-scratch/stock/src/fit_mesg.cpp:54 (drv-tsan-r2-ds-bestofn-s3+0x70b7e) (BuildId: 5899439de46eb2484e27a717baeef1ffba74913c)
+    #2 fit::Decode::ReadByte(unsigned char) /home/z/zhouzia/.sanitize-scratch/stock/src/fit_decode.cpp:611 (drv-tsan-r2-ds-bestofn-s3+0x21557) (BuildId: 5899439de46eb2484e27a717baeef1ffba74913c)
+    #3 fit::Decode::Resume() /home/z/zhouzia/.sanitize-scratch/stock/src/fit_decode.cpp:246 (drv-tsan-r2-ds-bestofn-s3+0x24de7) (BuildId: 5899439de46eb2484e27a717baeef1ffba74913c)
+    #4 fit::Decode::Read(std::istream*) /home/z/zhouzia/.sanitize-scratch/stock/src/fit_decode.cpp:191 (drv-tsan-r2-ds-bestofn-s3+0x25233) (BuildId: 5899439de46eb2484e27a717baeef1ffba74913c)
+    #5 fit::Decode::Read(std::istream*, fit::MesgListener*, fit::MesgDefinitionListener*, fit::DeveloperFieldDescriptionListener*) /home/z/zhouzia/.sanitize-scratch/stock/src/fit_decode.cpp:209 (drv-tsan-r2-ds-bestofn-s3+0x25300) (BuildId: 5899439de46eb2484e27a717baeef1ffba74913c)
+    #6 fit::Decode::Read(std::istream&, fit::MesgListener&) /home/z/zhouzia/.sanitize-scratch/stock/src/fit_decode.cpp:214 (drv-tsan-r2-ds-bestofn-s3+0x2536b) (BuildId: 5899439de46eb2484e27a717baeef1ffba74913c)
+    #7 decodeOne /home/z/zhouzia/Workspace/CanMehEvolve/scripts/followup/driver.cpp:68 (drv-tsan-r2-ds-bestofn-s3+0x93bd) (BuildId: 5899439de46eb2484e27a717baeef1ffba74913c)
+    #8 operator() /home/z/zhouzia/Workspace/CanMehEvolve/scripts/followup/driver.cpp:117 (drv-tsan-r2-ds-bestofn-s3+0x99c9) (BuildId: 5899439de46eb2484e27a717baeef1ffba74913c)
+    #9 __invoke_impl<void, main(int, char**)::<lambda()> > /usr/include/c++/13/bits/invoke.h:61 (drv-tsan-r2-ds-bestofn-s3+0x99c9)
+    #10 __invoke<main(int, char**)::<lambda()> > /usr/include/c++/13/bits/invoke.h:96 (drv-tsan-r2-ds-bestofn-s3+0x99c9)
+    #11 _M_invoke<0> /usr/include/c++/13/bits/std_thread.h:292 (drv-tsan-r2-ds-bestofn-s3+0x99c9)
+    #12 operator() /usr/include/c++/13/bits/std_thread.h:299 (drv-tsan-r2-ds-bestofn-s3+0x99c9)
+    #13 _M_run /usr/include/c++/13/bits/std_thread.h:244 (drv-tsan-r2-ds-bestofn-s3+0x99c9)
+    #14 <null> <null> (libstdc++.so.6+0xecdb3) (BuildId: 753c6c8608b61d4e67be8f0c890e03e0aa046b8b)
+
+  Location is global 'fit::Profile::GetMesg(unsigned short)::table' of size 524288 at 0x555555649b20 (drv-tsan-r2-ds-bestofn-s3+0xf5b20)
+
+  Thread T2 (tid=93140, running) created by main thread at:
+    #0 pthread_create ../../../../src/libsanitizer/tsan/tsan_interceptors_posix.cpp:1022 (libtsan.so.2+0x5ac1a) (BuildId: 2a13a7710e361d06f7babbea53065ca2be93f738)
+    #1 std::thread::_M_start_thread(std::unique_ptr<std::thread::_State, std::default_delete<std::thread::_State> >, void (*)()) <null> (libstdc++.so.6+0xeceb0) (BuildId: 753c6c8608b61d4e67be8f0c890e03e0aa046b8b)
+    #2 __libc_start_call_main ../sysdeps/nptl/libc_start_call_main.h:58 (libc.so.6+0x2a1c9) (BuildId: a4a7992a8e66555c8141ab2a08a8465ff6e0ea65)
+
+  Thread T4 (tid=93142, running) created by main thread at:
+    #0 pthread_create ../../../../src/libsanitizer/tsan/tsan_interceptors_posix.cpp:1022 (libtsan.so.2+0x5ac1a) (BuildId: 2a13a7710e361d06f7babbea53065ca2be93f738)
+    #1 std::thread::_M_start_thread(std::unique_ptr<std::thread::_State, std::default_delete<std::thread::_State> >, void (*)()) <null> (libstdc++.so.6+0xeceb0) (BuildId: 753c6c8608b61d4e67be8f0c890e03e0aa046b8b)
+    #2 __libc_start_call_main ../sysdeps/nptl/libc_start_call_main.h:58 (libc.so.6+0x2a1c9) (BuildId: a4a7992a8e66555c8141ab2a08a8465ff6e0ea65)
+
+SUMMARY: ThreadSanitizer: data race /home/z/zhouzia/.sanitize-scratch/var-tsan-r2-ds-bestofn-s3/src/fit_profile.cpp:3073 in fit::Profile::GetMesg(unsigned short)
+==================
+ThreadSanitizer: reported 2 warnings

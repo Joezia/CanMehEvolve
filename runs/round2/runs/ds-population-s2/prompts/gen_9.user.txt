@@ -1,0 +1,41 @@
+File: src/fit_workout_step_mesg.hpp
+Function: SetDurationCalories (4 lines)
+One full decode of the four files takes about 358.6 ms in the stock build.
+Time of the current version of the whole library relative to stock: 0.991 (below 1.0 is faster). Best measured so far: 0.932.
+
+Your previous attempt failed:
+Stage 'compile' rejected it: In file included from /home/z/zhouzia/Workspace/CanMehEvolve/build/work-1095223/tree/src/fit_workout_step_mesg_listener.hpp:16,
+                 from /home/z/zhouzia/Workspace/CanMehEvolve/build/work-1095223/tree/src/fit_mesg_broadcaster.hpp:99,
+                 from /home/z/zhouzia/Workspace/CanMehEvolve/build/work-1095223/tree/src/fit_buffered_mesg_broadcaster.hpp:17,
+                 from /home/z/zhouzia/Workspace/CanMehEvolve/build/work-1095223/tree/src/fit_buffered_mesg_broadcaster.cpp:14:
+/home/z/zhouzia/Workspace/CanMehEvolve/build/work-1095223/tree/src/fit_workout_step_mesg.hpp: In member function ‘void fit::WorkoutStepMesg::SetDurationCalories(FIT_UINT32)’:
+/home/z/zhouzia/Workspace/CanMehEvolve/build/work-1095223/tree/src/fit_workout_step_mesg.hpp:334:9: error: ‘FIT_VALUE’ was not declared in this scope; did you mean ‘FIT_FALSE’?
+  334 |         FIT_VALUE fieldValue;
+      |         ^~~~~~~~~
+      |         FIT_FALSE
+/home/z/zhouzia/Workspace/CanMehEvolve/build/work-1095223/tree/src/fit_workout_step_mesg.hpp:335:9: error: ‘fieldValue’ was not declared in this scope
+  335 |         fieldValue.uint32 = durationCalories;
+      |         ^~~~~~~~~~
+/home/z/zhouzia/Workspace/CanMehEvolve/build/work-1095223/tree/src/fit_workout_step_mesg.hpp:336:9: error: ‘SetFieldValue’ was not declared in this scope; did you mean ‘SetFieldENUMValue’?
+  336 |         SetFieldValue(2, &fieldValue, 0, (FIT_UINT16) Profile::WORKOUT_STEP_MESG_DURATION_VALUE_FIELD_DUR
+... [truncated]
+The rejected replacement was:
+```cpp
+    void SetDurationCalories(FIT_UINT32 durationCalories)
+    {
+        FIT_VALUE fieldValue;
+        fieldValue.uint32 = durationCalories;
+        SetFieldValue(2, &fieldValue, 0, (FIT_UINT16) Profile::WORKOUT_STEP_MESG_DURATION_VALUE_FIELD_DURATION_CALORIES);
+    }
+
+```
+
+Current text of the function:
+```cpp
+    void SetDurationCalories(FIT_UINT32 durationCalories)
+    {
+        SetFieldUINT32Value(2, durationCalories, 0, (FIT_UINT16) Profile::WORKOUT_STEP_MESG_DURATION_VALUE_FIELD_DURATION_CALORIES);
+    }
+
+```
+Return the faster replacement now.

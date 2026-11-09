@@ -1,0 +1,6 @@
+{
+ "error": "/home/z/zhouzia/Workspace/CanMehEvolve/build/work-1094748/tree/src/fit_field.cpp: In member function ‘virtual FIT_BOOL fit::Field::GetIsAccumulated() const’:\n/home/z/zhouzia/Workspace/CanMehEvolve/build/work-1094748/tree/src/fit_field.cpp:78:30: error: cannot convert ‘const fit::Profile::MESG* const’ to ‘const fit::Profile* const’ in initialization\n   78 |     const Profile* const p = profile;\n      |                              ^~~~~~~\n      |                              |\n      |                              const fit::Profile::MESG* const\n/home/z/zhouzia/Workspace/CanMehEvolve/build/work-1094748/tree/src/fit_field.cpp:79:15: error: ‘const class fit::Profile’ has no member named ‘fields’\n   79 |     return p->fields[profileIndex].isAccumulated;\n      |               ^~~~~~\n",
+ "ok": false,
+ "rebuilt": 2,
+ "stage": "compile"
+}

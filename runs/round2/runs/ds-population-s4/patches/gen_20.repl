@@ -1,0 +1,15 @@
+I replaced the two separate byte copies of `type` and `isFieldExpanded` with a single `std::memcpy` of the adjacent bytes, reducing the copy to one load/store pair. This is faster because it merges the two scalar stores into a single 2-byte move.
+
+```include
+#include <cstring>
+```
+
+```cpp
+Field::Field(const Field &field)
+    : FieldBase(field)
+    , profile(field.profile)
+    , profileIndex(field.profileIndex)
+{
+    std::memcpy(&type, &field.type, sizeof(type) + sizeof(isFieldExpanded));
+}
+```

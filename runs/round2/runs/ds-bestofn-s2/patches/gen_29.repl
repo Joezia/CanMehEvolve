@@ -1,0 +1,11 @@
+The function is already minimal, so I only made the single profile load explicit and added a branch hint that the valid (non-zero) path is the common case, improving code layout and letting the compiler emit a leaner fast path.
+
+```cpp
+FIT_FLOAT64 Field::GetOffset() const
+{
+    const Profile* const p = profile;
+    if (__builtin_expect((p == NULL) || (profileIndex >= p->numFields), 0))
+        return 0;
+    return p->fields[profileIndex].offset;
+}
+```

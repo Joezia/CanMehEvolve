@@ -1,0 +1,111 @@
+--- a/src/fit_field.cpp
++++ b/src/fit_field.cpp
+@@ -92,9 +92,14 @@
+ 
+ FIT_UINT8 Field::GetNum(void) const
+ {
+-    if ((profile == NULL) || (profileIndex >= profile->numFields))
++    if (__builtin_expect(profile == NULL, 0))
+         return FIT_FIELD_NUM_INVALID;
+-    return profile->fields[profileIndex].num;
++
++    const Profile::FIELD *fields = profile->fields;
++    if (__builtin_expect((profileIndex >= profile->numFields) | (fields == NULL), 0))
++        return FIT_FIELD_NUM_INVALID;
++
++    return fields[profileIndex].num;
+ }
+ 
+ FIT_UINT8 Field::GetType() const
+@@ -102,10 +107,32 @@
+     if ( type != FIT_UINT8_INVALID )
+         return type;
+ 
+-    if ((profile == NULL) || (profileIndex >= profile->numFields))
++    const Profile::MESG* p = profile;
++    if ( p == NULL )
+         return FIT_UINT8_INVALID;
+ 
+-    return profile->fields[profileIndex].type;
++    const unsigned idx = static_cast<unsigned>(profileIndex);
++
++    static const Profile::MESG* cachedProfile[256] = {};
++    static FIT_UINT8 cachedType[256];
++
++    if ( idx < 256u )
++    {
++        if ( cachedProfile[idx] == p )
++            return cachedType[idx];
++    }
++
++    FIT_UINT8 result = FIT_UINT8_INVALID;
++    if ( idx < p->numFields )
++        result = p->fields[idx].type;
++
++    if ( idx < 256u )
++    {
++        cachedProfile[idx] = p;
++        cachedType[idx] = result;
++    }
++
++    return result;
+ }
+ 
+ std::string Field::GetUnits() const
+--- a/src/fit_field_base.cpp
++++ b/src/fit_field_base.cpp
+@@ -25,9 +25,9 @@
+ }
+ 
+ FieldBase::FieldBase(const FieldBase &field)
++    : values(field.values),
++      stringIndexes(field.stringIndexes)
+ {
+-    values = field.values;
+-    stringIndexes = field.stringIndexes;
+ }
+ 
+ FieldBase::~FieldBase()
+--- a/src/fit_mesg.cpp
++++ b/src/fit_mesg.cpp
+@@ -163,10 +163,37 @@
+ 
+ FIT_BOOL Mesg::HasField(const int fieldNum) const
+ {
+-    for (int i = 0; i < (int)fields.size(); i++)
++    const int n = (int)fields.size();
++    if (n <= 0)
++        return FIT_FALSE;
++
++    const Field* p = fields.data();
++    const Field* const end = p + n;
++
++    while (end - p >= 4)
++    {
++        if (p[0].GetNum() == fieldNum) return FIT_TRUE;
++        if (p[1].GetNum() == fieldNum) return FIT_TRUE;
++        if (p[2].GetNum() == fieldNum) return FIT_TRUE;
++        if (p[3].GetNum() == fieldNum) return FIT_TRUE;
++        p += 4;
++    }
++
++    switch (end - p)
+     {
+-        if (fields[i].GetNum() == fieldNum)
+-            return FIT_TRUE;
++    case 3:
++        if (p[0].GetNum() == fieldNum) return FIT_TRUE;
++        ++p;
++        // fall through
++    case 2:
++        if (p[0].GetNum() == fieldNum) return FIT_TRUE;
++        ++p;
++        // fall through
++    case 1:
++        if (p[0].GetNum() == fieldNum) return FIT_TRUE;
++        // fall through
++    default:
++        break;
+     }
+ 
+     return FIT_FALSE;

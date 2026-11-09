@@ -1,0 +1,10 @@
+[run] mode=search host=xcnd0 model_probe={"http_status":200,"model":"deepseek-v4.1-flash-1017","ok":true,"requested_model":"deepseek-v4.1-flash","usage":{"completion_tokens":13,"completion_tokens_details":{"reasoning_tokens":10},"prompt_tokens":36,"prompt_tokens_details":{"cached_tokens":0,"created_cache_tokens":0,"multimodal_tokens":null},"total_tokens":49}}
+[resume] segment 2 continues after generation 3 with 3 requests already sent
+[gen 4/10] region 2756 IsMinCoreTemperatureValid parent=1 ratio=0.944796 CONFIRMED best_confirmed_speedup=1.05843 tokens=41173 t=365s
+[gen 5/10] region 134 FieldBase::FieldBase parent=1 stage=unchanged best_confirmed_speedup=1.05843 tokens=61030 t=555s
+[gen 6/10] region 122 Field::GetNum parent=4 ratio=0.954649 CONFIRMED best_confirmed_speedup=1.05843 tokens=70585 t=921s
+[gen 7/10] region 4139 SetAvgPosGrade parent=1 stage=llm_http best_confirmed_speedup=1.05843 tokens=70585 t=1221s
+[gen 8/10] region 166 FieldBase::GetFLOAT64Value parent=1 ratio=0.924324 CONFIRMED best_confirmed_speedup=1.08187 tokens=95994 t=1742s
+[gen 9/10] region 134 FieldBase::FieldBase parent=6 stage=llm_http best_confirmed_speedup=1.08187 tokens=95994 t=2044s
+[gen 10/10] region 122 Field::GetNum parent=1 ratio=0.948311 CONFIRMED best_confirmed_speedup=1.08187 tokens=97611 t=2318s
+[done] {"api_calls":10,"best_confirmed_generation":8,"best_confirmed_speedup":1.0818714422467823,"best_ranked_generation":0,"best_ranked_speedup":1.0,"best_retained_speedup":1.0818714422467823,"complete":true,"completion_tokens":93170,"confirmed_candidates":6,"elapsed_s":3337.5371200189998,"ended_because":"request budget reached","finished":"2026-11-08T10:16:42+0800","http_attempts":10,"improved_on_parent_candidates":3,"llm_seconds":1599.557134667,"max_tokens":32768,"mode":"search","outcomes":{"compile":1,"llm_http":2,"measured":6,"unchanged":1},"prompt_tokens":4441,"rank_updates":[],"reasoning_tokens":91076,"request_budget":10,"seed":7,"segments":2,"total_tokens":97611,"truncated_replies":0}

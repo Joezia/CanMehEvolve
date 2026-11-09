@@ -1,0 +1,266 @@
+--- a/src/fit_field.cpp
++++ b/src/fit_field.cpp
+@@ -99,13 +99,19 @@
+ 
+ FIT_UINT8 Field::GetType() const
+ {
+-    if ( type != FIT_UINT8_INVALID )
+-        return type;
++    const FIT_UINT8 cachedType = type;
++    if (__builtin_expect(cachedType != FIT_UINT8_INVALID, 1))
++        return cachedType;
+ 
+-    if ((profile == NULL) || (profileIndex >= profile->numFields))
++    const Profile::MESG* const p = profile;
++    if (__builtin_expect(p == NULL, 0))
+         return FIT_UINT8_INVALID;
+ 
+-    return profile->fields[profileIndex].type;
++    const FIT_UINT8 index = profileIndex;
++    if (__builtin_expect(index >= p->numFields, 0))
++        return FIT_UINT8_INVALID;
++
++    return p->fields[index].type;
+ }
+ 
+ std::string Field::GetUnits() const
+--- a/src/fit_field_base.cpp
++++ b/src/fit_field_base.cpp
+@@ -16,6 +16,8 @@
+ #include "fit_field_base.hpp"
+ #include "fit_mesg.hpp"
+ #include "fit_unicode.hpp"
++#include <cstring>
++#include <cstdint>
+ 
+ namespace fit
+ {
+@@ -1007,73 +1009,148 @@
+ 
+ FIT_BOOL FieldBase::Read(const void *data, const FIT_UINT8 size)
+ {
+-    FIT_UINT8 bytesLeft = size;
+-    FIT_UINT8 typeSize = baseTypeSizes[GetType() & FIT_BASE_TYPE_NUM_MASK];
+-    FIT_BYTE *byteData = (FIT_BYTE *) data;
++    const FIT_UINT8 type = GetType();
++    const FIT_UINT8 typeSize = baseTypeSizes[type & FIT_BASE_TYPE_NUM_MASK];
++    const FIT_BYTE *byteData = static_cast<const FIT_BYTE *>(data);
+ 
+-    values.clear();
++    if (type == FIT_BASE_TYPE_STRING)
++    {
++        FIT_UINT8 index = 0;
++        while (index < size && byteData[index] == 0)
++        {
++            ++index;
++        }
++
++        if (index == size)
++        {
++            values.clear();
++            return FIT_TRUE;
++        }
+ 
+-    switch (GetType())
++        stringIndexes.push_back(0);
++
++        values.assign(byteData, byteData + size);
++        if (values.back() != 0)
++        {
++            values.push_back(0);
++        }
++
++        for (FIT_UINT8 i = 0; i + 2 < size; ++i)
++        {
++            if (byteData[i] == 0)
++            {
++                stringIndexes.push_back(static_cast<FIT_UINT8>(i + 1));
++            }
++        }
++    }
++    else
+     {
+-        case FIT_BASE_TYPE_STRING:
++        if (size == 0)
+         {
+-            FIT_BOOL hasData = FIT_FALSE;
+-            FIT_UINT8 stringPos = 0;
+-            FIT_UINT8 index = 0;
++            values.clear();
++            return FIT_TRUE;
++        }
++
++        const FIT_BYTE *invalid = baseTypeInvalids[type & FIT_BASE_TYPE_NUM_MASK];
++        const FIT_BYTE *point = byteData;
++        int bytes = size;
++        bool hasData = false;
+ 
+-            // Check if the string is empty
+-            while (index < bytesLeft)
++        switch (typeSize)
++        {
++            case 1:
+             {
+-                if (byteData[index] != 0)
++                const FIT_BYTE invalidValue = invalid[0];
++                while (bytes > 0)
+                 {
+-                    hasData = FIT_TRUE;
+-                    break;
++                    if (*point != invalidValue)
++                    {
++                        hasData = true;
++                        break;
++                    }
++                    ++point;
++                    --bytes;
+                 }
+-                index++;
++                break;
+             }
+-
+-            if (!hasData)
++            case 2:
++            {
++                std::uint16_t invalidValue;
++                std::memcpy(&invalidValue, invalid, sizeof(invalidValue));
++                while (bytes > 0)
++                {
++                    std::uint16_t value;
++                    std::memcpy(&value, point, sizeof(value));
++                    if (value != invalidValue)
++                    {
++                        hasData = true;
++                        break;
++                    }
++                    point += 2;
++                    bytes -= 2;
++                }
+                 break;
+-
+-            stringIndexes.push_back(stringPos);
+-
+-            while (bytesLeft-- > 0)
++            }
++            case 4:
+             {
+-                FIT_BYTE byte = *byteData++;
+-                values.push_back(byte);
+-                stringPos++;
+-
+-                if ( ( byte == 0 ) && ( stringPos + 1 < size ) )
++                std::uint32_t invalidValue;
++                std::memcpy(&invalidValue, invalid, sizeof(invalidValue));
++                while (bytes > 0)
+                 {
+-                    stringIndexes.push_back(stringPos);
++                    std::uint32_t value;
++                    std::memcpy(&value, point, sizeof(value));
++                    if (value != invalidValue)
++                    {
++                        hasData = true;
++                        break;
++                    }
++                    point += 4;
++                    bytes -= 4;
+                 }
++                break;
+             }
+-
+-            // Null terminate if not already null terminated
+-            if ( values.back() != 0 )
++            case 8:
+             {
+-                values.push_back(0);
++                std::uint64_t invalidValue;
++                std::memcpy(&invalidValue, invalid, sizeof(invalidValue));
++                while (bytes > 0)
++                {
++                    std::uint64_t value;
++                    std::memcpy(&value, point, sizeof(value));
++                    if (value != invalidValue)
++                    {
++                        hasData = true;
++                        break;
++                    }
++                    point += 8;
++                    bytes -= 8;
++                }
++                break;
+             }
+-        }
+-            break;
+-
+-        default:
+-        {
+-            int bytes = bytesLeft;
+-            FIT_BYTE *point = byteData;
+-
+-            while (bytes > 0)
++            default:
+             {
+-                if (memcmp(point, baseTypeInvalids[GetType() & FIT_BASE_TYPE_NUM_MASK], typeSize) != 0)
++                while (bytes > 0)
+                 {
+-                    values.insert(values.end(), byteData, byteData + bytesLeft);
+-                    break;
++                    if (std::memcmp(point, invalid, typeSize) != 0)
++                    {
++                        hasData = true;
++                        break;
++                    }
++                    point += typeSize;
++                    bytes -= typeSize;
+                 }
+-                point += typeSize;
+-                bytes -= typeSize;
++                break;
+             }
+         }
+-            break;
++
++        if (hasData)
++        {
++            values.assign(byteData, byteData + size);
++        }
++        else
++        {
++            values.clear();
++        }
+     }
+ 
+     return FIT_TRUE;
+--- a/src/fit_lap_mesg.hpp
++++ b/src/fit_lap_mesg.hpp
+@@ -943,14 +943,10 @@
+     FIT_BOOL IsMaxCadenceValid() const
+     {
+         const Field* field = GetField(18);
+-        if( FIT_NULL == field )
+-        {
+-            return FIT_FALSE;
+-        }
+-
+-        return field->IsValueValid();
++        return (FIT_NULL != field) && field->IsValueValid();
+     }
+ 
++
+     ///////////////////////////////////////////////////////////////////////
+     // Returns max_cadence field
+     // Units: rpm
+--- a/src/fit_workout_step_mesg.hpp
++++ b/src/fit_workout_step_mesg.hpp
+@@ -772,9 +772,11 @@
+     ///////////////////////////////////////////////////////////////////////
+     FIT_FLOAT32 GetRepeatDistance(void) const
+     {
+-        return GetFieldFLOAT32Value(4, 0, (FIT_UINT16) Profile::WORKOUT_STEP_MESG_TARGET_VALUE_FIELD_REPEAT_DISTANCE);
++        const FIT_UINT16 subfield = (FIT_UINT16) Profile::WORKOUT_STEP_MESG_TARGET_VALUE_FIELD_REPEAT_DISTANCE;
++        return GetFieldFLOAT32Value(4, 0, subfield);
+     }
+ 
++
+     ///////////////////////////////////////////////////////////////////////
+     // Set repeat_distance field
+     // Units: m

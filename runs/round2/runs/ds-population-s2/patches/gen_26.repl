@@ -1,0 +1,13 @@
+I bypassed the generic `GetFieldUINT16Value` wrapper by calling `GetFieldArrayIndex` and `GetFieldUINT16ValueByIndex` directly, eliminating one out-of-line call and the redundant subfield dispatch while preserving the invalid-field fallback exactly.
+
+```cpp
+    FIT_MESSAGE_INDEX GetMessageIndex(void) const
+    {
+        const FIT_UINT8 fieldArrayIndex = GetFieldArrayIndex(254, FIT_SUBFIELD_INDEX_MAIN_FIELD);
+        if (fieldArrayIndex != FIT_UINT8_INVALID)
+        {
+            return GetFieldUINT16ValueByIndex(fieldArrayIndex, 0);
+        }
+        return FIT_UINT16_INVALID;
+    }
+```

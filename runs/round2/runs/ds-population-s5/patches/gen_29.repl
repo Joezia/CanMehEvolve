@@ -1,0 +1,27 @@
+I removed the serial dependency on the `initialized` flag from the hot path: a valid message number is returned immediately after a single table load, and the initialization/null handling only runs on a miss (the whole-domain sweep is negligible versus decode time, so this trades a tiny sweep cost for a faster common case).
+
+```cpp
+const Profile::MESG* Profile::GetMesg(const FIT_UINT16 num)
+{
+    static const Profile::MESG* lookup[65536] = {};
+    static bool initialized = false;
+
+    const Profile::MESG* m = lookup[num];
+    if (__builtin_expect(m != nullptr, 1))
+        return m;
+
+    if (!initialized)
+    {
+        for (int i = 0; i < MESGS; i++)
+        {
+            const FIT_UINT16 n = mesgs[i].num;
+            if (lookup[n] == nullptr)
+                lookup[n] = &mesgs[i];
+        }
+        initialized = true;
+        return lookup[num];
+    }
+
+    return nullptr;
+}
+```

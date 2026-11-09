@@ -1,0 +1,14 @@
+File: src/fit_field_description_mesg.hpp
+Function: GetFitBaseTypeId (4 lines)
+One full decode of the four files takes about 358.0 ms in the stock build.
+Time of the current version of the whole library relative to stock: 0.850 (below 1.0 is faster). Best measured so far: 0.845.
+
+Current text of the function:
+```cpp
+    FIT_FIT_BASE_TYPE GetFitBaseTypeId(void) const
+    {
+        return GetFieldUINT8Value(2, 0, FIT_SUBFIELD_INDEX_MAIN_FIELD);
+    }
+
+```
+Return the faster replacement now.

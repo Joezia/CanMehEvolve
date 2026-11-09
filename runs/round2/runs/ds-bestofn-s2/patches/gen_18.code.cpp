@@ -1,0 +1,12 @@
+FIT_UINT8 Field::GetType() const
+{
+    if (type != FIT_UINT8_INVALID)
+        return type;
+
+    const auto* p = profile;
+    const auto idx = profileIndex;
+    if (p != nullptr && idx < p->numFields)
+        return p->fields[idx].type;
+
+    return FIT_UINT8_INVALID;
+}

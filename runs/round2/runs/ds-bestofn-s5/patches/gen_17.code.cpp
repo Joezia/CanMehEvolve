@@ -1,0 +1,4 @@
+FIT_BOOL Field::IsValid(void) const
+{
+    return static_cast<FIT_BOOL>(profileIndex != static_cast<FIT_UINT16>(FIT_UINT16_INVALID));
+}

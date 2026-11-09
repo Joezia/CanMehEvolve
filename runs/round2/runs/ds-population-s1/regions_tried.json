@@ -1,0 +1,114 @@
+{
+  "113": {
+    "accepted": 1,
+    "attempts": 2,
+    "best_gain": 0.006742820218466061,
+    "file": "src/fit_field.cpp",
+    "label": "Field::Field"
+  },
+  "115": {
+    "accepted": 1,
+    "attempts": 4,
+    "best_gain": 0.05114836370489462,
+    "file": "src/fit_field.cpp",
+    "label": "Field::Field"
+  },
+  "122": {
+    "accepted": 0,
+    "attempts": 1,
+    "best_gain": 0.0,
+    "file": "src/fit_field.cpp",
+    "label": "Field::GetNum"
+  },
+  "123": {
+    "accepted": 1,
+    "attempts": 2,
+    "best_gain": 0.0036139510940350617,
+    "file": "src/fit_field.cpp",
+    "label": "Field::GetType"
+  },
+  "127": {
+    "accepted": 0,
+    "attempts": 2,
+    "best_gain": 0.0,
+    "file": "src/fit_field.cpp",
+    "label": "Field::GetNumComponents"
+  },
+  "134": {
+    "accepted": 6,
+    "attempts": 18,
+    "best_gain": 0.05595283648916938,
+    "file": "src/fit_field_base.cpp",
+    "label": "FieldBase::FieldBase"
+  },
+  "143": {
+    "accepted": 1,
+    "attempts": 2,
+    "best_gain": 0.032354150653143066,
+    "file": "src/fit_field_base.cpp",
+    "label": "FieldBase::GetNumValues"
+  },
+  "166": {
+    "accepted": 0,
+    "attempts": 1,
+    "best_gain": 0.0,
+    "file": "src/fit_field_base.cpp",
+    "label": "FieldBase::GetFLOAT64Value"
+  },
+  "192": {
+    "accepted": 0,
+    "attempts": 1,
+    "best_gain": 0.0,
+    "file": "src/fit_field_base.cpp",
+    "label": "FieldBase::Read"
+  },
+  "225": {
+    "accepted": 1,
+    "attempts": 1,
+    "best_gain": 0.010677867538274821,
+    "file": "src/fit_mesg.cpp",
+    "label": "Mesg::HasField"
+  },
+  "243": {
+    "accepted": 0,
+    "attempts": 1,
+    "best_gain": 0.0,
+    "file": "src/fit_mesg.cpp",
+    "label": "Mesg::GetActiveSubFieldIndex"
+  },
+  "4136": {
+    "accepted": 0,
+    "attempts": 1,
+    "best_gain": 0.0,
+    "file": "src/fit_session_mesg.hpp",
+    "label": "SetAvgGrade"
+  },
+  "4260": {
+    "accepted": 0,
+    "attempts": 1,
+    "best_gain": 0.0,
+    "file": "src/fit_session_mesg.hpp",
+    "label": "IsMaxSaturatedHemoglobinPercentValid"
+  },
+  "5": {
+    "accepted": 0,
+    "attempts": 1,
+    "best_gain": 0.0,
+    "file": "src/fit_accumulated_field.cpp",
+    "label": "AccumulatedField::AccumulatedField"
+  },
+  "576": {
+    "accepted": 1,
+    "attempts": 1,
+    "best_gain": 0.0491681222221616,
+    "file": "src/fit_profile.cpp",
+    "label": "Profile::GetFieldIndex"
+  },
+  "85": {
+    "accepted": 1,
+    "attempts": 1,
+    "best_gain": 0.002441864042140418,
+    "file": "src/fit_developer_field_definition.cpp",
+    "label": "DeveloperFieldDefinition::IsDefined"
+  }
+}

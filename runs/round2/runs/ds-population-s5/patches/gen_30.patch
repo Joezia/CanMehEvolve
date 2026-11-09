@@ -1,0 +1,203 @@
+--- a/src/fit_field.cpp
++++ b/src/fit_field.cpp
+@@ -48,10 +48,21 @@
+ Field::Field(const FIT_UINT16 mesgNum, const FIT_UINT8 fieldNum)
+     : FieldBase()
+     , profile(Profile::GetMesg(mesgNum))
+-    , profileIndex(Profile::GetFieldIndex(mesgNum, fieldNum))
++    , profileIndex(FIT_UINT16_INVALID)
+     , type(FIT_UINT8_INVALID)
+     , isFieldExpanded(FIT_FALSE)
+ {
++    if (profile != nullptr)
++    {
++        for (FIT_UINT16 i = 0; i < profile->numFields; ++i)
++        {
++            if (profile->fields[i].num == fieldNum)
++            {
++                profileIndex = i;
++                break;
++            }
++        }
++    }
+ }
+ 
+ Field::Field(const std::string& mesgName, const std::string& fieldName)
+@@ -92,9 +103,14 @@
+ 
+ FIT_UINT8 Field::GetNum(void) const
+ {
+-    if ((profile == NULL) || (profileIndex >= profile->numFields))
++    if (__builtin_expect(profile == NULL, 0))
++        return FIT_FIELD_NUM_INVALID;
++
++    const Profile::FIELD *fields = profile->fields;
++    if (__builtin_expect((profileIndex >= profile->numFields) | (fields == NULL), 0))
+         return FIT_FIELD_NUM_INVALID;
+-    return profile->fields[profileIndex].num;
++
++    return fields[profileIndex].num;
+ }
+ 
+ FIT_UINT8 Field::GetType() const
+--- a/src/fit_field_base.cpp
++++ b/src/fit_field_base.cpp
+@@ -25,9 +25,9 @@
+ }
+ 
+ FieldBase::FieldBase(const FieldBase &field)
++    : values(field.values),
++      stringIndexes(field.stringIndexes)
+ {
+-    values = field.values;
+-    stringIndexes = field.stringIndexes;
+ }
+ 
+ FieldBase::~FieldBase()
+@@ -728,35 +728,52 @@
+ // correct underlying type
+ void FieldBase::AddRawValue(const FIT_FLOAT64 rawValue, const FIT_UINT8 fieldArrayIndex)
+ {
+-    FIT_FLOAT64 roundedValue = FieldBase::Round(rawValue);
+-    switch ( GetType() )
++    auto setValue = [this, fieldArrayIndex](const void* value, const size_t size) {
++        const size_t offset = static_cast<size_t>(fieldArrayIndex) * size;
++        if (values.size() < offset + size)
++        {
++            values.resize(offset + size);
++        }
++        memcpy(&values[offset], value, size);
++    };
++
++    switch (GetType())
+     {
+         case FIT_BASE_TYPE_BYTE:
+         case FIT_BASE_TYPE_ENUM:
+         case FIT_BASE_TYPE_SINT8:
+         case FIT_BASE_TYPE_UINT8:
+         case FIT_BASE_TYPE_UINT8Z:
+-            SetUINT8Value((FIT_UINT8)roundedValue, fieldArrayIndex);
++        {
++            const FIT_UINT8 value = (FIT_UINT8)FieldBase::Round(rawValue);
++            setValue(&value, sizeof(value));
+             break;
++        }
+ 
+         case FIT_BASE_TYPE_SINT16:
+         case FIT_BASE_TYPE_UINT16:
+         case FIT_BASE_TYPE_UINT16Z:
+-            SetUINT16Value((FIT_UINT16)roundedValue, fieldArrayIndex);
++        {
++            const FIT_UINT16 value = (FIT_UINT16)FieldBase::Round(rawValue);
++            setValue(&value, sizeof(value));
+             break;
++        }
+ 
+         case FIT_BASE_TYPE_SINT32:
+         case FIT_BASE_TYPE_UINT32:
+         case FIT_BASE_TYPE_UINT32Z:
+-            SetUINT32Value((FIT_UINT32)roundedValue, fieldArrayIndex);
++        {
++            const FIT_UINT32 value = (FIT_UINT32)FieldBase::Round(rawValue);
++            setValue(&value, sizeof(value));
+             break;
++        }
+ 
+         case FIT_BASE_TYPE_FLOAT32:
+         {
+-            FIT_FLOAT32 float32Value = (FIT_FLOAT32)roundedValue;
++            const FIT_FLOAT32 float32Value = (FIT_FLOAT32)FieldBase::Round(rawValue);
+             FIT_UINT32 uint32Value;
+             memcpy(&uint32Value, &float32Value, sizeof(FIT_FLOAT32));
+-            SetUINT32Value(uint32Value, fieldArrayIndex);
++            setValue(&uint32Value, sizeof(uint32Value));
+             break;
+         }
+ 
+@@ -766,22 +783,24 @@
+             {
+                 values.resize((fieldArrayIndex + 1) * 8);
+             }
+-
+-            for (size_t i = 0; i < sizeof(FIT_FLOAT64); i++)
+-            {
+-                values[(fieldArrayIndex * sizeof(FIT_FLOAT64) + i)] = (*(((FIT_BYTE *)&rawValue) + i));
+-            }
++            memcpy(&values[fieldArrayIndex * sizeof(FIT_FLOAT64)], &rawValue, sizeof(FIT_FLOAT64));
+             break;
+         }
+ 
+         case FIT_BASE_TYPE_SINT64:
+-            SetSINT64Value((FIT_SINT64)rawValue, fieldArrayIndex);
++        {
++            const FIT_SINT64 value = (FIT_SINT64)rawValue;
++            setValue(&value, sizeof(value));
+             break;
++        }
+ 
+         case FIT_BASE_TYPE_UINT64:
+         case FIT_BASE_TYPE_UINT64Z:
+-            SetUINT64Value((FIT_UINT64)rawValue, fieldArrayIndex);
++        {
++            const FIT_UINT64 value = (FIT_UINT64)rawValue;
++            setValue(&value, sizeof(value));
+             break;
++        }
+ 
+         default:
+             break;
+--- a/src/fit_profile.cpp
++++ b/src/fit_profile.cpp
+@@ -3057,13 +3057,21 @@
+ 
+ const Profile::MESG* Profile::GetMesg(const FIT_UINT16 num)
+ {
+-    for (int i = 0; i < MESGS; i++)
++    static const Profile::MESG* lookup[65536] = {};
++    static bool initialized = false;
++
++    if (!initialized)
+     {
+-        if (mesgs[i].num == num)
+-            return &mesgs[i];
++        for (int i = 0; i < MESGS; i++)
++        {
++            const FIT_UINT16 n = mesgs[i].num;
++            if (lookup[n] == nullptr)
++                lookup[n] = &mesgs[i];
++        }
++        initialized = true;
+     }
+ 
+-    return NULL;
++    return lookup[num];
+ }
+ 
+ const Profile::MESG* Profile::GetMesg(const std::string& name)
+@@ -3084,13 +3092,22 @@
+     if (mesg == NULL)
+         return FIT_UINT16_INVALID;
+ 
+-    for (FIT_UINT16 i = 0; i < mesg->numFields; i++)
++    static FIT_UINT16 cache[65536][256];
++    static bool built[65536];
++
++    if (!built[mesgNum])
+     {
+-        if (mesg->fields[i].num == fieldNum)
+-            return i;
++        for (FIT_UINT16 i = 0; i < mesg->numFields; ++i)
++        {
++            const FIT_UINT8 num = mesg->fields[i].num;
++            if (cache[mesgNum][num] == 0)
++                cache[mesgNum][num] = (FIT_UINT16)(i + 1);
++        }
++        built[mesgNum] = true;
+     }
+ 
+-    return FIT_UINT16_INVALID;
++    const FIT_UINT16 val = cache[mesgNum][fieldNum];
++    return val ? (FIT_UINT16)(val - 1) : FIT_UINT16_INVALID;
+ }
+ 
+ const FIT_UINT16 Profile::GetFieldIndex(const std::string& mesgName, const std::string& fieldName)

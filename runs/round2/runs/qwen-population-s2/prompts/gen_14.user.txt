@@ -1,0 +1,14 @@
+File: src/fit_field_base.cpp
+Function: FieldBase::Round (4 lines)
+One full decode of the four files takes about 358.6 ms in the stock build.
+Time of the current version of the whole library relative to stock: 1.001 (below 1.0 is faster). Best measured so far: 0.995.
+
+Current text of the function:
+```cpp
+FIT_FLOAT64 FieldBase::Round(FIT_FLOAT64 value)
+{
+    return (value > 0.0) ? floor(value + 0.5) : ceil(value - 0.5);
+}
+
+```
+Return the faster replacement now.

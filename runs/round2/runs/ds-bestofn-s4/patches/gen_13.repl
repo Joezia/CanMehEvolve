@@ -1,0 +1,42 @@
+I added a lazy per-message lookup table so each mesgNum/fieldNum pair resolves in O(1) after the first call, eliminating repeated GetMesg calls and linear scans. Invalid message numbers are cached once via a shared all-invalid row.
+
+```cpp
+const FIT_UINT16 Profile::GetFieldIndex(const FIT_UINT16 mesgNum, const FIT_UINT8 fieldNum)
+{
+    static FIT_UINT16* cache[65536] = {};
+    static FIT_UINT16 invalidRow[256];
+    static bool invalidRowReady = false;
+
+    FIT_UINT16* row = cache[mesgNum];
+    if (row == NULL)
+    {
+        const MESG *mesg = GetMesg(mesgNum);
+        if (mesg == NULL)
+        {
+            if (!invalidRowReady)
+            {
+                for (FIT_UINT16 i = 0; i < 256; ++i)
+                    invalidRow[i] = FIT_UINT16_INVALID;
+                invalidRowReady = true;
+            }
+            cache[mesgNum] = invalidRow;
+            return FIT_UINT16_INVALID;
+        }
+
+        row = new FIT_UINT16[256];
+        for (FIT_UINT16 i = 0; i < 256; ++i)
+            row[i] = FIT_UINT16_INVALID;
+
+        for (FIT_UINT16 i = 0; i < mesg->numFields; ++i)
+        {
+            const FIT_UINT8 num = mesg->fields[i].num;
+            if (row[num] == FIT_UINT16_INVALID)
+                row[num] = i;
+        }
+
+        cache[mesgNum] = row;
+    }
+
+    return row[fieldNum];
+}
+```

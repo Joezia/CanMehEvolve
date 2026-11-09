@@ -1,0 +1,169 @@
+I localized the per-byte loop state (`currentByteIndex`, `currentByteOffset`, `bytesRead`, `decodeReturn`) into locals and skipped the `pause` check on `RETURN_CONTINUE`, which removes repeated member reloads/stores and a branch from the hot byte-processing path. I also replaced the `try`/`at` field-description lookup with a single `find`, preserving behavior while avoiding exception machinery.
+
+```cpp
+FIT_BOOL Decode::Resume(void)
+{
+    pause = FIT_FALSE;
+    RETURN decodeReturn = RETURN_CONTINUE;
+
+    FIT_UINT32 idx = currentByteIndex;
+    FIT_UINT32 offset = currentByteOffset;
+    FIT_UINT32 br = bytesRead;
+    FIT_BOOL checkPause = FIT_FALSE;
+    RETURN lastRet = RETURN_CONTINUE;
+
+    do
+    {
+        if ( idx == 0 )
+        {
+            file->read(buffer, BufferSize);
+            br = (FIT_UINT32)file->gcount();
+            bytesRead = br;
+        }
+
+        for (; idx < br; ++idx)
+        {
+            if (checkPause && pause)
+            {
+                currentByteIndex = idx;
+                currentByteOffset = offset;
+                decodeReturn = lastRet;
+                return FIT_FALSE;
+            }
+            checkPause = FIT_FALSE;
+
+            lastRet = ReadByte((FIT_UINT8)buffer[idx]);
+
+            if (lastRet != RETURN_CONTINUE)
+            {
+                switch (lastRet) {
+                    case RETURN_MESG:
+                    {
+                        currentByteIndex = idx;
+                        currentByteOffset = offset;
+                        decodeReturn = lastRet;
+
+                        auto mesgNum = mesg.GetNum();
+                        if (mesgNum == FIT_MESG_NUM_DEVELOPER_DATA_ID)
+                        {
+                            DeveloperDataIdMesg devIdMesg(mesg);
+
+                            if (!devIdMesg.IsDeveloperDataIndexValid()) {
+                                throw fit::RuntimeException("Invalid developer data index in DeveloperDataIdMesg");
+                            }
+
+                            FIT_UINT8 index = devIdMesg.GetDeveloperDataIndex();
+                            developers[index] = devIdMesg;
+                            descriptions[index] = std::unordered_map<FIT_UINT8, FieldDescriptionMesg>();
+                        }
+                        else if (mesgNum == FIT_MESG_NUM_FIELD_DESCRIPTION)
+                        {
+                            FieldDescriptionMesg descMesg(mesg);
+
+                            if (!descMesg.IsDeveloperDataIndexValid()) {
+                                throw fit::RuntimeException("Invalid developer data index in FieldDescriptionMesg");
+                            }
+
+                            if (!descMesg.IsFieldDefinitionNumberValid())
+                            {
+                                throw fit::RuntimeException("Invalid developer field definition number in FieldDescriptionMesg");
+                            }
+
+                            FIT_UINT8 index = descMesg.GetDeveloperDataIndex();
+                            FIT_UINT8 fldNum = descMesg.GetFieldDefinitionNumber();
+
+                            auto it = descriptions.find(index);
+                            if (it != descriptions.end())
+                            {
+                                it->second[fldNum] = descMesg;
+
+                                if (descriptionListener)
+                                {
+                                    descriptionListener->OnDeveloperFieldDescription(DeveloperFieldDescription(descMesg, developers[index]));
+                                }
+                            }
+                        }
+
+                        if (mesgListener)
+                            mesgListener->OnMesg(mesg);
+                        break;
+                    }
+
+                    case RETURN_MESG_DEF:
+                    {
+                        currentByteIndex = idx;
+                        currentByteOffset = offset;
+                        decodeReturn = lastRet;
+
+                        if (mesgDefinitionListener)
+                        {
+                            mesgDefinitionListener->OnMesgDefinition(localMesgDefs[localMesgIndex]);
+                        }
+                        break;
+                    }
+
+                    case RETURN_END_OF_FILE:
+                        ++idx;
+                        ++offset;
+                        currentByteIndex = idx;
+                        currentByteOffset = offset;
+                        decodeReturn = lastRet;
+                        return FIT_TRUE;
+
+                    default:
+                        ++offset;
+                        currentByteIndex = idx;
+                        currentByteOffset = offset;
+                        decodeReturn = lastRet;
+                        return FIT_TRUE;
+                }
+                checkPause = FIT_TRUE;
+            }
+            ++offset;
+        }
+        idx = 0;
+    } while ( file->good() );
+
+    currentByteIndex = idx;
+    currentByteOffset = offset;
+    decodeReturn = lastRet;
+
+    if ((streamIsComplete == FIT_TRUE) && (skipHeader == FIT_FALSE))
+    {
+        std::ostringstream message;
+        message << "FIT decode error: Unexpected end of input stream at byte: " << currentByteOffset;
+        throw RuntimeException(message.str());
+    }
+    if (streamIsComplete == FIT_FALSE)
+    {
+        if ((decodeReturn == RETURN_MESG) || (decodeReturn == RETURN_MESG_DEF))
+        {
+            return FIT_TRUE;
+        }
+        else
+        {
+            return FIT_FALSE;
+        }
+    }
+    else
+    {
+        if ((decodeReturn == RETURN_MESG) || (decodeReturn == RETURN_MESG_DEF))
+        {
+            return FIT_TRUE;
+        }
+        else
+        {
+            if (invalidDataSize == FIT_FALSE)
+            {
+                std::ostringstream message;
+                message << "FIT decode error: Unexpected end of input stream at byte: " << currentByteOffset;
+                throw RuntimeException(message.str());
+            }
+            else
+            {
+                return FIT_TRUE;
+            }
+        }
+    }
+}
+```

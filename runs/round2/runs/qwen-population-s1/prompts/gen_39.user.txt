@@ -1,0 +1,39 @@
+File: src/fit_time_in_zone_mesg.hpp
+Function: SetFunctionalThresholdPower (4 lines)
+One full decode of the four files takes about 357.9 ms in the stock build.
+Time of the current version of the whole library relative to stock: 0.898 (below 1.0 is faster). Best measured so far: 0.898.
+
+Your previous attempt failed:
+Stage 'compile' rejected it: In file included from /home/z/zhouzia/Workspace/CanMehEvolve/build/work-1095979/tree/src/fit_time_in_zone_mesg_listener.hpp:16,
+                 from /home/z/zhouzia/Workspace/CanMehEvolve/build/work-1095979/tree/src/fit_mesg_broadcaster.hpp:42,
+                 from /home/z/zhouzia/Workspace/CanMehEvolve/build/work-1095979/tree/src/fit_buffered_mesg_broadcaster.hpp:17,
+                 from /home/z/zhouzia/Workspace/CanMehEvolve/build/work-1095979/tree/src/fit_buffered_mesg_broadcaster.cpp:14:
+/home/z/zhouzia/Workspace/CanMehEvolve/build/work-1095979/tree/src/fit_time_in_zone_mesg.hpp: In member function ‘void fit::TimeInZoneMesg::SetFunctionalThresholdPower(FIT_UINT16)’:
+/home/z/zhouzia/Workspace/CanMehEvolve/build/work-1095979/tree/src/fit_time_in_zone_mesg.hpp:663:5: error: ‘std::vector<fit::Field> fit::Mesg::fields’ is private within this context
+  663 |     fields[15].SetUInt16Value(functionalThresholdPower);
+      |     ^~~~~~
+In file included from /home/z/zhouzia/Workspace/CanMehEvolve/build/work-1095979/tree/src/fit_mesg_broadcaster.hpp:18:
+/home/z/zhouzia/Workspace/CanMehEvolve/build/work-1095979/tree/src/fit_mesg.hpp:108:24: note: declared private here
+  108 |     std::vector<Field> fields;
+      |                        ^~~~~~
+/home/z/zhouzia/Workspace/CanMehEvolve/build/work-1095979/tree/src/fit_time_in_zone_mesg.hpp:663:16: error: ‘__gnu_cxx::__alloc_traits<std::allocator<fit::Field>, fit::Field>::value_type’ {aka ‘class fit::Field’} has no membe
+... [truncated]
+The rejected replacement was:
+```cpp
+
+void SetFunctionalThresholdPower(FIT_UINT16 functionalThresholdPower)
+{
+    fields[15].SetUInt16Value(functionalThresholdPower);
+}
+
+```
+
+Current text of the function:
+```cpp
+    void SetFunctionalThresholdPower(FIT_UINT16 functionalThresholdPower)
+    {
+        SetFieldUINT16Value(15, functionalThresholdPower, 0, FIT_SUBFIELD_INDEX_MAIN_FIELD);
+    }
+
+```
+Return the faster replacement now.

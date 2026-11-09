@@ -1,0 +1,212 @@
+--- a/src/fit_field.cpp
++++ b/src/fit_field.cpp
+@@ -15,6 +15,7 @@
+ #include "fit_field.hpp"
+ #include "fit_mesg.hpp"
+ #include "fit_unicode.hpp"
++#include <cstddef>
+ 
+ namespace fit
+ {
+@@ -97,12 +98,13 @@
+     return profile->fields[profileIndex].num;
+ }
+ 
++
+ FIT_UINT8 Field::GetType() const
+ {
+-    if ( type != FIT_UINT8_INVALID )
++    if (type != FIT_UINT8_INVALID)
+         return type;
+ 
+-    if ((profile == NULL) || (profileIndex >= profile->numFields))
++    if (!profile || profileIndex >= profile->numFields)
+         return FIT_UINT8_INVALID;
+ 
+     return profile->fields[profileIndex].type;
+--- a/src/fit_field_base.cpp
++++ b/src/fit_field_base.cpp
+@@ -16,6 +16,8 @@
+ #include "fit_field_base.hpp"
+ #include "fit_mesg.hpp"
+ #include "fit_unicode.hpp"
++#include <cstring>
++#include <algorithm>
+ 
+ namespace fit
+ {
+@@ -726,10 +728,11 @@
+ 
+ // rawValue is already the correct quantity (scale/offsets applied) but possibly not the
+ // correct underlying type
++
+ void FieldBase::AddRawValue(const FIT_FLOAT64 rawValue, const FIT_UINT8 fieldArrayIndex)
+ {
+     FIT_FLOAT64 roundedValue = FieldBase::Round(rawValue);
+-    switch ( GetType() )
++    switch (GetType())
+     {
+         case FIT_BASE_TYPE_BYTE:
+         case FIT_BASE_TYPE_ENUM:
+@@ -753,34 +756,31 @@
+ 
+         case FIT_BASE_TYPE_FLOAT32:
+         {
+-            FIT_FLOAT32 float32Value = (FIT_FLOAT32)roundedValue;
++            FIT_FLOAT32 float32Value = static_cast<FIT_FLOAT32>(roundedValue);
+             FIT_UINT32 uint32Value;
+-            memcpy(&uint32Value, &float32Value, sizeof(FIT_FLOAT32));
++            std::memcpy(&uint32Value, &float32Value, sizeof(FIT_FLOAT32));
+             SetUINT32Value(uint32Value, fieldArrayIndex);
+             break;
+         }
+ 
+         case FIT_BASE_TYPE_FLOAT64:
+         {
+-            if ((FIT_UINT8)values.size() < ((fieldArrayIndex + 1) * sizeof(FIT_FLOAT64)))
++            const size_t neededSize = (fieldArrayIndex + 1) * 8;
++            if (values.size() < neededSize)
+             {
+-                values.resize((fieldArrayIndex + 1) * 8);
+-            }
+-
+-            for (size_t i = 0; i < sizeof(FIT_FLOAT64); i++)
+-            {
+-                values[(fieldArrayIndex * sizeof(FIT_FLOAT64) + i)] = (*(((FIT_BYTE *)&rawValue) + i));
++                values.resize(neededSize);
+             }
++            std::memcpy(&values[fieldArrayIndex * 8], &rawValue, 8);
+             break;
+         }
+ 
+         case FIT_BASE_TYPE_SINT64:
+-            SetSINT64Value((FIT_SINT64)rawValue, fieldArrayIndex);
++            SetSINT64Value(*reinterpret_cast<const FIT_SINT64*>(&rawValue), fieldArrayIndex);
+             break;
+ 
+         case FIT_BASE_TYPE_UINT64:
+         case FIT_BASE_TYPE_UINT64Z:
+-            SetUINT64Value((FIT_UINT64)rawValue, fieldArrayIndex);
++            SetUINT64Value(*reinterpret_cast<const FIT_UINT64*>(&rawValue), fieldArrayIndex);
+             break;
+ 
+         default:
+@@ -1005,75 +1005,61 @@
+     values[idx + i] = 0; // null terminate
+ }
+ 
++
+ FIT_BOOL FieldBase::Read(const void *data, const FIT_UINT8 size)
+ {
+-    FIT_UINT8 bytesLeft = size;
+-    FIT_UINT8 typeSize = baseTypeSizes[GetType() & FIT_BASE_TYPE_NUM_MASK];
+-    FIT_BYTE *byteData = (FIT_BYTE *) data;
++    const FIT_BYTE* byteData = static_cast<const FIT_BYTE*>(data);
++    const FIT_UINT8 typeIndex = GetType() & FIT_BASE_TYPE_NUM_MASK;
++    const FIT_UINT8 typeSize = baseTypeSizes[typeIndex];
+ 
+     values.clear();
++    stringIndexes.clear();
+ 
+-    switch (GetType())
++    if (GetType() == FIT_BASE_TYPE_STRING)
+     {
+-        case FIT_BASE_TYPE_STRING:
+-        {
+-            FIT_BOOL hasData = FIT_FALSE;
+-            FIT_UINT8 stringPos = 0;
+-            FIT_UINT8 index = 0;
+-
+-            // Check if the string is empty
+-            while (index < bytesLeft)
+-            {
+-                if (byteData[index] != 0)
+-                {
+-                    hasData = FIT_TRUE;
+-                    break;
+-                }
+-                index++;
+-            }
+-
+-            if (!hasData)
+-                break;
+-
+-            stringIndexes.push_back(stringPos);
+-
+-            while (bytesLeft-- > 0)
+-            {
+-                FIT_BYTE byte = *byteData++;
+-                values.push_back(byte);
+-                stringPos++;
+-
+-                if ( ( byte == 0 ) && ( stringPos + 1 < size ) )
+-                {
+-                    stringIndexes.push_back(stringPos);
+-                }
+-            }
+-
+-            // Null terminate if not already null terminated
+-            if ( values.back() != 0 )
+-            {
+-                values.push_back(0);
+-            }
++        // Find first non-zero byte to detect if string is empty
++        const FIT_BYTE* end = byteData + size;
++        const FIT_BYTE* firstNonZero = std::find_if(byteData, end, [](FIT_BYTE b) { return b != 0; });
++        
++        if (firstNonZero == end)
++            return FIT_TRUE; // Empty string, nothing to do
++
++        // Pre-reserve space (optimization)
++        values.reserve(size + 1);
++
++        // Process string byte-by-byte, tracking positions for string indexes
++        FIT_UINT8 stringPos = 0;
++        for (const FIT_BYTE* p = byteData; p < end; ++p, ++stringPos)
++        {
++            FIT_BYTE byte = *p;
++            values.push_back(byte);
++            
++            // Record new string start after null terminator (if space remains)
++            if (byte == 0 && stringPos + 1 < size)
++                stringIndexes.push_back(stringPos + 1);
+         }
+-            break;
+ 
+-        default:
+-        {
+-            int bytes = bytesLeft;
+-            FIT_BYTE *point = byteData;
++        // Null-terminate if not already
++        if (values.back() != 0)
++            values.push_back(0);
++    }
++    else
++    {
++        // For non-string types, skip all-invalid segments and copy the first valid chunk
++        const FIT_BYTE* p = byteData;
++        const FIT_BYTE* end = p + size;
++        const FIT_BYTE* invalidValue = baseTypeInvalids[typeIndex];
+ 
+-            while (bytes > 0)
++        while (p + typeSize <= end)
++        {
++            if (memcmp(p, invalidValue, typeSize) != 0)
+             {
+-                if (memcmp(point, baseTypeInvalids[GetType() & FIT_BASE_TYPE_NUM_MASK], typeSize) != 0)
+-                {
+-                    values.insert(values.end(), byteData, byteData + bytesLeft);
+-                    break;
+-                }
+-                point += typeSize;
+-                bytes -= typeSize;
++                // Found valid data: copy remaining bytes and break
++                values.insert(values.end(), p, end);
++                break;
+             }
++            p += typeSize;
+         }
+-            break;
+     }
+ 
+     return FIT_TRUE;

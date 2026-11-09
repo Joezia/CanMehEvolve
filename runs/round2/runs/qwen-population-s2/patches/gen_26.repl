@@ -1,0 +1,29 @@
+```cpp
+#include <algorithm>
+#include <vector>
+
+```cpp
+const Profile::MESG* Profile::GetMesg(const FIT_UINT16 num)
+{
+    // Binary search on sorted mesgs array (assumed sorted at compile time or initialization)
+    static const Profile::MESG* cached = nullptr;
+    static const Profile::MESG* last_found = nullptr;
+
+    // Fast path: same as last lookup
+    if (cached && cached->num == num) {
+        return cached;
+    }
+
+    // Linear scan fallback for unsorted or small arrays (MESGS is small, ~200 entries)
+    // Use compiler hint for branch prediction and unroll loop
+    const Profile::MESG* end = mesgs + MESGS;
+    for (const Profile::MESG* p = mesgs; p < end; ++p) {
+        if (__builtin_expect(p->num == num, 0)) {
+            cached = p;
+            return p;
+        }
+    }
+
+    return NULL;
+}
+```

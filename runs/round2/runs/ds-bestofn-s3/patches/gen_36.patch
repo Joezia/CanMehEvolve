@@ -1,0 +1,16 @@
+--- a/src/fit_segment_lap_mesg.hpp
++++ b/src/fit_segment_lap_mesg.hpp
+@@ -2348,12 +2348,7 @@
+     FIT_BOOL IsAvgCombinedPedalSmoothnessValid() const
+     {
+         const Field* field = GetField(63);
+-        if( FIT_NULL == field )
+-        {
+-            return FIT_FALSE;
+-        }
+-
+-        return field->IsValueValid();
++        return (FIT_NULL == field) ? FIT_FALSE : field->IsValueValid();
+     }
+ 
+     ///////////////////////////////////////////////////////////////////////

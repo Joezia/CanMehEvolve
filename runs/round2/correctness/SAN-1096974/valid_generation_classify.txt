@@ -1,0 +1,60 @@
+/home/z/zhouzia/.gen-valid-23483/files/valid_1.fit 0 83 
+/home/z/zhouzia/.gen-valid-23483/files/valid_10.fit 0 76 
+/home/z/zhouzia/.gen-valid-23483/files/valid_11.fit 0 41 
+/home/z/zhouzia/.gen-valid-23483/files/valid_12.fit 2 0 Invalid developer data index in FieldDescriptionMesg
+/home/z/zhouzia/.gen-valid-23483/files/valid_13.fit 0 100 
+/home/z/zhouzia/.gen-valid-23483/files/valid_14.fit 0 99 
+/home/z/zhouzia/.gen-valid-23483/files/valid_15.fit 0 75 
+/home/z/zhouzia/.gen-valid-23483/files/valid_16.fit 0 122 
+/home/z/zhouzia/.gen-valid-23483/files/valid_17.fit 0 104 
+/home/z/zhouzia/.gen-valid-23483/files/valid_18.fit 0 134 
+/home/z/zhouzia/.gen-valid-23483/files/valid_19.fit 0 37 
+/home/z/zhouzia/.gen-valid-23483/files/valid_2.fit 0 149 
+/home/z/zhouzia/.gen-valid-23483/files/valid_20.fit 0 35 
+/home/z/zhouzia/.gen-valid-23483/files/valid_21.fit 0 40 
+/home/z/zhouzia/.gen-valid-23483/files/valid_22.fit 0 43 
+/home/z/zhouzia/.gen-valid-23483/files/valid_23.fit 0 65 
+/home/z/zhouzia/.gen-valid-23483/files/valid_24.fit 0 97 
+/home/z/zhouzia/.gen-valid-23483/files/valid_25.fit 0 109 
+/home/z/zhouzia/.gen-valid-23483/files/valid_26.fit 0 53 
+/home/z/zhouzia/.gen-valid-23483/files/valid_27.fit 0 67 
+/home/z/zhouzia/.gen-valid-23483/files/valid_28.fit 0 147 
+/home/z/zhouzia/.gen-valid-23483/files/valid_29.fit 0 117 
+/home/z/zhouzia/.gen-valid-23483/files/valid_3.fit 0 33 
+/home/z/zhouzia/.gen-valid-23483/files/valid_30.fit 0 66 
+/home/z/zhouzia/.gen-valid-23483/files/valid_31.fit 2 0 Invalid developer data index in DeveloperDataIdMesg
+/home/z/zhouzia/.gen-valid-23483/files/valid_32.fit 2 0 Invalid developer data index in DeveloperDataIdMesg
+/home/z/zhouzia/.gen-valid-23483/files/valid_33.fit 0 47 
+/home/z/zhouzia/.gen-valid-23483/files/valid_34.fit 0 112 
+/home/z/zhouzia/.gen-valid-23483/files/valid_35.fit 0 61 
+/home/z/zhouzia/.gen-valid-23483/files/valid_36.fit 0 58 
+/home/z/zhouzia/.gen-valid-23483/files/valid_37.fit 0 107 
+/home/z/zhouzia/.gen-valid-23483/files/valid_38.fit 0 33 
+/home/z/zhouzia/.gen-valid-23483/files/valid_39.fit 0 141 
+/home/z/zhouzia/.gen-valid-23483/files/valid_4.fit 0 101 
+/home/z/zhouzia/.gen-valid-23483/files/valid_40.fit 0 48 
+/home/z/zhouzia/.gen-valid-23483/files/valid_41.fit 0 35 
+/home/z/zhouzia/.gen-valid-23483/files/valid_42.fit 0 149 
+/home/z/zhouzia/.gen-valid-23483/files/valid_43.fit 0 119 
+/home/z/zhouzia/.gen-valid-23483/files/valid_44.fit 2 0 Invalid developer data index in FieldDescriptionMesg
+/home/z/zhouzia/.gen-valid-23483/files/valid_45.fit 0 147 
+/home/z/zhouzia/.gen-valid-23483/files/valid_46.fit 2 0 Invalid developer data index in FieldDescriptionMesg
+/home/z/zhouzia/.gen-valid-23483/files/valid_47.fit 0 92 
+/home/z/zhouzia/.gen-valid-23483/files/valid_48.fit 0 112 
+/home/z/zhouzia/.gen-valid-23483/files/valid_49.fit 0 136 
+/home/z/zhouzia/.gen-valid-23483/files/valid_5.fit 0 99 
+/home/z/zhouzia/.gen-valid-23483/files/valid_50.fit 0 31 
+/home/z/zhouzia/.gen-valid-23483/files/valid_51.fit 0 96 
+/home/z/zhouzia/.gen-valid-23483/files/valid_52.fit 0 70 
+/home/z/zhouzia/.gen-valid-23483/files/valid_53.fit 0 31 
+/home/z/zhouzia/.gen-valid-23483/files/valid_54.fit 0 79 
+/home/z/zhouzia/.gen-valid-23483/files/valid_55.fit 0 39 
+/home/z/zhouzia/.gen-valid-23483/files/valid_56.fit 0 68 
+/home/z/zhouzia/.gen-valid-23483/files/valid_57.fit 0 51 
+/home/z/zhouzia/.gen-valid-23483/files/valid_58.fit 0 41 
+/home/z/zhouzia/.gen-valid-23483/files/valid_59.fit 0 98 
+/home/z/zhouzia/.gen-valid-23483/files/valid_6.fit 0 42 
+/home/z/zhouzia/.gen-valid-23483/files/valid_60.fit 0 35 
+/home/z/zhouzia/.gen-valid-23483/files/valid_7.fit 0 108 
+/home/z/zhouzia/.gen-valid-23483/files/valid_8.fit 0 109 
+/home/z/zhouzia/.gen-valid-23483/files/valid_9.fit 0 31 

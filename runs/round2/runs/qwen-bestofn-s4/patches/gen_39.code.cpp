@@ -1,0 +1,30 @@
+
+const Profile::MESG* Profile::GetMesg(const FIT_UINT16 num)
+{
+    static const FIT_UINT16 sorted_mesg_nums[MESGS] = {
+        #define MESG_ENTRY(n) n,
+        #undef MESG_ENTRY
+    };
+    static const Profile::MESG* sorted_mesgs[MESGS];
+    static bool initialized = false;
+    if (!initialized) {
+        for (int i = 0; i < MESGS; i++) {
+            sorted_mesgs[i] = &mesgs[i];
+        }
+        std::sort(sorted_mesgs, sorted_mesgs + MESGS,
+            [](const Profile::MESG* a, const Profile::MESG* b) {
+                return a->num < b->num;
+            });
+        initialized = true;
+    }
+
+    const Profile::MESG** begin = sorted_mesgs;
+    const Profile::MESG** end = sorted_mesgs + MESGS;
+    const Profile::MESG** it = std::lower_bound(begin, end, &num,
+        [](const Profile::MESG* a, const FIT_UINT16* n) { return a->num < *n; });
+    
+    if (it != end && (*it)->num == num) {
+        return *it;
+    }
+    return NULL;
+}

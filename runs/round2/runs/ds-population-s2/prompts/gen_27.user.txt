@@ -1,0 +1,43 @@
+File: src/fit_goal_mesg.hpp
+Function: GetMessageIndex (4 lines)
+One full decode of the four files takes about 358.6 ms in the stock build.
+Time of the current version of the whole library relative to stock: 0.922 (below 1.0 is faster). Best measured so far: 0.906.
+
+Your previous attempt failed:
+Stage 'compile' rejected it: In file included from /home/z/zhouzia/Workspace/CanMehEvolve/build/work-1095223/tree/src/fit_goal_mesg_listener.hpp:16,
+                 from /home/z/zhouzia/Workspace/CanMehEvolve/build/work-1095223/tree/src/fit_mesg_broadcaster.hpp:55,
+                 from /home/z/zhouzia/Workspace/CanMehEvolve/build/work-1095223/tree/src/fit_buffered_mesg_broadcaster.hpp:17,
+                 from /home/z/zhouzia/Workspace/CanMehEvolve/build/work-1095223/tree/src/fit_buffered_mesg_broadcaster.cpp:14:
+/home/z/zhouzia/Workspace/CanMehEvolve/build/work-1095223/tree/src/fit_goal_mesg.hpp: In member function ‘FIT_MESSAGE_INDEX fit::GoalMesg::GetMessageIndex() const’:
+/home/z/zhouzia/Workspace/CanMehEvolve/build/work-1095223/tree/src/fit_goal_mesg.hpp:71:43: error: ‘GetFieldArrayIndex’ was not declared in this scope; did you mean ‘fieldArrayIndex’?
+   71 |         const FIT_UINT8 fieldArrayIndex = GetFieldArrayIndex(254, FIT_SUBFIELD_INDEX_MAIN_FIELD);
+      |                                           ^~~~~~~~~~~~~~~~~~
+      |                                           fieldArrayIndex
+/home/z/zhouzia/Workspace/CanMehEvolve/build/work-1095223/tree/src/fit_goal_mesg.hpp:74:20: error: ‘GetFieldUINT16ValueByIndex’ was not declared in this scope; did you mean ‘GetFieldUINT16Value’?
+   74 |             return GetFieldUINT16ValueByIndex(fieldArrayIndex, 0);
+      |                    ^~~~~~~~~~~~~~~~~~~~~~~~~~
+      |                    GetFieldUINT16Value
+
+The rejected replacement was:
+```cpp
+    FIT_MESSAGE_INDEX GetMessageIndex(void) const
+    {
+        const FIT_UINT8 fieldArrayIndex = GetFieldArrayIndex(254, FIT_SUBFIELD_INDEX_MAIN_FIELD);
+        if (fieldArrayIndex != FIT_UINT8_INVALID)
+        {
+            return GetFieldUINT16ValueByIndex(fieldArrayIndex, 0);
+        }
+        return FIT_UINT16_INVALID;
+    }
+
+```
+
+Current text of the function:
+```cpp
+    FIT_MESSAGE_INDEX GetMessageIndex(void) const
+    {
+        return GetFieldUINT16Value(254, 0, FIT_SUBFIELD_INDEX_MAIN_FIELD);
+    }
+
+```
+Return the faster replacement now.

@@ -1,0 +1,23 @@
+--- a/src/fit_developer_field_definition.cpp
++++ b/src/fit_developer_field_definition.cpp
+@@ -30,18 +30,9 @@
+     : num( other.num )
+     , size( other.size )
+     , developerDataIndex( other.developerDataIndex )
+-    , mesg( nullptr )
+-    , developer( nullptr )
++    , mesg( other.mesg ? new FieldDescriptionMesg( *other.mesg ) : nullptr )
++    , developer( other.developer ? new DeveloperDataIdMesg( *other.developer ) : nullptr )
+ {
+-    if (nullptr != other.mesg)
+-    {
+-        mesg = new FieldDescriptionMesg( *other.mesg );
+-    }
+-
+-    if ( nullptr != other.developer )
+-    {
+-        developer = new DeveloperDataIdMesg( *other.developer );
+-    }
+ }
+ 
+ DeveloperFieldDefinition::DeveloperFieldDefinition(FIT_UINT8 fieldNum, FIT_UINT8 size, FIT_UINT8 developerDataIndex)

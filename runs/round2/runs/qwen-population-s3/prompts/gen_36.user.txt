@@ -1,0 +1,14 @@
+File: src/fit_mesg_definition.cpp
+Function: MesgDefinition::GetFields (4 lines)
+One full decode of the four files takes about 358.3 ms in the stock build.
+Time of the current version of the whole library relative to stock: 0.992 (below 1.0 is faster). Best measured so far: 0.988.
+
+Current text of the function:
+```cpp
+std::vector<FieldDefinition>& MesgDefinition::GetFields()
+{
+    return fields;
+}
+
+```
+Return the faster replacement now.

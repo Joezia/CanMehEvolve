@@ -1,0 +1,9 @@
+Use the vector copy constructor directly instead of the iterator-range constructor, avoiding iterator-distance/dispatch overhead and letting libstdc++ take its optimized vector-copy path. This is behaviorally identical for every input.
+
+```cpp
+FieldBase::FieldBase(const FieldBase &field)
+    : values(field.values),
+      stringIndexes(field.stringIndexes)
+{
+}
+```

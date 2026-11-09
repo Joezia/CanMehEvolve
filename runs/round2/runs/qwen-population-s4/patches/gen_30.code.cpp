@@ -1,0 +1,17 @@
+
+const Profile::MESG* Profile::GetMesg(const FIT_UINT16 num)
+{
+    // Assume mesgs is sorted by num (common in profile data); if not, pre-sort once
+    static bool sorted = false;
+    if (!sorted) {
+        std::sort(mesgs, mesgs + MESGS, [](const MESG& a, const MESG& b) { return a.num < b.num; });
+        sorted = true;
+    }
+    
+    // Binary search for O(log n) lookup instead of O(n) linear search
+    auto it = std::lower_bound(mesgs, mesgs + MESGS, num, [](const MESG& a, FIT_UINT16 val) { return a.num < val; });
+    if (it != mesgs + MESGS && it->num == num) {
+        return it;
+    }
+    return NULL;
+}

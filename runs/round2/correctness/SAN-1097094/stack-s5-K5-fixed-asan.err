@@ -1,0 +1,16 @@
+/home/z/zhouzia/.sanitize-scratch/var-asan-stack-s5-K5-fixed/src/fit_field_base.cpp:1151:68: runtime error: left shift of negative value -115
+    #0 0x628082aee088 in signed char fit::FieldBase::GetValue<signed char>(unsigned char) const /home/z/zhouzia/.sanitize-scratch/var-asan-stack-s5-K5-fixed/src/fit_field_base.cpp:1151
+    #1 0x628082ad5f62 in double fit::FieldBase::ConvertBaseType<double, signed char>(unsigned char, unsigned char) const /home/z/zhouzia/.sanitize-scratch/var-asan-stack-s5-K5-fixed/src/fit_field_base.cpp:1162
+    #2 0x628082ad5f62 in fit::FieldBase::GetFLOAT64Value(unsigned char, unsigned short) const /home/z/zhouzia/.sanitize-scratch/var-asan-stack-s5-K5-fixed/src/fit_field_base.cpp:377
+    #3 0x6280829e25ab in fold /home/z/zhouzia/Workspace/CanMehEvolve/scripts/followup/driver.cpp:54
+    #4 0x6280829e31e6 in OnMesg /home/z/zhouzia/Workspace/CanMehEvolve/scripts/followup/driver.cpp:37
+    #5 0x628082a84339 in fit::Decode::Resume() /home/z/zhouzia/.sanitize-scratch/stock/src/fit_decode.cpp:300
+    #6 0x628082a85daf in fit::Decode::Read(std::istream*) /home/z/zhouzia/.sanitize-scratch/stock/src/fit_decode.cpp:191
+    #7 0x628082a85f75 in fit::Decode::Read(std::istream*, fit::MesgListener*, fit::MesgDefinitionListener*, fit::DeveloperFieldDescriptionListener*) /home/z/zhouzia/.sanitize-scratch/stock/src/fit_decode.cpp:209
+    #8 0x628082a8605d in fit::Decode::Read(std::istream&, fit::MesgListener&) /home/z/zhouzia/.sanitize-scratch/stock/src/fit_decode.cpp:214
+    #9 0x6280829eaec2 in decodeOne /home/z/zhouzia/Workspace/CanMehEvolve/scripts/followup/driver.cpp:68
+    #10 0x6280829eeef1 in main /home/z/zhouzia/Workspace/CanMehEvolve/scripts/followup/driver.cpp:101
+    #11 0x744115a2a1c9 in __libc_start_call_main ../sysdeps/nptl/libc_start_call_main.h:58
+    #12 0x744115a2a28a in __libc_start_main_impl ../csu/libc-start.c:360
+    #13 0x6280829df444 in _start (/home/z/zhouzia/.sanitize-scratch/drv-asan-stack-s5-K5-fixed+0x85c444) (BuildId: 95ba8b5d2421d51f54720de7b2e64ad2dea480a6)
+

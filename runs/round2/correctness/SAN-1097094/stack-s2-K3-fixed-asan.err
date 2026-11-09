@@ -1,0 +1,16 @@
+/home/z/zhouzia/.sanitize-scratch/var-asan-stack-s2-K3-fixed/src/fit_field_base.cpp:1144:68: runtime error: left shift of negative value -115
+    #0 0x64e1c8af4222 in signed char fit::FieldBase::GetValue<signed char>(unsigned char) const /home/z/zhouzia/.sanitize-scratch/var-asan-stack-s2-K3-fixed/src/fit_field_base.cpp:1144
+    #1 0x64e1c8adc0fc in double fit::FieldBase::ConvertBaseType<double, signed char>(unsigned char, unsigned char) const /home/z/zhouzia/.sanitize-scratch/var-asan-stack-s2-K3-fixed/src/fit_field_base.cpp:1155
+    #2 0x64e1c8adc0fc in fit::FieldBase::GetFLOAT64Value(unsigned char, unsigned short) const /home/z/zhouzia/.sanitize-scratch/var-asan-stack-s2-K3-fixed/src/fit_field_base.cpp:370
+    #3 0x64e1c89e85eb in fold /home/z/zhouzia/Workspace/CanMehEvolve/scripts/followup/driver.cpp:54
+    #4 0x64e1c89e9226 in OnMesg /home/z/zhouzia/Workspace/CanMehEvolve/scripts/followup/driver.cpp:37
+    #5 0x64e1c8a8a379 in fit::Decode::Resume() /home/z/zhouzia/.sanitize-scratch/stock/src/fit_decode.cpp:300
+    #6 0x64e1c8a8bdef in fit::Decode::Read(std::istream*) /home/z/zhouzia/.sanitize-scratch/stock/src/fit_decode.cpp:191
+    #7 0x64e1c8a8bfb5 in fit::Decode::Read(std::istream*, fit::MesgListener*, fit::MesgDefinitionListener*, fit::DeveloperFieldDescriptionListener*) /home/z/zhouzia/.sanitize-scratch/stock/src/fit_decode.cpp:209
+    #8 0x64e1c8a8c09d in fit::Decode::Read(std::istream&, fit::MesgListener&) /home/z/zhouzia/.sanitize-scratch/stock/src/fit_decode.cpp:214
+    #9 0x64e1c89f0f02 in decodeOne /home/z/zhouzia/Workspace/CanMehEvolve/scripts/followup/driver.cpp:68
+    #10 0x64e1c89f4f31 in main /home/z/zhouzia/Workspace/CanMehEvolve/scripts/followup/driver.cpp:101
+    #11 0x75f53f02a1c9 in __libc_start_call_main ../sysdeps/nptl/libc_start_call_main.h:58
+    #12 0x75f53f02a28a in __libc_start_main_impl ../csu/libc-start.c:360
+    #13 0x64e1c89e5484 in _start (/home/z/zhouzia/.sanitize-scratch/drv-asan-stack-s2-K3-fixed+0x858484) (BuildId: 6d38ca8e9fc977cfceadacaec4e7d5b46f8e07f2)
+

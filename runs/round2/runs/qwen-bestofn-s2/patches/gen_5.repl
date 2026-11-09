@@ -1,0 +1,18 @@
+```cpp
+#include <cstring>
+#include <cstdint>
+
+template <typename T>
+T FieldBase::GetValue(const FIT_UINT8 fieldArrayIndex) const
+{
+    FIT_UINT8 size = baseTypeSizes[GetType() & FIT_BASE_TYPE_NUM_MASK];
+    if (fieldArrayIndex >= (FIT_UINT8)values.size() / size)
+    {
+        return *reinterpret_cast<const T*>(baseTypeInvalids[GetType() & FIT_BASE_TYPE_NUM_MASK]);
+    }
+
+    T rv;
+    std::memcpy(&rv, &values[fieldArrayIndex * size], size);
+    return rv;
+}
+```

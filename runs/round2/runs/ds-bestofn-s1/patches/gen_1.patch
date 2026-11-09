@@ -1,0 +1,59 @@
+--- a/src/fit_mesg.cpp
++++ b/src/fit_mesg.cpp
+@@ -403,25 +403,51 @@
+ 
+ FIT_UINT16 Mesg::GetActiveSubFieldIndex(const FIT_UINT8 fieldNum) const
+ {
+-    const Profile::FIELD* field = Profile::GetField(GetNum(), fieldNum);
++    static const Profile::FIELD* fieldCache[1024];
++    static FIT_UINT32 fieldKey[1024];
++
++    const FIT_UINT32 key = (((FIT_UINT32)GetNum() + 1) << 8) | fieldNum;
++    const FIT_UINT32 slot = (key ^ (key >> 8)) & 1023U;
++
++    const Profile::FIELD* field;
++    if (fieldKey[slot] == key)
++    {
++        field = fieldCache[slot];
++    }
++    else
++    {
++        field = Profile::GetField(GetNum(), fieldNum);
++        fieldKey[slot] = key;
++        fieldCache[slot] = field;
++    }
+ 
+     if (field == FIT_NULL)
+         return FIT_SUBFIELD_INDEX_MAIN_FIELD;
+ 
+-    for (int i = 0; i < (int) field->numSubFields; i++)
++    for (FIT_UINT16 i = 0; i < field->numSubFields; i++)
+     {
+         const Profile::SUBFIELD& subField = field->subFields[i];
+ 
+-        for (int j = 0; j < (int) subField.numMaps; j++)
++        for (FIT_UINT16 j = 0; j < subField.numMaps; j++)
+         {
+-            const Field* refField = GetField(subField.maps[j].refFieldNum);
++            const FIT_UINT8 refFieldNum = subField.maps[j].refFieldNum;
++            const Field* refField = FIT_NULL;
++
++            for (FIT_UINT16 k = 0; k < numFields; k++)
++            {
++                if (fields[k].GetNum() == refFieldNum)
++                {
++                    refField = &fields[k];
++                    break;
++                }
++            }
+ 
+             if (refField != FIT_NULL)
+             {
+                 FIT_FLOAT64 refValue = refField->GetFLOAT64Value(0, FIT_SUBFIELD_INDEX_MAIN_FIELD);
+                 refValue += ((refValue >= 0.0) ? (0.5) : (-0.5));
+                 if ((FIT_SINT32)refValue == subField.maps[j].refFieldValue)
+-                    return ((FIT_UINT16) i);
++                    return i;
+             }
+         }
+     }

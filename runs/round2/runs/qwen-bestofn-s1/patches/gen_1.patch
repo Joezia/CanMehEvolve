@@ -1,0 +1,55 @@
+--- a/src/fit_mesg.cpp
++++ b/src/fit_mesg.cpp
+@@ -14,6 +14,7 @@
+ #include <algorithm>
+ #include "fit_mesg.hpp"
+ #include "fit_mesg_definition.hpp"
++#include <cmath>
+ 
+ namespace fit
+ {
+@@ -372,29 +373,29 @@
+     return FIT_FALSE;
+ }
+ 
++
+ FIT_UINT16 Mesg::GetActiveSubFieldIndexByFieldIndex(const FIT_UINT16 fieldIndex) const
+ {
+     if ((int) fieldIndex >= GetNumFields())
+         return FIT_SUBFIELD_INDEX_MAIN_FIELD;
+ 
+-    for (FIT_UINT16 i = 0; i < fields[fieldIndex].GetNumSubFields(); i++)
++    const auto& field = fields[fieldIndex];
++    const FIT_UINT16 numSubFields = field.GetNumSubFields();
++
++    for (FIT_UINT16 i = 0; i < numSubFields; i++)
+     {
+-        const Profile::SUBFIELD* subField = fields[fieldIndex].GetSubField(i);
++        const Profile::SUBFIELD* subField = field.GetSubField(i);
++        if (subField == FIT_NULL) continue;
+ 
+-        if (subField != FIT_NULL)
++        for (FIT_UINT16 j = 0; j < subField->numMaps; j++)
+         {
+-            for (int j = 0; j < (int) subField->numMaps; j++)
+-            {
+-                const Field* refField = GetField(subField->maps[j].refFieldNum);
+-
+-                if (refField != FIT_NULL)
+-                {
+-                    FIT_FLOAT64 refValue = refField->GetFLOAT64Value(0, FIT_SUBFIELD_INDEX_MAIN_FIELD);
+-                    refValue += ((refValue >= 0.0) ? (0.5) : (-0.5));
+-                    if ((FIT_SINT32)refValue == subField->maps[j].refFieldValue)
+-                        return ((FIT_UINT16) i);
+-                }
+-            }
++            const Field* refField = GetField(subField->maps[j].refFieldNum);
++            if (refField == FIT_NULL) continue;
++
++            FIT_FLOAT64 refValue = refField->GetFLOAT64Value(0, FIT_SUBFIELD_INDEX_MAIN_FIELD);
++            // Use std::nearbyint for correct rounding (rounds to nearest integer, ties to even)
++            if (static_cast<FIT_SINT32>(std::nearbyint(refValue)) == subField->maps[j].refFieldValue)
++                return i;
+         }
+     }
+ 

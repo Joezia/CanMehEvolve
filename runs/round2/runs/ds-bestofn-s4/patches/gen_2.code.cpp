@@ -1,0 +1,19 @@
+const Profile::MESG* Profile::GetMesg(const FIT_UINT16 num)
+{
+    static const std::array<FIT_UINT16, 65536> index = [] {
+        std::array<FIT_UINT16, 65536> a;
+        a.fill(0xFFFF);
+
+        for (int i = 0; i < MESGS; ++i)
+        {
+            const FIT_UINT16 n = mesgs[i].num;
+            if (a[n] == 0xFFFF)
+                a[n] = static_cast<FIT_UINT16>(i);
+        }
+
+        return a;
+    }();
+
+    const FIT_UINT16 idx = index[num];
+    return idx == 0xFFFF ? NULL : &mesgs[idx];
+}

@@ -1,0 +1,14 @@
+Simplified the fallback to return the already-loaded `type` value and combined the profile pointer/bounds checks into one condition, reducing duplicate invalid returns and branches.
+
+```cpp
+FIT_UINT8 Field::GetType() const
+{
+    if ( type != FIT_UINT8_INVALID )
+        return type;
+
+    if ( (profile != NULL) && (profileIndex < profile->numFields) )
+        return profile->fields[profileIndex].type;
+
+    return type;
+}
+```

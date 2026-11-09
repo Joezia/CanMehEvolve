@@ -1,0 +1,64 @@
+
+FIT_BOOL FieldBase::Read(const void *data, const FIT_UINT8 size)
+{
+    FIT_UINT8 bytesLeft = size;
+    FIT_UINT8 typeIdx = GetType() & FIT_BASE_TYPE_NUM_MASK;
+    FIT_UINT8 typeSize = baseTypeSizes[typeIdx];
+    const FIT_BYTE *byteData = static_cast<const FIT_BYTE *>(data);
+
+    values.clear();
+    stringIndexes.clear();
+
+    if (GetType() == FIT_BASE_TYPE_STRING)
+    {
+        // Fast scan for first non-zero byte
+        const FIT_BYTE *end = byteData + bytesLeft;
+        const FIT_BYTE *firstNonZero = std::find_if(byteData, end, [](FIT_BYTE b) { return b != 0; });
+        
+        if (firstNonZero == end) {
+            return FIT_TRUE; // Empty string, nothing to do
+        }
+
+        // Collect string indices and copy data
+        values.reserve(bytesLeft + 1);
+        FIT_UINT8 stringPos = 0;
+        
+        // Pre-check for null termination
+        bool hasNull = false;
+        for (const FIT_BYTE *p = byteData; p < end; ++p)
+        {
+            values.push_back(*p);
+            if (*p == 0)
+            {
+                hasNull = true;
+                if (stringPos + 1 < size)
+                    stringIndexes.push_back(stringPos + 1);
+            }
+            ++stringPos;
+        }
+        
+        // Null terminate if needed
+        if (!hasNull)
+            values.push_back(0);
+    }
+    else
+    {
+        // Optimized invalid value check: compare entire type-sized blocks at once
+        FIT_UINT8 remaining = bytesLeft;
+        const FIT_BYTE *p = byteData;
+        const FIT_BYTE *invalid = baseTypeInvalids[typeIdx];
+        
+        while (remaining >= typeSize)
+        {
+            if (std::memcmp(p, invalid, typeSize) != 0)
+            {
+                values.insert(values.end(), byteData, byteData + bytesLeft);
+                return FIT_TRUE;
+            }
+            p += typeSize;
+            remaining -= typeSize;
+        }
+    }
+
+    return FIT_TRUE;
+}

@@ -1,0 +1,6 @@
+{
+ "error": "/home/z/zhouzia/Workspace/CanMehEvolve/build/work-1095870/tree/src/fit_field_base.cpp: In member function ‘FIT_UINT8 fit::FieldBase::GetNumValues() const’:\n/home/z/zhouzia/Workspace/CanMehEvolve/build/work-1095870/tree/src/fit_field_base.cpp:110:11: error: ‘FIT_BASE_TYPE’ does not name a type; did you mean ‘FIT_BASE_TYPES’?\n  110 |     const FIT_BASE_TYPE type = GetType();\n      |           ^~~~~~~~~~~~~\n      |           FIT_BASE_TYPES\n/home/z/zhouzia/Workspace/CanMehEvolve/build/work-1095870/tree/src/fit_field_base.cpp:111:9: error: ‘type’ was not declared in this scope; did you mean ‘wctype’?\n  111 |     if (type != FIT_BASE_TYPE_STRING)\n      |         ^~~~\n      |         wctype\n",
+ "ok": false,
+ "rebuilt": 2,
+ "stage": "compile"
+}

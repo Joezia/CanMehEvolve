@@ -1,0 +1,77 @@
+--- a/src/fit_field.cpp
++++ b/src/fit_field.cpp
+@@ -92,9 +92,14 @@
+ 
+ FIT_UINT8 Field::GetNum(void) const
+ {
+-    if ((profile == NULL) || (profileIndex >= profile->numFields))
++    if (__builtin_expect(profile == NULL, 0))
++        return FIT_FIELD_NUM_INVALID;
++
++    const Profile::FIELD *fields = profile->fields;
++    if (__builtin_expect((profileIndex >= profile->numFields) | (fields == NULL), 0))
+         return FIT_FIELD_NUM_INVALID;
+-    return profile->fields[profileIndex].num;
++
++    return fields[profileIndex].num;
+ }
+ 
+ FIT_UINT8 Field::GetType() const
+@@ -124,9 +129,11 @@
+ 
+ FIT_FLOAT64 Field::GetOffset() const
+ {
+-    if ((profile == NULL) || (profileIndex >= profile->numFields))
+-        return 0;
+-    return profile->fields[profileIndex].offset;
++    const Profile::MESG* p = profile;
++    if (__builtin_expect(p != NULL, 1) &&
++        __builtin_expect(profileIndex < p->numFields, 1))
++        return p->fields[profileIndex].offset;
++    return 0;
+ }
+ 
+ FIT_UINT16 Field::GetNumComponents(void) const
+--- a/src/fit_field_base.cpp
++++ b/src/fit_field_base.cpp
+@@ -25,9 +25,9 @@
+ }
+ 
+ FieldBase::FieldBase(const FieldBase &field)
++    : values(field.values),
++      stringIndexes(field.stringIndexes)
+ {
+-    values = field.values;
+-    stringIndexes = field.stringIndexes;
+ }
+ 
+ FieldBase::~FieldBase()
+--- a/src/fit_profile.cpp
++++ b/src/fit_profile.cpp
+@@ -3084,13 +3084,22 @@
+     if (mesg == NULL)
+         return FIT_UINT16_INVALID;
+ 
+-    for (FIT_UINT16 i = 0; i < mesg->numFields; i++)
++    static FIT_UINT16 cache[65536][256];
++    static bool built[65536];
++
++    if (!built[mesgNum])
+     {
+-        if (mesg->fields[i].num == fieldNum)
+-            return i;
++        for (FIT_UINT16 i = 0; i < mesg->numFields; ++i)
++        {
++            const FIT_UINT8 num = mesg->fields[i].num;
++            if (cache[mesgNum][num] == 0)
++                cache[mesgNum][num] = (FIT_UINT16)(i + 1);
++        }
++        built[mesgNum] = true;
+     }
+ 
+-    return FIT_UINT16_INVALID;
++    const FIT_UINT16 val = cache[mesgNum][fieldNum];
++    return val ? (FIT_UINT16)(val - 1) : FIT_UINT16_INVALID;
+ }
+ 
+ const FIT_UINT16 Profile::GetFieldIndex(const std::string& mesgName, const std::string& fieldName)

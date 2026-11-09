@@ -1,0 +1,15 @@
+```cpp
+#include <cstring>
+
+template <typename TTo, typename TFrom>
+TTo FieldBase::ConvertBaseType(const FIT_UINT8 fieldArrayIndex, const FIT_UINT8 toBaseType) const
+{
+    const void* invalid = baseTypeInvalids[GetType() & FIT_BASE_TYPE_NUM_MASK];
+    TFrom value = GetValue<TFrom>(fieldArrayIndex);
+
+    if (std::memcmp(&value, invalid, sizeof(TFrom)) == 0)
+        return *static_cast<const TTo*>(baseTypeInvalids[toBaseType & FIT_BASE_TYPE_NUM_MASK]);
+
+    return static_cast<TTo>(value);
+}
+```

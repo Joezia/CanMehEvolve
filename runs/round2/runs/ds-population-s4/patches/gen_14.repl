@@ -1,0 +1,28 @@
+Replaced the linear `GetField` lookup with a direct scan of the field array via `GetFieldByIndex(0)` and `GetNumFields`, avoiding a non-inlined `GetNum()` call per field. The field number is read from the known first byte of `Field`.
+
+```cpp
+    FIT_BOOL IsIdValid() const
+    {
+        const FIT_UINT8 numFields = GetNumFields();
+        if (numFields == 0)
+        {
+            return FIT_FALSE;
+        }
+
+        const Field* field = GetFieldByIndex(0);
+        if (FIT_NULL == field)
+        {
+            return FIT_FALSE;
+        }
+
+        for (FIT_UINT8 i = 0; i < numFields; ++i)
+        {
+            if (*reinterpret_cast<const FIT_UINT8*>(field + i) == 14)
+            {
+                return (field + i)->IsValueValid();
+            }
+        }
+
+        return FIT_FALSE;
+    }
+```

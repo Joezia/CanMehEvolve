@@ -1,0 +1,11 @@
+```cpp
+#include <cstdint>
+
+    void SetTotalFractionalAscent(FIT_FLOAT32 totalFractionalAscent)
+    {
+        // Directly write to the field value without going through the full field lookup machinery
+        // since field index 89 is known at compile time and the subfield index is always 0.
+        // This avoids the overhead of virtual function calls and array lookups in SetFieldFLOAT32Value.
+        fields[89].SetFLOAT32(totalFractionalAscent, 0);
+    }
+```

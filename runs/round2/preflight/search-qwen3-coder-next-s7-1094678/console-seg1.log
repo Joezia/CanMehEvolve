@@ -1,0 +1,6 @@
+[run] mode=search host=xcnc3 model_probe={"http_status":200,"model":"qwen3-coder-next","ok":true,"requested_model":"qwen3-coder-next","usage":{"completion_tokens":2,"prompt_tokens":14,"prompt_tokens_details":null,"total_tokens":16}}
+[gen 1/6] region 134 FieldBase::FieldBase parent=0 ratio=1.000556 best_confirmed_speedup=1 tokens=418 t=270s
+[gen 2/6] region 123 Field::GetType parent=1 ratio=1.000532 best_confirmed_speedup=1 tokens=897 t=363s
+[gen 3/6] region 2756 IsMinCoreTemperatureValid parent=2 stage=compile best_confirmed_speedup=1 tokens=1364 t=366s
+[gen 4/6] region 2756 IsMinCoreTemperatureValid parent=2 ratio=0.999043 best_confirmed_speedup=1 tokens=2342 t=473s
+[done] {"api_calls":4,"best_confirmed_generation":0,"best_confirmed_speedup":1.0,"best_ranked_generation":0,"best_ranked_speedup":1.0,"best_retained_speedup":1.0009581261275893,"complete":false,"completion_tokens":245,"confirmed_candidates":0,"elapsed_s":473.590909849,"ended_because":"deadline","finished":"2026-11-08T09:48:39+0800","http_attempts":4,"improved_on_parent_candidates":0,"llm_seconds":3.3461896180000004,"max_tokens":4096,"mode":"search","outcomes":{"compile":1,"measured":3},"prompt_tokens":2097,"rank_updates":[],"reasoning_tokens":0,"request_budget":6,"seed":7,"segments":1,"total_tokens":2342,"truncated_replies":0}

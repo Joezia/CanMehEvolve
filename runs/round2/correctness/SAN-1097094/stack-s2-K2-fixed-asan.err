@@ -1,0 +1,16 @@
+/home/z/zhouzia/.sanitize-scratch/var-asan-stack-s2-K2-fixed/src/fit_field_base.cpp:1144:68: runtime error: left shift of negative value -115
+    #0 0x569ec8eae222 in signed char fit::FieldBase::GetValue<signed char>(unsigned char) const /home/z/zhouzia/.sanitize-scratch/var-asan-stack-s2-K2-fixed/src/fit_field_base.cpp:1144
+    #1 0x569ec8e960fc in double fit::FieldBase::ConvertBaseType<double, signed char>(unsigned char, unsigned char) const /home/z/zhouzia/.sanitize-scratch/var-asan-stack-s2-K2-fixed/src/fit_field_base.cpp:1155
+    #2 0x569ec8e960fc in fit::FieldBase::GetFLOAT64Value(unsigned char, unsigned short) const /home/z/zhouzia/.sanitize-scratch/var-asan-stack-s2-K2-fixed/src/fit_field_base.cpp:370
+    #3 0x569ec8da25eb in fold /home/z/zhouzia/Workspace/CanMehEvolve/scripts/followup/driver.cpp:54
+    #4 0x569ec8da3226 in OnMesg /home/z/zhouzia/Workspace/CanMehEvolve/scripts/followup/driver.cpp:37
+    #5 0x569ec8e44379 in fit::Decode::Resume() /home/z/zhouzia/.sanitize-scratch/stock/src/fit_decode.cpp:300
+    #6 0x569ec8e45def in fit::Decode::Read(std::istream*) /home/z/zhouzia/.sanitize-scratch/stock/src/fit_decode.cpp:191
+    #7 0x569ec8e45fb5 in fit::Decode::Read(std::istream*, fit::MesgListener*, fit::MesgDefinitionListener*, fit::DeveloperFieldDescriptionListener*) /home/z/zhouzia/.sanitize-scratch/stock/src/fit_decode.cpp:209
+    #8 0x569ec8e4609d in fit::Decode::Read(std::istream&, fit::MesgListener&) /home/z/zhouzia/.sanitize-scratch/stock/src/fit_decode.cpp:214
+    #9 0x569ec8daaf02 in decodeOne /home/z/zhouzia/Workspace/CanMehEvolve/scripts/followup/driver.cpp:68
+    #10 0x569ec8daef31 in main /home/z/zhouzia/Workspace/CanMehEvolve/scripts/followup/driver.cpp:101
+    #11 0x734c7e62a1c9 in __libc_start_call_main ../sysdeps/nptl/libc_start_call_main.h:58
+    #12 0x734c7e62a28a in __libc_start_main_impl ../csu/libc-start.c:360
+    #13 0x569ec8d9f484 in _start (/home/z/zhouzia/.sanitize-scratch/drv-asan-stack-s2-K2-fixed+0x858484) (BuildId: dcdb17ab81e48f9ac0af8df8cf826922d09b0ef0)
+

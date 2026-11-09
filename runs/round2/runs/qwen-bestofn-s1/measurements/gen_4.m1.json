@@ -1,0 +1,6 @@
+{
+ "error": "In file included from /home/z/zhouzia/Workspace/CanMehEvolve/build/work-1095838/tree/src/fit_hsa_body_battery_data_mesg_listener.hpp:16,\n                 from /home/z/zhouzia/Workspace/CanMehEvolve/build/work-1095838/tree/src/fit_mesg_broadcaster.hpp:112,\n                 from /home/z/zhouzia/Workspace/CanMehEvolve/build/work-1095838/tree/src/fit_buffered_mesg_broadcaster.hpp:17,\n                 from /home/z/zhouzia/Workspace/CanMehEvolve/build/work-1095838/tree/src/fit_buffered_mesg_broadcaster.cpp:14:\n/home/z/zhouzia/Workspace/CanMehEvolve/build/work-1095838/tree/src/fit_hsa_body_battery_data_mesg.hpp:71:46: error: expected ‘;’ at end of member declaration\n   71 |     void SetTimestamp(FIT_DATE_TIME timestamp) inline\n      |                                              ^\n      |                                               ;\n/home/z/zhouzia/Workspace/CanMehEvolve/build/work-1095838/tree/src/fit_hsa_body_battery_data_mesg.hpp:72:5: error: expected unqualified-id before ‘{’ token\n   72 |     {\n      |     ^\n",
+ "ok": false,
+ "rebuilt": 4,
+ "stage": "compile"
+}

@@ -1,0 +1,53 @@
+```cpp
+#include <cstring>
+#include <algorithm>
+
+FIT_BOOL FieldBase::Read(const void *data, const FIT_UINT8 size)
+{
+    FIT_UINT8 bytesLeft = size;
+    FIT_UINT8 typeIdx = GetType() & FIT_BASE_TYPE_NUM_MASK;
+    FIT_UINT8 typeSize = baseTypeSizes[typeIdx];
+    const FIT_BYTE *byteData = static_cast<const FIT_BYTE*>(data);
+
+    values.clear();
+
+    if (GetType() == FIT_BASE_TYPE_STRING)
+    {
+        // Find first non-zero byte to determine if string is non-empty
+        const FIT_BYTE* end = byteData + bytesLeft;
+        const FIT_BYTE* firstNonZero = std::find_if(byteData, end, [](FIT_BYTE b) { return b != 0; });
+        
+        if (firstNonZero == end)
+            return FIT_TRUE; // empty string
+
+        // Reserve space for all bytes plus possible null terminator
+        values.reserve(bytesLeft + 1);
+        values.assign(byteData, end);
+
+        // Check if null-terminated; if not, add terminator
+        if (values.empty() || values.back() != 0)
+            values.push_back(0);
+    }
+    else
+    {
+        // For non-string types: skip leading invalid-value blocks
+        const FIT_BYTE* invalidPtr = baseTypeInvalids[typeIdx];
+        FIT_UINT8 totalBytes = bytesLeft;
+        FIT_UINT8 consumed = 0;
+
+        // Fast forward over contiguous invalid blocks
+        while (consumed + typeSize <= totalBytes)
+        {
+            if (std::memcmp(byteData + consumed, invalidPtr, typeSize) != 0)
+                break;
+            consumed += typeSize;
+        }
+
+        // If anything remains after skipping invalids, copy it all
+        if (consumed < totalBytes)
+            values.insert(values.end(), byteData + consumed, byteData + totalBytes);
+    }
+
+    return FIT_TRUE;
+}
+```

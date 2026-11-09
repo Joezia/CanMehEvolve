@@ -1,0 +1,22 @@
+Replaced the manual lazy-init flag with a function-local static `std::array` built by a lambda, letting the compiler emit a single guard check and keep the hot path to one indexed load.
+
+```include
+#include <array>
+```
+
+```cpp
+const Profile::MESG* Profile::GetMesg(const FIT_UINT16 num)
+{
+    static const auto index = [] {
+        std::array<const MESG*, 65536> a{};
+        for (int i = 0; i < MESGS; ++i)
+        {
+            const FIT_UINT16 n = mesgs[i].num;
+            if (a[n] == nullptr)
+                a[n] = &mesgs[i];
+        }
+        return a;
+    }();
+    return index[num];
+}
+```

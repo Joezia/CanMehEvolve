@@ -1,0 +1,8 @@
+Initializer-list copy-construction of the two vectors replaces default-construction followed by copy-assignment, letting each member be built in place in a single step and avoiding the redundant empty-vector setup and assignment dispatch.
+
+```cpp
+FieldBase::FieldBase(const FieldBase &field)
+    : values(field.values), stringIndexes(field.stringIndexes)
+{
+}
+```

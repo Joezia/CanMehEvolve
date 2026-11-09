@@ -1,0 +1,14 @@
+File: src/fit_workout_step_mesg.hpp
+Function: SetDurationCalories (4 lines)
+One full decode of the four files takes about 358.6 ms in the stock build.
+Time of the current version of the whole library relative to stock: 1.000 (below 1.0 is faster). Best measured so far: 0.995.
+
+Current text of the function:
+```cpp
+    void SetDurationCalories(FIT_UINT32 durationCalories)
+    {
+        SetFieldUINT32Value(2, durationCalories, 0, (FIT_UINT16) Profile::WORKOUT_STEP_MESG_DURATION_VALUE_FIELD_DURATION_CALORIES);
+    }
+
+```
+Return the faster replacement now.

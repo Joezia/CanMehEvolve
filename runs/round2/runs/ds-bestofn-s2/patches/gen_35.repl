@@ -1,0 +1,10 @@
+Combined the null/bounds checks into a single unlikely-predicted branch so the common valid path is a straight-line load-and-return with better code layout.
+
+```cpp
+FIT_UINT16 Field::GetNumSubFields(void) const
+{
+    if (__builtin_expect((profile == NULL) || (profileIndex >= profile->numFields), 0))
+        return 0;
+    return profile->fields[profileIndex].numSubFields;
+}
+```

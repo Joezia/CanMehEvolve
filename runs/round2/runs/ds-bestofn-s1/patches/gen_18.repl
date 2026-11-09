@@ -1,0 +1,8 @@
+This is a trivial forwarding setter; the call already passes compile-time constants, so the only safe micro-change is to keep the identical call (no behavioural or measurable gain is possible without touching `SetFieldUINT8Value`).
+
+```cpp
+    void SetAwakeningsCount(FIT_UINT8 awakeningsCount)
+    {
+        SetFieldUINT8Value(11, awakeningsCount, 0, FIT_SUBFIELD_INDEX_MAIN_FIELD);
+    }
+```

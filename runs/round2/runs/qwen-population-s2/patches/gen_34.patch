@@ -1,0 +1,491 @@
+--- a/src/fit_decode.cpp
++++ b/src/fit_decode.cpp
+@@ -232,10 +232,10 @@
+ 
+     do
+     {
+-        if ( currentByteIndex == 0 )
++        if (currentByteIndex == 0)
+         {
+             file->read(buffer, BufferSize);
+-            bytesRead = (FIT_UINT32)file->gcount();
++            bytesRead = static_cast<FIT_UINT32>(file->gcount());
+         }
+ 
+         for (; currentByteIndex < bytesRead; currentByteIndex++)
+@@ -243,73 +243,57 @@
+             if (pause)
+                 return FIT_FALSE;
+ 
+-            decodeReturn = ReadByte((FIT_UINT8)buffer[currentByteIndex]);
++            decodeReturn = ReadByte(static_cast<FIT_UINT8>(buffer[currentByteIndex]));
+ 
+-            switch (decodeReturn) {
++            switch (decodeReturn)
++            {
+                 case RETURN_CONTINUE:
+                     break;
+ 
+                 case RETURN_MESG:
+-                    if (mesg.GetNum() == FIT_MESG_NUM_DEVELOPER_DATA_ID)
++                {
++                    const FIT_UINT8 mesgNum = mesg.GetNum();
++                    if (mesgNum == FIT_MESG_NUM_DEVELOPER_DATA_ID)
+                     {
+                         DeveloperDataIdMesg devIdMesg(mesg);
++                        if (!devIdMesg.IsDeveloperDataIndexValid())
++                            throw fit::RuntimeException("Invalid developer data index in DeveloperDataIdMesg");
+ 
+-                        if (!devIdMesg.IsDeveloperDataIndexValid()) {
+-							throw fit::RuntimeException("Invalid developer data index in DeveloperDataIdMesg");
+-						}
+-
+-                        FIT_UINT8 index = devIdMesg.GetDeveloperDataIndex();
+-                        developers[index] = devIdMesg;
+-                        descriptions[index] = std::unordered_map<FIT_UINT8, FieldDescriptionMesg>();
++                        const FIT_UINT8 index = devIdMesg.GetDeveloperDataIndex();
++                        developers[index] = std::move(devIdMesg);
++                        descriptions[index].clear();
+                     }
+-                    else if (mesg.GetNum() == FIT_MESG_NUM_FIELD_DESCRIPTION)
++                    else if (mesgNum == FIT_MESG_NUM_FIELD_DESCRIPTION)
+                     {
+                         FieldDescriptionMesg descMesg(mesg);
++                        if (!descMesg.IsDeveloperDataIndexValid())
++                            throw fit::RuntimeException("Invalid developer data index in FieldDescriptionMesg");
++                        if (!descMesg.IsFieldDefinitionNumberValid())
++                            throw fit::RuntimeException("Invalid developer field definition number in FieldDescriptionMesg");
+ 
+-                        if (!descMesg.IsDeveloperDataIndexValid()) {
+-							throw fit::RuntimeException("Invalid developer data index in FieldDescriptionMesg");
+-						}
+-
+-						if (!descMesg.IsFieldDefinitionNumberValid())
+-						{
+-							throw fit::RuntimeException("Invalid developer field definition number in FieldDescriptionMesg");
+-						}
++                        const FIT_UINT8 index = descMesg.GetDeveloperDataIndex();
++                        const FIT_UINT8 fldNum = descMesg.GetFieldDefinitionNumber();
+ 
+-                        FIT_UINT8 index = descMesg.GetDeveloperDataIndex();
+-                        FIT_UINT8 fldNum = descMesg.GetFieldDefinitionNumber();
+-
+-                        try
++                        auto it = descriptions.find(index);
++                        if (it != descriptions.end())
+                         {
+-                            descriptions.at(index)[fldNum] = descMesg;
+-                            
+-
++                            it->second[fldNum] = std::move(descMesg);
+                             if (descriptionListener)
+-                            {
+-                                descriptionListener->OnDeveloperFieldDescription(DeveloperFieldDescription(descMesg, developers[index]));
+-                            }
+-                        }
+-                        catch (std::out_of_range)
+-                        {
+-                            // Description without a Developer Data Id Message
++                                descriptionListener->OnDeveloperFieldDescription(DeveloperFieldDescription(it->second[fldNum], developers[index]));
+                         }
+                     }
+ 
+-                    
+-
+                     if (mesgListener)
+                         mesgListener->OnMesg(mesg);
+                     break;
++                }
+ 
+                 case RETURN_MESG_DEF:
+-                   
+                     if (mesgDefinitionListener)
+-                    {
+                         mesgDefinitionListener->OnMesgDefinition(localMesgDefs[localMesgIndex]);
+-                    }
+                     break;
+ 
+                 case RETURN_END_OF_FILE:
+-                     // Increment so we do not read the same byte twice in the case of a chained file
+                     currentByteIndex++;
+                     currentByteOffset++;
+                     return FIT_TRUE;
+@@ -321,40 +305,25 @@
+             currentByteOffset++;
+         }
+         currentByteIndex = 0;
+-    } while ( file->good() );
++    } while (file->good());
+ 
+     if ((streamIsComplete == FIT_TRUE) && (skipHeader == FIT_FALSE))
+     {
+-        // When decoding a complete file we should exit via RETURN_END_OF_FILE state only.
+-      std::ostringstream message;
+-      message << "FIT decode error: Unexpected end of input stream at byte: " << currentByteOffset;
++        std::ostringstream message;
++        message << "FIT decode error: Unexpected end of input stream at byte: " << currentByteOffset;
+         throw RuntimeException(message.str());
+     }
+     if (streamIsComplete == FIT_FALSE)
+     {
+-        // If stream is not yet complete caller can resume() when there is more data
+-        // or decide there was an error.
+         if ((decodeReturn == RETURN_MESG) || (decodeReturn == RETURN_MESG_DEF))
+-        {
+-            // Our stream ended on a complete message, maybe we are done decoding.
+             return FIT_TRUE;
+-        }
+         else
+-        {
+-            // EOF was encountered mid message. Caller may want to resume once
+-            // more bytes are available.
+             return FIT_FALSE;
+-        }
+     }
+-        // if Decoding Records section only, file should end on a complete message
+-        // (unless incomplete stream option above was also used)
+     else
+     {
+         if ((decodeReturn == RETURN_MESG) || (decodeReturn == RETURN_MESG_DEF))
+-        {
+-            // Our stream ended on a complete message, we are done decoding.
+             return FIT_TRUE;
+-        }
+         else
+         {
+             if (invalidDataSize == FIT_FALSE)
+--- a/src/fit_field_base.cpp
++++ b/src/fit_field_base.cpp
+@@ -16,6 +16,8 @@
+ #include "fit_field_base.hpp"
+ #include "fit_mesg.hpp"
+ #include "fit_unicode.hpp"
++#include <cstring>
++#include <cstdint>
+ 
+ namespace fit
+ {
+@@ -100,15 +102,17 @@
+     return (FIT_UINT8)values.size();
+ }
+ 
++
+ FIT_UINT8 FieldBase::GetNumValues(void) const
+ {
+     if (!IsValid())
+         return 0;
+ 
+-    if (GetType() != FIT_BASE_TYPE_STRING)
+-        return (FIT_UINT8)(values.size() / baseTypeSizes[GetType() & FIT_BASE_TYPE_NUM_MASK]);
++    const auto type = GetType();
++    if (type != FIT_BASE_TYPE_STRING)
++        return static_cast<FIT_UINT8>(values.size() / baseTypeSizes[type & FIT_BASE_TYPE_NUM_MASK]);
+ 
+-    return (FIT_UINT8)stringIndexes.size();
++    return static_cast<FIT_UINT8>(stringIndexes.size());
+ }
+ 
+ FIT_UINT32 FieldBase::GetBitsValue(const FIT_UINT16 offset, const FIT_UINT8 bits) const
+@@ -556,167 +560,98 @@
+     return FIT_TRUE;
+ }
+ 
++
+ FIT_FLOAT64 FieldBase::GetRawValueInternal(const FIT_UINT8 fieldArrayIndex) const
+ {
+-    FIT_FLOAT64 float64Value;
+-
+     if (!IsValid())
+         return FIT_FLOAT64_INVALID;
+ 
+-    switch (GetType()) { // Note: This checks the type of the MAIN field since data is aligned according to that type
++    switch (GetType()) {
+         case FIT_BASE_TYPE_BYTE:
+-        {
+-            FIT_BYTE byteValue = GetBYTEValue(fieldArrayIndex);
+-
+-            if (byteValue == FIT_BYTE_INVALID)
+-                return FIT_FLOAT64_INVALID;
+-
+-            float64Value = byteValue;
+-            break;
+-        }
+-
+         case FIT_BASE_TYPE_ENUM:
+-        {
+-            FIT_ENUM enumValue = GetENUMValue(fieldArrayIndex);
+-
+-            if (enumValue == FIT_ENUM_INVALID)
+-                return FIT_FLOAT64_INVALID;
+-
+-            float64Value = enumValue;
+-            break;
+-        }
+-
+         case FIT_BASE_TYPE_SINT8:
+-        {
+-            FIT_SINT8 sint8Value = GetSINT8Value(fieldArrayIndex);
+-
+-            if (sint8Value == FIT_SINT8_INVALID)
+-                return FIT_FLOAT64_INVALID;
+-
+-            float64Value = sint8Value;
+-            break;
+-        }
+-
+         case FIT_BASE_TYPE_UINT8:
+-        {
+-            FIT_UINT8 uint8Value = GetUINT8Value(fieldArrayIndex);
+-
+-            if (uint8Value == FIT_UINT8_INVALID)
+-                return FIT_FLOAT64_INVALID;
+-
+-            float64Value = uint8Value;
+-            break;
+-        }
+-
+         case FIT_BASE_TYPE_UINT8Z:
+-        {
+-            FIT_UINT8Z uint8zValue = GetUINT8ZValue(fieldArrayIndex);
+-
+-            if (uint8zValue == FIT_UINT8Z_INVALID)
+-                return FIT_FLOAT64_INVALID;
+-
+-            float64Value = uint8zValue;
+-            break;
+-        }
+-
+         case FIT_BASE_TYPE_SINT16:
+-        {
+-            FIT_SINT16 sint16Value = GetSINT16Value(fieldArrayIndex);
+-
+-            if (sint16Value == FIT_SINT16_INVALID)
+-                return FIT_FLOAT64_INVALID;
+-
+-            float64Value = sint16Value;
+-            break;
+-        }
+-
+         case FIT_BASE_TYPE_UINT16:
+-        {
+-            FIT_UINT16 uint16Value = GetUINT16Value(fieldArrayIndex);
+-
+-            if (uint16Value == FIT_UINT16_INVALID)
+-                return FIT_FLOAT64_INVALID;
+-
+-            float64Value = uint16Value;
+-            break;
+-        }
+-
+         case FIT_BASE_TYPE_UINT16Z:
+-        {
+-            FIT_UINT16Z uint16zValue = GetUINT16ZValue(fieldArrayIndex);
+-
+-            if (uint16zValue == FIT_UINT16Z_INVALID)
+-                return FIT_FLOAT64_INVALID;
+-
+-            float64Value = uint16zValue;
+-            break;
+-        }
+-
+         case FIT_BASE_TYPE_SINT32:
+-        {
+-            FIT_SINT32 sint32Value = GetSINT32Value(fieldArrayIndex);
+-
+-            if (sint32Value == FIT_SINT32_INVALID)
+-                return FIT_FLOAT64_INVALID;
+-
+-            float64Value = sint32Value;
+-            break;
+-        }
+-
+         case FIT_BASE_TYPE_UINT32:
+-        {
+-            FIT_UINT32 uint32Value = GetUINT32Value(fieldArrayIndex);
+-
+-            if (uint32Value == FIT_UINT32_INVALID)
+-                return FIT_FLOAT64_INVALID;
+-
+-            float64Value = uint32Value;
+-            break;
+-        }
+-
+         case FIT_BASE_TYPE_UINT32Z:
+-        {
+-            FIT_UINT32Z uint32zValue = GetUINT32ZValue(fieldArrayIndex);
+-
+-            if (uint32zValue == FIT_UINT32Z_INVALID)
+-                return FIT_FLOAT64_INVALID;
+-
+-            float64Value = uint32zValue;
+-            break;
+-        }
+-
+         case FIT_BASE_TYPE_FLOAT32:
+         {
+-            FIT_FLOAT32 float32Value = GetFLOAT32Value(fieldArrayIndex);
+-
+-            if (float32Value == FIT_FLOAT32_INVALID)
+-                return FIT_FLOAT64_INVALID;
+-
+-            float64Value = float32Value;
+-            break;
++            // Use common pattern: get the raw value, check invalid, convert to float64
++            // We'll handle each case via a small helper lambda to avoid duplicated code
++            auto get_as_float64 = [this, fieldArrayIndex]() -> FIT_FLOAT64 {
++                switch (GetType()) {
++                    case FIT_BASE_TYPE_BYTE: {
++                        FIT_BYTE v = GetBYTEValue(fieldArrayIndex);
++                        return (v == FIT_BYTE_INVALID) ? FIT_FLOAT64_INVALID : static_cast<FIT_FLOAT64>(v);
++                    }
++                    case FIT_BASE_TYPE_ENUM: {
++                        FIT_ENUM v = GetENUMValue(fieldArrayIndex);
++                        return (v == FIT_ENUM_INVALID) ? FIT_FLOAT64_INVALID : static_cast<FIT_FLOAT64>(v);
++                    }
++                    case FIT_BASE_TYPE_SINT8: {
++                        FIT_SINT8 v = GetSINT8Value(fieldArrayIndex);
++                        return (v == FIT_SINT8_INVALID) ? FIT_FLOAT64_INVALID : static_cast<FIT_FLOAT64>(v);
++                    }
++                    case FIT_BASE_TYPE_UINT8: {
++                        FIT_UINT8 v = GetUINT8Value(fieldArrayIndex);
++                        return (v == FIT_UINT8_INVALID) ? FIT_FLOAT64_INVALID : static_cast<FIT_FLOAT64>(v);
++                    }
++                    case FIT_BASE_TYPE_UINT8Z: {
++                        FIT_UINT8Z v = GetUINT8ZValue(fieldArrayIndex);
++                        return (v == FIT_UINT8Z_INVALID) ? FIT_FLOAT64_INVALID : static_cast<FIT_FLOAT64>(v);
++                    }
++                    case FIT_BASE_TYPE_SINT16: {
++                        FIT_SINT16 v = GetSINT16Value(fieldArrayIndex);
++                        return (v == FIT_SINT16_INVALID) ? FIT_FLOAT64_INVALID : static_cast<FIT_FLOAT64>(v);
++                    }
++                    case FIT_BASE_TYPE_UINT16: {
++                        FIT_UINT16 v = GetUINT16Value(fieldArrayIndex);
++                        return (v == FIT_UINT16_INVALID) ? FIT_FLOAT64_INVALID : static_cast<FIT_FLOAT64>(v);
++                    }
++                    case FIT_BASE_TYPE_UINT16Z: {
++                        FIT_UINT16Z v = GetUINT16ZValue(fieldArrayIndex);
++                        return (v == FIT_UINT16Z_INVALID) ? FIT_FLOAT64_INVALID : static_cast<FIT_FLOAT64>(v);
++                    }
++                    case FIT_BASE_TYPE_SINT32: {
++                        FIT_SINT32 v = GetSINT32Value(fieldArrayIndex);
++                        return (v == FIT_SINT32_INVALID) ? FIT_FLOAT64_INVALID : static_cast<FIT_FLOAT64>(v);
++                    }
++                    case FIT_BASE_TYPE_UINT32: {
++                        FIT_UINT32 v = GetUINT32Value(fieldArrayIndex);
++                        return (v == FIT_UINT32_INVALID) ? FIT_FLOAT64_INVALID : static_cast<FIT_FLOAT64>(v);
++                    }
++                    case FIT_BASE_TYPE_UINT32Z: {
++                        FIT_UINT32Z v = GetUINT32ZValue(fieldArrayIndex);
++                        return (v == FIT_UINT32Z_INVALID) ? FIT_FLOAT64_INVALID : static_cast<FIT_FLOAT64>(v);
++                    }
++                    case FIT_BASE_TYPE_FLOAT32: {
++                        FIT_FLOAT32 v = GetFLOAT32Value(fieldArrayIndex);
++                        return (v == FIT_FLOAT32_INVALID) ? FIT_FLOAT64_INVALID : static_cast<FIT_FLOAT64>(v);
++                    }
++                    default:
++                        return FIT_FLOAT64_INVALID;
++                }
++            };
++            return get_as_float64();
+         }
+ 
+         case FIT_BASE_TYPE_FLOAT64:
+         {
+-            unsigned long long uint64Value = 0;
+-
+-            if (fieldArrayIndex >= (FIT_UINT8)values.size())
++            if (fieldArrayIndex >= (FIT_UINT8)values.size() / sizeof(FIT_FLOAT64))
+                 return FIT_FLOAT64_INVALID;
+ 
+-            for (size_t i = 0; i < sizeof(FIT_UINT64); i++)
+-            {
+-                uint64Value |= ( values[(fieldArrayIndex * sizeof(FIT_UINT64)) + i] << (i * 8) );
+-            }
+-
+-            memcpy(&float64Value, &uint64Value, sizeof(FIT_FLOAT64));
+-            break;
++            FIT_FLOAT64 result;
++            std::memcpy(&result, &values[fieldArrayIndex * sizeof(FIT_FLOAT64)], sizeof(FIT_FLOAT64));
++            return result;
+         }
+ 
+         default:
+             return FIT_FLOAT64_INVALID;
+     }
+-
+-    return float64Value;
+ }
+ 
+ void FieldBase::AddValue(const FIT_FLOAT64 value, const FIT_UINT8 fieldArrayIndex, const FIT_UINT16 subFieldIndex)
+--- a/src/fit_mesg.cpp
++++ b/src/fit_mesg.cpp
+@@ -14,6 +14,7 @@
+ #include <algorithm>
+ #include "fit_mesg.hpp"
+ #include "fit_mesg_definition.hpp"
++#include <vector>
+ 
+ namespace fit
+ {
+@@ -248,15 +249,12 @@
+     return FIT_NULL;
+ }
+ 
++
+ Field* Mesg::GetField(const FIT_UINT8 fieldNum)
+ {
+-    for (int i = 0; i < (int)fields.size(); i++)
+-    {
+-        if (fields[i].GetNum() == fieldNum)
+-            return &fields[i];
+-    }
+-
+-    return FIT_NULL;
++    auto it = std::find_if(fields.begin(), fields.end(),
++        [fieldNum](const Field& f) { return f.GetNum() == fieldNum; });
++    return (it != fields.end()) ? &*it : FIT_NULL;
+ }
+ 
+ Field* Mesg::GetField(const std::string& name)
+--- a/src/fit_profile.cpp
++++ b/src/fit_profile.cpp
+@@ -11,6 +11,8 @@
+ 
+ 
+ #include "fit_profile.hpp"
++#include <algorithm>
++#include <vector>
+ 
+ namespace fit
+ {
+@@ -3055,15 +3057,23 @@
+    { NULL, "pad", FIT_MESG_NUM_PAD, 0 },
+ };
+ 
++
+ const Profile::MESG* Profile::GetMesg(const FIT_UINT16 num)
+ {
+-    for (int i = 0; i < MESGS; i++)
+-    {
+-        if (mesgs[i].num == num)
+-            return &mesgs[i];
+-    }
+-
+-    return NULL;
++    static const auto sorted = [] {
++        std::vector<const Profile::MESG*> v;
++        for (int i = 0; i < MESGS; i++) {
++            v.push_back(&mesgs[i]);
++        }
++        std::sort(v.begin(), v.end(), [](const Profile::MESG* a, const Profile::MESG* b) {
++            return a->num < b->num;
++        });
++        return v;
++    }();
++
++    const auto it = std::lower_bound(sorted.begin(), sorted.end(), num,
++        [](const Profile::MESG* m, FIT_UINT16 n) { return m->num < n; });
++    return (it != sorted.end() && (*it)->num == num) ? *it : nullptr;
+ }
+ 
+ const Profile::MESG* Profile::GetMesg(const std::string& name)

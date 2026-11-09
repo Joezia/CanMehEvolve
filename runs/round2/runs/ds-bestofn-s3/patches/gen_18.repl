@@ -1,0 +1,14 @@
+I added `__builtin_expect` branch hints so the compiler lays out the common cached-`type` fast path and the valid-profile path as fall-through, avoiding taken-branch penalties; behaviour is unchanged.
+
+```cpp
+FIT_UINT8 Field::GetType() const
+{
+    if ( __builtin_expect(type != FIT_UINT8_INVALID, 1) )
+        return type;
+
+    if ( __builtin_expect((profile == NULL) || (profileIndex >= profile->numFields), 0) )
+        return FIT_UINT8_INVALID;
+
+    return profile->fields[profileIndex].type;
+}
+```

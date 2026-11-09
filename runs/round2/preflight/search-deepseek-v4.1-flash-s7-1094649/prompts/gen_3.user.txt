@@ -1,0 +1,53 @@
+File: src/fit_field.cpp
+Function: Field::GetType (10 lines)
+One full decode of the four files takes about 479.5 ms in the stock build.
+Time of the current version of the whole library relative to stock: 0.946 (below 1.0 is faster). Best measured so far: 0.946.
+
+Your previous attempt failed:
+Stage 'compile' rejected it: /home/z/zhouzia/Workspace/CanMehEvolve/build/work-1094649/tree/src/fit_field.cpp: In member function ‘virtual FIT_UINT8 fit::Field::GetType() const’:
+/home/z/zhouzia/Workspace/CanMehEvolve/build/work-1094649/tree/src/fit_field.cpp:104:28: error: cannot convert ‘const fit::Profile::MESG* const’ to ‘const fit::Profile*’ in initialization
+  104 |         const Profile* p = profile;
+      |                            ^~~~~~~
+      |                            |
+      |                            const fit::Profile::MESG* const
+/home/z/zhouzia/Workspace/CanMehEvolve/build/work-1094649/tree/src/fit_field.cpp:106:49: error: ‘const class fit::Profile’ has no member named ‘numFields’
+  106 |             __builtin_expect(profileIndex >= p->numFields, 0))
+      |                                                 ^~~~~~~~~
+/home/z/zhouzia/Workspace/CanMehEvolve/build/work-1094649/tree/src/fit_field.cpp:109:19: error: ‘const class fit::Profile’ has no member named ‘fields’
+  109 |         return p->fields[profileIndex].type;
+      |                   ^~~~~~
+
+The rejected replacement was:
+```cpp
+FIT_UINT8 Field::GetType() const
+{
+    if (__builtin_expect(type == FIT_UINT8_INVALID, 0))
+    {
+        const Profile* p = profile;
+        if (__builtin_expect(p == NULL, 0) ||
+            __builtin_expect(profileIndex >= p->numFields, 0))
+            return FIT_UINT8_INVALID;
+
+        return p->fields[profileIndex].type;
+    }
+
+    return type;
+}
+
+```
+
+Current text of the function:
+```cpp
+FIT_UINT8 Field::GetType() const
+{
+    if ( type != FIT_UINT8_INVALID )
+        return type;
+
+    if ((profile == NULL) || (profileIndex >= profile->numFields))
+        return FIT_UINT8_INVALID;
+
+    return profile->fields[profileIndex].type;
+}
+
+```
+Return the faster replacement now.

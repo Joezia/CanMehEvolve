@@ -1,0 +1,24 @@
+Looking at this function, the main performance issue is the potential branch misprediction from the conditional checks and the indirection through the `profile` pointer. Since this function is called frequently during decoding, we can optimize it by:
+
+1. Reordering the checks to handle the most common case first (type already set)
+2. Using early returns to minimize branching
+3. Making the profile access more direct when possible
+
+However, given that the measured best time is already 1.000 (same as stock), and we need to improve performance, the key insight is that `FIT_UINT8_INVALID` is likely 0xFF, and we can use a single comparison to check both the `type` validity and avoid the profile lookup when possible.
+
+But actually, the most effective optimization here is to reduce the number of branches and make the code more predictable. The current code has two conditional checks that could cause branch mispredictions.
+
+```cpp
+```cpp
+FIT_UINT8 Field::GetType() const
+{
+    if (type != FIT_UINT8_INVALID)
+        return type;
+    
+    const FIT_FIELD_DEF* fields = profile ? profile->fields : nullptr;
+    if (fields && (profileIndex < profile->numFields))
+        return fields[profileIndex].type;
+    
+    return FIT_UINT8_INVALID;
+}
+```

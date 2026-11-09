@@ -1,0 +1,41 @@
+--- a/src/fit_profile.cpp
++++ b/src/fit_profile.cpp
+@@ -11,6 +11,8 @@
+ 
+ 
+ #include "fit_profile.hpp"
++#include <algorithm>
++#include <cstddef>
+ 
+ namespace fit
+ {
+@@ -3055,15 +3057,24 @@
+    { NULL, "pad", FIT_MESG_NUM_PAD, 0 },
+ };
+ 
++
++```cpp
+ const Profile::MESG* Profile::GetMesg(const FIT_UINT16 num)
+ {
+-    for (int i = 0; i < MESGS; i++)
+-    {
+-        if (mesgs[i].num == num)
+-            return &mesgs[i];
++    static const Profile::MESG* cached = nullptr;
++    static FIT_UINT16 cached_num = 0xFFFF;
++
++    if (cached && cached->num == num)
++        return cached;
++
++    cached = std::find_if(mesgs, mesgs + MESGS, [num](const Profile::MESG& m) { return m.num == num; });
++    if (cached != mesgs + MESGS) {
++        cached_num = num;
++        return cached;
+     }
+ 
+-    return NULL;
++    cached = nullptr;
++    return nullptr;
+ }
+ 
+ const Profile::MESG* Profile::GetMesg(const std::string& name)

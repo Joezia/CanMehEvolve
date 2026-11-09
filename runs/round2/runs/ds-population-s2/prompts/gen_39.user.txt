@@ -1,0 +1,41 @@
+File: src/fit_profile.cpp
+Function: Profile::GetFieldIndex (15 lines)
+One full decode of the four files takes about 358.4 ms in the stock build.
+Time of the current version of the whole library relative to stock: 0.900 (below 1.0 is faster). Best measured so far: 0.880.
+
+Current text of the function:
+```cpp
+const FIT_UINT16 Profile::GetFieldIndex(const FIT_UINT16 mesgNum, const FIT_UINT8 fieldNum)
+{
+    static FIT_UINT32 cache_keys[4096];
+    static FIT_UINT16 cache_vals[4096];
+
+    const FIT_UINT32 key = (FIT_UINT32(mesgNum) << 8) | fieldNum;
+    const FIT_UINT32 storedKey = key + 1;
+    const FIT_UINT32 slot = (mesgNum * 31u + fieldNum) & 4095;
+
+    if (cache_keys[slot] == storedKey)
+        return cache_vals[slot];
+
+    const MESG *mesg = GetMesg(mesgNum);
+    FIT_UINT16 result = FIT_UINT16_INVALID;
+
+    if (mesg != NULL)
+    {
+        for (FIT_UINT16 i = 0; i < mesg->numFields; i++)
+        {
+            if (mesg->fields[i].num == fieldNum)
+            {
+                result = i;
+                break;
+            }
+        }
+    }
+
+    cache_keys[slot] = storedKey;
+    cache_vals[slot] = result;
+    return result;
+}
+
+```
+Return the faster replacement now.

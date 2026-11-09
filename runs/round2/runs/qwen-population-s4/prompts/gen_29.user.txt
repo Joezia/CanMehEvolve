@@ -1,0 +1,22 @@
+File: src/fit_mesg.cpp
+Function: Mesg::SetFieldSINT16Value (12 lines)
+One full decode of the four files takes about 358.7 ms in the stock build.
+Time of the current version of the whole library relative to stock: 0.985 (below 1.0 is faster). Best measured so far: 0.972.
+
+Current text of the function:
+```cpp
+void Mesg::SetFieldSINT16Value(const FIT_UINT8 fieldNum, const FIT_SINT16 value, const FIT_UINT8 fieldArrayIndex, const FIT_UINT16 subFieldIndex)
+{
+    if (!CanSupportSubField(fieldNum, subFieldIndex))
+        return;
+
+    Field *field = AddField(fieldNum);
+
+    if (field == FIT_NULL)
+        return;
+
+    return field->SetSINT16Value(value, fieldArrayIndex);
+}
+
+```
+Return the faster replacement now.

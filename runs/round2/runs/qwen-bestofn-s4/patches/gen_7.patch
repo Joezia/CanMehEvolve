@@ -1,0 +1,47 @@
+--- a/src/fit_profile.cpp
++++ b/src/fit_profile.cpp
+@@ -11,6 +11,8 @@
+ 
+ 
+ #include "fit_profile.hpp"
++#include <algorithm>
++#include <vector>
+ 
+ namespace fit
+ {
+@@ -3055,14 +3057,31 @@
+    { NULL, "pad", FIT_MESG_NUM_PAD, 0 },
+ };
+ 
++
+ const Profile::MESG* Profile::GetMesg(const FIT_UINT16 num)
+ {
+-    for (int i = 0; i < MESGS; i++)
+-    {
+-        if (mesgs[i].num == num)
+-            return &mesgs[i];
++    static std::vector<const Profile::MESG*> sorted_mesgs;
++    static bool initialized = false;
++    if (!initialized) {
++        sorted_mesgs.reserve(MESGS);
++        for (int i = 0; i < MESGS; ++i) {
++            sorted_mesgs.push_back(&mesgs[i]);
++        }
++        std::sort(sorted_mesgs.begin(), sorted_mesgs.end(),
++            [](const Profile::MESG* a, const Profile::MESG* b) {
++                return a->num < b->num;
++            });
++        initialized = true;
+     }
+ 
++    auto it = std::lower_bound(sorted_mesgs.begin(), sorted_mesgs.end(), num,
++        [](const Profile::MESG* mesg, FIT_UINT16 value) {
++            return mesg->num < value;
++        });
++    
++    if (it != sorted_mesgs.end() && (*it)->num == num) {
++        return *it;
++    }
+     return NULL;
+ }
+ 

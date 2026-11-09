@@ -1,0 +1,28 @@
+Looking at this function, it's performing a linear search through fields for each field lookup. Since this is called frequently during decoding, we can optimize by precomputing a lookup table that maps (mesgNum, fieldNum) pairs to field indices.
+
+However, given the constraints (must keep exact signature, no behavioral changes, no extra files), the best optimization within the existing structure is to use a small optimization: since fields are typically stored in order and field numbers are small, we can unroll the loop slightly or use early termination more efficiently.
+
+But actually, the most impactful change without altering behavior is to use `std::find_if` with a lambda which can be better optimized by the compiler, or simply unroll a few iterations if the average number of fields is small.
+
+Wait — the real insight: the current code has a branch inside the loop (`if (mesg->fields[i].num == fieldNum)`) that causes branch mispredictions. Since field numbers are often sequential and small, and the function is called repeatedly during decoding, we can replace the linear search with a direct lookup using a precomputed array — but we can't change the data structures.
+
+Given the constraints, the best drop-in optimization is to use a more efficient loop structure that the compiler can better optimize — specifically, using a pointer increment instead of array indexing to avoid base+offset calculations, and hoisting the `mesg->fields` pointer outside the loop.
+
+```cpp
+const FIT_UINT16 Profile::GetFieldIndex(const FIT_UINT16 mesgNum, const FIT_UINT8 fieldNum)
+{
+    const MESG *mesg = GetMesg(mesgNum);
+
+    if (mesg == NULL)
+        return FIT_UINT16_INVALID;
+
+    const FIELD *field = mesg->fields;
+    for (FIT_UINT16 i = 0; i < mesg->numFields; i++, field++)
+    {
+        if (field->num == fieldNum)
+            return i;
+    }
+
+    return FIT_UINT16_INVALID;
+}
+```

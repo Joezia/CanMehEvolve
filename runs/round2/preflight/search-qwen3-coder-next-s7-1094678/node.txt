@@ -1,0 +1,8 @@
+host=xcnc3
+job=1094678
+start=2026-11-08T09:38:30+08:00
+mode=search model=qwen3-coder-next budget=6 deadline_segment1=400
+binary_sha256=84a432f57b4aa164dc70328f711c2315a6cf61807eb6b0af0071739c36f16076
+seg1_exit=75
+seg2_exit=0
+end=2026-11-08T09:52:18+08:00

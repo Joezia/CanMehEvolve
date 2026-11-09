@@ -1,0 +1,6 @@
+{
+ "error": "In file included from /home/z/zhouzia/Workspace/CanMehEvolve/build/work-1095979/tree/src/fit_time_in_zone_mesg_listener.hpp:16,\n                 from /home/z/zhouzia/Workspace/CanMehEvolve/build/work-1095979/tree/src/fit_mesg_broadcaster.hpp:42,\n                 from /home/z/zhouzia/Workspace/CanMehEvolve/build/work-1095979/tree/src/fit_buffered_mesg_broadcaster.hpp:17,\n                 from /home/z/zhouzia/Workspace/CanMehEvolve/build/work-1095979/tree/src/fit_buffered_mesg_broadcaster.cpp:14:\n/home/z/zhouzia/Workspace/CanMehEvolve/build/work-1095979/tree/src/fit_time_in_zone_mesg.hpp: In member function ‘void fit::TimeInZoneMesg::SetFunctionalThresholdPower(FIT_UINT16)’:\n/home/z/zhouzia/Workspace/CanMehEvolve/build/work-1095979/tree/src/fit_time_in_zone_mesg.hpp:663:5: error: ‘SetFieldUInt16Value’ was not declared in this scope; did you mean ‘SetFieldUINT16Value’?\n  663 |     SetFieldUInt16Value(15, functionalThresholdPower, 0, FIT_SUBFIELD_INDEX_MAIN_FIELD);\n      |     ^~~~~~~~~~~~~~~~~~~\n      |     SetFieldUINT16Value\n",
+ "ok": false,
+ "rebuilt": 9,
+ "stage": "compile"
+}

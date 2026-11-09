@@ -1,0 +1,20 @@
+I replaced the 16‑bit index table with a table of precomputed `MESG*` pointers, so the hot path is a single load with no index arithmetic, multiply, or null-conditional; the pointer entries touched during decoding are few and stay in L1.
+
+```cpp
+const Profile::MESG* Profile::GetMesg(const FIT_UINT16 num)
+{
+    static const MESG* index[65536] = {};
+    static bool initialized = false;
+    if (!initialized)
+    {
+        for (int i = 0; i < MESGS; ++i)
+        {
+            const FIT_UINT16 n = mesgs[i].num;
+            if (index[n] == NULL)
+                index[n] = &mesgs[i];
+        }
+        initialized = true;
+    }
+    return index[num];
+}
+```

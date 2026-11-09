@@ -1,0 +1,9 @@
+Constructing the vectors directly from the source avoids default-constructing then copy-assigning them, saving redundant stores and assignment checks on every field copy.
+
+```cpp
+FieldBase::FieldBase(const FieldBase &field)
+    : values(field.values),
+      stringIndexes(field.stringIndexes)
+{
+}
+```

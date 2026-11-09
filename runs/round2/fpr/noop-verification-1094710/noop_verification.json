@@ -1,0 +1,142 @@
+{
+ "stock_text_sha256": "bc1cce40d1e006fe9077de3e3157ab14226f54caaa9b0efec2bb6f4557c37d49",
+ "stock_text_bytes": 529482,
+ "results": [
+  {
+   "patch": "inert-check",
+   "patch_file": "runs/inert-check/inert.patch",
+   "built": true,
+   "text_bytes": 529482,
+   "text_identical_to_stock": true,
+   "dynamic_symbols_identical": true
+  },
+  {
+   "patch": "null-search-xcnc-s1-1088417-last-accepted-attempt23",
+   "patch_file": "runs/followup/null-search-xcnc-s1-1088417/patches/a023.patch",
+   "built": true,
+   "text_bytes": 529482,
+   "text_identical_to_stock": true,
+   "dynamic_symbols_identical": true
+  },
+  {
+   "patch": "null-search-xcnc-s1-1088417-last-measured-attempt36",
+   "patch_file": "runs/followup/null-search-xcnc-s1-1088417/patches/a036.patch",
+   "built": true,
+   "text_bytes": 529482,
+   "text_identical_to_stock": true,
+   "dynamic_symbols_identical": true
+  },
+  {
+   "patch": "null-search-xcnc-s2-1088418-last-accepted-attempt31",
+   "patch_file": "runs/followup/null-search-xcnc-s2-1088418/patches/a031.patch",
+   "built": true,
+   "text_bytes": 529482,
+   "text_identical_to_stock": true,
+   "dynamic_symbols_identical": true
+  },
+  {
+   "patch": "null-search-xcnc-s2-1088418-last-measured-attempt36",
+   "patch_file": "runs/followup/null-search-xcnc-s2-1088418/patches/a036.patch",
+   "built": true,
+   "text_bytes": 529482,
+   "text_identical_to_stock": true,
+   "dynamic_symbols_identical": true
+  },
+  {
+   "patch": "null-search-xcnc-s3-1088419-last-accepted-attempt18",
+   "patch_file": "runs/followup/null-search-xcnc-s3-1088419/patches/a018.patch",
+   "built": true,
+   "text_bytes": 529482,
+   "text_identical_to_stock": true,
+   "dynamic_symbols_identical": true
+  },
+  {
+   "patch": "null-search-xcnc-s3-1088419-last-measured-attempt36",
+   "patch_file": "runs/followup/null-search-xcnc-s3-1088419/patches/a036.patch",
+   "built": true,
+   "text_bytes": 529482,
+   "text_identical_to_stock": true,
+   "dynamic_symbols_identical": true
+  },
+  {
+   "patch": "null-search-xcnc-s4-1088420-last-accepted-attempt19",
+   "patch_file": "runs/followup/null-search-xcnc-s4-1088420/patches/a019.patch",
+   "built": true,
+   "text_bytes": 529482,
+   "text_identical_to_stock": true,
+   "dynamic_symbols_identical": true
+  },
+  {
+   "patch": "null-search-xcnc-s4-1088420-last-measured-attempt36",
+   "patch_file": "runs/followup/null-search-xcnc-s4-1088420/patches/a036.patch",
+   "built": true,
+   "text_bytes": 529482,
+   "text_identical_to_stock": true,
+   "dynamic_symbols_identical": true
+  },
+  {
+   "patch": "null-search-xcnd-s1-1088421-last-accepted-attempt16",
+   "patch_file": "runs/followup/null-search-xcnd-s1-1088421/patches/a016.patch",
+   "built": true,
+   "text_bytes": 529482,
+   "text_identical_to_stock": true,
+   "dynamic_symbols_identical": true
+  },
+  {
+   "patch": "null-search-xcnd-s1-1088421-last-measured-attempt36",
+   "patch_file": "runs/followup/null-search-xcnd-s1-1088421/patches/a036.patch",
+   "built": true,
+   "text_bytes": 529482,
+   "text_identical_to_stock": true,
+   "dynamic_symbols_identical": true
+  },
+  {
+   "patch": "null-search-xcnd-s2-1088422-last-accepted-attempt18",
+   "patch_file": "runs/followup/null-search-xcnd-s2-1088422/patches/a018.patch",
+   "built": true,
+   "text_bytes": 529482,
+   "text_identical_to_stock": true,
+   "dynamic_symbols_identical": true
+  },
+  {
+   "patch": "null-search-xcnd-s2-1088422-last-measured-attempt36",
+   "patch_file": "runs/followup/null-search-xcnd-s2-1088422/patches/a036.patch",
+   "built": true,
+   "text_bytes": 529482,
+   "text_identical_to_stock": true,
+   "dynamic_symbols_identical": true
+  },
+  {
+   "patch": "null-search-xcnd-s3-1088423-last-accepted-attempt31",
+   "patch_file": "runs/followup/null-search-xcnd-s3-1088423/patches/a031.patch",
+   "built": true,
+   "text_bytes": 529482,
+   "text_identical_to_stock": true,
+   "dynamic_symbols_identical": true
+  },
+  {
+   "patch": "null-search-xcnd-s3-1088423-last-measured-attempt36",
+   "patch_file": "runs/followup/null-search-xcnd-s3-1088423/patches/a036.patch",
+   "built": true,
+   "text_bytes": 529482,
+   "text_identical_to_stock": true,
+   "dynamic_symbols_identical": true
+  },
+  {
+   "patch": "null-search-xcnd-s4-1088424-last-accepted-attempt8",
+   "patch_file": "runs/followup/null-search-xcnd-s4-1088424/patches/a008.patch",
+   "built": true,
+   "text_bytes": 529482,
+   "text_identical_to_stock": true,
+   "dynamic_symbols_identical": true
+  },
+  {
+   "patch": "null-search-xcnd-s4-1088424-last-measured-attempt36",
+   "patch_file": "runs/followup/null-search-xcnd-s4-1088424/patches/a036.patch",
+   "built": true,
+   "text_bytes": 529482,
+   "text_identical_to_stock": true,
+   "dynamic_symbols_identical": true
+  }
+ ]
+}

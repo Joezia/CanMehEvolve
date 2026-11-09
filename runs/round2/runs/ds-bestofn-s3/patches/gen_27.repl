@@ -1,0 +1,9 @@
+Switched the copy constructor to member-initializer-list copy construction, so each vector is copy-constructed directly instead of being default-constructed and then assigned. This removes the redundant default-construction/assignment path while preserving the exact copied members.
+
+```cpp
+FieldBase::FieldBase(const FieldBase &field)
+    : values(field.values)
+    , stringIndexes(field.stringIndexes)
+{
+}
+```

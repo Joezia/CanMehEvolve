@@ -1,0 +1,15 @@
+The getter currently pays a cross-TU call to `GetFieldNumValues`; inlining the equivalent field search (field number 7, main subfield, first match) removes that call overhead while preserving identical behavior.
+
+```cpp
+    FIT_UINT8 GetNumLeaderType(void) const
+    {
+        for (FIT_UINT8 i = 0; i < numFields; ++i)
+        {
+            if (field[i].Field() == 7)
+            {
+                return field[i].GetNumValues();
+            }
+        }
+        return 0;
+    }
+```

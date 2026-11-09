@@ -1,0 +1,13 @@
+I hoisted the profile pointer into a local and added branch-prediction hints so the common non-null, in-range path stays as fall-through. This reduces redundant loads and keeps the hot path branch-efficient.
+
+```cpp
+FIT_FLOAT64 Field::GetOffset() const
+{
+    const Profile* p = profile;
+    if (__builtin_expect(p == NULL, 0))
+        return 0;
+    if (__builtin_expect(profileIndex >= p->numFields, 0))
+        return 0;
+    return p->fields[profileIndex].offset;
+}
+```

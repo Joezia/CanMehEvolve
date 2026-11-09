@@ -1,0 +1,16 @@
+--- a/src/fit_chrono_shot_data_mesg.hpp
++++ b/src/fit_chrono_shot_data_mesg.hpp
+@@ -45,12 +45,7 @@
+     FIT_BOOL IsTimestampValid() const
+     {
+         const Field* field = GetField(253);
+-        if( FIT_NULL == field )
+-        {
+-            return FIT_FALSE;
+-        }
+-
+-        return field->IsValueValid();
++        return (FIT_NULL == field) ? FIT_FALSE : field->IsValueValid();
+     }
+ 
+     ///////////////////////////////////////////////////////////////////////

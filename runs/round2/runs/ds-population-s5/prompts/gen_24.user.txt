@@ -1,0 +1,50 @@
+File: src/fit_field.cpp
+Function: Field::GetNum (6 lines)
+One full decode of the four files takes about 359.5 ms in the stock build.
+Time of the current version of the whole library relative to stock: 0.878 (below 1.0 is faster). Best measured so far: 0.876.
+
+Your previous attempt failed:
+Stage 'compile' rejected it: /home/z/zhouzia/Workspace/CanMehEvolve/build/work-1096274/tree/src/fit_field.cpp: In member function ‘virtual FIT_UINT8 fit::Field::GetNum() const’:
+/home/z/zhouzia/Workspace/CanMehEvolve/build/work-1096274/tree/src/fit_field.cpp:95:20: error: ‘PROFILE’ in ‘class fit::Profile’ does not name a type
+   95 |     const Profile::PROFILE *p = profile;
+      |                    ^~~~~~~
+/home/z/zhouzia/Workspace/CanMehEvolve/build/work-1096274/tree/src/fit_field.cpp:96:26: error: ‘p’ was not declared in this scope
+   96 |     if (__builtin_expect(p == NULL, 0))
+      |                          ^
+/home/z/zhouzia/Workspace/CanMehEvolve/build/work-1096274/tree/src/fit_field.cpp:99:36: error: ‘p’ was not declared in this scope
+   99 |     const Profile::FIELD *fields = p->fields;
+      |                                    ^
+
+The rejected replacement was:
+```cpp
+FIT_UINT8 Field::GetNum(void) const
+{
+    const Profile::PROFILE *p = profile;
+    if (__builtin_expect(p == NULL, 0))
+        return FIT_FIELD_NUM_INVALID;
+
+    const Profile::FIELD *fields = p->fields;
+    if (__builtin_expect((fields == NULL) | (profileIndex >= p->numFields), 0))
+        return FIT_FIELD_NUM_INVALID;
+
+    return fields[profileIndex].num;
+}
+
+```
+
+Current text of the function:
+```cpp
+FIT_UINT8 Field::GetNum(void) const
+{
+    if (__builtin_expect(profile == NULL, 0))
+        return FIT_FIELD_NUM_INVALID;
+
+    const Profile::FIELD *fields = profile->fields;
+    if (__builtin_expect((profileIndex >= profile->numFields) | (fields == NULL), 0))
+        return FIT_FIELD_NUM_INVALID;
+
+    return fields[profileIndex].num;
+}
+
+```
+Return the faster replacement now.

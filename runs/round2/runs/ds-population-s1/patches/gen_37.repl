@@ -1,0 +1,9 @@
+I replaced the short-circuit `&&` with a branchless bitwise `&` on the two null checks, eliminating the conditional branch (and its potential misprediction) while loading both pointers unconditionally; the truth value is identical for all inputs.
+
+```cpp
+FIT_BOOL DeveloperFieldDefinition::IsDefined() const
+{
+    return static_cast<FIT_BOOL>(
+        (nullptr != mesg) & (nullptr != developer));
+}
+```

@@ -1,0 +1,12 @@
+job=1096302
+host=xcnc25
+start=2026-11-08T17:23:11+08:00
+chain=D idx=4 attempt=0
+run=qwen-bestofn-s5 model=qwen3-coder-next expect=qwen3-coder-next mode=bestofn-confirmed seed=5 class=xcnc|xcnd
+git_commit=4f44902a739db51d97b83168db080cd9d9360dea
+git_dirty_tracked=0
+search_cpp_sha256=9431cd448765e5f2697ddd9b181b455b95ad945fc8a5089a7c0c2d2c759d07f6
+binary_sha256=84a432f57b4aa164dc70328f711c2315a6cf61807eb6b0af0071739c36f16076
+cxx=c++ (Ubuntu 13.3.0-6ubuntu2~24.04.1) 13.3.0
+cpu=Intel(R) Xeon(R) CPU E5-2620 v3 @ 2.40GHz
+search_exit=0 end=2026-11-08T18:14:35+08:00

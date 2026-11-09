@@ -1,0 +1,24 @@
+
+FIT_FLOAT64 FieldBase::GetFLOAT64Value(const FIT_UINT8 fieldArrayIndex, const FIT_UINT16 subFieldIndex) const
+{
+    if (!IsValid())
+        return FIT_FLOAT64_INVALID;
+
+    switch (GetType()) {
+        case FIT_BASE_TYPE_FLOAT64: {
+            FIT_FLOAT64 value;
+            std::memcpy(&value, data_ + fieldArrayIndex * sizeof(FIT_FLOAT64), sizeof(FIT_FLOAT64));
+            if (std::memcmp(&value, baseTypeInvalids[FIT_BASE_TYPE_FLOAT64 & FIT_BASE_TYPE_NUM_MASK], sizeof(FIT_FLOAT64)) == 0)
+                return value;
+            return value / GetScale(subFieldIndex) - GetOffset(subFieldIndex);
+        }
+        case FIT_BASE_TYPE_FLOAT32: {
+            FIT_FLOAT32 val = GetFLOAT32Value(fieldArrayIndex, subFieldIndex);
+            if (val == FIT_FLOAT32_INVALID)
+                return FIT_FLOAT64_INVALID;
+            return static_cast<FIT_FLOAT64>(val);
+        }
+        default:
+            return ConvertBaseType<FIT_FLOAT64>(fieldArrayIndex, GetType());
+    }
+}

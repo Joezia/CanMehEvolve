@@ -1,0 +1,9 @@
+The destructor can rely on `delete nullptr` being a no-op, so the null checks and member resets are unnecessary; removing them eliminates branches and stores. This is faster because destruction is the only remaining work.
+
+```cpp
+DeveloperFieldDefinition::~DeveloperFieldDefinition()
+{
+    delete mesg;
+    delete developer;
+}
+```

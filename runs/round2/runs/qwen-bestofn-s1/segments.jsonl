@@ -1,0 +1,2 @@
+{"calls_at_start":0,"event":"start","host":"xcnc43","label":"job1095838","previous_host":"","resumed":false,"segment":1,"slurm_job_id":"1095838","time":"2026-11-08T15:49:18+0800"}
+{"calls_at_end":40,"complete":true,"ended_because":"request budget reached","event":"end","segment":1,"time":"2026-11-08T16:30:54+0800"}

@@ -1,0 +1,16 @@
+/home/z/zhouzia/.sanitize-scratch/var-asan-stack-s1-K2-fixed/src/fit_field_base.cpp:1143:68: runtime error: left shift of negative value -115
+    #0 0x60237c66f1e2 in signed char fit::FieldBase::GetValue<signed char>(unsigned char) const /home/z/zhouzia/.sanitize-scratch/var-asan-stack-s1-K2-fixed/src/fit_field_base.cpp:1143
+    #1 0x60237c6570bc in double fit::FieldBase::ConvertBaseType<double, signed char>(unsigned char, unsigned char) const /home/z/zhouzia/.sanitize-scratch/var-asan-stack-s1-K2-fixed/src/fit_field_base.cpp:1154
+    #2 0x60237c6570bc in fit::FieldBase::GetFLOAT64Value(unsigned char, unsigned short) const /home/z/zhouzia/.sanitize-scratch/var-asan-stack-s1-K2-fixed/src/fit_field_base.cpp:369
+    #3 0x60237c5635ab in fold /home/z/zhouzia/Workspace/CanMehEvolve/scripts/followup/driver.cpp:54
+    #4 0x60237c5641e6 in OnMesg /home/z/zhouzia/Workspace/CanMehEvolve/scripts/followup/driver.cpp:37
+    #5 0x60237c605339 in fit::Decode::Resume() /home/z/zhouzia/.sanitize-scratch/stock/src/fit_decode.cpp:300
+    #6 0x60237c606daf in fit::Decode::Read(std::istream*) /home/z/zhouzia/.sanitize-scratch/stock/src/fit_decode.cpp:191
+    #7 0x60237c606f75 in fit::Decode::Read(std::istream*, fit::MesgListener*, fit::MesgDefinitionListener*, fit::DeveloperFieldDescriptionListener*) /home/z/zhouzia/.sanitize-scratch/stock/src/fit_decode.cpp:209
+    #8 0x60237c60705d in fit::Decode::Read(std::istream&, fit::MesgListener&) /home/z/zhouzia/.sanitize-scratch/stock/src/fit_decode.cpp:214
+    #9 0x60237c56bec2 in decodeOne /home/z/zhouzia/Workspace/CanMehEvolve/scripts/followup/driver.cpp:68
+    #10 0x60237c56fef1 in main /home/z/zhouzia/Workspace/CanMehEvolve/scripts/followup/driver.cpp:101
+    #11 0x7ba9d302a1c9 in __libc_start_call_main ../sysdeps/nptl/libc_start_call_main.h:58
+    #12 0x7ba9d302a28a in __libc_start_main_impl ../csu/libc-start.c:360
+    #13 0x60237c560444 in _start (/home/z/zhouzia/.sanitize-scratch/drv-asan-stack-s1-K2-fixed+0x857444) (BuildId: aa38aaa0e14189b345211385b8ba2552997aeffa)
+

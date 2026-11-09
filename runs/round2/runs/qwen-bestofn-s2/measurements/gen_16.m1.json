@@ -1,0 +1,6 @@
+{
+ "error": "In file included from /home/z/zhouzia/Workspace/CanMehEvolve/build/work-1096380/tree/src/fit_capabilities_mesg_listener.hpp:16,\n                 from /home/z/zhouzia/Workspace/CanMehEvolve/build/work-1096380/tree/src/fit_mesg_broadcaster.hpp:30,\n                 from /home/z/zhouzia/Workspace/CanMehEvolve/build/work-1096380/tree/src/fit_buffered_mesg_broadcaster.hpp:17,\n                 from /home/z/zhouzia/Workspace/CanMehEvolve/build/work-1096380/tree/src/fit_buffered_mesg_broadcaster.cpp:14:\n/home/z/zhouzia/Workspace/CanMehEvolve/build/work-1096380/tree/src/fit_capabilities_mesg.hpp:175:1: error: stray ‘`’ in program\n  175 | ```cpp\n      | ^\n/home/z/zhouzia/Workspace/CanMehEvolve/build/work-1096380/tree/src/fit_capabilities_mesg.hpp:175:2: error: stray ‘`’ in program\n  175 | ```cpp\n      |  ^\n/home/z/zhouzia/Workspace/CanMehEvolve/build/work-1096380/tree/src/fit_capabilities_mesg.hpp:175:3: error: stray ‘`’ in program\n  175 | ```cpp\n      |   ^\n/home/z/zhouzia/Workspace/CanMehEvolve/build/work-1096380/tree/src/fit_capabilities_mesg.hpp:175:4: error: ‘cpp’ does not name a type\n  175 | ```cpp\n      |    ^~~\n",
+ "ok": false,
+ "rebuilt": 4,
+ "stage": "compile"
+}

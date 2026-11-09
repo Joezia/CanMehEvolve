@@ -1,0 +1,14 @@
+--- a/src/fit_field_base.cpp
++++ b/src/fit_field_base.cpp
+@@ -1123,9 +1123,10 @@
+     return isValid;
+ }
+ 
++
+ FIT_FLOAT64 FieldBase::Round(FIT_FLOAT64 value)
+ {
+-    return (value > 0.0) ? floor(value + 0.5) : ceil(value - 0.5);
++    return std::floor(value + 0.5);
+ }
+ 
+ template <typename T>

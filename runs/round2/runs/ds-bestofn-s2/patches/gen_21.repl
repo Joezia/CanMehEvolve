@@ -1,0 +1,12 @@
+Split the combined null/bounds test into two likely-not-taken checks so the common valid path stays straight-line and the invalid returns are placed on cold paths.
+
+```cpp
+FIT_UINT8 Field::GetNum(void) const
+{
+    if (__builtin_expect(profile == NULL, 0))
+        return FIT_FIELD_NUM_INVALID;
+    if (__builtin_expect(profileIndex >= profile->numFields, 0))
+        return FIT_FIELD_NUM_INVALID;
+    return profile->fields[profileIndex].num;
+}
+```

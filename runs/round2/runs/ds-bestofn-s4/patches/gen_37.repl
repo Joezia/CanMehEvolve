@@ -1,0 +1,9 @@
+I collapsed the null check and validity call into a single conditional expression, which lets the compiler emit a branchless conditional move and a direct tail call while preserving the exact returned value.
+
+```cpp
+    FIT_BOOL IsTimestampValid() const
+    {
+        const Field* field = GetField(253);
+        return (FIT_NULL == field) ? FIT_FALSE : field->IsValueValid();
+    }
+```

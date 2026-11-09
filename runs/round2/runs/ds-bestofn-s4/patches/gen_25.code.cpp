@@ -1,0 +1,102 @@
+template <typename T>
+T FieldBase::GetBitsValueT(const FIT_UINT16 offset, const FIT_UINT8 bits) const
+{
+    if (values.size() == 0)
+        return FitInvalid<T>::value;
+
+    const FIT_UINT16 size = GetSize();
+    if (size <= 255 && bits <= sizeof(T) * 8)
+    {
+        if (bits == 0)
+            return 0;
+
+        const FIT_UINT32 bitOffset = offset;
+        const FIT_UINT32 byteIndex = bitOffset >> 3;
+        const FIT_UINT8 bitIndex = (FIT_UINT8)(bitOffset & 7);
+        const FIT_UINT32 totalBits = (FIT_UINT32)bitIndex + bits;
+        const FIT_UINT32 bytesNeeded = (totalBits + 7) >> 3;
+
+        if (byteIndex + bytesNeeded > size)
+            return FitInvalid<T>::value;
+
+        const FIT_UINT8* p = values.data() + byteIndex;
+        FIT_UINT64 raw = 0;
+
+        switch (bytesNeeded)
+        {
+        case 9:
+        case 8:
+            raw |= (FIT_UINT64)p[7] << 56;
+            [[fallthrough]];
+        case 7:
+            raw |= (FIT_UINT64)p[6] << 48;
+            [[fallthrough]];
+        case 6:
+            raw |= (FIT_UINT64)p[5] << 40;
+            [[fallthrough]];
+        case 5:
+            raw |= (FIT_UINT64)p[4] << 32;
+            [[fallthrough]];
+        case 4:
+            raw |= (FIT_UINT64)p[3] << 24;
+            [[fallthrough]];
+        case 3:
+            raw |= (FIT_UINT64)p[2] << 16;
+            [[fallthrough]];
+        case 2:
+            raw |= (FIT_UINT64)p[1] << 8;
+            [[fallthrough]];
+        case 1:
+            raw |= (FIT_UINT64)p[0];
+            break;
+        default:
+            break;
+        }
+
+        if (bytesNeeded == 9)
+            raw = (raw >> bitIndex) | ((FIT_UINT64)p[8] << (64 - bitIndex));
+        else
+            raw >>= bitIndex;
+
+        if (bits < 64)
+            raw &= (((FIT_UINT64)1 << bits) - 1);
+
+        return (T)raw;
+    }
+
+    T value = 0;
+    FIT_UINT8 numValueBits = 0;
+    FIT_UINT8 numDataBitsUsed;
+    FIT_UINT8 index = 0;
+    FIT_UINT8 data;
+    FIT_UINT8 mask;
+    FIT_UINT16 newOffset = offset;
+
+    while (numValueBits < bits)
+    {
+        if (index >= GetSize())
+            return FitInvalid<T>::value;
+
+        if (newOffset >= 8)
+        {
+            newOffset -= 8;
+        }
+        else
+        {
+            data = GetValuesUINT8(index);
+            data >>= newOffset;
+            numDataBitsUsed = 8 - (FIT_UINT8)newOffset;
+            newOffset = 0;
+
+            if (numDataBitsUsed > (bits - numValueBits))
+                numDataBitsUsed = bits - numValueBits;
+
+            mask = (1 << numDataBitsUsed) - 1;
+            value |= (T)(data & mask) << numValueBits;
+            numValueBits += numDataBitsUsed;
+        }
+        index++;
+    }
+
+    return value;
+}

@@ -1,0 +1,12 @@
+The copy constructor was already a minimal member-init list (base copy plus five scalar copies), so there is nothing to remove; I kept it identical, letting GCC emit the base's vector copy followed by a single packed store for the scalar tail, avoiding any extra work or temporaries.
+
+```cpp
+Field::Field(const Field &field)
+    : FieldBase(field)
+    , profile(field.profile)
+    , profileIndex(field.profileIndex)
+    , type(field.type)
+    , isFieldExpanded(field.isFieldExpanded)
+{
+}
+```

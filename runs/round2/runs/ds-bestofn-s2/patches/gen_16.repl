@@ -1,0 +1,8 @@
+The function is already a single generic accessor call and is not exercised by the decode benchmark, so no faster drop-in exists without risking behavioral changes. Keeping it identical preserves the checksum and avoids any regression.
+
+```cpp
+    FIT_CONNECTIVITY_CAPABILITIES GetConnectivitySupported(void) const
+    {
+        return GetFieldUINT32ZValue(23, 0, FIT_SUBFIELD_INDEX_MAIN_FIELD);
+    }
+```

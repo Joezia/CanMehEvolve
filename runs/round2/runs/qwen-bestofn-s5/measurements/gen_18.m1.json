@@ -1,0 +1,6 @@
+{
+ "error": "checksum 6925f8296cd22eb4 does not match the reference 92bebfd7f8978fc8; the decoder produced different values",
+ "ok": false,
+ "rebuilt": 1,
+ "stage": "correctness"
+}

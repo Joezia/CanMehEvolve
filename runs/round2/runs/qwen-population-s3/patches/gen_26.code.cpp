@@ -1,0 +1,7 @@
+
+FIT_BOOL FieldBase::IsSignedInteger(const FIT_UINT16 subFieldIndex) const
+{
+    const FIT_UINT8 type = static_cast<FIT_UINT8>(GetType(subFieldIndex));
+    // Signed integers: SINT8=2, SINT16=3, SINT32=4 → check range [2,4]
+    return (type >= 2 && type <= 4) ? FIT_TRUE : FIT_FALSE;
+}

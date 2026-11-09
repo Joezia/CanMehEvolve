@@ -1,0 +1,33 @@
+```cpp
+#include <algorithm>
+#include <vector>
+
+const Profile::MESG* Profile::GetMesg(const FIT_UINT16 num)
+{
+    static std::vector<const Profile::MESG*> sorted_cache;
+    static bool initialized = false;
+    
+    if (!initialized) {
+        sorted_cache.reserve(MESGS);
+        for (int i = 0; i < MESGS; i++) {
+            sorted_cache.push_back(&mesgs[i]);
+        }
+        std::sort(sorted_cache.begin(), sorted_cache.end(),
+            [](const Profile::MESG* a, const Profile::MESG* b) {
+                return a->num < b->num;
+            });
+        initialized = true;
+    }
+    
+    const auto it = std::lower_bound(sorted_cache.begin(), sorted_cache.end(), num,
+        [](const Profile::MESG* a, FIT_UINT16 val) {
+            return a->num < val;
+        });
+    
+    if (it != sorted_cache.end() && (*it)->num == num) {
+        return *it;
+    }
+    
+    return NULL;
+}
+```

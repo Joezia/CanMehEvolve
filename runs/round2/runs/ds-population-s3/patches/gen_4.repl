@@ -1,0 +1,9 @@
+The function's work is dominated by the `GetField(18)` scan and the validity check, so I only collapsed the null-check into a single short-circuit expression, letting the compiler keep the fast path branchless and avoiding the extra early-return block; behavior is identical.
+```cpp
+    FIT_BOOL IsMaxCadenceValid() const
+    {
+        const Field* field = GetField(18);
+        return (FIT_NULL != field) && field->IsValueValid();
+    }
+
+```

@@ -1,0 +1,16 @@
+File: src/fit_field.cpp
+Function: Field::GetNumSubFields (6 lines)
+One full decode of the four files takes about 358.3 ms in the stock build.
+Time of the current version of the whole library relative to stock: 0.896 (below 1.0 is faster). Best measured so far: 0.893.
+
+Current text of the function:
+```cpp
+FIT_UINT16 Field::GetNumSubFields(void) const
+{
+    if ((profile == NULL) || (profileIndex >= profile->numFields))
+        return 0;
+    return profile->fields[profileIndex].numSubFields;
+}
+
+```
+Return the faster replacement now.

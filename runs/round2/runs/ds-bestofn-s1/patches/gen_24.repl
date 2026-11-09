@@ -1,0 +1,9 @@
+The lookup is already a single indexed load; the only tweak is to bind the profile pointer once and return the field directly, avoiding any redundant member re-reads in the expression.
+
+```cpp
+FIT_BOOL Field::GetIsAccumulated() const
+{
+    const Profile* const p = profile;
+    return p->fields[profileIndex].isAccumulated;
+}
+```

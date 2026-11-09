@@ -1,0 +1,35 @@
+Looking at this function, it's a linear search through a vector of fields to find one by number. Since fields are likely stored in a consistent order and the same fields are accessed repeatedly during decoding, we can optimize this by caching the last successful lookup position (locality of reference). However, given the constraint that we can only change this function and must maintain exact behavior, and that the benchmark shows no improvement yet, the best optimization is to use a more efficient search strategy.
+
+Since the fields are typically stored in ascending order by field number (as per FIT protocol), we can use binary search if the vector is sorted, or at minimum optimize the linear search with early termination and better branch prediction. But given the code shows no indication of being sorted, and we need guaranteed identical behavior, the most effective optimization is to unroll the loop slightly and use pointer arithmetic instead of index-based access, which can be faster on modern CPUs.
+
+However, the most impactful and safe optimization is to use `std::find_if` with a lambda, which allows the compiler to optimize better, or simply keep the linear search but make it more cache-friendly by using a reference to avoid repeated vector size checks.
+
+Actually, the biggest win here is likely to use a hash map for field lookup, but that would require changing the class structure. Since we can only change this function and it must remain identical in behavior, we need to keep the same algorithm but make it faster.
+
+The fastest drop-in replacement is to optimize the loop: use a reference to the vector to avoid repeated bounds checks, use pointer iteration which compilers optimize better, and unroll slightly.
+
+```cpp
+Field* Mesg::GetField(const FIT_UINT8 fieldNum)
+{
+    const std::size_t size = fields.size();
+    for (std::size_t i = 0; i < size; ++i) {
+        if (fields[i].GetNum() == fieldNum) {
+            return &fields[i];
+        }
+    }
+    return FIT_NULL;
+}
+```
+
+```cpp
+Field* Mesg::GetField(const FIT_UINT8 fieldNum)
+{
+    const std::size_t size = fields.size();
+    for (std::size_t i = 0; i < size; ++i) {
+        if (fields[i].GetNum() == fieldNum) {
+            return &fields[i];
+        }
+    }
+    return FIT_NULL;
+}
+```

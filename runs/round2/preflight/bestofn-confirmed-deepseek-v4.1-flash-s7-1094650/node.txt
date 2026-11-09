@@ -1,0 +1,8 @@
+host=xcnc1
+job=1094650
+start=2026-11-08T09:18:11+08:00
+mode=bestofn-confirmed model=deepseek-v4.1-flash budget=6 deadline_segment1=500
+binary_sha256=84a432f57b4aa164dc70328f711c2315a6cf61807eb6b0af0071739c36f16076
+seg1_exit=75
+seg2_exit=0
+end=2026-11-08T09:43:59+08:00

@@ -1,0 +1,10 @@
+submitted: 2026-11-08T10:08:42+08:00
+code commit: 527c5d06ade69334dd1e87fe07114c8098aa21aa
+binary_sha256: 84a432f57b4aa164dc70328f711c2315a6cf61807eb6b0af0071739c36f16076
+Search.cpp sha256: 9431cd448765e5f2697ddd9b181b455b95ad945fc8a5089a7c0c2d2c759d07f6
+chain A first segment job 1094747
+chain B first segment job 1094748
+chain C first segment job 1094749
+chain D first segment job 1094750
+watcher job 1094751
+watcher (with health check) 1094796

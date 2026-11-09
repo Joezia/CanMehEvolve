@@ -1,0 +1,12 @@
+```cpp
+Field::Field(const Field &field)
+    : FieldBase(field)
+    , profile(field.profile)
+    , profileIndex(field.profileIndex)
+    , type(field.type)
+    , isFieldExpanded(field.isFieldExpanded)
+{
+}
+```
+
+The function is already optimal—it performs trivial member-wise initialization with no unnecessary operations. Since it's a copy constructor for a small POD-heavy class, the current implementation is as fast as possible; no changes can improve performance without violating the constraints.

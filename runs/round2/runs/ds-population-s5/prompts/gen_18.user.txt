@@ -1,0 +1,48 @@
+File: src/fit_field_base.cpp
+Function: FieldBase::GetScale (8 lines)
+One full decode of the four files takes about 359.5 ms in the stock build.
+Time of the current version of the whole library relative to stock: 0.886 (below 1.0 is faster). Best measured so far: 0.878.
+
+Your previous attempt failed:
+Stage 'compile' rejected it: /home/z/zhouzia/Workspace/CanMehEvolve/build/work-1096274/tree/src/fit_field_base.cpp: In member function ‘FIT_FLOAT64 fit::FieldBase::GetScale(FIT_UINT16) const’:
+/home/z/zhouzia/Workspace/CanMehEvolve/build/work-1096274/tree/src/fit_field_base.cpp:67:26: error: ‘num_subfields_’ was not declared in this scope
+   67 |     if (subFieldIndex >= num_subfields_)
+      |                          ^~~~~~~~~~~~~~
+/home/z/zhouzia/Workspace/CanMehEvolve/build/work-1096274/tree/src/fit_field_base.cpp:68:16: error: ‘scale_’ was not declared in this scope; did you mean ‘scalbn’?
+   68 |         return scale_;
+      |                ^~~~~~
+      |                scalbn
+/home/z/zhouzia/Workspace/CanMehEvolve/build/work-1096274/tree/src/fit_field_base.cpp:70:11: error: ‘SubFieldBase’ does not name a type; did you mean ‘FieldBase’?
+   70 |     const SubFieldBase* subfield = subfields_ + subFieldIndex;
+      |           ^~~~~~~~~~~~
+      |           FieldBase
+/home/z/zhouzia/Workspace/CanMehEvolve/build/work-1096274/tree/src/fit_field_base.cpp:71:20: error: ‘subfield’ was not declared in this scope
+   71 |     return NULL != subfield ? subfield->scale : 1.0;
+      |                    ^~~~~~~~
+
+The rejected replacement was:
+```cpp
+FIT_FLOAT64 FieldBase::GetScale(const FIT_UINT16 subFieldIndex) const
+{
+    if (subFieldIndex >= num_subfields_)
+        return scale_;
+
+    const SubFieldBase* subfield = subfields_ + subFieldIndex;
+    return NULL != subfield ? subfield->scale : 1.0;
+}
+
+```
+
+Current text of the function:
+```cpp
+FIT_FLOAT64 FieldBase::GetScale(const FIT_UINT16 subFieldIndex) const
+{
+    if (subFieldIndex >= GetNumSubFields())
+        return GetScale();
+
+    auto subfield = GetSubField(subFieldIndex);
+    return NULL != subfield ? subfield->scale : 1.0;
+}
+
+```
+Return the faster replacement now.

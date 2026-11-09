@@ -1,0 +1,6 @@
+
+FieldBase::~FieldBase()
+{
+    m_values.clear();
+    m_values.shrink_to_fit();
+}

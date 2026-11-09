@@ -1,0 +1,59 @@
+File: src/fit_field.cpp
+Function: Field::Field (8 lines)
+One full decode of the four files takes about 358.3 ms in the stock build.
+Time of the current version of the whole library relative to stock: 0.854 (below 1.0 is faster). Best measured so far: 0.855.
+
+Your previous attempt failed:
+Stage 'compile' rejected it: /home/z/zhouzia/Workspace/CanMehEvolve/build/work-1096274/tree/src/fit_field.cpp: In copy constructor ‘fit::Field::Field(const fit::Field&)’:
+/home/z/zhouzia/Workspace/CanMehEvolve/build/work-1096274/tree/src/fit_field.cpp:38:5: error: ‘num’ was not declared in this scope; did you mean ‘enum’?
+   38 |     num = field.num;
+      |     ^~~
+      |     enum
+/home/z/zhouzia/Workspace/CanMehEvolve/build/work-1096274/tree/src/fit_field.cpp:38:17: error: ‘const class fit::Field’ has no member named ‘num’
+   38 |     num = field.num;
+      |                 ^~~
+/home/z/zhouzia/Workspace/CanMehEvolve/build/work-1096274/tree/src/fit_field.cpp:39:5: error: ‘size’ was not declared in this scope; did you mean ‘std::size’?
+   39 |     size = field.size;
+      |     ^~~~
+      |     std::size
+In file included from /usr/include/c++/13/string:53,
+                 from /usr/include/c++/13/bits/locale_classes.h:40,
+                 from /usr/include/c++/13/bits/ios_base.h:41,
+                 from /usr/include/c++/13/ios:44,
+                 from /usr/include/c++/13/istream:40,
+                 from /usr/include/c++/13/sstream:40,
+                 from /home/z/zhouzia/Workspace/CanMehEvolve/build/work-1096274/tree/src/fit_field.cpp:14:
+/usr/include/c++/13/bits/range_access.h:274:5: note: ‘std::size’ declared here
+  274 |     size(const _Tp (&)[_Nm]) noexcept
+      |     ^~~~
+/home/z/zhouzia/Workspace/CanMehEvolve/build/work-1096274/tree/src/fit_field.cpp:39:18: e
+... [truncated]
+The rejected replacement was:
+```cpp
+Field::Field(const Field &field)
+    : FieldBase()
+    , profile(field.profile)
+    , profileIndex(field.profileIndex)
+    , type(field.type)
+    , isFieldExpanded(field.isFieldExpanded)
+{
+    num = field.num;
+    size = field.size;
+    std::memcpy(value, field.value, size);
+}
+
+```
+
+Current text of the function:
+```cpp
+Field::Field(const Field &field)
+    : FieldBase(field)
+    , profile(field.profile)
+    , profileIndex(field.profileIndex)
+    , type(field.type)
+    , isFieldExpanded(field.isFieldExpanded)
+{
+}
+
+```
+Return the faster replacement now.

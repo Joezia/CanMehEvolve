@@ -1,0 +1,72 @@
+--- a/src/fit_dive_apnea_alarm_mesg.hpp
++++ b/src/fit_dive_apnea_alarm_mesg.hpp
+@@ -14,6 +14,7 @@
+ #define FIT_DIVE_APNEA_ALARM_MESG_HPP
+ 
+ #include "fit_mesg.hpp"
++#include <cstdint>
+ 
+ namespace fit
+ {
+@@ -245,9 +246,10 @@
+     // Set sound field
+     // Comment: Tone and Vibe setting for the alarm.
+     ///////////////////////////////////////////////////////////////////////
++
+     void SetSound(FIT_TONE sound)
+     {
+-        SetFieldENUMValue(4, sound, 0, FIT_SUBFIELD_INDEX_MAIN_FIELD);
++        SetFieldENUMValue(4, static_cast<uint8_t>(sound), 0, FIT_SUBFIELD_INDEX_MAIN_FIELD);
+     }
+ 
+     ///////////////////////////////////////////////////////////////////////
+--- a/src/fit_field.cpp
++++ b/src/fit_field.cpp
+@@ -15,6 +15,7 @@
+ #include "fit_field.hpp"
+ #include "fit_mesg.hpp"
+ #include "fit_unicode.hpp"
++#include <cstddef>
+ 
+ namespace fit
+ {
+@@ -90,11 +91,12 @@
+     return profile->fields[profileIndex].name;
+ }
+ 
++
+ FIT_UINT8 Field::GetNum(void) const
+ {
+-    if ((profile == NULL) || (profileIndex >= profile->numFields))
+-        return FIT_FIELD_NUM_INVALID;
+-    return profile->fields[profileIndex].num;
++    return (profile && profileIndex < profile->numFields)
++        ? profile->fields[profileIndex].num
++        : FIT_FIELD_NUM_INVALID;
+ }
+ 
+ FIT_UINT8 Field::GetType() const
+--- a/src/fit_field_base.cpp
++++ b/src/fit_field_base.cpp
+@@ -16,6 +16,7 @@
+ #include "fit_field_base.hpp"
+ #include "fit_mesg.hpp"
+ #include "fit_unicode.hpp"
++#include <utility>
+ 
+ namespace fit
+ {
+@@ -24,10 +25,11 @@
+ {
+ }
+ 
++
+ FieldBase::FieldBase(const FieldBase &field)
+ {
+-    values = field.values;
+-    stringIndexes = field.stringIndexes;
++    values = std::move(field.values);
++    stringIndexes = std::move(field.stringIndexes);
+ }
+ 
+ FieldBase::~FieldBase()

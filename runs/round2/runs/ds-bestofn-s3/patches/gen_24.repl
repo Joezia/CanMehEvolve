@@ -1,0 +1,8 @@
+The getter is already a single delegating call with no redundant work, so the only safe drop-in is the identical body; any manual field access would require internals not visible here and risks behavioural divergence.
+
+```cpp
+    FIT_UINT16 GetProcessingInterval(void) const
+    {
+        return GetFieldUINT16Value(0, 0, FIT_SUBFIELD_INDEX_MAIN_FIELD);
+    }
+```

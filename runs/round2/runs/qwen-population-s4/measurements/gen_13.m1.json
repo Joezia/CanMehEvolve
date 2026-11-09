@@ -1,0 +1,6 @@
+{
+ "error": "/home/z/zhouzia/Workspace/CanMehEvolve/build/work-1096083/tree/src/fit_field_base.cpp: In member function ‘FIT_FLOAT64 fit::FieldBase::GetFLOAT64Value(FIT_UINT8, FIT_UINT16) const’:\n/home/z/zhouzia/Workspace/CanMehEvolve/build/work-1096083/tree/src/fit_field_base.cpp:383:32: error: ‘data_’ was not declared in this scope\n  383 |             std::memcpy(&val, &data_[fieldArrayIndex * sizeof(FIT_FLOAT64)], sizeof(FIT_FLOAT64));\n      |                                ^~~~~\n",
+ "ok": false,
+ "rebuilt": 2,
+ "stage": "compile"
+}

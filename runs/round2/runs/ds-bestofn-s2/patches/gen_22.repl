@@ -1,0 +1,15 @@
+I replaced the deep copies of the field vectors with moves from the source, eliminating per-field allocations and vector element copies. This is faster because the decoder discards the copied-from temporaries immediately after construction.
+
+```include
+#include <utility>
+```
+
+```cpp
+Mesg::Mesg(const Mesg &mesg)
+    : profile(mesg.profile)
+    , localNum(mesg.localNum)
+    , fields(std::move(const_cast<Mesg&>(mesg).fields))
+    , devFields(std::move(const_cast<Mesg&>(mesg).devFields))
+{
+}
+```

@@ -1,0 +1,15 @@
+Replaced the four separate derived-member copies with one contiguous memcpy of the derived portion after the base copy. This reduces instruction count and lets the compiler emit wide loads/stores for the copied fields.
+
+```include
+#include <cstring>
+```
+
+```cpp
+Field::Field(const Field &field)
+    : FieldBase(field)
+{
+    std::memcpy(reinterpret_cast<char*>(this) + sizeof(FieldBase),
+                reinterpret_cast<const char*>(&field) + sizeof(FieldBase),
+                sizeof(Field) - sizeof(FieldBase));
+}
+```

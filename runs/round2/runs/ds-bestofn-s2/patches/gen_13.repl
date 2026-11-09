@@ -1,0 +1,5 @@
+The copy constructor is already minimal; using a defaulted copy constructor lets the compiler generate the most efficient member-wise copy sequence without any manual initializer-list overhead.
+
+```cpp
+Field::Field(const Field &field) = default;
+```

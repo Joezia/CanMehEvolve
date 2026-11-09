@@ -1,0 +1,25 @@
+template <typename TTo, typename TFrom>
+TTo FieldBase::ConvertBaseType(const FIT_UINT8 fieldArrayIndex, const FIT_UINT8 toBaseType) const
+{
+    const FIT_UINT8 type = GetType() & FIT_BASE_TYPE_NUM_MASK;
+    const void* const invalid = baseTypeInvalids[type];
+    const TFrom value = GetValue<TFrom>(fieldArrayIndex);
+
+    bool isInvalid;
+    if constexpr (std::is_integral<TFrom>::value) {
+        isInvalid = value == *reinterpret_cast<const TFrom*>(invalid);
+    } else if constexpr (sizeof(TFrom) <= 8) {
+        std::uint64_t valueBits = 0;
+        std::uint64_t invalidBits = 0;
+        std::memcpy(&valueBits, &value, sizeof(TFrom));
+        std::memcpy(&invalidBits, invalid, sizeof(TFrom));
+        isInvalid = valueBits == invalidBits;
+    } else {
+        isInvalid = std::memcmp(&value, invalid, sizeof(TFrom)) == 0;
+    }
+
+    if (__builtin_expect(isInvalid, 0))
+        return *reinterpret_cast<const TTo*>(baseTypeInvalids[toBaseType & FIT_BASE_TYPE_NUM_MASK]);
+
+    return static_cast<TTo>(value);
+}

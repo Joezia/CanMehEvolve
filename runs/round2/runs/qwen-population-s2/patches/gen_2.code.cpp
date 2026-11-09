@@ -1,0 +1,5 @@
+
+FIT_BOOL Field::GetIsAccumulated() const
+{
+    return static_cast<FIT_BOOL>(profile->fields[profileIndex].isAccumulated);
+}

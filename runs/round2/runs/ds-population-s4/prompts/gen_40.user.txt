@@ -1,0 +1,43 @@
+File: src/fit_lap_mesg.hpp
+Function: GetRepetitionNum (4 lines)
+One full decode of the four files takes about 358.5 ms in the stock build.
+Time of the current version of the whole library relative to stock: 0.871 (below 1.0 is faster). Best measured so far: 0.860.
+
+Your previous attempt failed:
+Stage 'compile' rejected it: In file included from /home/z/zhouzia/Workspace/CanMehEvolve/build/work-1095753/tree/src/fit_lap_mesg_listener.hpp:16,
+                 from /home/z/zhouzia/Workspace/CanMehEvolve/build/work-1095753/tree/src/fit_mesg_broadcaster.hpp:58,
+                 from /home/z/zhouzia/Workspace/CanMehEvolve/build/work-1095753/tree/src/fit_buffered_mesg_broadcaster.hpp:17,
+                 from /home/z/zhouzia/Workspace/CanMehEvolve/build/work-1095753/tree/src/fit_buffered_mesg_broadcaster.cpp:14:
+/home/z/zhouzia/Workspace/CanMehEvolve/build/work-1095753/tree/src/fit_lap_mesg.hpp: In member function ‘FIT_UINT16 fit::LapMesg::GetRepetitionNum() const’:
+/home/z/zhouzia/Workspace/CanMehEvolve/build/work-1095753/tree/src/fit_lap_mesg.hpp:2241:15: error: ‘FIT_FIELD’ does not name a type; did you mean ‘FIT_FILE’?
+ 2241 |         const FIT_FIELD* field = GetField(61);
+      |               ^~~~~~~~~
+      |               FIT_FILE
+/home/z/zhouzia/Workspace/CanMehEvolve/build/work-1095753/tree/src/fit_lap_mesg.hpp:2242:13: error: ‘field’ was not declared in this scope; did you mean ‘Field’?
+ 2242 |         if (field && (field->GetType() == FIT_BASE_TYPE_UINT16))
+      |             ^~~~~
+      |             Field
+
+The rejected replacement was:
+```cpp
+    FIT_UINT16 GetRepetitionNum(void) const
+    {
+        const FIT_FIELD* field = GetField(61);
+        if (field && (field->GetType() == FIT_BASE_TYPE_UINT16))
+        {
+            return field->GetValueUINT16(0);
+        }
+        return FIT_UINT16_INVALID;
+    }
+
+```
+
+Current text of the function:
+```cpp
+    FIT_UINT16 GetRepetitionNum(void) const
+    {
+        return GetFieldUINT16Value(61, 0, FIT_SUBFIELD_INDEX_MAIN_FIELD);
+    }
+
+```
+Return the faster replacement now.

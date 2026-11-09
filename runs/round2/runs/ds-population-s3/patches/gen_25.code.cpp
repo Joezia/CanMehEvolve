@@ -1,0 +1,50 @@
+const Profile::MESG* Profile::GetMesg(const FIT_UINT16 num)
+{
+    static FIT_UINT16 start[257] = { 0 };
+    static FIT_UINT8 pool_low[MESGS];
+    static FIT_UINT16 pool_idx[MESGS];
+    static bool init = false;
+
+    if (!init)
+    {
+        for (int i = 0; i < MESGS; ++i)
+        {
+            const FIT_UINT16 h = (FIT_UINT16)(mesgs[i].num >> 8);
+            ++start[h + 1];
+        }
+        for (int h = 1; h <= 256; ++h)
+        {
+            start[h] += start[h - 1];
+        }
+        FIT_UINT16 cur[256];
+        for (int h = 0; h < 256; ++h)
+        {
+            cur[h] = start[h];
+        }
+        for (int i = 0; i < MESGS; ++i)
+        {
+            const FIT_UINT16 h = (FIT_UINT16)(mesgs[i].num >> 8);
+            const FIT_UINT16 pos = cur[h]++;
+            pool_low[pos] = (FIT_UINT8)(mesgs[i].num & 0xFF);
+            pool_idx[pos] = (FIT_UINT16)i;
+        }
+        init = true;
+    }
+
+    const FIT_UINT16 h = (FIT_UINT16)(num >> 8);
+    const FIT_UINT8 low = (FIT_UINT8)(num & 0xFF);
+    const FIT_UINT16 begin = start[h];
+    const FIT_UINT16 end = start[h + 1];
+    if (begin == end)
+    {
+        return NULL;
+    }
+    for (FIT_UINT16 pos = begin; pos < end; ++pos)
+    {
+        if (pool_low[pos] == low)
+        {
+            return &mesgs[pool_idx[pos]];
+        }
+    }
+    return NULL;
+}

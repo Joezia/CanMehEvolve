@@ -1,0 +1,11 @@
+The function is already minimal; I hoisted the `profile` pointer into a local and added branch-prediction hints so the valid, in-range path (taken on virtually every decode) is laid out as the fall-through, avoiding a mispredict-prone branch on the hot path.
+
+```cpp
+FIT_UINT8 Field::GetNum(void) const
+{
+    const Profile* const p = profile;
+    if (__builtin_expect((p == NULL) || (profileIndex >= p->numFields), 0))
+        return FIT_FIELD_NUM_INVALID;
+    return p->fields[profileIndex].num;
+}
+```

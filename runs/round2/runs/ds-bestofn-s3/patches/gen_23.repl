@@ -1,0 +1,8 @@
+The copy constructor currently default-constructs both vectors and then copy-assigns them; using the member initializer list constructs them directly, avoiding the default construction and assignment overhead.
+
+```cpp
+FieldBase::FieldBase(const FieldBase &field)
+    : values(field.values), stringIndexes(field.stringIndexes)
+{
+}
+```

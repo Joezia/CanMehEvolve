@@ -1,0 +1,6 @@
+{
+ "error": "/home/z/zhouzia/Workspace/CanMehEvolve/build/work-1094748/tree/src/fit_mesg.cpp: In member function ‘FIT_UINT16 fit::Mesg::GetActiveSubFieldIndex(FIT_UINT8) const’:\n/home/z/zhouzia/Workspace/CanMehEvolve/build/work-1094748/tree/src/fit_mesg.cpp:436:40: error: ‘numFields’ was not declared in this scope; did you mean ‘SetFields’?\n  436 |             for (FIT_UINT16 k = 0; k < numFields; k++)\n      |                                        ^~~~~~~~~\n      |                                        SetFields\n",
+ "ok": false,
+ "rebuilt": 1,
+ "stage": "compile"
+}

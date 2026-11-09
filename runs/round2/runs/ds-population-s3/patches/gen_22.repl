@@ -1,0 +1,57 @@
+Replaced the two profile lookups with a direct-mapped cache of the message pointer plus a per-message/field index cache, so repeated decoded fields avoid repeated profile linear searches. The first lookup for a given message/field still scans the profile, but all subsequent occurrences are O(1).
+
+```cpp
+Field::Field(const FIT_UINT16 mesgNum, const FIT_UINT8 fieldNum)
+    : FieldBase()
+    , profile(nullptr)
+    , profileIndex(FIT_UINT8_INVALID)
+    , type(FIT_UINT8_INVALID)
+    , isFieldExpanded(FIT_FALSE)
+{
+    typedef decltype(Profile::GetMesg(mesgNum)) MesgPtr;
+
+    static MesgPtr cachedProfile[128] = {};
+    static FIT_UINT32 cachedProfileKey[128] = {};
+    static FIT_UINT32 cachedFieldKey[128][256] = {};
+    static FIT_UINT8 cachedFieldIndex[128][256] = {};
+
+    const unsigned slot = static_cast<unsigned>(mesgNum) & 127U;
+    const FIT_UINT32 key = static_cast<FIT_UINT32>(mesgNum) + 1U;
+
+    MesgPtr mesg;
+    if (cachedProfileKey[slot] == key)
+    {
+        mesg = cachedProfile[slot];
+    }
+    else
+    {
+        mesg = Profile::GetMesg(mesgNum);
+        cachedProfileKey[slot] = key;
+        cachedProfile[slot] = mesg;
+    }
+    profile = mesg;
+
+    if (cachedFieldKey[slot][fieldNum] == key)
+    {
+        profileIndex = cachedFieldIndex[slot][fieldNum];
+    }
+    else
+    {
+        FIT_UINT8 index = FIT_UINT8_INVALID;
+        if (mesg)
+        {
+            for (FIT_UINT8 i = 0; i < mesg->numFields; ++i)
+            {
+                if (mesg->fields[i].num == fieldNum)
+                {
+                    index = i;
+                    break;
+                }
+            }
+        }
+        cachedFieldKey[slot][fieldNum] = key;
+        cachedFieldIndex[slot][fieldNum] = index;
+        profileIndex = index;
+    }
+}
+```
