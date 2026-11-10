@@ -1,0 +1,138 @@
+[evaluate gen_1 #1] stage='' ratio=0.431329 p=0.00195312 faster=1
+[evaluate gen_1 #2] stage='' ratio=0.431986 p=0.00195312 faster=1
+[evaluate gen_1 #3] stage='' ratio=0.430901 p=0.00195312 faster=1
+{
+  "all_pass": true,
+  "alpha": 0.01,
+  "best_ratio": 0.4309005536599052,
+  "measurements": [
+    {
+      "analysis": {
+        "autocorr_lag1_max": 0.2218026781173665,
+        "autocorr_lag1_median": -0.021785566793903675,
+        "autocorr_lag1_min": -0.3872748132126843,
+        "candidate_cv": 0.005438765860942923,
+        "candidate_ms": 154.67197824909817,
+        "error": "",
+        "faster": true,
+        "faster_processes": 10,
+        "geomean_ratio": 0.43177931938452646,
+        "p_value": 0.001953125,
+        "process_ratios": [
+          0.43571363645173705,
+          0.4318910856446583,
+          0.43141809514286794,
+          0.4306498648175387,
+          0.4358069166135115,
+          0.428672110889898,
+          0.4322257938822612,
+          0.4298349531605903,
+          0.43124055450423254,
+          0.4303967236622845
+        ],
+        "processes": 10,
+        "ratio": 0.43132932482355024,
+        "ratio_spread": 0.007134805723613524,
+        "reason": "",
+        "reference_ms": 358.81351999705663,
+        "repetitions": 9,
+        "swapped_processes": 5,
+        "unstable": false,
+        "valid": true
+      },
+      "error": "",
+      "harness_ok": true,
+      "index": 1,
+      "seconds": 107.425719887,
+      "stage": ""
+    },
+    {
+      "analysis": {
+        "autocorr_lag1_max": 0.6167195667966294,
+        "autocorr_lag1_median": 0.03521010601943514,
+        "autocorr_lag1_min": -0.36279193202980814,
+        "candidate_cv": 0.031480692228541385,
+        "candidate_ms": 155.1857397498679,
+        "error": "",
+        "faster": true,
+        "faster_processes": 10,
+        "geomean_ratio": 0.4310868470673533,
+        "p_value": 0.001953125,
+        "process_ratios": [
+          0.4319042216982141,
+          0.43206796700695854,
+          0.4318234366580127,
+          0.4244531850378701,
+          0.4274430848383138,
+          0.4332741312622959,
+          0.4329440171485493,
+          0.4351577935503431,
+          0.4292422493600686,
+          0.43266341274733927
+        ],
+        "processes": 10,
+        "ratio": 0.4319860943525863,
+        "ratio_spread": 0.010704608512473013,
+        "reason": "",
+        "reference_ms": 358.99111899198033,
+        "repetitions": 9,
+        "swapped_processes": 5,
+        "unstable": false,
+        "valid": true
+      },
+      "error": "",
+      "harness_ok": true,
+      "index": 2,
+      "seconds": 107.620900344,
+      "stage": ""
+    },
+    {
+      "analysis": {
+        "autocorr_lag1_max": 0.3718941815655528,
+        "autocorr_lag1_median": 0.055681840667044805,
+        "autocorr_lag1_min": -0.5013829346395557,
+        "candidate_cv": 0.018138750566192022,
+        "candidate_ms": 154.58572324860143,
+        "error": "",
+        "faster": true,
+        "faster_processes": 10,
+        "geomean_ratio": 0.4308609839271634,
+        "p_value": 0.001953125,
+        "process_ratios": [
+          0.4294592445722722,
+          0.43083425114948587,
+          0.43125966554040407,
+          0.43082325771412494,
+          0.4353809833750951,
+          0.43202800154037346,
+          0.4287474703998983,
+          0.4315843017263798,
+          0.42757183989923603,
+          0.4309668561703245
+        ],
+        "processes": 10,
+        "ratio": 0.4309005536599052,
+        "ratio_spread": 0.007809143475859093,
+        "reason": "",
+        "reference_ms": 358.7205100047867,
+        "repetitions": 9,
+        "swapped_processes": 5,
+        "unstable": false,
+        "valid": true
+      },
+      "error": "",
+      "harness_ok": true,
+      "index": 3,
+      "seconds": 107.934155476,
+      "stage": ""
+    }
+  ],
+  "measurements_passing_rule": 3,
+  "median_ratio_over_measurements": 0.43132932482355024,
+  "median_speedup": 2.318414126860221,
+  "min_effect": 0.02,
+  "patch": "/home/z/zhouzia/Workspace/CanMehEvolve/runs/maxlines600/run-1107035/search/patches/gen_1.patch",
+  "started_utc": "2026-11-10T16:53:08+0800",
+  "valid_measurements": 3,
+  "worst_ratio": 0.4319860943525863
+}

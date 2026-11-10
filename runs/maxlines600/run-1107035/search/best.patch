@@ -1,0 +1,644 @@
+--- a/src/fit_decode.cpp
++++ b/src/fit_decode.cpp
+@@ -573,19 +573,20 @@
+                     timestampField.SetUINT32Value(timestamp);
+ 
+                     localMesgIndex = (data & FIT_HDR_TIME_TYPE_MASK) >> FIT_HDR_TIME_TYPE_SHIFT;
++                    MesgDefinition& localDef = localMesgDefs[localMesgIndex];
+ 
+-                    if (localMesgDefs[localMesgIndex].GetNum() == FIT_MESG_NUM_INVALID)
++                    if (localDef.GetNum() == FIT_MESG_NUM_INVALID)
+                     {
+                         std::ostringstream message;
+                         message << "FIT decode error: Missing FIT message definition for local message number " << ((int)localMesgIndex) << ". Error at byte: " << currentByteOffset;
+                         throw(RuntimeException(message.str()));
+                     }
+ 
+-                    mesg = Mesg(localMesgDefs[localMesgIndex].GetNum());
++                    mesg = Mesg(localDef.GetNum());
+                     mesg.SetLocalNum(localMesgIndex);
+                     mesg.AddField(timestampField);
+ 
+-                    if (localMesgDefs[localMesgIndex].GetFields().size() == 0)
++                    if (localDef.GetFields().size() == 0)
+                         return RETURN_MESG;
+ 
+                     state = STATE_FIELD_DATA;
+@@ -601,21 +602,22 @@
+                     }
+                     else
+                     {
+-                        if (localMesgDefs[localMesgIndex].GetNum() == FIT_MESG_NUM_INVALID)
++                        MesgDefinition& localDef = localMesgDefs[localMesgIndex];
++                        if (localDef.GetNum() == FIT_MESG_NUM_INVALID)
+                         {
+                             std::ostringstream message;
+                             message << "FIT decode error: Missing FIT message definition for local message number " << ((int)localMesgIndex) << ". Error at byte: " << currentByteOffset;
+                             throw(RuntimeException(message.str()));
+                         }
+ 
+-                        mesg = Mesg(localMesgDefs[localMesgIndex].GetNum());
++                        mesg = Mesg(localDef.GetNum());
+                         mesg.SetLocalNum(localMesgIndex);
+ 
+-                        if (localMesgDefs[localMesgIndex].GetFields().size() != 0)
++                        if (localDef.GetFields().size() != 0)
+                         {
+                             state = STATE_FIELD_DATA;
+                         }
+-                        else if (localMesgDefs[localMesgIndex].GetDeveloperFieldTotalSize() > 0)
++                        else if (localDef.GetDeveloperFieldTotalSize() > 0)
+                         {
+                             state = STATE_DEV_FIELD_DATA;
+                         }
+@@ -784,15 +786,19 @@
+             state = STATE_DEV_FIELD_NUM;
+             break;
+ 
+-        case STATE_FIELD_DATA:
++        case STATE_FIELD_DATA: {
++            MesgDefinition& localDef = localMesgDefs[localMesgIndex];
++            size_t numFieldsInDef = localDef.GetFields().size();
++
+             if (fieldBytesLeft == 0)
+             {
+                 fieldDataIndex = 0;
+-                fieldBytesLeft = localMesgDefs[localMesgIndex].GetFieldByIndex(fieldIndex)->GetSize();
++                FieldDefinition* fld = localDef.GetFieldByIndex(fieldIndex);
++                fieldBytesLeft = fld->GetSize();
+ 
+                 if (fieldBytesLeft == 0)
+                 {
+-                    fieldBytesLeft = localMesgDefs[localMesgIndex].GetFieldByIndex(++fieldIndex)->GetSize();
++                    fieldBytesLeft = localDef.GetFieldByIndex(++fieldIndex)->GetSize();
+                 }
+             }
+ 
+@@ -801,8 +807,7 @@
+ 
+             if (fieldBytesLeft == 0)
+             {
+-                MesgDefinition defn = localMesgDefs[localMesgIndex];
+-                FieldDefinition* fldDefn = defn.GetFieldByIndex(fieldIndex);
++                FieldDefinition* fldDefn = localDef.GetFieldByIndex(fieldIndex);
+                 FIT_UINT8 baseType = fldDefn->GetType() & FIT_BASE_TYPE_NUM_MASK;
+                 FIT_UINT8 typeSize = baseTypeSizes[baseType];
+                 FIT_BOOL read = FIT_TRUE;
+@@ -832,25 +837,30 @@
+ 
+                         if ( read )
+                         {
+-                            field.Read(&fieldData, defn.GetFieldByIndex(fieldIndex)->GetSize());
++                            field.Read(&fieldData, fldDefn->GetSize());
+                         }
+ 
+                         // The special case time record.
+-                        if (defn.GetFieldByIndex(fieldIndex)->GetNum() == FIT_FIELD_NUM_TIMESTAMP)
++                        if (fldDefn->GetNum() == FIT_FIELD_NUM_TIMESTAMP)
+                         {
+                             timestamp = field.GetUINT32Value();
+                             lastTimeOffset = (FIT_UINT8)(timestamp & FIT_HDR_TIME_OFFSET_MASK);
+                         }
+ 
+                         //Allows messages containing the accumulated field to set the accumulated value
++                        FIT_UINT16 numValues = field.GetNumValues();
+                         if ( field.GetIsAccumulated() )
+                         {
++                            FIT_UINT16 fieldNum = field.GetNum();
++                            FIT_FLOAT64 fieldScale = field.GetScale();
++                            FIT_FLOAT64 fieldOffset = field.GetOffset();
++                            FIT_UINT16 numMesgFields = mesg.GetNumFields();
+                             FIT_UINT8 i;
+-                            for (i = 0; i < field.GetNumValues(); i++)
++                            for (i = 0; i < numValues; i++)
+                             {
+                                 FIT_FLOAT64 value = field.GetRawValue(i);
+                                 FIT_UINT16 j;
+-                                for (j = 0; j < mesg.GetNumFields(); j++)
++                                for (j = 0; j < numMesgFields; j++)
+                                 {
+                                     FIT_UINT16 k;
+                                     Field* containingField = mesg.GetFieldByIndex(j);
+@@ -859,17 +869,17 @@
+                                     for (k = 0; k < numComponents; k++)
+                                     {
+                                         const Profile::FIELD_COMPONENT* fc = containingField->GetComponent(k);
+-                                        if ( ( fc->num == field.GetNum() ) && ( fc->accumulate ) )
++                                        if ( ( fc->num == fieldNum ) && ( fc->accumulate ) )
+                                         {
+-                                            value = ((((value / field.GetScale()) - field.GetOffset()) + fc->offset) * fc->scale);
++                                            value = ((((value / fieldScale) - fieldOffset) + fc->offset) * fc->scale);
+                                         }
+                                     }
+                                 }
+-                                accumulator.Set(mesg.GetNum(), field.GetNum(), (FIT_UINT32)value);
++                                accumulator.Set(mesg.GetNum(), fieldNum, (FIT_UINT32)value);
+                             }
+                         }
+ 
+-                        if (field.GetNumValues() > 0)
++                        if (numValues > 0)
+                         {
+                             mesg.AddField(field);
+                         }
+@@ -878,7 +888,7 @@
+                 fieldIndex++;
+             }
+ 
+-            if (fieldIndex >= localMesgDefs[localMesgIndex].GetFields().size())
++            if (fieldIndex >= numFieldsInDef)
+             {
+                 // Now that the entire message is decoded we may evaluate subfields and expand components
+                 for (FIT_UINT16 i=0; i<mesg.GetNumFields(); i++)
+@@ -886,24 +896,27 @@
+                     FIT_UINT16 activeSubField = mesg.GetActiveSubFieldIndexByFieldIndex(i);
+                     if( !suppressComponentExpansion )
+                     {
++                        Field* field = mesg.GetFieldByIndex(i);
+                         if (activeSubField == FIT_SUBFIELD_INDEX_MAIN_FIELD)
+                         {
+-                            if (mesg.GetFieldByIndex(i)->GetNumComponents() > 0)
++                            FIT_UINT16 numComponents = field->GetNumComponents();
++                            if (numComponents > 0)
+                             {
+-                                ExpandComponents(mesg.GetFieldByIndex(i), mesg.GetFieldByIndex(i)->GetComponent(0), mesg.GetFieldByIndex(i)->GetNumComponents());
++                                ExpandComponents(field, field->GetComponent(0), numComponents);
+                             }
+                         }
+                         else
+                         {
+-                            if (mesg.GetFieldByIndex(i)->GetSubField(activeSubField)->numComponents > 0)
++                            const Profile::SUBFIELD* subfield = field->GetSubField(activeSubField);
++                            if (subfield->numComponents > 0)
+                             {
+-                                ExpandComponents(mesg.GetFieldByIndex(i), mesg.GetFieldByIndex(i)->GetSubField(activeSubField)->components, mesg.GetFieldByIndex(i)->GetSubField(activeSubField)->numComponents);
++                                ExpandComponents(field, subfield->components, subfield->numComponents);
+                             }
+                         }
+                     }
+                 }
+ 
+-                if (localMesgDefs[localMesgIndex].GetDeveloperFieldTotalSize() > 0)
++                if (localDef.GetDeveloperFieldTotalSize() > 0)
+                 {
+                     fieldIndex = 0;
+                     fieldBytesLeft = 0;
+@@ -916,10 +929,12 @@
+                 }
+             }
+             break;
++        }
+ 
+         case STATE_DEV_FIELD_DATA: {
+              MesgDefinition& localMesgDef = localMesgDefs[localMesgIndex];
+              DeveloperFieldDefinition* fieldDef = localMesgDef.GetDevFieldByIndex(fieldIndex);
++             size_t numDevFields = localMesgDef.GetDevFields().size();
+ 
+              if (fieldBytesLeft == 0)
+              {
+@@ -938,8 +953,7 @@
+ 
+              if (fieldBytesLeft == 0)
+              {
+-                 MesgDefinition defn = localMesgDefs[localMesgIndex];
+-                 DeveloperFieldDefinition* fldDefn = defn.GetDevFieldByIndex(fieldIndex);
++                 DeveloperFieldDefinition* fldDefn = localMesgDef.GetDevFieldByIndex(fieldIndex);
+                  FIT_UINT8 baseType = fldDefn->GetType() & FIT_BASE_TYPE_NUM_MASK;
+ 
+                  if (baseType < FIT_BASE_TYPES) // Ignore field if base type not supported.
+@@ -953,7 +967,7 @@
+ 
+                  fieldIndex++;
+ 
+-                 if (fieldIndex >= localMesgDef.GetDevFields().size()) {
++                 if (fieldIndex >= numDevFields) {
+                      // Mesg decode complete
+                      state = STATE_RECORD;
+                      return RETURN_MESG;
+--- a/src/fit_field.cpp
++++ b/src/fit_field.cpp
+@@ -92,20 +92,29 @@
+ 
+ FIT_UINT8 Field::GetNum(void) const
+ {
+-    if ((profile == NULL) || (profileIndex >= profile->numFields))
++    const auto* p = profile;
++    if (__builtin_expect((p == NULL) || (profileIndex >= p->numFields), 0))
+         return FIT_FIELD_NUM_INVALID;
+-    return profile->fields[profileIndex].num;
++    return p->fields[profileIndex].num;
+ }
+ 
+ FIT_UINT8 Field::GetType() const
+ {
+-    if ( type != FIT_UINT8_INVALID )
+-        return type;
++    FIT_UINT8 cachedType = type;
++    if (__builtin_expect(cachedType != FIT_UINT8_INVALID, 1))
++        return cachedType;
+ 
+-    if ((profile == NULL) || (profileIndex >= profile->numFields))
++    const Profile::MESG* const p = profile;
++    if (__builtin_expect(p == NULL, 0))
+         return FIT_UINT8_INVALID;
+ 
+-    return profile->fields[profileIndex].type;
++    const FIT_UINT8 index = profileIndex;
++    if (__builtin_expect(index >= p->numFields, 0))
++        return FIT_UINT8_INVALID;
++
++    cachedType = p->fields[index].type;
++    const_cast<FIT_UINT8&>(type) = cachedType;
++    return cachedType;
+ }
+ 
+ std::string Field::GetUnits() const
+@@ -117,9 +126,12 @@
+ 
+ FIT_FLOAT64 Field::GetScale() const
+ {
+-    if ((profile == NULL) || (profileIndex >= profile->numFields))
+-        return 1;
+-    return profile->fields[profileIndex].scale;
++    const auto* p = profile;
++    if (__builtin_expect(p == NULL, 0))
++        return 1.0;
++    if (__builtin_expect(profileIndex >= p->numFields, 0))
++        return 1.0;
++    return p->fields[profileIndex].scale;
+ }
+ 
+ FIT_FLOAT64 Field::GetOffset() const
+--- a/src/fit_field_base.cpp
++++ b/src/fit_field_base.cpp
+@@ -16,6 +16,8 @@
+ #include "fit_field_base.hpp"
+ #include "fit_mesg.hpp"
+ #include "fit_unicode.hpp"
++#include <cstring>
++#include <cstdint>
+ 
+ namespace fit
+ {
+@@ -25,9 +27,9 @@
+ }
+ 
+ FieldBase::FieldBase(const FieldBase &field)
++    : values(field.values),
++      stringIndexes(field.stringIndexes)
+ {
+-    values = field.values;
+-    stringIndexes = field.stringIndexes;
+ }
+ 
+ FieldBase::~FieldBase()
+@@ -105,8 +107,15 @@
+     if (!IsValid())
+         return 0;
+ 
+-    if (GetType() != FIT_BASE_TYPE_STRING)
+-        return (FIT_UINT8)(values.size() / baseTypeSizes[GetType() & FIT_BASE_TYPE_NUM_MASK]);
++    const FIT_UINT8 t = GetType();
++    if (t != FIT_BASE_TYPE_STRING)
++    {
++        static constexpr FIT_UINT8 shifts[32] = {
++            0, 0, 0, 1, 1, 2, 2, 0, 2, 3, 0, 1, 2, 0, 3, 3, 3,
++            0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0
++        };
++        return (FIT_UINT8)(values.size() >> shifts[t & FIT_BASE_TYPE_NUM_MASK]);
++    }
+ 
+     return (FIT_UINT8)stringIndexes.size();
+ }
+@@ -558,165 +567,153 @@
+ 
+ FIT_FLOAT64 FieldBase::GetRawValueInternal(const FIT_UINT8 fieldArrayIndex) const
+ {
+-    FIT_FLOAT64 float64Value;
+-
+     if (!IsValid())
+         return FIT_FLOAT64_INVALID;
+ 
+-    switch (GetType()) { // Note: This checks the type of the MAIN field since data is aligned according to that type
++    const size_t valuesSize = values.size();
++
++    switch (GetType()) {
+         case FIT_BASE_TYPE_BYTE:
+         {
+-            FIT_BYTE byteValue = GetBYTEValue(fieldArrayIndex);
+-
+-            if (byteValue == FIT_BYTE_INVALID)
++            if (fieldArrayIndex >= valuesSize)
+                 return FIT_FLOAT64_INVALID;
+-
+-            float64Value = byteValue;
+-            break;
++            FIT_BYTE v = (FIT_BYTE)values[fieldArrayIndex];
++            if (v == FIT_BYTE_INVALID)
++                return FIT_FLOAT64_INVALID;
++            return (FIT_FLOAT64)v;
+         }
+-
+         case FIT_BASE_TYPE_ENUM:
+         {
+-            FIT_ENUM enumValue = GetENUMValue(fieldArrayIndex);
+-
+-            if (enumValue == FIT_ENUM_INVALID)
++            if (fieldArrayIndex >= valuesSize)
+                 return FIT_FLOAT64_INVALID;
+-
+-            float64Value = enumValue;
+-            break;
++            FIT_ENUM v = (FIT_ENUM)values[fieldArrayIndex];
++            if (v == FIT_ENUM_INVALID)
++                return FIT_FLOAT64_INVALID;
++            return (FIT_FLOAT64)v;
+         }
+-
+         case FIT_BASE_TYPE_SINT8:
+         {
+-            FIT_SINT8 sint8Value = GetSINT8Value(fieldArrayIndex);
+-
+-            if (sint8Value == FIT_SINT8_INVALID)
++            if (fieldArrayIndex >= valuesSize)
+                 return FIT_FLOAT64_INVALID;
+-
+-            float64Value = sint8Value;
+-            break;
++            FIT_SINT8 v = (FIT_SINT8)values[fieldArrayIndex];
++            if (v == FIT_SINT8_INVALID)
++                return FIT_FLOAT64_INVALID;
++            return (FIT_FLOAT64)v;
+         }
+-
+         case FIT_BASE_TYPE_UINT8:
+         {
+-            FIT_UINT8 uint8Value = GetUINT8Value(fieldArrayIndex);
+-
+-            if (uint8Value == FIT_UINT8_INVALID)
++            if (fieldArrayIndex >= valuesSize)
+                 return FIT_FLOAT64_INVALID;
+-
+-            float64Value = uint8Value;
+-            break;
++            FIT_UINT8 v = values[fieldArrayIndex];
++            if (v == FIT_UINT8_INVALID)
++                return FIT_FLOAT64_INVALID;
++            return (FIT_FLOAT64)v;
+         }
+-
+         case FIT_BASE_TYPE_UINT8Z:
+         {
+-            FIT_UINT8Z uint8zValue = GetUINT8ZValue(fieldArrayIndex);
+-
+-            if (uint8zValue == FIT_UINT8Z_INVALID)
++            if (fieldArrayIndex >= valuesSize)
+                 return FIT_FLOAT64_INVALID;
+-
+-            float64Value = uint8zValue;
+-            break;
++            FIT_UINT8Z v = values[fieldArrayIndex];
++            if (v == FIT_UINT8Z_INVALID)
++                return FIT_FLOAT64_INVALID;
++            return (FIT_FLOAT64)v;
+         }
+-
+         case FIT_BASE_TYPE_SINT16:
+         {
+-            FIT_SINT16 sint16Value = GetSINT16Value(fieldArrayIndex);
+-
+-            if (sint16Value == FIT_SINT16_INVALID)
++            const size_t offset = (size_t)fieldArrayIndex * sizeof(FIT_SINT16);
++            if (offset >= valuesSize)
+                 return FIT_FLOAT64_INVALID;
+-
+-            float64Value = sint16Value;
+-            break;
++            FIT_SINT16 v;
++            memcpy(&v, &values[offset], sizeof(FIT_SINT16));
++            if (v == FIT_SINT16_INVALID)
++                return FIT_FLOAT64_INVALID;
++            return (FIT_FLOAT64)v;
+         }
+-
+         case FIT_BASE_TYPE_UINT16:
+         {
+-            FIT_UINT16 uint16Value = GetUINT16Value(fieldArrayIndex);
+-
+-            if (uint16Value == FIT_UINT16_INVALID)
++            const size_t offset = (size_t)fieldArrayIndex * sizeof(FIT_UINT16);
++            if (offset >= valuesSize)
+                 return FIT_FLOAT64_INVALID;
+-
+-            float64Value = uint16Value;
+-            break;
++            FIT_UINT16 v;
++            memcpy(&v, &values[offset], sizeof(FIT_UINT16));
++            if (v == FIT_UINT16_INVALID)
++                return FIT_FLOAT64_INVALID;
++            return (FIT_FLOAT64)v;
+         }
+-
+         case FIT_BASE_TYPE_UINT16Z:
+         {
+-            FIT_UINT16Z uint16zValue = GetUINT16ZValue(fieldArrayIndex);
+-
+-            if (uint16zValue == FIT_UINT16Z_INVALID)
++            const size_t offset = (size_t)fieldArrayIndex * sizeof(FIT_UINT16Z);
++            if (offset >= valuesSize)
+                 return FIT_FLOAT64_INVALID;
+-
+-            float64Value = uint16zValue;
+-            break;
++            FIT_UINT16Z v;
++            memcpy(&v, &values[offset], sizeof(FIT_UINT16Z));
++            if (v == FIT_UINT16Z_INVALID)
++                return FIT_FLOAT64_INVALID;
++            return (FIT_FLOAT64)v;
+         }
+-
+         case FIT_BASE_TYPE_SINT32:
+         {
+-            FIT_SINT32 sint32Value = GetSINT32Value(fieldArrayIndex);
+-
+-            if (sint32Value == FIT_SINT32_INVALID)
++            const size_t offset = (size_t)fieldArrayIndex * sizeof(FIT_SINT32);
++            if (offset >= valuesSize)
+                 return FIT_FLOAT64_INVALID;
+-
+-            float64Value = sint32Value;
+-            break;
++            FIT_SINT32 v;
++            memcpy(&v, &values[offset], sizeof(FIT_SINT32));
++            if (v == FIT_SINT32_INVALID)
++                return FIT_FLOAT64_INVALID;
++            return (FIT_FLOAT64)v;
+         }
+-
+         case FIT_BASE_TYPE_UINT32:
+         {
+-            FIT_UINT32 uint32Value = GetUINT32Value(fieldArrayIndex);
+-
+-            if (uint32Value == FIT_UINT32_INVALID)
++            const size_t offset = (size_t)fieldArrayIndex * sizeof(FIT_UINT32);
++            if (offset >= valuesSize)
+                 return FIT_FLOAT64_INVALID;
+-
+-            float64Value = uint32Value;
+-            break;
++            FIT_UINT32 v;
++            memcpy(&v, &values[offset], sizeof(FIT_UINT32));
++            if (v == FIT_UINT32_INVALID)
++                return FIT_FLOAT64_INVALID;
++            return (FIT_FLOAT64)v;
+         }
+-
+         case FIT_BASE_TYPE_UINT32Z:
+         {
+-            FIT_UINT32Z uint32zValue = GetUINT32ZValue(fieldArrayIndex);
+-
+-            if (uint32zValue == FIT_UINT32Z_INVALID)
++            const size_t offset = (size_t)fieldArrayIndex * sizeof(FIT_UINT32Z);
++            if (offset >= valuesSize)
+                 return FIT_FLOAT64_INVALID;
+-
+-            float64Value = uint32zValue;
+-            break;
++            FIT_UINT32Z v;
++            memcpy(&v, &values[offset], sizeof(FIT_UINT32Z));
++            if (v == FIT_UINT32Z_INVALID)
++                return FIT_FLOAT64_INVALID;
++            return (FIT_FLOAT64)v;
+         }
+-
+         case FIT_BASE_TYPE_FLOAT32:
+         {
+-            FIT_FLOAT32 float32Value = GetFLOAT32Value(fieldArrayIndex);
+-
+-            if (float32Value == FIT_FLOAT32_INVALID)
++            const size_t offset = (size_t)fieldArrayIndex * sizeof(FIT_FLOAT32);
++            if (offset >= valuesSize)
+                 return FIT_FLOAT64_INVALID;
+-
+-            float64Value = float32Value;
+-            break;
++            FIT_FLOAT32 v;
++            memcpy(&v, &values[offset], sizeof(FIT_FLOAT32));
++            if (v == FIT_FLOAT32_INVALID)
++                return FIT_FLOAT64_INVALID;
++            return (FIT_FLOAT64)v;
+         }
+-
+         case FIT_BASE_TYPE_FLOAT64:
+         {
+-            unsigned long long uint64Value = 0;
+-
+-            if (fieldArrayIndex >= (FIT_UINT8)values.size())
++            if (fieldArrayIndex >= (FIT_UINT8)valuesSize)
+                 return FIT_FLOAT64_INVALID;
+ 
++            unsigned long long uint64Value = 0;
++            const size_t offset = (size_t)fieldArrayIndex * sizeof(FIT_UINT64);
+             for (size_t i = 0; i < sizeof(FIT_UINT64); i++)
+             {
+-                uint64Value |= ( values[(fieldArrayIndex * sizeof(FIT_UINT64)) + i] << (i * 8) );
++                uint64Value |= ( values[offset + i] << (i * 8) );
+             }
+ 
++            FIT_FLOAT64 float64Value;
+             memcpy(&float64Value, &uint64Value, sizeof(FIT_FLOAT64));
+-            break;
++            return float64Value;
+         }
+-
+         default:
+             return FIT_FLOAT64_INVALID;
+     }
+-
+-    return float64Value;
+ }
+ 
+ void FieldBase::AddValue(const FIT_FLOAT64 value, const FIT_UINT8 fieldArrayIndex, const FIT_UINT16 subFieldIndex)
+@@ -1151,10 +1148,37 @@
+ template <typename TTo, typename TFrom>
+ TTo FieldBase::ConvertBaseType(const FIT_UINT8 fieldArrayIndex, const FIT_UINT8 toBaseType) const
+ {
+-    FIT_CONST_UINT8_PTR invalid = baseTypeInvalids[GetType() & FIT_BASE_TYPE_NUM_MASK];
++    const FIT_UINT8 type = GetType();
+     TFrom value = GetValue<TFrom>(fieldArrayIndex);
+ 
+-    if (memcmp(&value, invalid, sizeof(TFrom)) == 0)
++    if (std::is_same<TTo, TFrom>::value && toBaseType == type)
++        return value;
++
++    FIT_CONST_UINT8_PTR invalid = baseTypeInvalids[type & FIT_BASE_TYPE_NUM_MASK];
++
++    bool isInvalid;
++    if (sizeof(TFrom) == 1) {
++        isInvalid = *reinterpret_cast<const FIT_UINT8*>(&value) == *invalid;
++    } else if (sizeof(TFrom) == 2) {
++        FIT_UINT16 v, i;
++        std::memcpy(&v, &value, 2);
++        std::memcpy(&i, invalid, 2);
++        isInvalid = (v == i);
++    } else if (sizeof(TFrom) == 4) {
++        FIT_UINT32 v, i;
++        std::memcpy(&v, &value, 4);
++        std::memcpy(&i, invalid, 4);
++        isInvalid = (v == i);
++    } else if (sizeof(TFrom) == 8) {
++        std::uint64_t v, i;
++        std::memcpy(&v, &value, 8);
++        std::memcpy(&i, invalid, 8);
++        isInvalid = (v == i);
++    } else {
++        isInvalid = (std::memcmp(&value, invalid, sizeof(TFrom)) == 0);
++    }
++
++    if (isInvalid)
+         return *reinterpret_cast<const TTo*>(baseTypeInvalids[toBaseType & FIT_BASE_TYPE_NUM_MASK]);
+ 
+     return static_cast<TTo>(value);
+--- a/src/fit_lap_mesg.hpp
++++ b/src/fit_lap_mesg.hpp
+@@ -943,14 +943,10 @@
+     FIT_BOOL IsMaxCadenceValid() const
+     {
+         const Field* field = GetField(18);
+-        if( FIT_NULL == field )
+-        {
+-            return FIT_FALSE;
+-        }
+-
+-        return field->IsValueValid();
++        return (FIT_NULL != field) && field->IsValueValid();
+     }
+ 
++
+     ///////////////////////////////////////////////////////////////////////
+     // Returns max_cadence field
+     // Units: rpm
+--- a/src/fit_profile.cpp
++++ b/src/fit_profile.cpp
+@@ -3057,13 +3057,17 @@
+ 
+ const Profile::MESG* Profile::GetMesg(const FIT_UINT16 num)
+ {
+-    for (int i = 0; i < MESGS; i++)
++    static const Profile::MESG* index[65536] = { 0 };
++    static bool init = false;
++
++    if (!init)
+     {
+-        if (mesgs[i].num == num)
+-            return &mesgs[i];
++        for (int i = MESGS - 1; i >= 0; i--)
++            index[mesgs[i].num] = &mesgs[i];
++        init = true;
+     }
+ 
+-    return NULL;
++    return index[num];
+ }
+ 
+ const Profile::MESG* Profile::GetMesg(const std::string& name)

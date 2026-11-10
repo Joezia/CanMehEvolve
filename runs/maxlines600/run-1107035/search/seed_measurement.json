@@ -1,0 +1,8 @@
+{
+  "faster": true,
+  "p_value": 0.001953125,
+  "patch": "/home/z/zhouzia/Workspace/CanMehEvolve/runs/round2/runs/ds-population-s3/best.patch",
+  "ratio": 0.8445051767529821,
+  "speedup": 1.1841253642101712,
+  "unstable": false
+}

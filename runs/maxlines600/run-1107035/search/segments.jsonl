@@ -1,0 +1,2 @@
+{"calls_at_start":0,"event":"start","host":"xcnc7","label":"","previous_host":"","resumed":false,"segment":1,"slurm_job_id":"1107035","time":"2026-11-10T16:32:55+0800"}
+{"calls_at_end":1,"complete":true,"ended_because":"stop after measured candidate","event":"end","segment":1,"time":"2026-11-10T16:42:17+0800"}

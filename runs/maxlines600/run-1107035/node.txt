@@ -1,0 +1,16 @@
+job=1107035
+host=xcnc7
+start=2026-11-10T16:27:38+08:00
+cpu=Intel(R) Xeon(R) CPU E5-2620 v3 @ 2.40GHz
+git_commit=4f09f763a21613389d4a6bc78ce835fc041c6624
+git_dirty_tracked=0
+variant_source_sha256=21fe0990e35b455ad04a4070cd8d4297f504dfa09bf0c106b7dcd9b4b50fb9bd
+binary_sha256=70216b6cb55dc9545898ea5ac489053a2f4488c743b37f45d66c7b76527e644b
+seed_patch=/home/z/zhouzia/Workspace/CanMehEvolve/runs/round2/runs/ds-population-s3/best.patch
+seed_patch_sha256=46ce7efd5115c66ea2b6e2def4ec60fdcdb4baf6a8e30728dc9a590a185d70a9
+max_lines=600 force_label=Decode::ReadByte request_cap=8
+cxx=c++ (Ubuntu 13.3.0-6ubuntu2~24.04.1) 13.3.0
+search_exit=0 search_end=2026-11-10T16:42:18+08:00
+child_patch=/home/z/zhouzia/Workspace/CanMehEvolve/runs/maxlines600/run-1107035/search/patches/gen_1.patch
+a11d3bda01463ef94986a3bda3e086413b916030e9344f678d5d276a274f018a  /home/z/zhouzia/Workspace/CanMehEvolve/runs/maxlines600/run-1107035/search/patches/gen_1.patch
+end=2026-11-10T16:53:08+08:00
