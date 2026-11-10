@@ -16,6 +16,7 @@ HERE = Path(__file__).resolve().parent; DATA = HERE / "data"
 W, H = 13.333, 7.5
 INK, INK2, MUTED, GRID, RULE = "#14171a", "#46505a", "#7a838c", "#e6e9ed", "#b9c0c8"
 BLUE, ORANGE, GREY = "#2a78d6", "#d9780f", "#8d949c"
+Q_POP, Q_BON, D_POP, D_BON = "#c2540a", "#f2a65a", "#1f5fb8", "#7fb2ec"   # Qwen: dark/light orange; DeepSeek: dark/light blue
 plt.rcParams.update({"font.family": "Liberation Sans", "pdf.fonttype": 42, "text.color": INK})
 TITLE, BODY, CELL = 34, 22, 20
 
@@ -60,7 +61,7 @@ def slide1():
     for key, lab in (("faster-1-percent", "\u22481.010\u00d7"), ("faster-2-percent", "\u22481.020\u00d7"), ("faster-5-percent", "\u22481.050\u00d7"), ("faster-10-percent", "\u22481.100\u00d7")):
         r = cal[key]; rows.append((lab, int(r["judged_faster"]), int(r["valid_trials"]), float(r["cp95_lo"]), float(r["cp95_hi"])))
     assert [(a, b) for _, a, b, _, _ in rows] == [(0, 500), (1, 100), (42, 100), (99, 100), (100, 100)]
-    tx = [7.55, 9.35, 10.85]; x_end = 12.85
+    tx = [7.3, 9.1, 10.85]; x_end = 12.95
     T(ax, tx[0], 1.2, "Known\nspeedup", size=CELL, weight="bold", linespacing=1.1)
     T(ax, tx[1], 1.2, "Accepted /\ntrials", size=CELL, weight="bold", linespacing=1.1)
     T(ax, tx[2], 1.2, "95% CI of\nacceptance rate", size=CELL, weight="bold", linespacing=1.1)
@@ -101,14 +102,14 @@ def slide2():
         for meth in ("Population search", "Best-of-N"):
             sel = [r for r in runs if r["model"] == model and r["method"] == meth]; assert len(sel) == 5
             v = [float(r["speedup"]) for r in sel]; tok = st.median([float(r["total_tokens"]) for r in sel])
-            rowsp.append((f"{model}: {meth}", st.median(v), (min(v), max(v)), tok, BLUE if meth.startswith("Pop") else ORANGE))
+            col = {("Qwen", "Population search"): Q_POP, ("Qwen", "Best-of-N"): Q_BON, ("DeepSeek", "Population search"): D_POP, ("DeepSeek", "Best-of-N"): D_BON}[(model, meth)]
+            rowsp.append((f"{model}: {meth}", st.median(v), (min(v), max(v)), tok, col))
     exp = [1.090, 1.108, 1.068, 1.082, 1.0745, 1.0560, 1.1648, 1.0732]
     assert all(abs(r[1] - e) < 6e-4 for r, e in zip(rowsp, exp)), [r[1] for r in rowsp]
     fig, ax = new_slide(); title(ax, "Search Results")
     T(ax, 0.5, 1.0, "Select a function in a parent patch → LLM rewrite → check and time → update population", size=BODY)
     T(ax, 0.5, 1.45, "C3: Best-of-N comparison · C4: 5 seeds, 40 requests per run", size=BODY, weight="bold")
-    T(ax, 0.5, 1.85, "Dot = median · line = full range of the five seeds (not a confidence interval)", size=BODY, color=INK2)
-    AL, AR, AT, AB = 4.45, 9.75, 2.8, 5.45   # axes box in inches (x left/right, y top/bottom of slide)
+    AL, AR, AT, AB = 4.45, 9.75, 2.55, 5.45   # axes box in inches (x left/right, y top/bottom of slide)
     a = fig.add_axes([AL / W, 1 - AB / H, (AR - AL) / W, (AB - AT) / H]); a.set_facecolor("white")
     a.set_xlim(0.99, 1.22); a.set_ylim(len(rowsp) - 0.5, -0.5)
     for sp in ("top", "right", "left"): a.spines[sp].set_visible(False)
@@ -121,7 +122,7 @@ def slide2():
     a.set_xlabel("Speedup relative to Original SDK (-O2)", fontsize=CELL, color=INK2, labelpad=6)
     T(ax, 12.83, AT - 0.12, "Reported\ntokens/run", size=CELL, weight="bold", ha="right", va="bottom", linespacing=1.1)
     for i, (lab, m, rng, tok, col) in enumerate(rowsp):
-        if rng: a.plot(rng, [i, i], color=col, lw=5, solid_capstyle="round", alpha=0.55, zorder=3)
+        if rng: a.plot(rng, [i, i], color=col, lw=5, solid_capstyle="round", alpha=0.6, zorder=3)
         a.scatter([m], [i], s=130, color=col, edgecolor="white", linewidth=1.2, zorder=5)
         xr = (rng[1] if rng else m) + 0.004
         a.text(xr, i, f"{m:.3f}", fontsize=CELL, va="center", ha="left", color=INK, zorder=6)
@@ -165,8 +166,7 @@ def slide3():
         T(ax, cx[0], y, wa, size=CELL, linespacing=1.12); T(ax, cx[1], y, wb, size=CELL, linespacing=1.12)
         T(ax, cx[2], y, c_, size=CELL, weight="bold"); T(ax, cx[3], y, wd, size=CELL, linespacing=1.12)
         hline(ax, 0.5, xe, y + rh - 0.1, color=GRID if i < len(data) - 1 else INK, lw=1.2 if i < len(data) - 1 else 1.6)
-    T(ax, 0.5, 6.35, "A patch can have findings in more than one test.", size=BODY, color=INK2)
-    T(ax, 0.5, 6.8, "The supplied checks did not cover all failures found by the broader tests.", size=24, weight="bold")
+    T(ax, 0.5, 6.5, "The supplied checks did not cover all failures found by the broader tests.", size=24, weight="bold")
     return fig
 
 def main():
