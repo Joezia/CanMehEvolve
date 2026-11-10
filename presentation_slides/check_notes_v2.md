@@ -1,0 +1,7 @@
+# v2 check record
+- Render check: all 3 pages of `CanMehEvolve_ZhouZiang_v2.pdf` rendered with pdftoppm (150 dpi) and inspected; 959.976 x 540 pt (16:9), 3 pages, fonts embedded (Liberation Sans / Mono).
+- No footnotes, footers, name/ID repeats, number cards, checkerboards or banners. Titles: Speedup Judge / Search Results / Additional Correctness Tests (34 pt). Body 22-24 pt; table and chart text 20 pt.
+- Page 1 table asserted in code: 0/500, 1/100, 42/100, 99/100, 100/100; CP intervals from data (2 decimals, rounded outward). Max |median-ratio bias| over null/1/2/5/10% pairs = 0.00145 (asserted); first point with rate >= 90% = 1.05x (asserted).
+- Page 2 medians asserted vs the requested table: 1.090, 1.108, 1.068, 1.082, 1.0745, 1.0560, 1.1648, 1.0732 (displayed to 3 decimals: 1.074 for 1.0745 because the raw value is 1.07445). Ranges and token medians are computed from `data/i3_runs.csv` (34.2k, 25.4k, 367.0k, 320.4k).
+- Page 3 counts derived per patch from `data/correctness_unified.csv` (20 'round-2 final' rows): legal-input diff 3, mutated-input extra crash 1, ASan/UBSan 1, TSan 15; race-only 12 (asserted). All 20 original-4 identical.
+- Note: v1 (and the older Chinese note) said 16/20 had findings; per test type TSan is 15/20 (the 16th patch, Qwen population seed 4, only differs on legal files). `runs/round2/README_zh.md` still says 16 under a different counting (not changed here).
